@@ -1,0 +1,47 @@
+a, a:link {
+	color : #6f64a2;
+}
+
+.contents a:visited {
+	color : #635991;
+}
+
+#titlearea {
+    margin: 10px 0px 0px 10px;
+    height: 66px;
+	border-bottom: none;
+}
+
+.sm-dox a {
+    background-image: none !important;
+	text-shadow: none;
+	color : white;
+}
+
+.sm-dox a:focus, .sm-dox a:hover, .sm-dox a:active {
+	background-image: none !important;
+	text-shadow: none;
+	color : #efefef;
+}
+
+.sm-dox ul a:hover {
+	color : gray;
+    text-shadow: none;
+}
+
+.sm-dox {
+    background-image: none;
+    background-color: #8a7fbb;
+}
+
+.navpath ul {
+	background-color: #7569aa;
+    background-image: none;
+}
+.navpath li.navelem a {
+    color: white;
+    text-shadow: none;
+}
+.navpath li.navelem a:hover {
+    color: #efefef;
+}

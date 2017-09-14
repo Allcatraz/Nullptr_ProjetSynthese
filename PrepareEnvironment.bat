@@ -1,0 +1,4 @@
+@echo off
+SETLOCAL ENABLEDELAYEDEXPANSION
+
+CALL GenerateCode.bat

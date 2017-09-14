@@ -1,0 +1,52 @@
+stages:
+  - build
+  - test
+  - report
+  - deploy
+
+build:
+  stage: build
+  script:
+    - Build.bat
+  artifacts:
+    paths:
+      - Build/Setup/*.*
+    expire_in: 1 week
+  only:
+    - master
+
+test:
+  stage: test
+  script:
+    - Test.bat
+  artifacts:
+    paths:
+    - TestReports
+    expire_in: 1 week
+    when: always
+  dependencies:
+  only:
+    - master
+
+pages:
+  stage: report
+  script:
+    - GenerateReports.bat
+  when: always
+  artifacts:
+    paths:
+    - public
+  dependencies:
+    - test
+  only:
+    - master
+    
+deploy:
+  stage: deploy
+  script:
+    - Deploy.bat
+  when: manual
+  dependencies:
+    - build
+  only:
+    - master

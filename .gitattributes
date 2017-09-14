@@ -1,0 +1,3 @@
+#Treat Unity Scenes and Settings as binary, to prevent strange merges.
+*.unity binary
+*.asset binary

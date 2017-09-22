@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Harmony.Injection;
+﻿using Harmony;
+using UnityEngine;
 
 namespace ProjetSynthese
 {
@@ -9,24 +9,24 @@ namespace ProjetSynthese
         private Health health;
         private PlayerDeathEventChannel eventChannel;
 
-        public void InjectPlayerDeathEventPublisher([EntityScope] Health health,
+        private void InjectPlayerDeathEventPublisher([EntityScope] Health health,
                                                     [EventChannelScope] PlayerDeathEventChannel eventChannel)
         {
             this.health = health;
             this.eventChannel = eventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectPlayerDeathEventPublisher");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             health.OnDeath += OnDeath;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             health.OnDeath -= OnDeath;
         }

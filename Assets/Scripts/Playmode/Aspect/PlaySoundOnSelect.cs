@@ -1,40 +1,38 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/Aspect/PlaySoundOnSelect")]
+    [AddComponentMenu("Game/Aspect/PlaySoundOnSelect")]
     public class PlaySoundOnSelect : GameScript
     {
         [SerializeField]
         private AudioClip audioClip;
 
-        private IAudioSource audioSource;
-        private ISelectable selectable;
+        private AudioSource audioSource;
+        private Selectable selectable;
 
-        public void InjectPlaySoundOnSelect(AudioClip audioClip,
-                                            [EntityScope] IAudioSource audioSource,
-                                            [GameObjectScope] ISelectable selectable)
+        private void InjectPlaySoundOnSelect([EntityScope] AudioSource audioSource,
+                                            [GameObjectScope] Selectable selectable)
         {
-            this.audioClip = audioClip;
             this.audioSource = audioSource;
             this.selectable = selectable;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectPlaySoundOnSelect", audioClip);
+            InjectDependencies("InjectPlaySoundOnSelect");
         }
 
-        public void Start()
+        private void OnEnable()
         {
-            selectable.OnSelected += OnSelected;
+            selectable.Events().OnSelected += OnSelected;
         }
 
-        public void OnDestroy()
+        private void OnDisable()
         {
-            selectable.OnSelected -= OnSelected;
+            selectable.Events().OnSelected += OnSelected;
         }
 
         private void OnSelected()

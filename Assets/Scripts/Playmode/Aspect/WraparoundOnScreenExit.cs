@@ -1,46 +1,45 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Aspect/WraparoundOnScreenExit")]
+    [AddComponentMenu("Game/Aspect/WraparoundOnScreenExit")]
     public class WraparoundOnScreenExit : GameScript
     {
-        private new IRenderer renderer;
-        private new ITransform transform;
-        private new ICamera camera;
+        private Renderer topParentRrenderer;
+        private Transform topParentTranform;
+        private new Camera camera;
 
-        public void InjectWraparoundOnScreen([TopParentScope] IRenderer renderer,
-                                             [TopParentScope] ITransform transform,
-                                             [TagScope(R.S.Tag.MainCamera)] ICamera camera)
+        private void InjectWraparoundOnScreen([TopParentScope] Renderer topParentRrenderer,
+                                             [TopParentScope] Transform topParentTranform,
+                                             [TagScope(R.S.Tag.MainCamera)] Camera camera)
         {
-            this.renderer = renderer;
-            this.transform = transform;
+            this.topParentRrenderer = topParentRrenderer;
+            this.topParentTranform = topParentTranform;
             this.camera = camera;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectWraparoundOnScreen");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
-            renderer.OnBecameInvisible += OnOutOfScreen;
+            topParentRrenderer.Events().OnIsInvisible += OnOutOfScreen;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
-            renderer.OnBecameInvisible -= OnOutOfScreen;
+            topParentRrenderer.Events().OnIsInvisible -= OnOutOfScreen;
         }
 
         private void OnOutOfScreen()
         {
-            transform.Position = FlipPositionAccordingToCamera(transform.Position, camera);
+            topParentTranform.position = FlipPositionAccordingToCamera(topParentTranform.position, camera);
         }
 
-        private Vector3 FlipPositionAccordingToCamera(Vector3 position, ICamera camera)
+        private Vector3 FlipPositionAccordingToCamera(Vector3 position, Camera camera)
         {
             Vector3 viewportPosition = camera.WorldToViewportPoint(position);
             float x = IsOutOfViewport(viewportPosition.x) ? -position.x : position.x;
@@ -51,6 +50,6 @@ namespace ProjetSynthese
         private bool IsOutOfViewport(float viewportPosition)
         {
             return viewportPosition > 1 || viewportPosition < 0;
-        }
+        }  
     }
 }

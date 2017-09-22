@@ -1,27 +1,13 @@
-﻿using Harmony;
-using Harmony.Injection;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/View/HealthBarView")]
+    [AddComponentMenu("Game/View/HealthBarView")]
     public class HealthBarView : GameScript
     {
-        private new ITransform transform;
-
-        public void InjectHealthBar([GameObjectScope] ITransform transform)
+        public void SetHealthPercentage(float percentage)
         {
-            this.transform = transform;
-        }
-
-        public void Awake()
-        {
-            InjectDependencies("InjectHealthBar");
-        }
-
-        public virtual void SetHealthPercentage(float percentage)
-        {
-            transform.LocalScale = new Vector3(percentage, transform.LocalScale.y, transform.LocalScale.z);
+            transform.localScale = new Vector3(percentage, transform.localScale.y, transform.localScale.z);
         }
     }
 }

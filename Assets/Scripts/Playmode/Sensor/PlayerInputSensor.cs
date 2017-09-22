@@ -1,9 +1,9 @@
-﻿using Harmony.Injection;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/Input/PlayerInputSensor")]
+    [AddComponentMenu("Game/Sensor/PlayerInputSensor")]
     public class PlayerInputSensor : InputSensor
     {
         private KeyboardInputSensor keyboardInputSensor;
@@ -11,37 +11,41 @@ namespace ProjetSynthese
 
         private PlayersInputDevice playersInputDevice;
 
-        public virtual IInputDevice Players
+        public IInputDevice Players
         {
             get { return playersInputDevice; }
         }
 
-        public void InjectGameInputDevice([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
+        private void InjectGameInputDevice([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                           [ApplicationScope] GamePadInputSensor gamePadInputSensor)
         {
             this.keyboardInputSensor = keyboardInputSensor;
             this.gamePadInputSensor = gamePadInputSensor;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectGameInputDevice");
 
             playersInputDevice = new PlayersInputDevice(keyboardInputSensor, gamePadInputSensor);
         }
 
-        public void LateUpdate()
+        private void LateUpdate()
         {
             playersInputDevice.Reset();
         }
 
         private class PlayerInputDevice : TriggerOncePerFrameInputDevice
         {
+            // ReSharper is wrong about this warning.
+            // ReSharper disable once MemberCanBeProtected.Local
             public PlayerInputDevice(KeyboardInputSensor keyboardInputSensor, GamePadInputSensor gamePadInputSensor)
                 : this(keyboardInputSensor.Keyboards, gamePadInputSensor.GamePads)
             {
             }
 
+            // ReSharper is wrong about this warning.
+            // ReSharper disable once MemberCanBeProtected.Local
             public PlayerInputDevice(IInputDevice keyboardInputDevice, IInputDevice gamePadInputDevice)
             {
                 keyboardInputDevice.OnUp += NotifyUp;
@@ -91,6 +95,16 @@ namespace ProjetSynthese
             {
                 get { return players[deviceIndex]; }
             }
+			
+			public override void Reset()
+			{
+				base.Reset();
+				
+				players[0].Reset();
+				players[1].Reset();
+				players[2].Reset();
+				players[3].Reset();
+			}
         }
     }
 }

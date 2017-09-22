@@ -1,36 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Harmony;
-using Harmony.Injection;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Aspect/DestroyAfterDelay")]
+    [AddComponentMenu("Game/Aspect/DestroyAfterDelay")]
     public class DestroyAfterDelay : GameScript
     {
         [SerializeField]
         private int delayBeforeDeathInSeconds;
 
         private EntityDestroyer entityDestroyer;
-        private ICoroutineExecutor coroutineExecutor;
 
-        public void InjectDestroyAfterDelay(int delayBeforeDeathInSeconds,
-                                           [EntityScope] EntityDestroyer entityDestroyer,
-                                           [ApplicationScope] ICoroutineExecutor coroutineExecutor)
+        private void InjectDestroyAfterDelay([EntityScope] EntityDestroyer entityDestroyer)
         {
-            this.delayBeforeDeathInSeconds = delayBeforeDeathInSeconds;
             this.entityDestroyer = entityDestroyer;
-            this.coroutineExecutor = coroutineExecutor;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectDestroyAfterDelay", delayBeforeDeathInSeconds);
+            InjectDependencies("InjectDestroyAfterDelay");
         }
 
-        public void Start()
+        private void Start()
         {
-            coroutineExecutor.StartCoroutine(this, DestroyAfterDelayRoutine());
+            StartCoroutine(DestroyAfterDelayRoutine());
         }
 
         private IEnumerator DestroyAfterDelayRoutine()

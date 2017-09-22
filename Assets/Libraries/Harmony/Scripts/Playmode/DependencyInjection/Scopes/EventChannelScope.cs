@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Harmony.Util;
 using UnityEngine;
 
-namespace Harmony.Injection
+namespace Harmony
 {
     /// <summary>
     /// Portée de niveau Canal d'événements.
@@ -13,8 +12,7 @@ namespace Harmony.Injection
     /// Cette portée permet d'obtenir :
     /// <list type="bullet">
     /// <item>
-    /// Un des GameObjects dans les GameObjects avec le tag « <c>Event Channels</c> », incluant eux-mêmes et les enfants
-    /// de ses enfants.
+    /// Le ou les GameObjects avec le tag « <c>Event Channels</c> ».
     /// </item>
     /// <item>
     /// Un des Components dans les GameObjects avec le tag « <c>Event Channels</c> », incluant leurs enfants et les enfants
@@ -26,23 +24,15 @@ namespace Harmony.Injection
     /// </remarks>
     public class EventChannelScope : Scope
     {
-        protected override IList<GameObject> GetEligibleGameObjects(IInjectionContext injectionContext, UnityScript target)
+        protected override IList<GameObject> GetEligibleGameObjects(Script target)
         {
-            IList<GameObject> gameObjects = new List<GameObject>();
-            foreach (GameObject gameObject in GetDependencySources(injectionContext, target, typeof(GameObject)))
-            {
-                foreach (GameObject childrenGameObject in gameObject.GetAllHierachy())
-                {
-                    gameObjects.Add(childrenGameObject);
-                }
-            }
-            return gameObjects;
+            return GetDependencySources(target, typeof(GameObject));
         }
 
-        protected override IList<object> GetEligibleDependencies(IInjectionContext injectionContext, UnityScript target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
         {
             IList<object> dependencies = new List<object>();
-            foreach (GameObject dependencySource in GetDependencySources(injectionContext, target, dependencyType))
+            foreach (GameObject dependencySource in GetDependencySources(target, dependencyType))
             {
                 foreach (Component dependency in dependencySource.GetComponentsInChildren(dependencyType))
                 {
@@ -52,14 +42,14 @@ namespace Harmony.Injection
             return dependencies;
         }
 
-        private IList<GameObject> GetDependencySources(IInjectionContext injectionContext, UnityScript target, Type dependencyType)
+        private IList<GameObject> GetDependencySources(Script target, Type dependencyType)
         {
-            IList<GameObject> dependenciesObjects = injectionContext.FindGameObjectsWithTag(R.S.Tag.EventChannels);
-            if (dependenciesObjects.Count == 0)
+            IList<GameObject> dependencySources = GameObject.FindGameObjectsWithTag(R.S.Tag.EventChannels);
+            if (dependencySources.Count == 0)
             {
                 throw new DependencySourceNotFoundException(target, dependencyType, this);
             }
-            return dependenciesObjects;
+            return dependencySources;
         }
     }
 }

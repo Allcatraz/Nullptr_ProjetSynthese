@@ -1,13 +1,13 @@
 ﻿using System.Data.Common;
 using JetBrains.Annotations;
 
-namespace Harmony.Database
+namespace Harmony
 {
     /// <summary>
     /// Fabrique de DbParameter pour une base de données relationelles.
     /// </summary>
     /// <seealso cref="DbRepository{T}"/>
-    public interface DbParameterFactory
+    public interface IDbParameterFactory
     {
         /// <summary>
         /// Crée un DbParameter pour la valeur donnée. Cette dernière doit obligatoirement être 

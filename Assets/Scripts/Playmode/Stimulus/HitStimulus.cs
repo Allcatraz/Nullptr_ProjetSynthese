@@ -1,32 +1,29 @@
 ﻿using System;
 using Harmony;
-using Harmony.Injection;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
     public delegate void HitStimulusEventHandler(int hitPoints);
 
-    [AddComponentMenu("Game/World/Object/Stimulus/HitStimulus")]
+    [AddComponentMenu("Game/Stimulus/HitStimulus")]
     public class HitStimulus : GameScript
     {
         [SerializeField]
         private int hitPoints;
 
-        private new ICollider2D collider2D;
+        private new Collider2D collider2D;
 
-        public virtual event HitStimulusEventHandler OnHit;
+        public event HitStimulusEventHandler OnHit;
 
-        public void InjectHitStimulus(int hitPoints,
-                                      [GameObjectScope] ICollider2D collider2D)
+        private void InjectHitStimulus([GameObjectScope] Collider2D collider2D)
         {
-            this.hitPoints = hitPoints;
             this.collider2D = collider2D;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectHitStimulus", hitPoints);
+            InjectDependencies("InjectHitStimulus");
 
             int layer = LayerMask.NameToLayer(R.S.Layer.HitSensor);
             if (layer == -1)
@@ -34,18 +31,22 @@ namespace ProjetSynthese
                 throw new Exception("In order to use a HitStimulus, you must have a " + R.S.Layer.HitSensor + " layer.");
             }
             gameObject.layer = layer;
-            collider2D.IsTrigger = true;
-            collider2D.OnTriggerEntered += OnTriggerEntered;
+            collider2D.isTrigger = true;
         }
 
-        public void OnDestroy()
+        private void OnEnable()
         {
-            collider2D.OnTriggerEntered -= OnTriggerEntered;
+            collider2D.Events().OnEnterTrigger += OnEnterTrigger;
         }
 
-        private void OnTriggerEntered(ICollider2D other)
+        private void OnDisable()
         {
-            HitSensor hitSensor = other.GetOtherComponent<HitSensor>();
+            collider2D.Events().OnEnterTrigger -= OnEnterTrigger;
+        }
+
+        private void OnEnterTrigger(Collider2D other)
+        {
+            HitSensor hitSensor = other.GetComponent<HitSensor>();
             if (hitSensor != null)
             {
                 hitSensor.Hit(hitPoints);

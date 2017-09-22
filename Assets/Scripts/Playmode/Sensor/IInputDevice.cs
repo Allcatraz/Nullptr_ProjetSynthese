@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace ProjetSynthese
+﻿namespace ProjetSynthese
 {
     //Menu actions
     public delegate void UpEventHandler();

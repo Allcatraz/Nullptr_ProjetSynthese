@@ -1,13 +1,10 @@
-﻿using UnityEngine;
-using Harmony.EventSystem;
-using Harmony.Testing;
-using Harmony.Unity;
+﻿using Harmony;
+using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [NotTested(Reason.EventChannel)]
     [AddComponentMenu("Game/Event/GameEventChannel")]
-    public class GameEventChannel : UnityEventChannel<GameEvent>
+    public class GameEventChannel : EventChannel<GameEvent>
     {
     }
 }

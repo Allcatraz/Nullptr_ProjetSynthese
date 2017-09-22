@@ -1,42 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Harmony;
-using Harmony.Injection;
 
 namespace ProjetSynthese
 {
     public delegate void PrefabInstanceAddedEventHandler(R.E.Prefab prefab, GameObject instance);
     public delegate void PrefabInstanceRemovedEventHandler(R.E.Prefab prefab, GameObject instance);
 
-    [AddComponentMenu("Game/World/Control/PrefabInstanceCollection")]
+    [AddComponentMenu("Game/State/PrefabInstanceCollection")]
     public class PrefabInstanceCollection : GameScript
     {
         [SerializeField]
         private R.E.Prefab prefab;
 
-        public virtual event PrefabInstanceAddedEventHandler OnInstanceAdded;
-        public virtual event PrefabInstanceRemovedEventHandler OnInstanceRemoved;
+        public event PrefabInstanceAddedEventHandler OnInstanceAdded;
+        public event PrefabInstanceRemovedEventHandler OnInstanceRemoved;
 
-        private IHierachy hierachy;
         private CreationEventChannel creationEventChannel;
         private DestroyEventChannel destroyEventChannel;
 
         private IList<GameObject> instances;
 
-        public void InjectPrefabInstanceCollection(R.E.Prefab prefab,
-                                                   [ApplicationScope] IHierachy hierachy,
-                                                   [EventChannelScope] CreationEventChannel creationEventChannel,
+        private void InjectPrefabInstanceCollection([EventChannelScope] CreationEventChannel creationEventChannel,
                                                    [EventChannelScope] DestroyEventChannel destroyEventChannel)
         {
-            this.prefab = prefab;
-            this.hierachy = hierachy;
             this.creationEventChannel = creationEventChannel;
             this.destroyEventChannel = destroyEventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectPrefabInstanceCollection", prefab);
+            InjectDependencies("InjectPrefabInstanceCollection");
 
             instances = new List<GameObject>();
 
@@ -44,7 +38,7 @@ namespace ProjetSynthese
             destroyEventChannel.OnEventPublished += OnDestroy;
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
             instances.Clear();
 
@@ -52,16 +46,16 @@ namespace ProjetSynthese
             destroyEventChannel.OnEventPublished -= OnDestroy;
         }
 
-        public virtual int Count
+        public int Count
         {
             get { return instances.Count; }
         }
 
-        public virtual void DestroyAll()
+        public void DestroyAll()
         {
             foreach (GameObject instance in instances)
             {
-                hierachy.DestroyGameObject(instance);
+                Destroy(instance);
             }
             instances.Clear();
         }

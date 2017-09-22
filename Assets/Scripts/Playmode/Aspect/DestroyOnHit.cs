@@ -1,32 +1,32 @@
-﻿using Harmony.Injection;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Aspect/DestroyOnHit")]
+    [AddComponentMenu("Game/Aspect/DestroyOnHit")]
     public class DestroyOnHit : GameScript
     {
         private HitSensor hitSensor;
         private EntityDestroyer entityDestroyer;
 
-        public void InjectDestroyOnHit([EntityScope] HitSensor hitSensor,
+        private void InjectDestroyOnHit([EntityScope] HitSensor hitSensor,
                                        [EntityScope] EntityDestroyer entityDestroyer)
         {
             this.hitSensor = hitSensor;
             this.entityDestroyer = entityDestroyer;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectDestroyOnHit");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             hitSensor.OnHit += OnHit;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             hitSensor.OnHit -= OnHit;
         }

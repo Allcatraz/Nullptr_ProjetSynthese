@@ -1,199 +1,190 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
-using Harmony.Testing;
 using JetBrains.Annotations;
 
-#pragma warning disable 1587
-/// <summary>
-/// Module de Harmony visant à simplifier la gestion des bases de données.
-/// </summary>
-/// <remarks>
-/// <para>
-/// Créer des classes servant à accéder à une base de données est une tâche assez lourde et pénible : il y a beaucoup de
-/// <i>Boilerplate Code</i>, ce qui rend l'écriture de <i>Repositories</i> fastidieux.
-/// </para>
-/// <para>
-/// Harmony fourni une classe abstraite nommée DbRepository pour faciliter l'écriture de <i>repositories</i>. Son 
-/// implémentation et son utilisation est très simple. Par exemple :
-/// </para>
-/// <code>
-/// private class Repository : DbRepository<Game>
-/// {
-///     public Repository([NotNull] DbConnectionFactory connectionFactory,
-///                       [NotNull] DbParameterFactory parameterFactory,
-///                       [NotNull] DbDataMapper<Game> dataMapper)
-///         : base(connectionFactory, parameterFactory, dataMapper)
-///     {
-///     }
-///     
-///     public void AddGame(Game game)
-///     {
-///         ExecuteInsert("INSERT INTO Games (points,time) VALUES (?,?);", new object[]
-///         {
-///                 game.Points,
-///                 game.time,
-///         });
-///     }
-/// 
-/// 	public IList<Game> GetAllGames()
-///     {
-///         return ExecuteSelectAll("SELECT * FROM Games;", new object[] {});
-///     }
-/// }
-/// </code>
-/// <para>
-/// La classe DbRepository s'occupe elle même d'ouvrir une connexion à la base de données, d'effectuer la requête (lecture 
-/// ou écriture), de retourner les données en provenance de la base de données et de fermer la connexion. Il suffit 
-/// d'appeler les différentes méthodes <i>protected</i> qu'elle contient (ExecuteScallar, ExecuteSelectOne, ExecuteSelectAll, 
-/// ExecuteInsert, ExecuteUpdate ou ExecuteDelete). Consultez leur documentation respective pour les détails.
-/// </para>
-/// <para>
-/// Par contre, il notez qu'il n'y a rien de magique et qu'une certaine quantité de préparation est tout de même nécessaire.
-/// En fait, DbRepository nécessite 3 dépendances qu'il faut lui fournir à la construction : une fabrique de connexions 
-/// (voir DbConnectionFactory), un fabrique de paramêtres (voir DbParameterFactory) et un <i>DataMapper</i> (voir DbDataMapper).
-/// </para>
-/// <para>
-/// La fabrique de connexion sert à fournir une connexion à la base de données sur laquelle le <i>repository</i> pourra faire ses 
-/// requêtes. Par exemple, pour une base de données SqLite :
-/// </para>
-/// <code>
-/// public class SqLiteConnectionFactory : DbConnectionFactory
-/// {
-///     public DbConnection GetConnection()
-///     {
-///         return new SQLiteConnection("URI=file:"App/Data/Database.db");
-///     }
-/// }
-/// </code>
-/// <para>
-/// La fabrique de paramêtre sert à créer des <i>DbParameter</i> à partir d'une valeur (tel qu'un int, un string ou un double). Par 
-/// exemple, pour une base de données SqLite :
-/// </para>
-/// <code>
-/// public class SqLiteParameterFactory : DbParameterFactory
-/// {
-///     public DbParameter GetParameter(object value)
-///     {
-///         return new SQLiteParameter
-///         {
-///             Value = value
-///         };
-///     }
-/// }
-/// </code>
-/// <para>
-/// Enfin, le DbDataMapper sert à créer un objet à partir d'un <i>DbDataReader</i>. En fait, la classe DbRepository n'est pas 
-/// en mesure de créer automatiquement un objet à partir des données d'un curseur. Elle requiert donc les services d'un DbDataMapper 
-/// qui fera justement cette conversion pour lui. En temps normal, ce genre de conversion se ferait ainsi au sein du Repository :
-/// </para>
-/// <code>
-/// IList<Games> games = new List<Games>();
-/// DbDataReader cursor = command.ExecuteReader();
-/// while (cursor.Read())
-/// {
-///     games.Add(new Game(cursor.GetInt32(0), cursor.GetInt32(1), cursor.GetInt64(2)));
-/// }
-/// </code>
-/// <para>
-/// Avec un DbDataMapper, la conversion se fait par contre ainsi. La méthode <i>GetObjectFromReader</i> est appellée par DbRepository
-/// pour chaque enregistrement dans la base de données.
-/// </para>
-/// <code>
-/// public class GamesMapper : DbDataMapper<Game>
-/// {
-///     public Game GetObjectFromReader(DbDataReader reader)
-///     {
-///         return new Game
-///         {
-///             Id = reader.GetInt32(reader.GetOrdinal("id")),
-///             Points = reader.GetInt32(reader.GetOrdinal("points")),
-///             Time = reader.GetInt64(reader.GetOrdinal("time"))
-///         };
-///     }
-/// }
-/// </code>
-/// <para>
-/// <i>Prenez note que la classe DbRepository n'est pas un Component (comprendre MonoBehaviour).</i>
-/// </para>
-/// <para>
-/// <b>IMPORTANT! Au sujet de la structure des tables supportées.</b>
-/// </para>
-/// <para>
-/// DbRepository est assez souple pour supporter à peu près toutes les structures de bases de données.
-/// Il y a cependant une contrainte : les clés primaires des tables doivent être des clés synthétiques
-/// (comprendre un identifiant unique à base d'entier numérique).
-/// </para>
-/// <para>
-/// <b>Exemple</b>
-/// </para>
-/// <para>
-/// Voici un exemple d'implémentation d'un DbRepository complet.
-/// </para>
-/// <code>
-/// public class GameRepository : DbRepository<Game>
-/// {
-///     public GameRepository([NotNull] DbConnectionFactory connectionFactory,
-///                           [NotNull] DbParameterFactory parameterFactory,
-///                           [NotNull] DbDataMapper<Game> dataMapper)
-///         : base(connectionFactory, parameterFactory, dataMapper)
-///     {
-///     }
-/// 
-///     public void CreateGame(Game game)
-///     {
-///         game.Id = ExecuteInsert("INSERT INTO Games (shotsFired) VALUES (?);", new object[]
-///         {
-///             game.ShotsFired
-///         });
-///     }
-/// 
-///     public Game RetreiveGame(int id)
-///     {
-///         return ExecuteSelectOne("SELECT * FROM Games WHERE id = ?;", new object[]
-///         {
-///             id
-///         });
-///     }
-/// 
-///     public IList<Game> RetreiveAllGames()
-///     {
-///         return ExecuteSelectAll("SELECT * FROM Games;", new object[] { });
-///     }
-/// 
-///     public void UpdateGame(Game game)
-///     {
-///         ExecuteUpdate("UPDATE Games SET shotsFired = ? WHERE id = ?;", new object[]
-///         {
-///             game.ShotsFired,
-///             game.Id
-///         });
-///     }
-/// 
-///     public void DeleteGame(Game game)
-///     {
-///         ExecuteDelete("DELETE FROM Games WHERE id = ?;", new object[]
-///         {
-///             game.Id
-///         });
-///     }
-/// }
-/// </code>
-/// </remarks>
-#pragma warning restore 1587
-
-namespace Harmony.Database
+namespace Harmony
 {
     /// <summary>
     /// Base pour créer facilement des <i>Repositories</i> pour une base de données relationelle.
     /// </summary>
     /// <typeparam name="T">Structure de données stockées par ce <i>repository</i>.</typeparam>
-    /// <seealso cref="DbConnectionFactory"/>
-    /// <seealso cref="DbParameterFactory"/>
-    /// <seealso cref="DbDataMapper{T}"/>
-    [NotTested(Reason.Database)]
+    /// <remarks>
+    /// <para>
+    /// Créer des classes servant à accéder à une base de données est une tâche assez lourde et pénible : il y a beaucoup de
+    /// <i>Boilerplate Code</i>, ce qui rend l'écriture de <i>Repositories</i> fastidieux.
+    /// </para>
+    /// <para>
+    /// Harmony fourni une classe abstraite nommée DbRepository pour faciliter l'écriture de <i>repositories</i>. Son 
+    /// implémentation et son utilisation est très simple. Par exemple :
+    /// </para>
+    /// <code>
+    /// private class Repository : DbRepository<Game>
+    /// {
+    ///     public Repository([NotNull] DbConnectionFactory connectionFactory,
+    ///                       [NotNull] DbParameterFactory parameterFactory,
+    ///                       [NotNull] DbDataMapper<Game> dataMapper)
+    ///         : base(connectionFactory, parameterFactory, dataMapper)
+    ///     {
+    ///     }
+    ///     
+    ///     public void AddGame(Game game)
+    ///     {
+    ///         ExecuteInsert("INSERT INTO Games (points,time) VALUES (?,?);", new object[]
+    ///         {
+    ///                 game.Points,
+    ///                 game.time,
+    ///         });
+    ///     }
+    /// 
+    /// 	public IList<Game> GetAllGames()
+    ///     {
+    ///         return ExecuteSelectAll("SELECT * FROM Games;", new object[] {});
+    ///     }
+    /// }
+    /// </code>
+    /// <para>
+    /// La classe DbRepository s'occupe elle même d'ouvrir une connexion à la base de données, d'effectuer la requête (lecture 
+    /// ou écriture), de retourner les données en provenance de la base de données et de fermer la connexion. Il suffit 
+    /// d'appeler les différentes méthodes <i>protected</i> qu'elle contient (ExecuteScallar, ExecuteSelectOne, ExecuteSelectAll, 
+    /// ExecuteInsert, ExecuteUpdate ou ExecuteDelete). Consultez leur documentation respective pour les détails.
+    /// </para>
+    /// <para>
+    /// Par contre, il notez qu'il n'y a rien de magique et qu'une certaine quantité de préparation est tout de même nécessaire.
+    /// En fait, DbRepository nécessite 3 dépendances qu'il faut lui fournir à la construction : une fabrique de connexions 
+    /// (voir DbConnectionFactory), un fabrique de paramêtres (voir DbParameterFactory) et un <i>DataMapper</i> (voir DbDataMapper).
+    /// </para>
+    /// <para>
+    /// La fabrique de connexion sert à fournir une connexion à la base de données sur laquelle le <i>repository</i> pourra faire ses 
+    /// requêtes. Par exemple, pour une base de données SqLite :
+    /// </para>
+    /// <code>
+    /// public class SqLiteConnectionFactory : DbConnectionFactory
+    /// {
+    ///     public DbConnection GetConnection()
+    ///     {
+    ///         return new SQLiteConnection("URI=file:"App/Data/Database.db");
+    ///     }
+    /// }
+    /// </code>
+    /// <para>
+    /// La fabrique de paramêtre sert à créer des <i>DbParameter</i> à partir d'une valeur (tel qu'un int, un string ou un double). Par 
+    /// exemple, pour une base de données SqLite :
+    /// </para>
+    /// <code>
+    /// public class SqLiteParameterFactory : DbParameterFactory
+    /// {
+    ///     public DbParameter GetParameter(object value)
+    ///     {
+    ///         return new SQLiteParameter
+    ///         {
+    ///             Value = value
+    ///         };
+    ///     }
+    /// }
+    /// </code>
+    /// <para>
+    /// Enfin, le DbDataMapper sert à créer un objet à partir d'un <i>DbDataReader</i>. En fait, la classe DbRepository n'est pas 
+    /// en mesure de créer automatiquement un objet à partir des données d'un curseur. Elle requiert donc les services d'un DbDataMapper 
+    /// qui fera justement cette conversion pour lui. En temps normal, ce genre de conversion se ferait ainsi au sein du Repository :
+    /// </para>
+    /// <code>
+    /// IList<Games> games = new List<Games>();
+    /// DbDataReader cursor = command.ExecuteReader();
+    /// while (cursor.Read())
+    /// {
+    ///     games.Add(new Game(cursor.GetInt32(0), cursor.GetInt32(1), cursor.GetInt64(2)));
+    /// }
+    /// </code>
+    /// <para>
+    /// Avec un DbDataMapper, la conversion se fait par contre ainsi. La méthode <i>GetObjectFromReader</i> est appellée par DbRepository
+    /// pour chaque enregistrement dans la base de données.
+    /// </para>
+    /// <code>
+    /// public class GamesMapper : DbDataMapper<Game>
+    /// {
+    ///     public Game GetObjectFromReader(DbDataReader reader)
+    ///     {
+    ///         return new Game
+    ///         {
+    ///             Id = reader.GetInt32(reader.GetOrdinal("id")),
+    ///             Points = reader.GetInt32(reader.GetOrdinal("points")),
+    ///             Time = reader.GetInt64(reader.GetOrdinal("time"))
+    ///         };
+    ///     }
+    /// }
+    /// </code>
+    /// <para>
+    /// <i>Prenez note que la classe DbRepository n'est pas un Component (comprendre MonoBehaviour).</i>
+    /// </para>
+    /// <para>
+    /// <b>IMPORTANT! Au sujet de la structure des tables supportées.</b>
+    /// </para>
+    /// <para>
+    /// DbRepository est assez souple pour supporter à peu près toutes les structures de bases de données.
+    /// Il y a cependant une contrainte : les clés primaires des tables doivent être des clés synthétiques
+    /// (comprendre un identifiant unique à base d'entier numérique).
+    /// </para>
+    /// <para>
+    /// <b>Exemple</b>
+    /// </para>
+    /// <para>
+    /// Voici un exemple d'implémentation d'un DbRepository complet.
+    /// </para>
+    /// <code>
+    /// public class GameRepository : DbRepository<Game>
+    /// {
+    ///     public GameRepository([NotNull] DbConnectionFactory connectionFactory,
+    ///                           [NotNull] DbParameterFactory parameterFactory,
+    ///                           [NotNull] DbDataMapper<Game> dataMapper)
+    ///         : base(connectionFactory, parameterFactory, dataMapper)
+    ///     {
+    ///     }
+    /// 
+    ///     public void CreateGame(Game game)
+    ///     {
+    ///         game.Id = ExecuteInsert("INSERT INTO Games (shotsFired) VALUES (?);", new object[]
+    ///         {
+    ///             game.ShotsFired
+    ///         });
+    ///     }
+    /// 
+    ///     public Game RetreiveGame(int id)
+    ///     {
+    ///         return ExecuteSelectOne("SELECT * FROM Games WHERE id = ?;", new object[]
+    ///         {
+    ///             id
+    ///         });
+    ///     }
+    /// 
+    ///     public IList<Game> RetreiveAllGames()
+    ///     {
+    ///         return ExecuteSelectAll("SELECT * FROM Games;", new object[] { });
+    ///     }
+    /// 
+    ///     public void UpdateGame(Game game)
+    ///     {
+    ///         ExecuteUpdate("UPDATE Games SET shotsFired = ? WHERE id = ?;", new object[]
+    ///         {
+    ///             game.ShotsFired,
+    ///             game.Id
+    ///         });
+    ///     }
+    /// 
+    ///     public void DeleteGame(Game game)
+    ///     {
+    ///         ExecuteDelete("DELETE FROM Games WHERE id = ?;", new object[]
+    ///         {
+    ///             game.Id
+    ///         });
+    ///     }
+    /// }
+    /// </code>
+    /// </remarks>
+    /// <seealso cref="IDbConnectionFactory"/>
+    /// <seealso cref="IDbParameterFactory"/>
+    /// <seealso cref="IDbDataMapper{T}"/>
     public abstract class DbRepository<T> where T : class
     {
-
         //#Dirty Fix : Unity does not load DLLs that depends on other DLLs
 #if !UNITY_EDITOR
         static DbRepository()
@@ -210,9 +201,9 @@ namespace Harmony.Database
 
 #endif
 
-        private readonly DbConnectionFactory connectionFactory;
-        private readonly DbParameterFactory parameterFactory;
-        private readonly DbDataMapper<T> dataMapper;
+        private readonly IDbConnectionFactory connectionFactory;
+        private readonly IDbParameterFactory parameterFactory;
+        private readonly IDbDataMapper<T> dataMapper;
 
         /// <summary>
         /// Constructeur de DbRepository.
@@ -224,15 +215,15 @@ namespace Harmony.Database
         /// Fabrique de DBParameter. Utilisée pour chaque paramêtre d'une requête préparée.
         /// </param>
         /// <param name="dataMapper">
-        /// <see cref="DbDataMapper{T}"/> à utiliser pour transformer les données provenant de la base de données en un objet
+        /// <see cref="IDbDataMapper{T}"/> à utiliser pour transformer les données provenant de la base de données en un objet
         /// ainsi que pour obtenir les clés primaires générées.
         /// </param>
-        /// <seealso cref="DbConnectionFactory"/>
-        /// <seealso cref="DbParameterFactory"/>
-        /// <seealso cref="DbDataMapper{T}"/>
-        protected DbRepository([NotNull] DbConnectionFactory connectionFactory,
-                               [NotNull] DbParameterFactory parameterFactory,
-                               [NotNull] DbDataMapper<T> dataMapper)
+        /// <seealso cref="IDbConnectionFactory"/>
+        /// <seealso cref="IDbParameterFactory"/>
+        /// <seealso cref="IDbDataMapper{T}"/>
+        protected DbRepository([NotNull] IDbConnectionFactory connectionFactory,
+                               [NotNull] IDbParameterFactory parameterFactory,
+                               [NotNull] IDbDataMapper<T> dataMapper)
         {
             this.connectionFactory = connectionFactory;
             this.parameterFactory = parameterFactory;

@@ -1,13 +1,10 @@
-﻿using Harmony.EventSystem;
-using Harmony.Testing;
-using Harmony.Unity;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [NotTested(Reason.EventChannel)]
     [AddComponentMenu("Game/Event/PlayerHealthEventChannel")]
-    public class PlayerHealthEventChannel : UnityUpdatableEventChannel<PlayerHealthEvent, PlayerHealthUpdate>
+    public class PlayerHealthEventChannel : EventChannel<PlayerHealthEvent>
     {
     }
 }

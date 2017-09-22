@@ -38,5 +38,6 @@ sysinfo.txt
 #Generated Reports
 /[Pp]ublic/
 
-#DLL into is still commited
+#DLL and EXE is still commited
+!*.exe
 !*.dll

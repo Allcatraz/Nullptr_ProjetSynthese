@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Harmony.Injection
+namespace Harmony
 {
     /// <summary>
     /// Portée de niveau Tag.
@@ -30,27 +30,28 @@ namespace Harmony.Injection
             this.tagName = tagName;
         }
 
-        protected override IList<GameObject> GetEligibleGameObjects(IInjectionContext injectionContext, UnityScript target)
+        protected override IList<GameObject> GetEligibleGameObjects(Script target)
         {
-            return new List<GameObject>(injectionContext.FindGameObjectsWithTag(tagName));
+            return new List<GameObject>(new[] {GetDependencySource(target, typeof(GameObject))});
         }
 
-        protected override IList<object> GetEligibleDependencies(IInjectionContext injectionContext, UnityScript target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
         {
-            IList<GameObject> dependenciesObjects = injectionContext.FindGameObjectsWithTag(tagName);
-            if (dependenciesObjects.Count == 0)
+            return new List<object>(GetDependencySource(target, dependencyType).GetComponentsInChildren(dependencyType));
+        }
+
+        private GameObject GetDependencySource(Script target, Type dependencyType)
+        {
+            IList<GameObject> dependencySources = GameObject.FindGameObjectsWithTag(tagName);
+            if (dependencySources.Count == 0)
             {
                 throw new DependencySourceNotFoundException(target, dependencyType, this);
             }
-            IList<object> dependencies = new List<object>();
-            foreach (GameObject dependencySource in dependenciesObjects)
+            if (dependencySources.Count > 1)
             {
-                foreach (Component dependency in dependencySource.GetComponentsInChildren(dependencyType))
-                {
-                    dependencies.Add(dependency);
-                }
+                throw new MoreThanOneDependencySourceFoundException(target, dependencyType, this);
             }
-            return dependencies;
+            return dependencySources[0];
         }
     }
 }

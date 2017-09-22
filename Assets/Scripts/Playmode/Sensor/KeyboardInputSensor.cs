@@ -1,45 +1,44 @@
 ﻿using UnityEngine;
 using Harmony;
-using Harmony.Injection;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/Input/KeyboardInputSensor")]
+    [AddComponentMenu("Game/Sensor/KeyboardInputSensor")]
     public class KeyboardInputSensor : InputSensor
     {
-        private IKeyboardInput keyboardInput;
+        private Keyboard keyboard;
 
         private KeyboardsInputDevice keyboardsInputDevice;
 
-        public virtual IInputDevice Keyboards
+        public IInputDevice Keyboards
         {
             get { return keyboardsInputDevice; }
         }
 
-        public void InjectKeyboardInputDevice([ApplicationScope] IKeyboardInput keyboardInput)
+        private void InjectKeyboardInputDevice([ApplicationScope] Keyboard keyboard)
         {
-            this.keyboardInput = keyboardInput;
+            this.keyboard = keyboard;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectKeyboardInputDevice");
 
-            keyboardsInputDevice = new KeyboardsInputDevice(keyboardInput);
+            keyboardsInputDevice = new KeyboardsInputDevice(keyboard);
         }
 
-        public void Update()
+        private void Update()
         {
             keyboardsInputDevice.Update();
         }
 
         private class KeyboardsInputDevice : InputDevice
         {
-            private readonly IKeyboardInput keyboardInput;
+            private readonly Keyboard keyboard;
 
-            public KeyboardsInputDevice(IKeyboardInput keyboardInput)
+            public KeyboardsInputDevice(Keyboard keyboard)
             {
-                this.keyboardInput = keyboardInput;
+                this.keyboard = keyboard;
             }
 
             public void Update()
@@ -57,15 +56,15 @@ namespace ProjetSynthese
 
             private void HandleUiInput()
             {
-                if (keyboardInput.GetKeyDown(KeyCode.UpArrow))
+                if (keyboard.GetKeyDown(KeyCode.UpArrow))
                 {
                     NotifyUp();
                 }
-                if (keyboardInput.GetKeyDown(KeyCode.DownArrow))
+                if (keyboard.GetKeyDown(KeyCode.DownArrow))
                 {
                     NotifyDown();
                 }
-                if (keyboardInput.GetKeyDown(KeyCode.Return))
+                if (keyboard.GetKeyDown(KeyCode.Return))
                 {
                     NotifyConfirm();
                 }
@@ -73,11 +72,11 @@ namespace ProjetSynthese
 
             private void HandleActionInput()
             {
-                if (keyboardInput.GetKeyDown(KeyCode.Space))
+                if (keyboard.GetKeyDown(KeyCode.Space))
                 {
                     NotifyFire();
                 }
-                if (keyboardInput.GetKeyDown(KeyCode.Escape))
+                if (keyboard.GetKeyDown(KeyCode.Escape))
                 {
                     NotifyTogglePause();
                 }
@@ -85,11 +84,11 @@ namespace ProjetSynthese
 
             private void HandleDirectionInput()
             {
-                if (keyboardInput.GetKey(KeyCode.UpArrow))
+                if (keyboard.GetKey(KeyCode.UpArrow))
                 {
                     NotifyFoward();
                 }
-                if (keyboardInput.GetKey(KeyCode.DownArrow))
+                if (keyboard.GetKey(KeyCode.DownArrow))
                 {
                     NotifyBackward();
                 }
@@ -97,11 +96,11 @@ namespace ProjetSynthese
 
             private void HandleRotationInput()
             {
-                if (keyboardInput.GetKey(KeyCode.LeftArrow))
+                if (keyboard.GetKey(KeyCode.LeftArrow))
                 {
                     NotifyRotateLeft();
                 }
-                if (keyboardInput.GetKey(KeyCode.RightArrow))
+                if (keyboard.GetKey(KeyCode.RightArrow))
                 {
                     NotifyRotateRight();
                 }

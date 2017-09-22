@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Harmony.Util;
 using UnityEngine;
 
-namespace Harmony.Injection
+namespace Harmony
 {
     /// <summary>
     /// Portée de niveau Application.
@@ -13,50 +12,44 @@ namespace Harmony.Injection
     /// Cette portée permet d'obtenir :
     /// <list type="bullet">
     /// <item>
-    /// Un des GameObjects dans le GameObject avec le tag « <c>Application Dependencies</c> », incluant lui-même et les enfants
-    /// de ses enfants.
+    /// Le ou les GameObjects avec le tag « <c>Application Dependencies</c> ».
     /// </item>
     /// <item>
-    /// Un des Components dans le GameObject avec le tag « <c>Application Dependencies</c> », incluant ses enfants et les enfants
+    /// Un des Components dans un des GameObjects avec le tag « <c>Application Dependencies</c> », incluant ses enfants et les enfants
     /// de ses enfants.
     /// </item>
     /// </list>
-    /// Un seul GameObject avec le tag « <c>Application Dependencies</c> » est autorisé dans tout le projet.
+    /// Plusieurs GameObjects avec le tag « <c>Application Dependencies</c> » sont autorisés dans le projet.
     /// </para>
     /// </remarks>
     public class ApplicationScope : Scope
     {
-        protected override IList<GameObject> GetEligibleGameObjects(IInjectionContext injectionContext, UnityScript target)
+        protected override IList<GameObject> GetEligibleGameObjects(Script target)
         {
-            return GetDependencySource(injectionContext, target, typeof(GameObject)).GetAllHierachy();
+            return GetDependencySources(target, typeof(GameObject));
         }
 
-        protected override IList<object> GetEligibleDependencies(IInjectionContext injectionContext, UnityScript target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
         {
-            //First, try getting it from the static dependencies
-            foreach (object staticComponent in injectionContext.StaticComponents)
+            IList<object> dependencies = new List<object>();
+            foreach (GameObject dependencySource in GetDependencySources(target, dependencyType))
             {
-                if (dependencyType.IsInstanceOfType(staticComponent))
+                foreach (Component dependency in dependencySource.GetComponentsInChildren(dependencyType))
                 {
-                    return new List<object>(new[] {staticComponent});
+                    dependencies.Add(dependency);
                 }
             }
-            //Else, try getting it on the GameObject that has the ApplicationDependencies Tag
-            return new List<object>(GetDependencySource(injectionContext, target, dependencyType).GetComponentsInChildren(dependencyType));
+            return dependencies;
         }
 
-        private GameObject GetDependencySource(IInjectionContext injectionContext, UnityScript owner, Type dependencyType)
+        private IList<GameObject> GetDependencySources(Script target, Type dependencyType)
         {
-            IList<GameObject> dependenciesObjects = injectionContext.FindGameObjectsWithTag(R.S.Tag.ApplicationDependencies);
-            if (dependenciesObjects.Count == 0)
+            IList<GameObject> dependencySources = GameObject.FindGameObjectsWithTag(R.S.Tag.ApplicationDependencies);
+            if (dependencySources.Count == 0)
             {
-                throw new DependencySourceNotFoundException(owner, dependencyType, this);
+                throw new DependencySourceNotFoundException(target, dependencyType, this);
             }
-            if (dependenciesObjects.Count > 1)
-            {
-                throw new MoreThanOneDependencySourceFoundException(owner, dependencyType, this);
-            }
-            return dependenciesObjects[0];
+            return dependencySources;
         }
     }
 }

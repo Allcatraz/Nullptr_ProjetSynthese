@@ -4,14 +4,14 @@ namespace ProjetSynthese
 {
     public delegate void ScoreChangedEventHandler(uint oldScorePoints, uint newScorePoints);
 
-    [AddComponentMenu("Game/World/State/Score")]
+    [AddComponentMenu("Game/State/Score")]
     public class Score : GameScript
     {
         private uint scorePoints;
 
-        public virtual event ScoreChangedEventHandler OnScoreChanged;
+        public event ScoreChangedEventHandler OnScoreChanged;
 
-        public virtual uint ScorePoints
+        public uint ScorePoints
         {
             get { return scorePoints; }
             private set
@@ -22,12 +22,12 @@ namespace ProjetSynthese
             }
         }
 
-        public virtual void AddPoints(uint points)
+        public void AddPoints(uint points)
         {
             ScorePoints += points;
         }
 
-        public virtual void Reset()
+        public void Reset()
         {
             ScorePoints = 0;
         }

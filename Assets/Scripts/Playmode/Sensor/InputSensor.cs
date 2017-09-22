@@ -74,14 +74,9 @@
             private bool rotateLeftTriggerd;
             private bool rotateRightTriggerd;
 
-            protected TriggerOncePerFrameInputDevice()
-            {
-                Reset();
-            }
-
             public abstract override IInputDevice this[int deviceIndex] { get; }
 
-            public void Reset()
+            public virtual void Reset()
             {
                 upTriggerd = false;
                 downTriggerd = false;

@@ -1,42 +1,31 @@
 ﻿using Harmony;
-using Harmony.Injection;
-using Harmony.Unity;
-using Harmony.Util;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/Control/MainMenuController")]
+    [AddComponentMenu("Game/Control/MainMenuController")]
     public class MainMenuController : GameScript, IMenuController
     {
         [SerializeField]
-        private UnityActivity gameActivity;
+        private Activity gameActivity;
 
         [SerializeField]
-        private UnityMenu highScoresMenu;
+        private Menu highScoresMenu;
 
-        private ISelectable playButton;
-        private IActivityStack activityStack;
-        private IMenuStack menuStack;
+        private Selectable playButton;
+        private ActivityStack activityStack;
 
-        public void InjectMainMenuController(UnityActivity gameActivity,
-                                             UnityMenu highScoresMenu,
-                                             [Named(R.S.GameObject.PlayButton)] [EntityScope] ISelectable playButton,
-                                             [ApplicationScope] IActivityStack activityStack,
-                                             [ApplicationScope] IMenuStack menuStack)
+        private void InjectMainMenuController([Named(R.S.GameObject.PlayButton)] [EntityScope] Selectable playButton,
+                                             [ApplicationScope] ActivityStack activityStack)
         {
-            this.gameActivity = gameActivity;
-            this.highScoresMenu = highScoresMenu;
             this.playButton = playButton;
             this.activityStack = activityStack;
-            this.menuStack = menuStack;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectMainMenuController",
-                               gameActivity,
-                               highScoresMenu);
+            InjectDependencies("InjectMainMenuController");
         }
 
         public void OnCreate(params object[] parameters)
@@ -68,7 +57,7 @@ namespace ProjetSynthese
         [CalledOutsideOfCode]
         public void ShowHighScores()
         {
-            menuStack.StartMenu(highScoresMenu);
+            activityStack.StartMenu(highScoresMenu);
         }
 
         [CalledOutsideOfCode]

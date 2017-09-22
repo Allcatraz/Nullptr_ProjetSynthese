@@ -1,13 +1,13 @@
 ﻿using System.Data.Common;
 using JetBrains.Annotations;
 
-namespace Harmony.Database
+namespace Harmony
 {
     /// <summary>
     /// Fabrique de DbConnection pour une base de données relationelle.
     /// </summary>
     /// <seealso cref="DbRepository{T}"/>
-    public interface DbConnectionFactory
+    public interface IDbConnectionFactory
     {
         /// <summary>
         /// Retourne une DbConnection à une base de données. Cette connexion peut être une nouvelle

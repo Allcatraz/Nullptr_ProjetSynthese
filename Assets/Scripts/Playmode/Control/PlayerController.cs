@@ -1,28 +1,28 @@
-﻿using Harmony.Injection;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Control/PlayerController")]
+    [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : GameScript
     {
         private Health health;
         private PlayerInputSensor playerInputSensor;
-        private PhysicsMover physicsMover;
+        private ImpulseMover impulseMover;
         private ProjectileShooter projectileShooter;
 
-        public void InjectPlayerController([GameObjectScope] Health health,
+        private void InjectPlayerController([GameObjectScope] Health health,
                                            [ApplicationScope] PlayerInputSensor playerInputSensor,
-                                           [EntityScope] PhysicsMover physicsMover,
+                                           [EntityScope] ImpulseMover impulseMover,
                                            [EntityScope] ProjectileShooter projectileShooter)
         {
             this.health = health;
             this.playerInputSensor = playerInputSensor;
-            this.physicsMover = physicsMover;
+            this.impulseMover = impulseMover;
             this.projectileShooter = projectileShooter;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectPlayerController");
 
@@ -39,7 +39,7 @@ namespace ProjetSynthese
             health.Reset();
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
             playerInputSensor.Players.OnFoward -= OnFoward;
             playerInputSensor.Players.OnBackward -= OnBackward;
@@ -51,22 +51,22 @@ namespace ProjetSynthese
 
         private void OnFoward()
         {
-            physicsMover.AddFowardImpulse();
+            impulseMover.AddFowardImpulse();
         }
 
         private void OnBackward()
         {
-            physicsMover.AddBackwardImpulse();
+            impulseMover.AddBackwardImpulse();
         }
 
         private void OnRotateLeft()
         {
-            physicsMover.AddRotateLeftImpulse();
+            impulseMover.AddRotateLeftImpulse();
         }
 
         private void OnRotateRight()
         {
-            physicsMover.AddRotateRightImpulse();
+            impulseMover.AddRotateRightImpulse();
         }
 
         private void OnFire()

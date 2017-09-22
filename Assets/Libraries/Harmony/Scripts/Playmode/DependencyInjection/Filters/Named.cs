@@ -1,7 +1,6 @@
-﻿using Harmony.Unity;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Harmony.Injection
+namespace Harmony
 {
     /// <summary>
     /// Filtre de dépendance utilisant le nom du GameObject contenant la dépendance.
@@ -25,10 +24,6 @@ namespace Harmony.Injection
             if (dependency is Component)
             {
                 return ((Component) dependency).gameObject.name == name;
-            }
-            if (dependency is UnityComponent)
-            {
-                return ((UnityComponent) dependency).gameObject.name == name;
             }
             if (dependency is GameObject)
             {

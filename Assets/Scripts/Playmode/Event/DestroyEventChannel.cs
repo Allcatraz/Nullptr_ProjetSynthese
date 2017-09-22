@@ -1,13 +1,10 @@
-﻿using Harmony.EventSystem;
-using Harmony.Testing;
-using Harmony.Unity;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [NotTested(Reason.EventChannel)]
     [AddComponentMenu("Game/Event/DestroyEventChannel")]
-    public class DestroyEventChannel : UnityEventChannel<DestroyEvent>
+    public class DestroyEventChannel : EventChannel<DestroyEvent>
     {
     }
 }

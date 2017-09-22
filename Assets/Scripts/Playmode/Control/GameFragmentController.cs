@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using Harmony;
-using Harmony.Injection;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Control/GameFragmentController")]
+    [AddComponentMenu("Game/Control/GameFragmentController")]
     public class GameFragmentController : GameScript, IFragmentController
     {
         [SerializeField]
@@ -21,41 +20,29 @@ namespace ProjetSynthese
         private RockSpawner rockSpawner;
         private Score score;
         private PrefabInstanceCollection rockCollection;
-        private ICoroutineExecutor coroutineExecutor;
         private GameEventChannel gameEventChannel;
         private PlayerDeathEventChannel playerDeathEventChannel;
 
-        private ICoroutine spawnCoroutine;
+        private Coroutine spawnCoroutine;
 
-        public void InjectGameController(uint initialNumberOfRocks,
-                                         uint spawnTimerInSeconds,
-                                         uint numberOfRocksForSpawnToActivate,
-                                         [SceneScope] PlayerSpawner playerSpawner,
+        private void InjectGameController([SceneScope] PlayerSpawner playerSpawner,
                                          [SceneScope] RockSpawner rockSpawner,
                                          [SceneScope] Score score,
                                          [Named(R.S.GameObject.RockCollection)] [SceneScope] PrefabInstanceCollection rockCollection,
-                                         [ApplicationScope] ICoroutineExecutor coroutineExecutor,
                                          [EventChannelScope] GameEventChannel gameEventChannel,
                                          [EventChannelScope] PlayerDeathEventChannel playerDeathEventChannel)
         {
-            this.initialNumberOfRocks = initialNumberOfRocks;
-            this.spawnTimerInSeconds = spawnTimerInSeconds;
-            this.numberOfRocksForSpawnToActivate = numberOfRocksForSpawnToActivate;
             this.playerSpawner = playerSpawner;
             this.rockSpawner = rockSpawner;
             this.score = score;
             this.rockCollection = rockCollection;
-            this.coroutineExecutor = coroutineExecutor;
             this.gameEventChannel = gameEventChannel;
             this.playerDeathEventChannel = playerDeathEventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectGameController",
-                               initialNumberOfRocks,
-                               spawnTimerInSeconds,
-                               numberOfRocksForSpawnToActivate);
+            InjectDependencies("InjectGameController");
 
             playerDeathEventChannel.OnEventPublished += OnPlayerDeath;
         }
@@ -70,7 +57,7 @@ namespace ProjetSynthese
             //Nothing to do
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
             StopSpawningRocks();
 
@@ -105,19 +92,19 @@ namespace ProjetSynthese
 
         private void StartSpawningRocks()
         {
-            spawnCoroutine = coroutineExecutor.StartCoroutine(this, SpawnRocksAtInterval());
+            spawnCoroutine = StartCoroutine(SpawnRocksAtIntervalRoutine());
         }
 
         private void StopSpawningRocks()
         {
             if (spawnCoroutine != null)
             {
-                spawnCoroutine.Stop();
+                StopCoroutine(spawnCoroutine);
                 spawnCoroutine = null;
             }
         }
 
-        private IEnumerator SpawnRocksAtInterval()
+        private IEnumerator SpawnRocksAtIntervalRoutine()
         {
             while (true)
             {

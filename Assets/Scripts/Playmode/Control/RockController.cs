@@ -1,6 +1,5 @@
 ﻿using Harmony;
 using UnityEngine;
-using Harmony.Injection;
 
 namespace ProjetSynthese
 {
@@ -15,37 +14,28 @@ namespace ProjetSynthese
         [SerializeField]
         private uint maxRockFragmentsOnSplit = 5;
 
-        private new ITransform transform;
-        private IRandom random;
+        private Transform topParentTransform;
         private Health health;
         private RandomRockShape randomRockShape;
-        private PhysicsMover physicsMover;
+        private ImpulseMover impulseMover;
         private RockSpawner rockSpawner;
 
-        public void InjectRockController(uint minRockFragmentsOnSplit,
-                                         uint maxRockFragmentsOnSplit,
-                                         [TopParentScope] ITransform transform,
-                                         [ApplicationScope] IRandom random,
+        private void InjectRockController([TopParentScope] Transform topParentTransform,
                                          [EntityScope] Health health,
                                          [EntityScope] RandomRockShape randomRockShape,
-                                         [EntityScope] PhysicsMover physicsMover,
+                                         [EntityScope] ImpulseMover impulseMover,
                                          [SceneScope] RockSpawner rockSpawner)
         {
-            this.minRockFragmentsOnSplit = minRockFragmentsOnSplit;
-            this.maxRockFragmentsOnSplit = maxRockFragmentsOnSplit;
-            this.transform = transform;
-            this.random = random;
+            this.topParentTransform = topParentTransform;
             this.health = health;
             this.randomRockShape = randomRockShape;
-            this.physicsMover = physicsMover;
+            this.impulseMover = impulseMover;
             this.rockSpawner = rockSpawner;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectRockController",
-                               minRockFragmentsOnSplit,
-                               maxRockFragmentsOnSplit);
+            InjectDependencies("InjectRockController");
 
             health.OnDeath += OnDeath;
         }
@@ -53,18 +43,18 @@ namespace ProjetSynthese
         public void Configure(float radius, Vector3 direction, float force)
         {
             randomRockShape.Radius = radius;
-            physicsMover.AddImpulse(direction, force);
+            impulseMover.AddImpulse(direction, force);
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
             health.OnDeath -= OnDeath;
         }
 
         private void Explode()
         {
-            rockSpawner.SpawnFragments(random.GetRandomUInt(minRockFragmentsOnSplit, maxRockFragmentsOnSplit),
-                                       transform.Position,
+            rockSpawner.SpawnFragments(RandomExtensions.GetRandomUInt(minRockFragmentsOnSplit, maxRockFragmentsOnSplit),
+                                       topParentTransform.position,
                                        randomRockShape.Radius);
         }
 

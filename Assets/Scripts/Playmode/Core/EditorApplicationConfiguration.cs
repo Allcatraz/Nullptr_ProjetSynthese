@@ -1,29 +1,27 @@
-﻿using Harmony.Testing;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ProjetSynthese
 {
-
 #if UNITY_EDITOR
     /// <summary>
     /// Le EditorApplicationConfiguration est une version de ApplicationConfiguration créée uniquement pour l'éditeur.
     /// 
     /// Créée une configuration par défaut lorsque le jeu est démarré dans l'éditeur.
     /// </summary>
-    [NotTested(Reason.Configuration)]
     [AddComponentMenu("Game/Config/EditorApplicationConfiguration")]
     public class EditorApplicationConfiguration : ApplicationConfiguration
     {
         /// <summary>
         /// Évènement appellé lorsque le EditorApplicationConfiguration est construit.
         /// 
-        /// S'il existe déjà une configuration de l'application, elle ne fait rien. Sinon, elle créée une configuration
-        /// pour l'éditeur.
+        /// S'il existe déjà une configuration, elle ne fait rien afin de ne pas écraser la configuration actuelle. Sinon, elle 
+        /// créée une configuration de type "Éditeur".
         /// </summary>
         public new void Awake()
         {
             if (applicationConfiguration == null)
             {
+                //EditorConfiguration is the same as the ApplicatonConfiguration...for now.
                 base.Awake();
             }
         }
@@ -35,8 +33,9 @@ namespace ProjetSynthese
         /// </summary>
         public new void OnDestroy()
         {
-            if (applicationConfiguration is EditorApplicationConfiguration)
+            if (IsUsingEditorConfiguration())
             {
+                //The process of destroying a EditorConfiguration is the same as for the ApplicatonConfiguration...for now.
                 base.OnDestroy();
             }
         }
@@ -56,7 +55,6 @@ namespace ProjetSynthese
     /// 
     /// Vidée de toute fonctionalitée.
     /// </summary>
-    [NotTested(Reason.Configuration)]
     [AddComponentMenu("Game/Config/EditorApplicationConfiguration")]
     public class EditorApplicationConfiguration : MonoBehaviour
     {

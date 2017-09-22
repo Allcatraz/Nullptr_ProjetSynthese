@@ -1,40 +1,38 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/Aspect/PlaySoundOnClick")]
+    [AddComponentMenu("Game/Aspect/PlaySoundOnClick")]
     public class PlaySoundOnClick : GameScript
     {
         [SerializeField]
         private AudioClip audioClip;
 
-        private IAudioSource audioSource;
-        private IButton button;
+        private AudioSource audioSource;
+        private Button button;
 
-        public void InjectPlaySoundOnClick(AudioClip audioClip,
-                                           [EntityScope] IAudioSource audioSource,
-                                           [GameObjectScope] IButton button)
+        private void InjectPlaySoundOnClick([EntityScope] AudioSource audioSource,
+                                           [GameObjectScope] Button button)
         {
-            this.audioClip = audioClip;
             this.audioSource = audioSource;
             this.button = button;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectPlaySoundOnClick", audioClip);
+            InjectDependencies("InjectPlaySoundOnClick");
         }
 
-        public void Start()
+        private void Start()
         {
-            button.OnClicked += OnClicked;
+            button.Events().OnClick += OnClicked;
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
-            button.OnClicked -= OnClicked;
+            button.Events().OnClick -= OnClicked;
         }
 
         private void OnClicked()

@@ -1,35 +1,31 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Actuator/ScreenPositionProvider")]
+    [AddComponentMenu("Game/Service/ScreenPositionProvider")]
     public class ScreenPositionProvider : GameScript
     {
         private static readonly Vector2 ScreenCenter = new Vector2(0.5f, 0.5f);
 
-        private new ICamera camera;
-        private IRandom random;
+        private new Camera camera;
 
-        public void InjectOutOfScreenSpawner([TagScope(R.S.Tag.MainCamera)] ICamera camera,
-                                             [ApplicationScope] IRandom random)
+        private void InjectScreenPositionProvider([TagScope(R.S.Tag.MainCamera)] Camera camera)
         {
             this.camera = camera;
-            this.random = random;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectOutOfScreenSpawner");
+            InjectDependencies("InjectScreenPositionProvider");
         }
 
-        public virtual Vector2 GetRandomInScreenPosition()
+        public Vector2 GetRandomInScreenPosition()
         {
-            return camera.ViewportToWorldPoint(random.GetRandomPosition(0, 1, 0, 1));
+            return camera.ViewportToWorldPoint(RandomExtensions.GetRandomPosition(0, 1, 0, 1));
         }
 
-        public virtual Vector2 GetRandomOffScreenPosition(float objectRadius)
+        public Vector2 GetRandomOffScreenPosition(float objectRadius)
         {
             float objectRadiusInViewport = GetRadiusInViewport(objectRadius);
 
@@ -37,10 +33,9 @@ namespace ProjetSynthese
             //Viewport Y position start at 0 and ends at 1
             //Rectangle center is thus at position (0.5, 0.5)
             //Height is thus 1 and Width is also 1
-            Vector2 viewportPosition =
-                random.GetRandomPositionOnRectangleEdge(ScreenCenter,
-                                                        1 + objectRadiusInViewport * 2, //Times 2, for Up and Down margin
-                                                        1 + objectRadiusInViewport * 2); //Times 2, for Left and Right margin
+            Vector2 viewportPosition = RandomExtensions.GetRandomPositionOnRectangleEdge(ScreenCenter,
+                                                                                         1 + objectRadiusInViewport * 2, //Times 2, for Up and Down margin
+                                                                                         1 + objectRadiusInViewport * 2); //Times 2, for Left and Right margin
             return camera.ViewportToWorldPoint(viewportPosition);
         }
 

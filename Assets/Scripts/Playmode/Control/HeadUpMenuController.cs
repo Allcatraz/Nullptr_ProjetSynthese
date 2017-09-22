@@ -1,9 +1,9 @@
-﻿using Harmony.Injection;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/Control/HeadUpMenuController")]
+    [AddComponentMenu("Game/Control/HeadUpMenuController")]
     public class HeadUpMenuController : GameScript
     {
         private HealthBarView healthBarView;
@@ -11,10 +11,10 @@ namespace ProjetSynthese
         private PlayerHealthEventChannel playerHealthEventChannel;
         private ScoreEventChannel scoreEventChannel;
 
-        public void InjectHudController([EntityScope] HealthBarView healthBarView,
-                                        [EntityScope] ScoreView scoreView,
-                                        [EventChannelScope] PlayerHealthEventChannel playerHealthEventChannel,
-                                        [EventChannelScope] ScoreEventChannel scoreEventChannel)
+        private void InjectHeadUpMenuController([EntityScope] HealthBarView healthBarView,
+                                               [EntityScope] ScoreView scoreView,
+                                               [EventChannelScope] PlayerHealthEventChannel playerHealthEventChannel,
+                                               [EventChannelScope] ScoreEventChannel scoreEventChannel)
         {
             this.healthBarView = healthBarView;
             this.scoreView = scoreView;
@@ -22,15 +22,15 @@ namespace ProjetSynthese
             this.scoreEventChannel = scoreEventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectHudController");
+            InjectDependencies("InjectHeadUpMenuController");
 
             playerHealthEventChannel.OnEventPublished += OnPlayerHealthChanged;
             scoreEventChannel.OnEventPublished += OnScoreChanged;
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
             playerHealthEventChannel.OnEventPublished -= OnPlayerHealthChanged;
             scoreEventChannel.OnEventPublished -= OnScoreChanged;

@@ -1,9 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Harmony.Util;
 
-namespace Harmony.Injection
+namespace Harmony
 {
     /// <summary>
     /// Portée de niveau Activité.
@@ -13,41 +12,45 @@ namespace Harmony.Injection
     /// Cette portée permet d'obtenir :
     /// <list type="bullet">
     /// <item>
-    /// Un des GameObjects dans le GameObject avec le tag « <c>Activity Dependencies</c> », incluant lui-même et les enfants
-    /// de ses enfants.
+    /// Le ou les GameObjects avec le tag « <c>Activity Dependencies</c> ».
     /// </item>
     /// <item>
     /// Un des Components dans le GameObject avec le tag « <c>Activity Dependencies</c> », incluant ses enfants et les enfants
     /// de ses enfants.
     /// </item>
     /// </list>
-    /// Un seul GameObject avec le tag « <c>Activity Dependencies</c> » est autorisé par activité.
+    /// Plusieurs GameObjects avec le tag « <c>Activity Dependencies</c> » sont autorisés dans une activité. Cependant, il est recommandé d'en
+    /// avoir qu'un seul.
     /// </para>
     /// </remarks>
     public class ActivityScope : Scope
     {
-        protected override IList<GameObject> GetEligibleGameObjects(IInjectionContext injectionContext, UnityScript target)
+        protected override IList<GameObject> GetEligibleGameObjects(Script target)
         {
-            return GetDependencySource(injectionContext, target, typeof(GameObject)).GetAllHierachy();
+            return GetDependencySources(target, typeof(GameObject));
         }
 
-        protected override IList<object> GetEligibleDependencies(IInjectionContext injectionContext, UnityScript target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
         {
-            return new List<object>(GetDependencySource(injectionContext, target, dependencyType).GetComponentsInChildren(dependencyType));
+            IList<object> dependencies = new List<object>();
+            foreach (GameObject dependencySource in GetDependencySources(target, dependencyType))
+            {
+                foreach (Component dependency in dependencySource.GetComponentsInChildren(dependencyType))
+                {
+                    dependencies.Add(dependency);
+                }
+            }
+            return dependencies;
         }
 
-        private GameObject GetDependencySource(IInjectionContext injectionContext, UnityScript owner, Type dependencyType)
+        private IList<GameObject> GetDependencySources(Script target, Type dependencyType)
         {
-            IList<GameObject> dependenciesObjects = injectionContext.FindGameObjectsWithTag(R.S.Tag.ActivityDependencies);
-            if (dependenciesObjects.Count == 0)
+            IList<GameObject> dependencySources = GameObject.FindGameObjectsWithTag(R.S.Tag.ActivityDependencies);
+            if (dependencySources.Count == 0)
             {
-                throw new DependencySourceNotFoundException(owner, dependencyType, this);
+                throw new DependencySourceNotFoundException(target, dependencyType, this);
             }
-            if (dependenciesObjects.Count > 1)
-            {
-                throw new MoreThanOneDependencySourceFoundException(owner, dependencyType, this);
-            }
-            return dependenciesObjects[0];
+            return dependencySources;
         }
     }
 }

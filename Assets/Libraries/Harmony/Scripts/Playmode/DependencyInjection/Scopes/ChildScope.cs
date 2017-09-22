@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Harmony.Util;
 using UnityEngine;
 
-namespace Harmony.Injection
+namespace Harmony
 {
     /// <summary>
     /// Portée de niveau Enfants.
@@ -23,12 +22,12 @@ namespace Harmony.Injection
     /// </remarks>
     public class ChildScope : Scope
     {
-        protected override IList<GameObject> GetEligibleGameObjects(IInjectionContext injectionContext, UnityScript target)
+        protected override IList<GameObject> GetEligibleGameObjects(Script target)
         {
             return target.GetAllChildrens();
         }
 
-        protected override IList<object> GetEligibleDependencies(IInjectionContext injectionContext, UnityScript target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
         {
             return new List<object>(target.GetComponentsInChildren(dependencyType)).Filter(delegate(object item)
             {

@@ -1,32 +1,32 @@
-﻿using Harmony.Injection;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Aspect/DisableAddScoreOnGameEnd")]
+    [AddComponentMenu("Game/Aspect/DisableAddScoreOnGameEnd")]
     public class DisableAddScoreOnGameEnd : GameScript
     {
         private AddScoreOnPrefabDeath addScoreOnPrefabDeath;
         private GameEventChannel gameEventChannel;
 
-        public void InjectDisableAddScoreOnPlayerDeath([GameObjectScope] AddScoreOnPrefabDeath addScoreOnPrefabDeath,
+        private void InjectDisableAddScoreOnPlayerDeath([GameObjectScope] AddScoreOnPrefabDeath addScoreOnPrefabDeath,
                                                        [EventChannelScope] GameEventChannel gameEventChannel)
         {
             this.addScoreOnPrefabDeath = addScoreOnPrefabDeath;
             this.gameEventChannel = gameEventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectDisableAddScoreOnPlayerDeath");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             gameEventChannel.OnEventPublished += OnGameStateChanged;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             gameEventChannel.OnEventPublished -= OnGameStateChanged;
         }
@@ -35,7 +35,7 @@ namespace ProjetSynthese
         {
             if (gameEvent.HasGameEnded)
             {
-                addScoreOnPrefabDeath.DisableScoreCount();
+                addScoreOnPrefabDeath.enabled = false;
             }
         }
     }

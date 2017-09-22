@@ -1,55 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Harmony;
-using Harmony.Injection;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Aspect/DestroyAfterTimeOutOfScreen")]
+    [AddComponentMenu("Game/Aspect/DestroyAfterTimeOutOfScreen")]
     public class DestroyAfterTimeOutOfScreen : GameScript
     {
         [SerializeField]
         private int delayBeforeDeathInSeconds = 5;
 
-        private new IRenderer renderer;
+        private Renderer topParentRenderer;
         private EntityDestroyer entityDestroyer;
-        private ICoroutineExecutor coroutineExecutor;
 
-        private ICoroutine destructionCoroutine;
+        private Coroutine destructionCoroutine;
 
-        public void InjectDestroyAfterTimeOutOfScreen(int delayBeforeDeathInSeconds,
-                                                      [TopParentScope] IRenderer renderer,
-                                                      [EntityScope] EntityDestroyer entityDestroyer,
-                                                      [ApplicationScope] ICoroutineExecutor coroutineExecutor)
+        private void InjectDestroyAfterTimeOutOfScreen([TopParentScope] Renderer topParentRenderer,
+                                                      [EntityScope] EntityDestroyer entityDestroyer)
         {
-            this.delayBeforeDeathInSeconds = delayBeforeDeathInSeconds;
-            this.renderer = renderer;
+            this.topParentRenderer = topParentRenderer;
             this.entityDestroyer = entityDestroyer;
-            this.coroutineExecutor = coroutineExecutor;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectDestroyAfterTimeOutOfScreen",
-                               delayBeforeDeathInSeconds);
+            InjectDependencies("InjectDestroyAfterTimeOutOfScreen");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
-            renderer.OnBecameVisible += OnInScreen;
-            renderer.OnBecameInvisible += OnOutOfScreen;
+            topParentRenderer.Events().OnIsVisible += OnInScreen;
+            topParentRenderer.Events().OnIsInvisible += OnOutOfScreen;
 
             //Do the first update
-            if (!renderer.IsVisible())
+            if (!topParentRenderer.isVisible)
             {
                 OnOutOfScreen();
             }
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
-            renderer.OnBecameVisible -= OnInScreen;
-            renderer.OnBecameInvisible -= OnOutOfScreen;
+            topParentRenderer.Events().OnIsVisible -= OnInScreen;
+            topParentRenderer.Events().OnIsInvisible -= OnOutOfScreen;
         }
 
         private void OnOutOfScreen()
@@ -65,14 +58,14 @@ namespace ProjetSynthese
         private void ScheduleDestruction()
         {
             CancelDestruction();
-            destructionCoroutine = coroutineExecutor.StartCoroutine(this, DestroyAfterDelayRoutine());
+            destructionCoroutine = StartCoroutine(DestroyAfterDelayRoutine());
         }
 
         private void CancelDestruction()
         {
             if (destructionCoroutine != null)
             {
-                destructionCoroutine.Stop();
+                StopCoroutine(destructionCoroutine);
                 destructionCoroutine = null;
             }
         }

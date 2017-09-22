@@ -1,65 +1,64 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
 using XInputDotNetPure;
+using GamePad = Harmony.GamePad;
 using GamePadState = Harmony.GamePadState;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/Input/GamePadInputSensor")]
+    [AddComponentMenu("Game/Sensor/GamePadInputSensor")]
     public class GamePadInputSensor : InputSensor
     {
-        private IGamePadInput gamePadInput;
+        private GamePad gamePad;
 
         private GamePadsInputDevice gamePadsInputDevice;
 
-        public virtual IInputDevice GamePads
+        public IInputDevice GamePads
         {
             get { return gamePadsInputDevice; }
         }
 
-        public void InjectGamePadInputDevice([ApplicationScope] IGamePadInput gamePadInput)
+        private void InjectGamePadInputDevice([ApplicationScope] GamePad gamePad)
         {
-            this.gamePadInput = gamePadInput;
+            this.gamePad = gamePad;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectGamePadInputDevice");
 
-            gamePadsInputDevice = new GamePadsInputDevice(gamePadInput);
+            gamePadsInputDevice = new GamePadsInputDevice(gamePad);
         }
 
-        public void Update()
+        private void Update()
         {
             gamePadsInputDevice.Update();
         }
 
-        public IInputDevice GetGamePad(int playerIndex)
-        {
-            return gamePadsInputDevice[playerIndex];
-        }
-
         private class GamePadInputDevice : InputDevice
         {
-            private readonly IGamePadInput gamePadInput;
+            private readonly GamePad gamePad;
             private readonly PlayerIndex playerIndex;
             private readonly bool isAllPlayers;
 
             private GamePadState currentFrameGamePadState;
             private GamePadState previousFrameGamePadState;
 
-            public GamePadInputDevice(IGamePadInput gamePadInput) : this(gamePadInput, PlayerIndex.One, true)
+            // ReSharper is wrong about this warning.
+            // ReSharper disable once MemberCanBeProtected.Local
+            public GamePadInputDevice(GamePad gamePad) : this(gamePad, PlayerIndex.One, true)
             {
             }
 
-            public GamePadInputDevice(IGamePadInput gamePadInput, PlayerIndex playerIndex) : this(gamePadInput, playerIndex, false)
+            // ReSharper is wrong about this warning.
+            // ReSharper disable once MemberCanBeProtected.Local
+            public GamePadInputDevice(GamePad gamePad, PlayerIndex playerIndex) : this(gamePad, playerIndex, false)
             {
             }
 
-            private GamePadInputDevice(IGamePadInput gamePadInput, PlayerIndex playerIndex, bool isAllPlayers)
+            private GamePadInputDevice(GamePad gamePad, PlayerIndex playerIndex, bool isAllPlayers)
             {
-                this.gamePadInput = gamePadInput;
+                this.gamePad = gamePad;
                 this.playerIndex = playerIndex;
                 this.isAllPlayers = isAllPlayers;
 
@@ -147,7 +146,7 @@ namespace ProjetSynthese
 
             private GamePadState GetCurrentGamePadState()
             {
-                return isAllPlayers ? gamePadInput.GetGamepadState() : gamePadInput.GetGamepadState(playerIndex);
+                return isAllPlayers ? gamePad.GetGamepadState() : gamePad.GetGamepadState(playerIndex);
             }
         }
 
@@ -155,14 +154,14 @@ namespace ProjetSynthese
         {
             private readonly GamePadInputDevice[] gamePads;
 
-            public GamePadsInputDevice(IGamePadInput gamePadInput) : base(gamePadInput)
+            public GamePadsInputDevice(GamePad gamePad) : base(gamePad)
             {
                 gamePads = new[]
                 {
-                    new GamePadInputDevice(gamePadInput, PlayerIndex.One),
-                    new GamePadInputDevice(gamePadInput, PlayerIndex.Two),
-                    new GamePadInputDevice(gamePadInput, PlayerIndex.Three),
-                    new GamePadInputDevice(gamePadInput, PlayerIndex.Four)
+                    new GamePadInputDevice(gamePad, PlayerIndex.One),
+                    new GamePadInputDevice(gamePad, PlayerIndex.Two),
+                    new GamePadInputDevice(gamePad, PlayerIndex.Three),
+                    new GamePadInputDevice(gamePad, PlayerIndex.Four)
                 };
             }
 

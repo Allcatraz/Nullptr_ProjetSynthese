@@ -1,37 +1,30 @@
 ﻿using Harmony;
-using Harmony.Injection;
-using Harmony.Util;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
     [AddComponentMenu("Game/World/Ui/Control/PauseMenuController")]
     public class PauseMenuController : GameScript, IMenuController
     {
-        private ISelectable resumeButton;
-        private ITime time;
-        private IActivityStack activityStack;
-        private IMenuStack menuStack;
+        private Selectable resumeButton;
+        private ActivityStack activityStack;
 
-        public void InjectPauseController([Named(R.S.GameObject.ResumeButton)] [EntityScope] ISelectable resumeButton,
-                                          [ApplicationScope] ITime time,
-                                          [ApplicationScope] IActivityStack activityStack,
-                                          [ApplicationScope] IMenuStack menuStack)
+        private void InjectPauseController([Named(R.S.GameObject.ResumeButton)] [EntityScope] Selectable resumeButton,
+                                          [ApplicationScope] ActivityStack activityStack)
         {
             this.resumeButton = resumeButton;
-            this.time = time;
             this.activityStack = activityStack;
-            this.menuStack = menuStack;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectPauseController");
         }
 
         public void OnCreate(params object[] parameters)
         {
-            time.Pause();
+            TimeExtensions.Pause();
         }
 
         public void OnResume()
@@ -46,13 +39,13 @@ namespace ProjetSynthese
 
         public void OnStop()
         {
-            time.Resume();
+            TimeExtensions.Resume();
         }
 
         [CalledOutsideOfCode]
         public void ResumeGame()
         {
-            menuStack.StopCurrentMenu();
+            activityStack.StopCurrentMenu();
         }
 
         [CalledOutsideOfCode]

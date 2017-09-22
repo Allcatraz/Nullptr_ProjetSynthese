@@ -1,24 +1,24 @@
-﻿using UnityEngine;
-using Harmony.Injection;
+﻿using Harmony;
+using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Control/MoveFoward")]
+    [AddComponentMenu("Game/Aspect/MoveFoward")]
     public class MoveFoward : GameScript
     {
         private TranslateMover translateMover;
 
-        public void InjectBulletController([EntityScope] TranslateMover translateMover)
+        public void InjectMoveFoward([EntityScope] TranslateMover translateMover)
         {
             this.translateMover = translateMover;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectBulletController");
+            InjectDependencies("InjectMoveFoward");
         }
 
-        public void Update()
+        private void Update()
         {
             translateMover.MoveFoward();
         }

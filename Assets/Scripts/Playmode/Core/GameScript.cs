@@ -1,9 +1,4 @@
-﻿using Harmony.Testing;
-#if UNITY_EDITOR
-using UnityEditor;
-using System.Reflection;
-#endif
-using UnityEngine;
+﻿using Harmony;
 
 namespace ProjetSynthese
 {
@@ -20,14 +15,13 @@ namespace ProjetSynthese
     /// </para>
     /// <para>
     /// GameScript se sert de <see cref="ApplicationConfiguration"/> pour obtenir certains objets, dont un
-    /// <see cref="Harmony.Injection.Injector"/> pour effectuer de l'injection de dépendances. Consultez la documentation 
-    /// de <see cref="Harmony.Injection.Injector"/> pour les détails.
+    /// <see cref="Injector"/> pour effectuer de l'injection de dépendances. Consultez la documentation 
+    /// de <see cref="Injector"/> pour les détails.
     /// </para>
     /// </remarks>
-    /// <seealso cref="Harmony.Injection.Injector"/>
-    /// <seealso cref="Harmony.UnityScript"/>
-    [NotTested(Reason.Wrapper)]
-    public abstract class GameScript : Harmony.UnityScript
+    /// <seealso cref="Injector"/>
+    /// <seealso cref="Script"/>
+    public abstract class GameScript : Script
     {
         /// <summary>
         /// Injecte les dépendances de ce GameScript.
@@ -35,12 +29,9 @@ namespace ProjetSynthese
         /// <param name="injectMethodName">
         /// Nom de la méthode où l'injection doit être effectuée.
         /// </param>
-        /// <param name="valueDependencies">
-        /// Les dépendences de <i>valeur</i> à envoyer à la méthode <i>Inject</i>. L'ordre est important.
-        /// </param>
-        protected void InjectDependencies(string injectMethodName, params object[] valueDependencies)
+        protected void InjectDependencies(string injectMethodName)
         {
-            ApplicationConfiguration.InjectDependencies(this, injectMethodName, valueDependencies);
+            ApplicationConfiguration.InjectDependencies(this, injectMethodName);
         }
     }
 }

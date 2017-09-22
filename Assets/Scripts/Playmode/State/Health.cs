@@ -1,12 +1,11 @@
-﻿using System.Text.RegularExpressions;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ProjetSynthese
 {
     public delegate void HealthChangedEventHandler(int oldHealthPoints, int newHealthPoints);
     public delegate void DeathEventHandler();
 
-    [AddComponentMenu("Game/World/Object/State/Health")]
+    [AddComponentMenu("Game/State/Health")]
     public class Health : GameScript
     {
         [SerializeField]
@@ -16,16 +15,10 @@ namespace ProjetSynthese
 
         private int healthPoints;
 
-        public virtual event HealthChangedEventHandler OnHealthChanged;
-        public virtual event DeathEventHandler OnDeath;
+        public event HealthChangedEventHandler OnHealthChanged;
+        public event DeathEventHandler OnDeath;
 
-        public void InjectHealth(int initialHealthPoints, int maxHealthPoints)
-        {
-            this.initialHealthPoints = initialHealthPoints;
-            this.maxHealthPoints = maxHealthPoints;
-        }
-
-        public virtual int HealthPoints
+        public int HealthPoints
         {
             get { return healthPoints; }
             private set
@@ -40,7 +33,7 @@ namespace ProjetSynthese
             }
         }
 
-        public virtual int MaxHealthPoints
+        public int MaxHealthPoints
         {
             get { return maxHealthPoints; }
             set { maxHealthPoints = value; }
@@ -48,22 +41,20 @@ namespace ProjetSynthese
 
         public void Awake()
         {
-            InjectHealth(initialHealthPoints, maxHealthPoints);
-
             healthPoints = initialHealthPoints;
         }
 
-        public virtual void Hit(int hitPoints)
+        public void Hit(int hitPoints)
         {
             HealthPoints -= hitPoints;
         }
 
-        public virtual void Heal(int healPoints)
+        public void Heal(int healPoints)
         {
             HealthPoints += healPoints;
         }
 
-        public virtual void Reset()
+        public void Reset()
         {
             HealthPoints = initialHealthPoints;
         }

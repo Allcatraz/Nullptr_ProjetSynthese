@@ -1,35 +1,29 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/Input/GlobalMenuController")]
+    [AddComponentMenu("Game/Control/GlobalMenuController")]
     public class GlobalMenuController : GameScript
     {
         private PlayerInputSensor playerInputSensor;
-        private IMenuState menuState;
 
-        public void InjectGlobalMenuController([ApplicationScope] PlayerInputSensor playerInputSensor,
-                                               [ApplicationScope] IMenuState menuState)
+        private void InjectGlobalMenuController([ApplicationScope] PlayerInputSensor playerInputSensor)
         {
             this.playerInputSensor = playerInputSensor;
-            this.menuState = menuState;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectGlobalMenuController");
-        }
 
-        public void OnEnable()
-        {
             playerInputSensor.Players.OnUp += OnUp;
             playerInputSensor.Players.OnDown += OnDown;
             playerInputSensor.Players.OnConfirm += OnConfirm;
         }
 
-        public void OnDisable()
+        private void OnDestroy()
         {
             playerInputSensor.Players.OnUp -= OnUp;
             playerInputSensor.Players.OnDown -= OnDown;
@@ -38,7 +32,7 @@ namespace ProjetSynthese
 
         private void OnUp()
         {
-            ISelectable currentSelectable = menuState.CurrentSelected;
+            Selectable currentSelectable = SelectableExtensions.GetCurrentlySelected();
             if (currentSelectable != null)
             {
                 currentSelectable.SelectPrevious();
@@ -47,7 +41,7 @@ namespace ProjetSynthese
 
         private void OnDown()
         {
-            ISelectable currentSelectable = menuState.CurrentSelected;
+            Selectable currentSelectable = SelectableExtensions.GetCurrentlySelected();
             if (currentSelectable != null)
             {
                 currentSelectable.SelectNext();
@@ -56,7 +50,7 @@ namespace ProjetSynthese
 
         private void OnConfirm()
         {
-            ISelectable currentSelectable = menuState.CurrentSelected;
+            Selectable currentSelectable = SelectableExtensions.GetCurrentlySelected();
             if (currentSelectable != null)
             {
                 currentSelectable.Click();

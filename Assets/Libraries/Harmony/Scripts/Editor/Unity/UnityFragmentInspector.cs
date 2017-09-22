@@ -2,13 +2,31 @@
 
 namespace Harmony.Unity
 {
-    [CustomEditor(typeof(UnityFragment))]
+    /// <summary>
+    /// Inspecteur pour les Fragments dans l'éditeur Unity.
+    /// </summary>
+    [CustomEditor(typeof(Fragment))]
     public class UnityFragmentInspector : UnityInspector
     {
+        private EnumProperty scene;
+        private EnumProperty controller;
+
+        private void Awake()
+        {
+            scene = GetEnumProperty("scene", typeof(R.E.Scene));
+            controller = GetEnumProperty("controller", typeof(R.E.GameObject));
+        }
+
+        private void OnDestroy()
+        {
+            scene = null;
+            controller = null;
+        }
+
         protected override void OnDraw()
         {
-            DrawEnumPropertyGrid(GetEnumProperty("scene", typeof(R.E.Scene)), 2);
-            DrawEnumPropertyGrid(GetEnumProperty("controller", typeof(R.E.GameObject)), 2);
+            DrawEnumPropertyGrid(scene, 2);
+            DrawEnumPropertyGrid(controller, 2);
         }
     }
 }

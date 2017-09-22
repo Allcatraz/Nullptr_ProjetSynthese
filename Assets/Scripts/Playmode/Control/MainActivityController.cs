@@ -1,34 +1,29 @@
 ﻿using Harmony;
-using Harmony.Injection;
-using Harmony.Unity;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Control/MainActivityController")]
+    [AddComponentMenu("Game/Control/MainActivityController")]
     public class MainActivityController : GameScript, IActivityController
     {
         [SerializeField]
-        private UnityMenu mainMenu;
+        private Menu mainMenu;
 
-        private IMenuStack menuStack;
+        private ActivityStack activityStack;
 
-        public void InjectMainActivityController(UnityMenu mainMenu,
-                                                 [ApplicationScope] IMenuStack menuStack)
+        private void InjectMainActivityController([ApplicationScope] ActivityStack activityStack)
         {
-            this.mainMenu = mainMenu;
-            this.menuStack = menuStack;
+            this.activityStack = activityStack;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectMainActivityController",
-                               mainMenu);
+            InjectDependencies("InjectMainActivityController");
         }
 
         public void OnCreate()
         {
-            menuStack.StartMenu(mainMenu);
+            activityStack.StartMenu(mainMenu);
         }
 
         public void OnStop()

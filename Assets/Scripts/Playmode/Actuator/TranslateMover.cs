@@ -1,38 +1,41 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
+using Time = UnityEngine.Time;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Actuator/TranslateMover")]
+    [AddComponentMenu("Game/Actuator/TranslateMover")]
     public class TranslateMover : GameScript
     {
         [SerializeField]
         private int speed;
 
-        private new ITransform transform;
-        private new IRigidbody2D rigidbody2D;
-        private ITime time;
+        [SerializeField]
+        private int rotationSpeed;
 
-        public void InjectTranslateMover(int speed,
-                                         [TopParentScope] ITransform transform,
-                                         [TopParentScope] IRigidbody2D rigidbody2D,
-                                         [ApplicationScope] ITime time)
+        private Transform topParentTranform;
+        private Rigidbody2D topParentRigidbody2D;
+
+        private void InjectTranslateMover([TopParentScope] Transform topParentTranform,
+                                          [TopParentScope] Rigidbody2D topParentRigidbody2D)
         {
-            this.speed = speed;
-            this.transform = transform;
-            this.rigidbody2D = rigidbody2D;
-            this.time = time;
+            this.topParentTranform = topParentTranform;
+            this.topParentRigidbody2D = topParentRigidbody2D;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectTranslateMover", speed);
+            InjectDependencies("InjectTranslateMover");
         }
 
-        public virtual void MoveFoward()
+        public void MoveFoward()
         {
-            rigidbody2D.Translate(transform.Up * speed * time.DeltaTime);
+            topParentRigidbody2D.Translate(topParentTranform.up * speed * Time.deltaTime);
+        }
+
+        public void RotateClockwise()
+        {
+            topParentRigidbody2D.Rotate(rotationSpeed * Time.deltaTime);
         }
     }
 }

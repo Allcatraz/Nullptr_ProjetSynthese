@@ -1,5 +1,4 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -14,25 +13,23 @@ namespace ProjetSynthese
         private EntityDestroyer entityDestroyer;
         private DestroyEventChannel eventChannel;
 
-        public void InjectDestroyEventPublisher(R.E.Prefab prefab,
-                                                [TopParentScope] GameObject topParent,
+        private void InjectDestroyEventPublisher([TopParentScope] GameObject topParent,
                                                 [EntityScope] EntityDestroyer entityDestroyer,
                                                 [EventChannelScope] DestroyEventChannel eventChannel)
         {
-            this.prefab = prefab;
             this.topParent = topParent;
             this.entityDestroyer = entityDestroyer;
             this.eventChannel = eventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectDestroyEventPublisher", prefab);
+            InjectDependencies("InjectDestroyEventPublisher");
 
             entityDestroyer.OnDestroyed += OnEntityDestroyed;
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
             entityDestroyer.OnDestroyed -= OnEntityDestroyed;
         }

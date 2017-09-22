@@ -1,9 +1,7 @@
-﻿using Harmony.EventSystem;
-using Harmony.Testing;
+﻿using Harmony;
 
 namespace ProjetSynthese
 {
-    [NotTested(Reason.EventChannel)]
     public class PlayerDeathEvent : IEvent
     {
     }

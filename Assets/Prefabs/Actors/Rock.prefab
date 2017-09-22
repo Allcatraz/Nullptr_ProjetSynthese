@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 114990030455378946}
   - component: {fileID: 114848211591290918}
   - component: {fileID: 114714503504529796}
+  - component: {fileID: 114146286153575818}
   - component: {fileID: 114194888511297654}
   - component: {fileID: 114844570364663256}
   - component: {fileID: 114303512588565996}
@@ -341,6 +342,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e734c57e66606a7438cda76db2236d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114146286153575818
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1904143505614486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc12e7fb0c9aa5f4f8737829567fdc88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1291587605879028, guid: 2edda820e6435f14fa246cee1aad4feb, type: 2}
+  chancesOfInstanciation: 10
 --- !u!114 &114171713969575974
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -451,8 +465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 555202a3b7b84f07908f8a30b7fdcf25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPrefab: {fileID: 1167156380064126, guid: 08dae8042a3c4fc49b4569aceef091b2,
-    type: 2}
+  prefab: {fileID: 1167156380064126, guid: 08dae8042a3c4fc49b4569aceef091b2, type: 2}
 --- !u!114 &114764570009506474
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -605,5 +618,6 @@ LineRenderer:
     numCapVertices: 0
     alignment: 1
     textureMode: 0
+    generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 1

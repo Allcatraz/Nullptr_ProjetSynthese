@@ -1,14 +1,14 @@
 ﻿using System.Data.Common;
 using JetBrains.Annotations;
 
-namespace Harmony.Database
+namespace Harmony
 {
     /// <summary>
     /// Permet de transformer l'enregistrement courant dans un DbDataReader en un objet.
     /// </summary>
     /// <typeparam name="T">Structure de données produite.</typeparam>
     /// <seealso cref="DbRepository{T}"/>
-    public interface DbDataMapper<out T>
+    public interface IDbDataMapper<out T>
     {
         /// <summary>
         /// Retourne la dernière clée primaire créée sur cette connexion pour ce type d'objet.

@@ -1,5 +1,4 @@
-﻿using Harmony.EventSystem;
-using Harmony.Injection;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -10,33 +9,26 @@ namespace ProjetSynthese
         private Health health;
         private PlayerHealthEventChannel eventChannel;
 
-        public void InjectPlayerHealthEventPublisher([EntityScope] Health health,
+        private void InjectPlayerHealthEventPublisher([EntityScope] Health health,
                                                      [EventChannelScope] PlayerHealthEventChannel eventChannel)
         {
             this.health = health;
             this.eventChannel = eventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectPlayerHealthEventPublisher");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             health.OnHealthChanged += OnHealthChanged;
-            eventChannel.OnUpdateRequested += OnRequestUpdate;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             health.OnHealthChanged -= OnHealthChanged;
-            eventChannel.OnUpdateRequested -= OnRequestUpdate;
-        }
-
-        private void OnRequestUpdate(EventChannelUpdateHandler<PlayerHealthUpdate> updateHandler)
-        {
-            updateHandler(new PlayerHealthUpdate(health));
         }
 
         private void OnHealthChanged(int oldHealthPoints, int newHealthPoints)

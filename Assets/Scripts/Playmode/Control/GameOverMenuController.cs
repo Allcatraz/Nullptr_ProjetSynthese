@@ -1,40 +1,32 @@
 ﻿using System;
 using Harmony;
-using Harmony.Injection;
-using Harmony.Unity;
-using Harmony.Util;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/Control/GameOverMenuController")]
+    [AddComponentMenu("Game/Control/GameOverMenuController")]
     public class GameOverMenuController : GameScript, IMenuController
     {
         [SerializeField]
-        private UnityMenu newHisghScoreMenu;
+        private Menu newHisghScoreMenu;
 
-        private ISelectable retryButton;
+        private Selectable retryButton;
         private HighScoreRepository highScoreRepository;
-        private IActivityStack activityStack;
-        private IMenuStack menuStack;
+        private ActivityStack activityStack;
 
-        public void InjectGameOverController(UnityMenu newHisghScoreMenu,
-                                             [Named(R.S.GameObject.RetryButton)] [EntityScope] ISelectable retryButton,
+        private void InjectGameOverController([Named(R.S.GameObject.RetryButton)] [EntityScope] Selectable retryButton,
                                              [ApplicationScope] HighScoreRepository highScoreRepository,
-                                             [ApplicationScope] IActivityStack activityStack,
-                                             [ApplicationScope] IMenuStack menuStack)
+                                             [ApplicationScope] ActivityStack activityStack)
         {
-            this.newHisghScoreMenu = newHisghScoreMenu;
             this.retryButton = retryButton;
             this.highScoreRepository = highScoreRepository;
             this.activityStack = activityStack;
-            this.menuStack = menuStack;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectGameOverController",
-                               newHisghScoreMenu);
+            InjectDependencies("InjectGameOverController");
         }
 
         public void OnCreate(params object[] parameters)
@@ -80,14 +72,12 @@ namespace ProjetSynthese
         private bool IsNewHighScore(Score score)
         {
             HighScore lowestHighScore = highScoreRepository.GetLowestHighScore();
-            return lowestHighScore == null ||
-                   !highScoreRepository.IsLeaderboardFull() ||
-                   score.ScorePoints > lowestHighScore.ScorePoints;
+            return lowestHighScore == null || !highScoreRepository.IsLeaderboardFull() || score.ScorePoints > lowestHighScore.ScorePoints;
         }
 
         private void ShowNewHighScore(Score score)
         {
-            menuStack.StartMenu(newHisghScoreMenu, score);
+            activityStack.StartMenu(newHisghScoreMenu, score);
         }
     }
 }

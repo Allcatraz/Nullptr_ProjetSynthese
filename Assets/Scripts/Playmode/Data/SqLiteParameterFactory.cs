@@ -1,12 +1,12 @@
 ﻿using System.Data.Common;
 using System.Data.SQLite;
-using Harmony.Database;
+using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
     [AddComponentMenu("Game/Data/SqLiteParameterFactory")]
-    public class SqLiteParameterFactory : Harmony.UnityScript, DbParameterFactory
+    public class SqLiteParameterFactory : GameScript, IDbParameterFactory
     {
         public DbParameter GetParameter(object value)
         {

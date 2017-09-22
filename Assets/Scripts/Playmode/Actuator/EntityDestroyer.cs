@@ -1,36 +1,31 @@
 ﻿using UnityEngine;
 using Harmony;
-using Harmony.Injection;
-using Harmony.Util;
 
 namespace ProjetSynthese
 {
     public delegate void EntityDestroyedEventHandler();
 
-    [AddComponentMenu("Game/World/Object/Actuator/EntityDestroyer")]
+    [AddComponentMenu("Game/Actuator/EntityDestroyer")]
     public class EntityDestroyer : GameScript
     {
         private GameObject topParent;
-        private IHierachy hierachy;
 
         public virtual event EntityDestroyedEventHandler OnDestroyed;
 
-        public void InjectEntityDestroyer([TopParentScope] GameObject topParent,
-                                          [ApplicationScope] IHierachy hierachy)
+        public void InjectEntityDestroyer([TopParentScope] GameObject topParent)
         {
             this.topParent = topParent;
-            this.hierachy = hierachy;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectEntityDestroyer");
         }
 
         [CalledOutsideOfCode]
-        public virtual void Destroy()
+        public void Destroy()
         {
-            hierachy.DestroyGameObject(topParent);
+            topParent.Destroy();
 
             if (OnDestroyed != null) OnDestroyed();
         }

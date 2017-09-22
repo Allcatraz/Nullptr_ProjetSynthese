@@ -1,32 +1,32 @@
-﻿using Harmony.Injection;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Aspect/DamageOnHit")]
+    [AddComponentMenu("Game/Aspect/DamageOnHit")]
     public class DamageOnHit : GameScript
     {
         private Health health;
         private HitSensor hitSensor;
 
-        public void InjectDamageOnHit([EntityScope] Health health,
+        private void InjectDamageOnHit([EntityScope] Health health,
                                       [EntityScope] HitSensor hitSensor)
         {
             this.health = health;
             this.hitSensor = hitSensor;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectDamageOnHit");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             hitSensor.OnHit += OnHit;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             hitSensor.OnHit -= OnHit;
         }

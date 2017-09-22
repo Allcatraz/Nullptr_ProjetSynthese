@@ -1,13 +1,9 @@
 ﻿using Harmony;
-using Harmony.Util;
-using Harmony.Injection;
-using Harmony.Testing;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [NotTested(Reason.Factory, Reason.ContainsUnmockable)]
-    [AddComponentMenu("Game/World/Object/Actuator/RockSpawner")]
+    [AddComponentMenu("Game/Actuator/RockSpawner")]
     public class RockSpawner : GameScript
     {
         private const float TriangleAngleSumInRad = 180 * Mathf.Deg2Rad;
@@ -27,40 +23,19 @@ namespace ProjetSynthese
         [SerializeField]
         private float explosionForce;
 
-        private IRandom random;
-        private IPrefabFactory prefabFactory;
         private ScreenPositionProvider positionProvider;
 
-        public void InjectRockSpawner(GameObject rockPrefab,
-                                      float minRockRadius,
-                                      float maxRockRadius,
-                                      float initialForce,
-                                      float explosionForce,
-                                      [ApplicationScope] IRandom random,
-                                      [ApplicationScope] IPrefabFactory prefabFactory,
-                                      [ApplicationScope] ScreenPositionProvider positionProvider)
+        private void InjectRockSpawner([ApplicationScope] ScreenPositionProvider positionProvider)
         {
-            this.rockPrefab = rockPrefab;
-            this.minRockRadius = minRockRadius;
-            this.maxRockRadius = maxRockRadius;
-            this.initialForce = initialForce;
-            this.explosionForce = explosionForce;
-            this.random = random;
-            this.prefabFactory = prefabFactory;
             this.positionProvider = positionProvider;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectRockSpawner",
-                               rockPrefab,
-                               minRockRadius,
-                               maxRockRadius,
-                               initialForce,
-                               explosionForce);
+            InjectDependencies("InjectRockSpawner");
         }
 
-        public virtual void SpawnNormals(uint nbRocks)
+        public void SpawnNormals(uint nbRocks)
         {
             //Bug : They sometinmes spawn over each other, because of the random positionning.
             for (int i = 0; i < nbRocks; i++)
@@ -68,11 +43,11 @@ namespace ProjetSynthese
                 //Allways spawn rocks at the same distance from the screen border, but give them a random position.
                 Vector2 rockPosition = positionProvider.GetRandomOffScreenPosition(maxRockRadius);
                 Vector2 rockDirection = positionProvider.GetRandomInScreenPosition() - rockPosition;
-                float rockRadius = random.GetRandomFloat(minRockRadius, maxRockRadius);
+                float rockRadius = RandomExtensions.GetRandomFloat(minRockRadius, maxRockRadius);
 
-                GameObject rock = prefabFactory.Instantiate(rockPrefab,
-                                                            rockPosition,
-                                                            Quaternion.Euler(Vector3.zero));
+                GameObject rock = Instantiate(rockPrefab,
+                                              rockPosition,
+                                              Quaternion.Euler(Vector3.zero));
 
                 Configure(rock,
                           rockPosition,
@@ -82,7 +57,7 @@ namespace ProjetSynthese
             }
         }
 
-        public virtual void SpawnFragments(uint nbFragments, Vector3 parentRockPosition, float parentRockRadius)
+        public void SpawnFragments(uint nbFragments, Vector3 parentRockPosition, float parentRockRadius)
         {
             if (parentRockRadius > minRockRadius)
             {
@@ -153,9 +128,9 @@ namespace ProjetSynthese
                     Vector3 fragmentPosition = baseFragmentPosition.RotateAround(parentRockPosition, z: angleBetweenFragments * i);
                     Vector3 fragmentDirection = fragmentPosition - parentRockPosition;
 
-                    GameObject rock = prefabFactory.Instantiate(rockPrefab,
-                                                                fragmentPosition,
-                                                                Quaternion.Euler(Vector3.zero));
+                    GameObject rock = Instantiate(rockPrefab,
+                                                  fragmentPosition,
+                                                  Quaternion.Euler(Vector3.zero));
                     Configure(rock,
                               fragmentPosition,
                               fragmentRadius,

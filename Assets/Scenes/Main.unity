@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 1724042212}
   m_Layer: 0
   m_Name: MainController
-  m_TagString: Untagged
+  m_TagString: Application Dependencies
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

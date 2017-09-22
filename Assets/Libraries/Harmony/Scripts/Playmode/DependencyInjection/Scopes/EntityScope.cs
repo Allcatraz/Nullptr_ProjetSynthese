@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Harmony.Util;
 using UnityEngine;
 
-namespace Harmony.Injection
+namespace Harmony
 {
     /// <summary>
     /// Portée de niveau Entitée.
@@ -25,12 +24,12 @@ namespace Harmony.Injection
     /// </remarks>
     public class EntityScope : Scope
     {
-        protected override IList<GameObject> GetEligibleGameObjects(IInjectionContext injectionContext, UnityScript target)
+        protected override IList<GameObject> GetEligibleGameObjects(Script target)
         {
             return target.GetTopParent().GetAllHierachy();
         }
 
-        protected override IList<object> GetEligibleDependencies(IInjectionContext injectionContext, UnityScript target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
         {
             return new List<object>(target.GetComponentsInChildrensParentsOrSiblings(dependencyType));
         }

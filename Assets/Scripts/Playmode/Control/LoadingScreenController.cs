@@ -1,36 +1,31 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/Control/LoadingScreenController")]
+    [AddComponentMenu("Game/Control/LoadingScreenController")]
     public class LoadingScreenController : GameScript
     {
-        private ICanvas loadingScreenCanvas;
-        private IActivityStack activityStack;
+        private Canvas loadingScreenCanvas;
+        private ActivityStack activityStack;
 
-        public void InjectLoadingScreenController([EntityScope] ICanvas loadingScreenCanvas,
-                                                  [ApplicationScope] IActivityStack activityStack)
+        private void InjectLoadingScreenController([EntityScope] Canvas loadingScreenCanvas,
+                                                  [ApplicationScope] ActivityStack activityStack)
         {
             this.loadingScreenCanvas = loadingScreenCanvas;
             this.activityStack = activityStack;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectLoadingScreenController");
 
-            loadingScreenCanvas.Enabled = false;
-        }
-
-        public void OnEnable()
-        {
+            loadingScreenCanvas.enabled = false;
             activityStack.OnActivityLoadingStarted += OnActivityLoadStart;
             activityStack.OnActivityLoadingEnded += OnActivityLoadEnd;
         }
 
-        public void OnDisable()
+        private void OnDestroy()
         {
             activityStack.OnActivityLoadingStarted -= OnActivityLoadStart;
             activityStack.OnActivityLoadingEnded -= OnActivityLoadEnd;
@@ -38,12 +33,12 @@ namespace ProjetSynthese
 
         private void OnActivityLoadStart()
         {
-            loadingScreenCanvas.Enabled = true;
+            loadingScreenCanvas.enabled = true;
         }
 
         private void OnActivityLoadEnd()
         {
-            loadingScreenCanvas.Enabled = false;
+            loadingScreenCanvas.enabled = false;
         }
     }
 }

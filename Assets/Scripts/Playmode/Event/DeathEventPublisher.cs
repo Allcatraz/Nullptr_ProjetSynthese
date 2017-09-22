@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Harmony;
-using Harmony.Injection;
 
 namespace ProjetSynthese
 {
@@ -13,26 +12,24 @@ namespace ProjetSynthese
         private Health health;
         private DeathEventChannel eventChannel;
 
-        public void InjectDeathEventPublisher(R.E.Prefab prefab,
-                                              [EntityScope] Health health,
+        private void InjectDeathEventPublisher([EntityScope] Health health,
                                               [EventChannelScope] DeathEventChannel eventChannel)
         {
-            this.prefab = prefab;
             this.health = health;
             this.eventChannel = eventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectDeathEventPublisher", prefab);
+            InjectDependencies("InjectDeathEventPublisher");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             health.OnDeath += OnDeath;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             health.OnDeath -= OnDeath;
         }

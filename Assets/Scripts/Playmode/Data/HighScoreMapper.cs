@@ -1,9 +1,7 @@
 ﻿using System.Data.Common;
-using Harmony.Testing;
 
 namespace ProjetSynthese
 {
-    [NotTested(Reason.Database)]
     public class HighScoreMapper : SqLiteDataMapper<HighScore>
     {
         public override HighScore GetObjectFromReader(DbDataReader reader)

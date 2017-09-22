@@ -1,9 +1,9 @@
 ﻿using System.Data.Common;
-using Harmony.Database;
+using Harmony;
 
 namespace ProjetSynthese
 {
-    public abstract class SqLiteDataMapper<T> : DbDataMapper<T> where T : class
+    public abstract class SqLiteDataMapper<T> : IDbDataMapper<T> where T : class
     {
         public long GetPrimaryKeyFromConnection(DbConnection connection)
         {

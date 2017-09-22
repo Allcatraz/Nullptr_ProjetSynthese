@@ -1,5 +1,4 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -13,18 +12,16 @@ namespace ProjetSynthese
         private GameObject topParent;
         private CreationEventChannel eventChannel;
 
-        public void InjectCreationEventPublisher(R.E.Prefab prefab,
-                                                 [TopParentScope] GameObject topParent,
+        private void InjectCreationEventPublisher([TopParentScope] GameObject topParent,
                                                  [EventChannelScope] CreationEventChannel eventChannel)
         {
-            this.prefab = prefab;
             this.topParent = topParent;
             this.eventChannel = eventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectCreationEventPublisher", prefab);
+            InjectDependencies("InjectCreationEventPublisher");
 
             eventChannel.Publish(new CreationEvent(prefab, topParent));
         }

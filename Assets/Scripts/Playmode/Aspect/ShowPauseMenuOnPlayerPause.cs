@@ -1,52 +1,44 @@
 ﻿using UnityEngine;
 using Harmony;
-using Harmony.Injection;
-using Harmony.Unity;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Aspect/ShowPauseMenuOnPlayerPause")]
+    [AddComponentMenu("Game/Aspect/ShowPauseMenuOnPlayerPause")]
     public class ShowPauseMenuOnPlayerPause : GameScript
     {
         [SerializeField]
-        private UnityMenu pauseMenu;
+        private Menu pauseMenu;
 
         private PlayerInputSensor playerInputSensor;
-        private ITime time;
-        private IMenuStack menuStack;
+        private ActivityStack activityStack;
 
-        public void InjectShowPauseMenuOnPlayerPause(UnityMenu pauseMenu,
-                                                     [ApplicationScope] PlayerInputSensor playerInputSensor,
-                                                     [ApplicationScope] ITime time,
-                                                     [ApplicationScope] IMenuStack menuStack)
+        private void InjectShowPauseMenuOnPlayerPause([ApplicationScope] PlayerInputSensor playerInputSensor,
+                                                     [ApplicationScope] ActivityStack activityStack)
         {
-            this.pauseMenu = pauseMenu;
             this.playerInputSensor = playerInputSensor;
-            this.time = time;
-            this.menuStack = menuStack;
+            this.activityStack = activityStack;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectShowPauseMenuOnPlayerPause",
-                               pauseMenu);
+            InjectDependencies("InjectShowPauseMenuOnPlayerPause");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             playerInputSensor.Players.OnTogglePause += OnTogglePause;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             playerInputSensor.Players.OnTogglePause -= OnTogglePause;
         }
 
         private void OnTogglePause()
         {
-            if (!time.IsPaused())
+            if (TimeExtensions.IsRunning())
             {
-                menuStack.StartMenu(pauseMenu);
+                activityStack.StartMenu(pauseMenu);
             }
         }
     }

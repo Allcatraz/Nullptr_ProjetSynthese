@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Harmony.Util;
 using JetBrains.Annotations;
 
-namespace Harmony.Injection
+namespace Harmony
 {
     /// <summary>
     /// Attribut pour filtrer les dépendances. À utiliser lorsque plus d'une dépendance du même type existe

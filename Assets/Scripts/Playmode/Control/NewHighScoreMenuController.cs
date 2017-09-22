@@ -1,33 +1,32 @@
 ﻿using System;
 using Harmony;
-using Harmony.Injection;
-using Harmony.Util;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/Control/NewHighScoreMenuController")]
+    [AddComponentMenu("Game/Control/NewHighScoreMenuController")]
     public class NewHighScoreMenuController : GameScript, IMenuController
     {
-        private ITextInput nameInput;
-        private ISelectable okButton;
-        private IMenuStack menuStack;
+        private InputField nameInput;
+        private Selectable okButton;
+        private ActivityStack activityStack;
         private HighScoreRepository highScoreRepository;
 
         private Score score;
 
-        public void InjectNewHighScoreController([Named(R.S.GameObject.NameInput)] [EntityScope] ITextInput nameInput,
-                                                 [Named(R.S.GameObject.OkButton)] [EntityScope] ISelectable okButton,
-                                                 [ApplicationScope] IMenuStack menuStack,
+        private void InjectNewHighScoreController([Named(R.S.GameObject.NameInput)] [EntityScope] InputField nameInput,
+                                                 [Named(R.S.GameObject.OkButton)] [EntityScope] Selectable okButton,
+                                                 [ApplicationScope] ActivityStack activityStack,
                                                  [ApplicationScope] HighScoreRepository highScoreRepository)
         {
             this.nameInput = nameInput;
             this.okButton = okButton;
-            this.menuStack = menuStack;
+            this.activityStack = activityStack;
             this.highScoreRepository = highScoreRepository;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectNewHighScoreController");
         }
@@ -67,11 +66,11 @@ namespace ProjetSynthese
         {
             highScoreRepository.AddScore(new HighScore
             {
-                Name = nameInput.Text,
+                Name = nameInput.text,
                 ScorePoints = score.ScorePoints
             });
 
-            menuStack.StopCurrentMenu();
+            activityStack.StopCurrentMenu();
         }
     }
 }

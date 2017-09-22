@@ -1,12 +1,8 @@
-﻿using Harmony;
-using Harmony.Injection;
-using UnityEngine;
-using Harmony.Testing;
+﻿using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [NotTested(Reason.Factory, Reason.ContainsUnmockable)]
-    [AddComponentMenu("Game/World/Object/Actuator/PlayerSpawner")]
+    [AddComponentMenu("Game/Actuator/PlayerSpawner")]
     public class PlayerSpawner : GameScript
     {
         [SerializeField]
@@ -15,38 +11,17 @@ namespace ProjetSynthese
         [SerializeField]
         private GameObject playerSpawnPoint;
 
-        private IPrefabFactory prefabFactory;
-
-        public void InjectPlayerSpawner(GameObject playerPrefab,
-                                        GameObject playerSpawnPoint,
-                                        [ApplicationScope] IPrefabFactory prefabFactory)
+        public void Spawn()
         {
-            this.playerPrefab = playerPrefab;
-            this.playerSpawnPoint = playerSpawnPoint;
-            this.prefabFactory = prefabFactory;
+            GameObject player = Instantiate(playerPrefab,
+                                            playerSpawnPoint.transform.position,
+                                            Quaternion.Euler(Vector3.zero));
+
+            Configure(player);
         }
 
-        public void Awake()
+        private void Configure(GameObject player)
         {
-            InjectDependencies("InjectPlayerSpawner",
-                               playerPrefab,
-                               playerSpawnPoint);
-        }
-
-        public virtual void Spawn()
-        {
-            GameObject player = prefabFactory.Instantiate(playerPrefab,
-                                                          playerSpawnPoint.transform.position,
-                                                          Quaternion.Euler(Vector3.zero));
-
-            Configure(player, playerSpawnPoint.transform.position);
-        }
-
-        private void Configure(GameObject player, Vector3 position)
-        {
-            player.transform.position = position;
-            player.transform.rotation = Quaternion.Euler(Vector3.zero);
-
             PlayerController playerController = player.GetComponentInChildren<PlayerController>();
             playerController.Configure();
         }

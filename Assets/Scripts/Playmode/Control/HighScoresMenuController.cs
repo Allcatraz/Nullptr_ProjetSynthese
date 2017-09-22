@@ -1,30 +1,29 @@
 ﻿using Harmony;
-using Harmony.Injection;
-using Harmony.Util;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/Control/HighScoresMenuController")]
+    [AddComponentMenu("Game/Control/HighScoresMenuController")]
     public class HighScoresMenuController : GameScript, IMenuController
     {
-        private ISelectable okButton;
+        private Selectable okButton;
         private HighScoreRepository highScoreRepository;
         private HighScoreListView highScoreListView;
-        private IMenuStack menuStack;
+        private ActivityStack activityStack;
 
-        public void InjectHighScoresController([Named(R.S.GameObject.OkButton)][EntityScope] ISelectable okButton,
+        private void InjectHighScoresController([Named(R.S.GameObject.OkButton)][EntityScope] Selectable okButton,
                                                [ApplicationScope] HighScoreRepository highScoreRepository,
                                                [EntityScope] HighScoreListView highScoreListView,
-                                               [ApplicationScope] IMenuStack menuStack)
+                                               [ApplicationScope] ActivityStack activityStack)
         {
             this.okButton = okButton;
             this.highScoreRepository = highScoreRepository;
             this.highScoreListView = highScoreListView;
-            this.menuStack = menuStack;
+            this.activityStack = activityStack;
         }
 
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectHighScoresController");
         }
@@ -52,7 +51,7 @@ namespace ProjetSynthese
         [CalledOutsideOfCode]
         public void QuitHighScores()
         {
-            menuStack.StopCurrentMenu();
+            activityStack.StopCurrentMenu();
         }
     }
 }

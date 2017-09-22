@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using Harmony;
-using Harmony.Util;
-using Harmony.Injection;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Aspect/RandomRockShape")]
+    [AddComponentMenu("Game/Aspect/RandomRockShape")]
     public class RandomRockShape : GameScript
     {
         [SerializeField]
@@ -25,45 +23,9 @@ namespace ProjetSynthese
         [Range(0, 360)]
         private int maxAngleBetweenSegments = 50;
 
-        private ILineRenderer lineRenderer;
-        private IPolygonCollider2D colisionCollider2D;
-        private IPolygonCollider2D hitboxTrigger2D;
-        private IRandom random;
-
-        public void InjectRandomRockShape(float radius,
-                                          int roughness,
-                                          int minAngleBetweenSegments,
-                                          int maxAngleBetweenSegments,
-                                          [GameObjectScope] ILineRenderer lineRenderer,
-                                          [GameObjectScope] IPolygonCollider2D colisionCollider2D,
-                                          [Named(R.S.GameObject.Hitbox)] [ChildScope] IPolygonCollider2D hitboxTrigger2D,
-                                          [ApplicationScope] IRandom random)
-        {
-            this.radius = radius;
-            this.roughness = roughness;
-            this.minAngleBetweenSegments = minAngleBetweenSegments;
-            this.maxAngleBetweenSegments = maxAngleBetweenSegments;
-            this.lineRenderer = lineRenderer;
-            this.colisionCollider2D = colisionCollider2D;
-            this.hitboxTrigger2D = hitboxTrigger2D;
-            this.random = random;
-        }
-
-        public void Awake()
-        {
-            InjectDependencies("InjectRandomRockShape",
-                               radius,
-                               roughness,
-                               minAngleBetweenSegments,
-                               maxAngleBetweenSegments);
-        }
-
-        public void Start()
-        {
-            lineRenderer.Loop = true;
-
-            GenerateRockShape();
-        }
+        private LineRenderer lineRenderer;
+        private PolygonCollider2D colisionCollider2D;
+        private PolygonCollider2D hitboxTrigger2D;
 
         public virtual float Radius
         {
@@ -73,6 +35,27 @@ namespace ProjetSynthese
                 radius = value;
                 GenerateRockShape();
             }
+        }
+
+        private void InjectRandomRockShape([GameObjectScope] LineRenderer lineRenderer,
+                                          [GameObjectScope] PolygonCollider2D colisionCollider2D,
+                                          [Named(R.S.GameObject.Hitbox)] [ChildScope] PolygonCollider2D hitboxTrigger2D)
+        {
+            this.lineRenderer = lineRenderer;
+            this.colisionCollider2D = colisionCollider2D;
+            this.hitboxTrigger2D = hitboxTrigger2D;
+        }
+
+        private void Awake()
+        {
+            InjectDependencies("InjectRandomRockShape");
+        }
+
+        private void Start()
+        {
+            lineRenderer.loop = true;
+
+            GenerateRockShape();
         }
 
         private void GenerateRockShape()
@@ -92,18 +75,47 @@ namespace ProjetSynthese
             float currentAngleInDegrees = 0;
             while (currentAngleInDegrees < 360)
             {
-                float randomDistance = random.GetRandomFloat(100 - roughness, 100) * radius / 100;
+                float randomDistance = RandomExtensions.GetRandomFloat(100 - roughness, 100) * radius / 100;
 
                 Vector3 rockPoint = new Vector3(0, randomDistance, transform.position.z).RotateAround(Vector3.zero, z: currentAngleInDegrees);
 
                 rockPoints.Add(rockPoint);
                 rockColisionPoints.Add(rockPoint);
 
-                currentAngleInDegrees += random.GetRandomFloat(minAngleBetweenSegments, maxAngleBetweenSegments);
+                currentAngleInDegrees += RandomExtensions.GetRandomFloat(minAngleBetweenSegments, maxAngleBetweenSegments);
             }
-            lineRenderer.SetPoints(rockPoints);
-            colisionCollider2D.SetPoints(rockColisionPoints);
-            hitboxTrigger2D.SetPoints(rockColisionPoints);
+            SetPointsToLineRenderer(rockPoints);
+            SetPointsOfColisionCollider(rockColisionPoints);
+            SetPointsOfHitboxTrigger(rockColisionPoints);
+        }
+
+        private void SetPointsToLineRenderer(IList<Vector3> points)
+        {
+            lineRenderer.positionCount = points.Count;
+            for (var i = 0; i < points.Count; i++)
+            {
+                lineRenderer.SetPosition(i, points[i]);
+            }
+        }
+
+        private void SetPointsOfColisionCollider(IList<Vector2> points)
+        {
+            Vector2[] pointsArray = new Vector2[points.Count];
+            for (var i = 0; i < pointsArray.Length; i++)
+            {
+                pointsArray[i] = points[i];
+            }
+            colisionCollider2D.SetPath(0, pointsArray);
+        }
+
+        private void SetPointsOfHitboxTrigger(IList<Vector2> points)
+        {
+            Vector2[] pointsArray = new Vector2[points.Count];
+            for (var i = 0; i < pointsArray.Length; i++)
+            {
+                pointsArray[i] = points[i];
+            }
+            hitboxTrigger2D.SetPath(0, pointsArray);
         }
     }
 }

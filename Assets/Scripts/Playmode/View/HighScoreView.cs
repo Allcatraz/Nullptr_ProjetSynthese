@@ -1,32 +1,30 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Ui/View/HighScoreView")]
+    [AddComponentMenu("Game/View/HighScoreView")]
     public class HighScoreView : GameScript
     {
         [SerializeField]
         private string highScoreFormat  = "{0} : {1}";
 
-        private ITextView textView;
+        private Text textView;
 
-        public void InjectHighScoreView(string highScoreFormat,
-                                        [GameObjectScope] ITextView textView)
+        private void InjectHighScoreView([GameObjectScope] Text textView)
         {
-            this.highScoreFormat = highScoreFormat;
             this.textView = textView;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectHighScoreView", highScoreFormat);
+            InjectDependencies("InjectHighScoreView");
         }
 
         public void SetHighScore(HighScore highScore)
         {
-            textView.Text = string.Format(highScoreFormat, highScore.Name, highScore.ScorePoints);
+            textView.text = string.Format(highScoreFormat, highScore.Name, highScore.ScorePoints);
         }
     }
 }

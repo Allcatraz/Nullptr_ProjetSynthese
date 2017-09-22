@@ -1,29 +1,22 @@
 ﻿using Harmony;
-using Harmony.Injection;
-using Harmony.Testing;
-using Harmony.Unity;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    /// <summary>
-    /// Le EditorActivityConfiguration permet de démarrer une activité spécifique à partir de l'éditeur.
-    /// </summary>
-    [NotTested(Reason.Configuration)]
     [AddComponentMenu("Game/Config/EditorActivityConfiguration")]
     public class EditorActivityConfiguration : GameScript
     {
 #if UNITY_EDITOR
         [SerializeField]
         [HideInInspector]
-        private UnityActivity activity;
+        private Activity activity;
 
-        private IActivityStack activityStack;
+        private ActivityStack activityStack;
 
         /// <summary>
         /// Activité à charger au lancement.
         /// </summary>
-        public UnityActivity Activity
+        public Activity Activity
         {
             get { return activity; }
             set { activity = value; }
@@ -33,7 +26,7 @@ namespace ProjetSynthese
         /// Point d'injection des dépendances de EditorActivityConfiguration.
         /// </summary>
         /// <param name="activityStack">IActivityStack à utiliser pour charger l'activité au lancement</param>
-        public void InjectEditorActivityConfigurationr([ApplicationScope] IActivityStack activityStack)
+        private void InjectEditorActivityConfigurationr([ApplicationScope] ActivityStack activityStack)
         {
             this.activityStack = activityStack;
         }
@@ -41,7 +34,7 @@ namespace ProjetSynthese
         /// <summary>
         /// Initialise le EditorActivityConfiguration. Démarre l'injection de dépendances.
         /// </summary>
-        public void Awake()
+        private void Awake()
         {
             InjectDependencies("InjectEditorActivityConfigurationr");
         }
@@ -49,7 +42,7 @@ namespace ProjetSynthese
         /// <summary>
         /// Démarre l'activité si on est en mode éditeur et qu'il existe une activité à charger.
         /// </summary>
-        public void Start()
+        private void Start()
         {
             //Only load specified activity if the Application scene is the only one loaded
             if (EditorApplicationConfiguration.IsUsingEditorConfiguration() && activity != null)

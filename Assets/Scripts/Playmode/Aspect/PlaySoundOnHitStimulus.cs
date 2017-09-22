@@ -1,38 +1,35 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Object/Aspect/PlaySoundOnHitStimulus")]
+    [AddComponentMenu("Game/Aspect/PlaySoundOnHitStimulus")]
     public class PlaySoundOnHitStimulus : GameScript
     {
         [SerializeField]
         private AudioClip audioClip;
 
-        private IAudioSource audioSource;
+        private AudioSource audioSource;
         private HitStimulus hitStimulus;
 
-        public void InjectPlaySoundOnHitStimulus(AudioClip audioClip,
-                                                 [EntityScope] IAudioSource audioSource,
+        private void InjectPlaySoundOnHitStimulus([EntityScope] AudioSource audioSource,
                                                  [GameObjectScope] HitStimulus hitStimulus)
         {
-            this.audioClip = audioClip;
             this.audioSource = audioSource;
             this.hitStimulus = hitStimulus;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectPlaySoundOnHitStimulus", audioClip);
+            InjectDependencies("InjectPlaySoundOnHitStimulus");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             hitStimulus.OnHit += OnHit;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             hitStimulus.OnHit -= OnHit;
         }

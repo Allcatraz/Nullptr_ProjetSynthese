@@ -1,40 +1,35 @@
 ﻿using Harmony;
-using Harmony.Injection;
-using Harmony.Unity;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Aspect/ShowGameOverMenuOnGameEnd")]
+    [AddComponentMenu("Game/Aspect/ShowGameOverMenuOnGameEnd")]
     public class ShowGameOverMenuOnGameEnd : GameScript
     {
         [SerializeField]
-        private UnityMenu gameOverMenu;
+        private Menu gameOverMenu;
 
-        private IMenuStack menuStack;
+        private ActivityStack activityStack;
         private GameEventChannel gameEventChannel;
 
-        public void InjectShowGameOverMenuOnGameEnd(UnityMenu gameOverMenu,
-                                                    [ApplicationScope] IMenuStack menuStack,
+        private void InjectShowGameOverMenuOnGameEnd([ApplicationScope] ActivityStack activityStack,
                                                     [EventChannelScope] GameEventChannel gameEventChannel)
         {
-            this.gameOverMenu = gameOverMenu;
-            this.menuStack = menuStack;
+            this.activityStack = activityStack;
             this.gameEventChannel = gameEventChannel;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectShowGameOverMenuOnGameEnd",
-                               gameOverMenu);
+            InjectDependencies("InjectShowGameOverMenuOnGameEnd");
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             gameEventChannel.OnEventPublished += OnGameStateChanged;
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             gameEventChannel.OnEventPublished -= OnGameStateChanged;
         }
@@ -43,7 +38,7 @@ namespace ProjetSynthese
         {
             if (gameEvent.HasGameEnded)
             {
-                menuStack.StartMenu(gameOverMenu, gameEvent);
+                activityStack.StartMenu(gameOverMenu, gameEvent);
             }
         }
     }

@@ -1,37 +1,19 @@
-﻿using Harmony;
-using Harmony.Injection;
-using Harmony.Testing;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [NotTested(Reason.Factory, Reason.ContainsUnmockable)]
-    [AddComponentMenu("Game/World/UI/Actuator/HighScoreViewSpawner")]
+    [AddComponentMenu("Game/Actuator/HighScoreViewSpawner")]
     public class HighScoreViewSpawner : GameScript
     {
         [SerializeField]
         private GameObject highScoreViewPrefab;
 
-        private IPrefabFactory prefabFactory;
-
-        public void InjectHighScoreViewSpawner(GameObject highScoreViewPrefab,
-                                               [ApplicationScope] IPrefabFactory prefabFactory)
+        public void Spawn(GameObject contentView, HighScore highScore)
         {
-            this.highScoreViewPrefab = highScoreViewPrefab;
-            this.prefabFactory = prefabFactory;
-        }
-
-        public void Awake()
-        {
-            InjectDependencies("InjectHighScoreViewSpawner", highScoreViewPrefab);
-        }
-
-        public virtual void Spawn(GameObject contentView, HighScore highScore)
-        {
-            GameObject view = prefabFactory.Instantiate(highScoreViewPrefab,
-                                                        Vector3.zero,
-                                                        Quaternion.Euler(Vector3.zero),
-                                                        contentView);
+            GameObject view = Instantiate(highScoreViewPrefab,
+                                          Vector3.zero,
+                                          Quaternion.Euler(Vector3.zero),
+                                          contentView.transform);
 
             Configure(view, highScore);
         }

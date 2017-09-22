@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Harmony.Unity
 {
-    public delegate void ButtonAction();
-
     /// <summary>
     /// Base pour créer facilement un inspecteur personalisé sous Unity, avec quelques fonctionalitées supplémentaires.
     /// </summary>
@@ -49,41 +48,56 @@ namespace Harmony.Unity
 
         protected void DrawBasicProperty(SerializedProperty property)
         {
-            EditorGUILayout.PropertyField(property);
+            if (property != null && property.IsValid())
+            {
+                EditorGUILayout.PropertyField(property);
+            }
         }
 
         protected void DrawBasicPropertyTitleLabel(SerializedProperty property)
         {
-            DrawTitleLabel(property.displayName);
-            EditorGUILayout.PropertyField(property, GUIContent.none);
+            if (property != null && property.IsValid())
+            {
+                DrawTitleLabel(property.displayName);
+                EditorGUILayout.PropertyField(property, GUIContent.none);
+            }
         }
 
         protected void DrawListProperty(ReorderableList property)
         {
-            DrawTitleLabel(property.serializedProperty.displayName);
-            property.DoLayoutList();
+            if (property != null && property.IsValid())
+            {
+                DrawTitleLabel(property.serializedProperty.displayName);
+                property.DoLayoutList();
+            }
         }
 
         protected void DrawEnumPropertyDropDown(EnumProperty property)
         {
-            BeginHorizontal();
-            EditorGUILayout.PrefixLabel(property.Name);
-            property.CurrentValue = property.Values[EditorGUILayout.Popup(property.CurrentValueIndex,
-                                                                          property.ValuesNames)].Value;
-            EndHorizontal();
+            if (property != null && property.IsValid())
+            {
+                BeginHorizontal();
+                EditorGUILayout.PrefixLabel(property.Name);
+                property.CurrentValueIndex = EditorGUILayout.Popup(property.CurrentValueIndex,
+                                                                   property.ValuesNames);
+                EndHorizontal();
+            }
         }
 
         protected void DrawEnumPropertyGrid(EnumProperty property, int nbRows)
         {
-            DrawTitleLabel(property.Name);
-            property.CurrentValue = property.Values[GUILayout.SelectionGrid(property.CurrentValueIndex,
-                                                                            property.ValuesNames,
-                                                                            nbRows,
-                                                                            EditorStyles.radioButton)].Value;
-            EditorGUILayout.Space();
+            if (property != null && property.IsValid())
+            {
+                DrawTitleLabel(property.Name);
+                property.CurrentValueIndex = GUILayout.SelectionGrid(property.CurrentValueIndex,
+                                                                     property.ValuesNames,
+                                                                     nbRows,
+                                                                     EditorStyles.radioButton);
+                EditorGUILayout.Space();
+            }
         }
 
-        protected void DrawButton(string text, ButtonAction actionOnClick)
+        protected void DrawButton(string text, UnityAction actionOnClick)
         {
             if (GUILayout.Button(text))
             {
@@ -152,7 +166,21 @@ namespace Harmony.Unity
                 set { property.intValue = value; }
             }
 
-            public int CurrentValueIndex { get; private set; }
+            public int CurrentValueIndex
+            {
+                get
+                {
+                    for (int i = 0; i < Values.Count; i++)
+                    {
+                        if (CurrentValue == Values[i].Value)
+                        {
+                            return i;
+                        }
+                    }
+                    return -1;
+                }
+                set { CurrentValue = Values[value].Value; }
+            }
 
             public EnumProperty(SerializedProperty property, Type enumType)
             {
@@ -186,18 +214,22 @@ namespace Harmony.Unity
                                                            enumNames[noneValueIndex]));
                 }
 
-                //Create array of enum value names and find the current value index
-                CurrentValueIndex = 0;
-                int currentValuevalue = property.intValue;
+                //Create array of enum value names
                 ValuesNames = new string[Values.Count];
                 for (int i = 0; i < enumNames.Length; i++)
                 {
-                    if (currentValuevalue == Values[i].Value)
-                    {
-                        CurrentValueIndex = i;
-                    }
                     ValuesNames[i] = Values[i].Name;
                 }
+            }
+
+            public bool IsValid()
+            {
+                return property.IsValid();
+            }
+
+            public bool NeedRefresh()
+            {
+                return property.NeedRefresh();
             }
         }
     }

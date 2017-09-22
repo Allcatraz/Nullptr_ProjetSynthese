@@ -1,31 +1,27 @@
 ﻿using Harmony;
-using Harmony.Injection;
-using Harmony.Unity;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/World/Control/LoadInitialActivity")]
+    [AddComponentMenu("Game/Aspect/LoadInitialActivity")]
     public class LoadInitialActivity : GameScript
     {
         [SerializeField]
-        private UnityActivity activity;
+        private Activity activity;
 
-        private IActivityStack activityStack;
+        private ActivityStack activityStack;
 
-        public void InjectLoadInitialActivity(UnityActivity activity,
-                                              [ApplicationScope] IActivityStack activityStack)
+        private void InjectLoadInitialActivity([ApplicationScope] ActivityStack activityStack)
         {
-            this.activity = activity;
             this.activityStack = activityStack;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectLoadInitialActivity", activity);
+            InjectDependencies("InjectLoadInitialActivity");
         }
 
-        public void Start()
+        private void Start()
         {
             activityStack.StartActivity(activity);
         }

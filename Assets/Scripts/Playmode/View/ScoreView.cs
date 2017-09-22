@@ -1,6 +1,6 @@
 ﻿using Harmony;
-using Harmony.Injection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
@@ -12,23 +12,21 @@ namespace ProjetSynthese
         [SerializeField]
         private uint nbZeros = 5;
 
-        private ITextView textView;
+        private Text textView;
 
-        public void InjectScoreView(uint nbZeros,
-                                    [GameObjectScope] ITextView textView)
+        private void InjectScoreView([GameObjectScope] Text textView)
         {
-            this.nbZeros = nbZeros;
             this.textView = textView;
         }
 
-        public void Awake()
+        private void Awake()
         {
-            InjectDependencies("InjectScoreView", nbZeros);
+            InjectDependencies("InjectScoreView");
         }
 
-        public virtual void SetScore(uint score)
+        public void SetScore(uint score)
         {
-            textView.Text = score.ToString(TextFormat + nbZeros);
+            textView.text = score.ToString(TextFormat + nbZeros);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
+using ProjetSynthese;
 
 namespace Harmony
 {
@@ -233,7 +234,7 @@ namespace Harmony
         /// Ainsi, une classe "B" héritant d'une classe "A" peut elle aussi utiliser l'injection de dépendances sans risquer de 
         /// priver la classe "A" des dépendances dont elle a besoin.
         /// </remarks>
-        public void InjectDependencies([NotNull] Script target, [NotNull] string injectMethodName, params object[] valueDependencies)
+        public void InjectDependencies([NotNull] GameScript target, [NotNull] string injectMethodName, params object[] valueDependencies)
         {
             MethodInfo injectMethod = target.GetType().GetMethod(injectMethodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             if (injectMethod != null)
@@ -261,7 +262,7 @@ namespace Harmony
             }
         }
 
-        private static object[] GetDependenciesForTarget(Script target,
+        private static object[] GetDependenciesForTarget(GameScript target,
                                                          MethodInfo injectMethod,
                                                          object[] valueDependencies)
         {
@@ -278,7 +279,7 @@ namespace Harmony
             return dependencies.ToArray();
         }
 
-        private static object GetDependencyForTarget(Script target, ParameterInfo dependencyParameter)
+        private static object GetDependencyForTarget(GameScript target, ParameterInfo dependencyParameter)
         {
             IList<object> dependencies = FilterDependencies(GetDependencies(target, dependencyParameter), dependencyParameter);
 
@@ -294,7 +295,7 @@ namespace Harmony
             return dependencies[0];
         }
 
-        private static IList<object> GetDependencies(Script target, ParameterInfo dependencyParameter)
+        private static IList<object> GetDependencies(GameScript target, ParameterInfo dependencyParameter)
         {
             return GetScopeOf(dependencyParameter).GetDependencies(target, dependencyParameter.ParameterType);
         }

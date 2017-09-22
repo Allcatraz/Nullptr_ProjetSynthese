@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Networking;
 
 //We do not need to override "Equals" or "Hashcode" here : we would just be calling the "base" method.
 //Warning is thus disabled in this file.
@@ -9,15 +10,7 @@ using UnityEngine;
 
 namespace Harmony
 {
-    /// <summary>
-    /// Représente un Script Unity. Extension des <i>MonoBehaviour</i>. Ajoute de nombreuses fonctionalitées en 
-    /// plus de régler certains bogues.
-    /// </summary>
-    /// <remarks>
-    /// La classe Script ajoute plusieurs moyens d'obtenir des <i>Components</i> ou des <i>GameObjects</i>. Par exemple, 
-    /// il est désormais possible d'obtenir tous les enfants d'un <i>GameObject</i>. Consultez les différentes méthodes pour les détails.
-    /// </remarks>
-    public abstract class Script : MonoBehaviour
+    public abstract class Script : NetworkBehaviour
     {
         /// <summary>
         /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le <i>TopParent</i> du <see cref="GameObject"/> et 

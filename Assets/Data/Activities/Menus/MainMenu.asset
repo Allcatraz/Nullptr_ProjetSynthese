@@ -11,6 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62673031b1f54a108493dd7b08144bb7, type: 3}
   m_Name: MainMenu
   m_EditorClassIdentifier: 
-  scene: -1501452097
-  controller: -99256802
-  isAllwaysVisible: 0
+  scene: -1503227594
+  controller: -1503227594
+  isAlwaysVisible: 0

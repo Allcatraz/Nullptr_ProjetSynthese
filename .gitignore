@@ -5,6 +5,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 /[Aa]ssets/AssetStoreTools*
+/[Pp]ackages/
 sysinfo.txt
 *.pidb.meta
 /[Aa]ssets/InitTestScene*

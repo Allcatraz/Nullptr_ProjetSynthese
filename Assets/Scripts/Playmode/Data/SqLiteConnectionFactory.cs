@@ -13,18 +13,56 @@ namespace ProjetSynthese
         private const string SqliteConnectionTemplate = "URI=file:{0}";
 
         [SerializeField]
-        private string databaseFilePath = "Database.db";
+        private string databaseFileName = "Database.db";
 
         private string connexionString;
 
-        public void Awake()
+        private void Awake()
         {
-            connexionString = String.Format(SqliteConnectionTemplate, Path.Combine(ApplicationExtensions.ApplicationDataPath, databaseFilePath));
+            if (DatabaseDoesntExists())
+            {
+               CreateDatabase();
+            }
+            connexionString = GetConnexionString();
         }
 
         public DbConnection GetConnection()
         {
             return new SQLiteConnection(connexionString);
+        }
+
+        public void CreateDatabase()
+        {
+            File.Copy(GetDatabaseFilePath(), GetCurrentDatabaseFilePath(), true);
+        }
+
+        public void ResetDatabase()
+        {
+            string currentDatabaseFilePath = GetCurrentDatabaseFilePath();
+            if (File.Exists(currentDatabaseFilePath))
+            {
+                File.Delete(currentDatabaseFilePath);
+            }
+        }
+
+        private bool DatabaseDoesntExists()
+        {
+            return !File.Exists(GetCurrentDatabaseFilePath());
+        }
+
+        private string GetDatabaseFilePath()
+        {
+            return Path.Combine(ApplicationExtensions.ApplicationDataPath, databaseFileName);
+        }
+
+        private string GetCurrentDatabaseFilePath()
+        {
+            return Path.Combine(ApplicationExtensions.PersistentDataPath, databaseFileName);
+        }
+
+        private string GetConnexionString()
+        {
+            return String.Format(SqliteConnectionTemplate, GetCurrentDatabaseFilePath());
         }
     }
 }

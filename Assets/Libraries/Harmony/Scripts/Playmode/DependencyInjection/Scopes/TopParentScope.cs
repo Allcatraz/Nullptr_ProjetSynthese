@@ -22,12 +22,12 @@ namespace Harmony
     /// </remarks>
     public class TopParentScope : Scope
     {
-        protected override IList<GameObject> GetEligibleGameObjects(Script target)
+        protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {
             return new[] { target.GetTopParent() };
         }
 
-        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(IScript target, Type dependencyType)
         {
             return new List<object>(target.GetComponentsInTopParent(dependencyType));
         }

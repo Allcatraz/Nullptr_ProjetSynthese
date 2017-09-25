@@ -22,7 +22,7 @@ namespace ProjetSynthese
         /// <param name="valueDependencies">
         /// Les dépendences de <i>valeur</i> à envoyer à la méthode <i>Inject</i>. L'ordre est important.
         /// </param>
-        public static void InjectDependencies(GameScript target, string injectMethodName, params object[] valueDependencies)
+        public static void InjectDependencies(IScript target, string injectMethodName, params object[] valueDependencies)
         {
             //This null check is only usefull for test purposes. If no "ApplicationConfiguration" exists,
             //but this method is called, this means that the "Application" scene is not loaded.

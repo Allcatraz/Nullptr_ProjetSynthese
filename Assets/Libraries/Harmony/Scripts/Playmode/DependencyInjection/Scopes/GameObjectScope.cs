@@ -23,12 +23,12 @@ namespace Harmony
     /// </remarks>
     public class GameObjectScope : Scope
     {
-        protected override IList<GameObject> GetEligibleGameObjects(Script target)
+        protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {
-            return new[] {target.gameObject};
+            return new[] {target.GameObject};
         }
 
-        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(IScript target, Type dependencyType)
         {
             return new List<object>(target.GetComponents(dependencyType));
         }

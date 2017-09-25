@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Harmony
 {
@@ -11,16 +10,16 @@ namespace Harmony
         private const string MessageTemplate = "Dependency of type \"{0}\" needed for component \"{1}\" of GameObject " +
                                                "named \"{2}\" cannot be found in scope \"{3}\".";
 
-        public DependencyNotFoundException(Script target, Type dependencyType, Scope scope)
+        public DependencyNotFoundException(IScript target, Type dependencyType, Scope scope)
             : this(target, dependencyType, scope, null)
         {
         }
 
-        public DependencyNotFoundException(Script target, Type dependencyType, Scope scope, Exception innerException)
+        public DependencyNotFoundException(IScript target, Type dependencyType, Scope scope, Exception innerException)
             : base(String.Format(MessageTemplate,
                                  dependencyType.Name,
                                  target.GetType().Name,
-                                 target.name,
+                                 target.Name,
                                  scope.GetType().Name),
                    innerException)
         {

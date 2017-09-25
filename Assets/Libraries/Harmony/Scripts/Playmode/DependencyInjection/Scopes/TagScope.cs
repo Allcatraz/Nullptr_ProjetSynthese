@@ -30,17 +30,17 @@ namespace Harmony
             this.tagName = tagName;
         }
 
-        protected override IList<GameObject> GetEligibleGameObjects(Script target)
+        protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {
             return new List<GameObject>(new[] {GetDependencySource(target, typeof(GameObject))});
         }
 
-        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(IScript target, Type dependencyType)
         {
             return new List<object>(GetDependencySource(target, dependencyType).GetComponentsInChildren(dependencyType));
         }
 
-        private GameObject GetDependencySource(Script target, Type dependencyType)
+        private GameObject GetDependencySource(IScript target, Type dependencyType)
         {
             IList<GameObject> dependencySources = GameObject.FindGameObjectsWithTag(tagName);
             if (dependencySources.Count == 0)

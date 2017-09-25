@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Harmony
 {
@@ -14,16 +13,16 @@ namespace Harmony
                                                "apply a Filter or use any other scope.";
 
 
-        public MoreThanOneDependencyFoundException(Script owner, Type dependencyType, Scope scope)
-            : this(owner, dependencyType, scope, null)
+        public MoreThanOneDependencyFoundException(IScript target, Type dependencyType, Scope scope)
+            : this(target, dependencyType, scope, null)
         {
         }
 
-        public MoreThanOneDependencyFoundException(Script owner, Type dependencyType, Scope scope, Exception innerException)
+        public MoreThanOneDependencyFoundException(IScript target, Type dependencyType, Scope scope, Exception innerException)
             : base(String.Format(MessageTemplate,
                                  dependencyType.Name,
-                                 owner.GetType().Name,
-                                 owner.name,
+                                 target.GetType().Name,
+                                 target.Name,
                                  scope.GetType().Name),
                    innerException)
         {

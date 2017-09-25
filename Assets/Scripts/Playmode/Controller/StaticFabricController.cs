@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class StaticFabricController : MonoBehaviour
+    public class StaticFabricController : GameScript
     {
         [SerializeField]
         GameObject bulletPrefab;

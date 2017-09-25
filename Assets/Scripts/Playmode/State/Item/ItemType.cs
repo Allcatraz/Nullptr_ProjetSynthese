@@ -12,9 +12,6 @@
         Sac,
         Heal,
         Boost,
-        Ammo556,
-        AmmoWinchester,
-        AmmoCalibre12,
-        Ammo45acp
+        AmmoPack
     }
 }

@@ -6,13 +6,13 @@ namespace ProjetSynthese
 {
     public abstract class Item : GameScript
     {
-        ItemType type;
+        public ItemType Type { get; private set; }
         public abstract void Use();
 
 
         public static bool operator==(Item item1, Item item2)
         {
-            return item1.type == item2.type;
+            return item1.Type == item2.Type;
         }
 
         public static bool operator !=(Item item1, Item item2)

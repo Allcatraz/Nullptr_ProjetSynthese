@@ -25,12 +25,12 @@ namespace Harmony
     /// </remarks>
     public class ActivityScope : Scope
     {
-        protected override IList<GameObject> GetEligibleGameObjects(Script target)
+        protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {
             return GetDependencySources(target, typeof(GameObject));
         }
 
-        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(IScript target, Type dependencyType)
         {
             IList<object> dependencies = new List<object>();
             foreach (GameObject dependencySource in GetDependencySources(target, dependencyType))
@@ -43,7 +43,7 @@ namespace Harmony
             return dependencies;
         }
 
-        private IList<GameObject> GetDependencySources(Script target, Type dependencyType)
+        private IList<GameObject> GetDependencySources(IScript target, Type dependencyType)
         {
             IList<GameObject> dependencySources = GameObject.FindGameObjectsWithTag(R.S.Tag.ActivityDependencies);
             if (dependencySources.Count == 0)

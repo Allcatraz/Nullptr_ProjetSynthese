@@ -34,7 +34,7 @@ namespace Harmony
         /// <param name="dependencyType">Type de la dépendance à obtenir.</param>
         /// <returns></returns>
         [NotNull]
-        public IList<object> GetDependencies([NotNull] Script target, [NotNull] Type dependencyType)
+        public IList<object> GetDependencies([NotNull] IScript target, [NotNull] Type dependencyType)
         {
             //GAME OBJECT DEPENDENCIES
             if (dependencyType == typeof(GameObject))
@@ -46,9 +46,9 @@ namespace Harmony
             return GetEligibleDependencies(target, dependencyType);
         }
 
-        protected abstract IList<GameObject> GetEligibleGameObjects([NotNull] Script target);
+        protected abstract IList<GameObject> GetEligibleGameObjects([NotNull] IScript target);
 
-        protected abstract IList<object> GetEligibleDependencies([NotNull] Script target,
+        protected abstract IList<object> GetEligibleDependencies([NotNull] IScript target,
                                                                  [NotNull] Type dependencyType);
     }
 }

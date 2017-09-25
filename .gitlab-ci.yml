@@ -45,7 +45,7 @@ deploy:
   stage: deploy
   script:
     - Deploy.bat
-  when: manual
+  when: always
   dependencies:
     - build
   only:

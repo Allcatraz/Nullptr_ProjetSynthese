@@ -24,12 +24,12 @@ namespace Harmony
     /// </remarks>
     public class EntityScope : Scope
     {
-        protected override IList<GameObject> GetEligibleGameObjects(Script target)
+        protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {
             return target.GetTopParent().GetAllHierachy();
         }
 
-        protected override IList<object> GetEligibleDependencies(Script target, Type dependencyType)
+        protected override IList<object> GetEligibleDependencies(IScript target, Type dependencyType)
         {
             return new List<object>(target.GetComponentsInChildrensParentsOrSiblings(dependencyType));
         }

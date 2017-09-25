@@ -1,4 +1,7 @@
-﻿public abstract class StateMachine
+﻿namespace NullSurvival
 {
-    //public abstract void Execute(Actor actor);
+    public abstract class StateMachine
+    {
+        public abstract void Execute(Actor actor);
+    }
 }

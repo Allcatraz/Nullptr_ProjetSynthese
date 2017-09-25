@@ -1,0 +1,9 @@
+diff a/Assets/Libraries/Harmony/Scripts/Playmode/Core/Script.cs b/Assets/Libraries/Harmony/Scripts/Playmode/Core/Script.cs	(rejected hunks)
+@@ -10,7 +10,6 @@
+ 
+ namespace Harmony
+ {
+-    public abstract class Script : MonoBehaviour
+     public abstract class Script : NetworkBehaviour
+     {
+         /// <summary>

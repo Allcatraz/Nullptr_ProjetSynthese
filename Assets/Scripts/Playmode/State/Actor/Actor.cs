@@ -12,11 +12,12 @@ namespace ProjetSynthese
         public StateMachine CurrentState { get; private set; }
         public ActorController ActorController { get; private set; }
 
-
+        private bool isDead;
 
         // Use this for initialization
         private void Start()
         {
+            isDead = true;
             switch (actorType)
             {
                 case ActorType.None:
@@ -57,6 +58,16 @@ namespace ProjetSynthese
                 default:
                     break;
             }
+        }
+
+        public bool IsDead()
+        {
+            return isDead;
+        }
+
+        public void SetDead()
+        {
+            isDead = true;
         }
 
         public void ChangeState(StateMachine newState)

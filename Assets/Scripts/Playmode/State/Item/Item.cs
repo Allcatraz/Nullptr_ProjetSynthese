@@ -4,17 +4,20 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class Item : MonoBehaviour {
+    public abstract class Item : GameScript
+    {
+        public ItemType Type { get; private set; }
+        public abstract void Use();
 
-	    // Use this for initialization
-	    void Start () {
-		
-	    }
-	
-	    // Update is called once per frame
-	    void Update () {
-		
-	    }
+
+        public static bool operator==(Item item1, Item item2)
+        {
+            return item1.Type == item2.Type;
+        }
+
+        public static bool operator !=(Item item1, Item item2)
+        {
+            return !(item1 == item2);
+        }
     }
 }
-

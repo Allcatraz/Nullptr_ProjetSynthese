@@ -6,7 +6,7 @@ namespace ProjetSynthese
 {
     public enum InventoryOf {Player, Item}
 
-    [AddComponentMenu("Game/State/Health")]
+    [AddComponentMenu("Game/State/Inventory/Inventory")]
     public class Inventory : GameScript
     {
 
@@ -26,8 +26,24 @@ namespace ProjetSynthese
             if (inventoryOf == InventoryOf.Player)
             {
                 Cell cell = CreatePlayerCell(game);
-                listInventory.Add(cell);
+                if (IsItemPresentInInventory(cell)) listInventory.Add(cell);
+
             }
+        }
+
+        private bool IsItemPresentInInventory(Cell cell)
+        {
+            bool itemIsPresentInInventory = false;
+            foreach (Cell item in listInventory)
+            {
+                if (item == cell)
+                {
+                    item.AddCompteur();
+                    itemIsPresentInInventory = true;
+                    break;
+                }
+            }
+            return itemIsPresentInInventory;
         }
 
         private static Cell CreatePlayerCell(GameObject game)
@@ -43,7 +59,7 @@ namespace ProjetSynthese
             if (inventoryOf == InventoryOf.Item)
             {
                 Cell cell = CreateItemCell(game);
-                listInventory.Add(cell);
+                if (IsItemPresentInInventory(cell)) listInventory.Add(cell);
             }
         }
 
@@ -59,13 +75,27 @@ namespace ProjetSynthese
         {
             if (inventoryOf == InventoryOf.Item)
             {
-                listInventory.Remove(CreateItemCell(game));
+                Cell temp = CreateItemCell(game);
+                CheckMultiplePresenceAndRemove(temp);
             }
             if (inventoryOf == InventoryOf.Player)
             {
-                listInventory.Remove(CreatePlayerCell(game));
+                Cell temp = CreatePlayerCell(game);
+                CheckMultiplePresenceAndRemove(temp);
             }
             
+        }
+
+        private void CheckMultiplePresenceAndRemove(Cell temp)
+        {
+            if (temp.GetCompteur() >= 2)
+            {
+                temp.RemoveOneFromCompteur();
+            }
+            else
+            {
+                listInventory.Remove(temp);
+            }
         }
     }
 }

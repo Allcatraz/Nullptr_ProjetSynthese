@@ -6,11 +6,27 @@ namespace ProjetSynthese
 {
     public class Cell
     {
+        private int compteur;
 
         public Cell()
-    {
+        {
+            compteur = 0;
+        }
 
-    }
+        public void AddCompteur()
+        {
+            compteur++;
+        }
+
+        public int GetCompteur()
+        {
+            return compteur;
+        }
+
+        public void RemoveOneFromCompteur()
+        {
+            compteur--;
+        }
 
         public virtual void SetItem(GameObject game)
         {
@@ -25,6 +41,18 @@ namespace ProjetSynthese
         {
 
         }
+
+        public static bool operator ==(Cell one, Cell two)
+        {
+            return one.GetItem() == two.GetItem();
+        }
+
+        public static bool operator != (Cell one, Cell two)
+        {
+            return !(one == two);
+        }
+
+
 
     }
 }

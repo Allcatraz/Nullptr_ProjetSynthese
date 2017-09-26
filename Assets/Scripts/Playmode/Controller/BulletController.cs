@@ -1,11 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Harmony;
 
-public class BulletController : MonoBehaviour
+namespace ProjetSynthese
 {
-    public void Update()
+    public class BulletController : NetworkGameScript
     {
-        
+        public void SetLivingTime(float livingTime)
+        {
+            Destroy(gameObject, livingTime);
+        }
+
+
+        public void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.tag == R.S.Tag.Player)
+            {
+                // TODO Ajouter le code pour gèrer les dégâts au player
+                throw new System.NotImplementedException("TODO Ajouter le code pour gèrer les dégâts au player");
+            }
+            Destroy(gameObject);
+        }
     }
 }
+

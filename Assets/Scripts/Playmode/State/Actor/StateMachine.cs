@@ -1,6 +1,6 @@
-﻿using ProjetSynthese;
+﻿
 
-namespace NullSurvival
+namespace ProjetSynthese
 {
     public abstract class StateMachine
     {

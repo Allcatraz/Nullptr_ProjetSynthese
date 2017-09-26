@@ -1,7 +1,4 @@
-﻿//using System.Collections;
-//using System.Collections.Generic;
-
-using NullSurvival;
+﻿
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -41,10 +38,10 @@ namespace ProjetSynthese
         // Update is called once per frame
         private void Update()
         {
-            //if (currentState != null)
-            //{
-            //    currentState.Execute(this);
-            //}
+            if (CurrentState != null)
+            {
+                CurrentState.Execute(this);
+            }
 
             switch (actorType)
             {
@@ -62,15 +59,15 @@ namespace ProjetSynthese
             }
         }
 
-        //    public void ChangeState(StateMachine newState)
-        //    {
+        public void ChangeState(StateMachine newState)
+        {
 
-        //#if UNITY_EDITOR
-        //        Debug.Assert(currentState != null && newState != null, "État nouveau ou courant de la state machine est null");
-        //#endif
+#if UNITY_EDITOR
+            Debug.Assert(CurrentState != null && newState != null, "État nouveau ou courant de la state machine est null");
+#endif
 
-        //        currentState = newState;
+           CurrentState = newState;
 
-        //    }
+        }
     }
 }

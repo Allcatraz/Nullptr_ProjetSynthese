@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using Harmony;
 using JetBrains.Annotations;
 using UnityEngine.Networking;
 
@@ -8,7 +9,7 @@ using UnityEngine.Networking;
 //Warning is thus disabled in this file.
 #pragma warning disable 660, 661
 
-namespace Harmony
+namespace ProjetSynthese
 {
     /// <summary>
     /// Représente un Script Unity. Extension des <i>NetworkBehaviour</i>. Ajoute de nombreuses fonctionalitées en 

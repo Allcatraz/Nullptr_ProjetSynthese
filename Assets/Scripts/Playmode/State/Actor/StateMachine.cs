@@ -1,4 +1,9 @@
-﻿public abstract class StateMachine
+﻿using ProjetSynthese;
+
+namespace NullSurvival
 {
-    //public abstract void Execute(Actor actor);
+    public abstract class StateMachine
+    {
+        public abstract void Execute(Actor actor);
+    }
 }

@@ -17,11 +17,10 @@ namespace ProjetSynthese
 
         public Text TextNumber { get; private set; }
 
-        private void InjectCellObject([EntityScope] Text textName,
-                                     [EntityScope] Image imageBackground)
+        private void InjectCellObject([EntityScope] Text textName)
         {
             this.TextName = textName;
-            this.ImageBackground = imageBackground;
+            //this.ImageBackground = imageBackground;
         }
 
         private void Awake()

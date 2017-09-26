@@ -7,13 +7,15 @@ namespace ProjetSynthese
     public class Weapon : Item
     {
         [SerializeField]
-        GameObject bulletSpawnPoint;
+        private GameObject bulletSpawnPoint;
         [SerializeField]
-        float BulletSpeed;
+        private float bulletSpeed;
+        [SerializeField]
+        private float bulletLivingTime;
 
         public override void Use()
         {
-            BulletFabric.CreateBullet(bulletSpawnPoint, BulletSpeed);
+            BulletFabric.CreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);
         }
     }
 }

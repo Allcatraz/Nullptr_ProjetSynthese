@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public abstract class Item : GameScript
+    public abstract class Item : NetworkGameScript
     {
         public ItemType Type { get; private set; }
         public abstract void Use();

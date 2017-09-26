@@ -83,6 +83,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpawnPoint: {fileID: 1978051831267582}
   BulletSpeed: 10
+  bulletLivingTime: 2
 --- !u!212 &212156373986797848
 SpriteRenderer:
   m_ObjectHideFlags: 1

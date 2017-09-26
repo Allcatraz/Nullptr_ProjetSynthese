@@ -6,61 +6,40 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : NetworkGameScript
     {
-        private Health health;
-        private KeyboardInputSensor playerInputSensor;
-        private ImpulseMover impulseMover;
+        private KeyboardInputSensor keyboardInputSensor;
+        private MouseInputSensor mouseInputSensor;
+        private PlayerMover playerMover;
 
-        private void InjectPlayerController([GameObjectScope] Health health, [ApplicationScope] KeyboardInputSensor playerInputSensor)
+        private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
+                                            [ApplicationScope] MouseInputSensor mouseInputSensor,
+                                            [GameObjectScope] PlayerMover playerMover)
         {
-            this.health = health;
-            this.playerInputSensor = playerInputSensor;
+            this.mouseInputSensor = mouseInputSensor;
+            this.keyboardInputSensor = keyboardInputSensor;
+            this.playerMover = playerMover;
         }
 
         private void Awake()
         {
             InjectDependencies("InjectPlayerController");
-
-            playerInputSensor.Keyboards.OnFoward += OnFoward;
-            playerInputSensor.Keyboards.OnBackward += OnBackward;
-            playerInputSensor.Keyboards.OnRotateLeft += OnRotateLeft;
-            playerInputSensor.Keyboards.OnRotateRight += OnRotateRight;
-
-            playerInputSensor.Keyboards.OnFire += OnFire;
-        }
-
-        public void Configure()
-        {
-            health.Reset();
+            keyboardInputSensor.Keyboards.OnMove += OnMove;
+            keyboardInputSensor.Keyboards.OnFire += OnFire;
         }
 
         private void OnDestroy()
         {
-            playerInputSensor.Keyboards.OnFoward -= OnFoward;
-            playerInputSensor.Keyboards.OnBackward -= OnBackward;
-            playerInputSensor.Keyboards.OnRotateLeft -= OnRotateLeft;
-            playerInputSensor.Keyboards.OnRotateRight -= OnRotateRight;
-
-            playerInputSensor.Keyboards.OnFire -= OnFire;
+            keyboardInputSensor.Keyboards.OnMove -= OnMove;
+            keyboardInputSensor.Keyboards.OnFire -= OnFire;
         }
 
-        private void OnFoward()
+        private void Update()
         {
-            impulseMover.AddFowardImpulse();
+            playerMover.Rotate();
         }
 
-        private void OnBackward()
+        private void OnMove(Vector3 direction)
         {
-            impulseMover.AddBackwardImpulse();
-        }
-
-        private void OnRotateLeft()
-        {
-            impulseMover.AddRotateLeftImpulse();
-        }
-
-        private void OnRotateRight()
-        {
-            impulseMover.AddRotateRightImpulse();
+            playerMover.Move(direction);
         }
 
         private void OnFire()

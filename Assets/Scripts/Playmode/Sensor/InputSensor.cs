@@ -1,4 +1,6 @@
-﻿namespace ProjetSynthese
+﻿using UnityEngine;
+
+namespace ProjetSynthese
 {
     public abstract class InputSensor : GameScript
     {
@@ -9,10 +11,7 @@
             public event ConfirmEventHandler OnConfirm;
             public event TogglePauseEventHandler OnTogglePause;
             public event FireEventHandler OnFire;
-            public event FowardEventHandler OnFoward;
-            public event BackwardEventHandler OnBackward;
-            public event RotateLeftEventHandler OnRotateLeft;
-            public event RotateRightEventHandler OnRotateRight;
+            public event MoveTowardHandler OnMove;
 
             public abstract IInputDevice this[int deviceIndex] { get; }
 
@@ -41,24 +40,9 @@
                 if (OnFire != null) OnFire();
             }
 
-            protected virtual void NotifyFoward()
+            protected virtual void NotifyMove(Vector3 direction)
             {
-                if (OnFoward != null) OnFoward();
-            }
-
-            protected virtual void NotifyBackward()
-            {
-                if (OnBackward != null) OnBackward();
-            }
-
-            protected virtual void NotifyRotateLeft()
-            {
-                if (OnRotateLeft != null) OnRotateLeft();
-            }
-
-            protected virtual void NotifyRotateRight()
-            {
-                if (OnRotateRight != null) OnRotateRight();
+                if (OnMove != null) OnMove(direction);
             }
         }
 
@@ -69,10 +53,7 @@
             private bool confirmedTriggerd;
             private bool togglePauseTriggerd;
             private bool fireTriggerd;
-            private bool fowardTriggerd;
-            private bool backwardTriggerd;
-            private bool rotateLeftTriggerd;
-            private bool rotateRightTriggerd;
+            private bool moveTriggerd;
 
             public abstract override IInputDevice this[int deviceIndex] { get; }
 
@@ -83,10 +64,7 @@
                 confirmedTriggerd = false;
                 togglePauseTriggerd = false;
                 fireTriggerd = false;
-                fowardTriggerd = false;
-                backwardTriggerd = false;
-                rotateLeftTriggerd = false;
-                rotateRightTriggerd = false;
+                moveTriggerd = false;
             }
 
             protected override void NotifyUp()
@@ -134,39 +112,12 @@
                 }
             }
 
-            protected override void NotifyFoward()
+            protected override void NotifyMove(Vector3 direction)
             {
-                if (!fowardTriggerd)
+                if (!moveTriggerd)
                 {
-                    base.NotifyFoward();
-                    fowardTriggerd = true;
-                }
-            }
-
-            protected override void NotifyBackward()
-            {
-                if (!backwardTriggerd)
-                {
-                    base.NotifyBackward();
-                    backwardTriggerd = true;
-                }
-            }
-
-            protected override void NotifyRotateLeft()
-            {
-                if (!rotateLeftTriggerd)
-                {
-                    base.NotifyRotateLeft();
-                    rotateLeftTriggerd = true;
-                }
-            }
-
-            protected override void NotifyRotateRight()
-            {
-                if (!rotateRightTriggerd)
-                {
-                    base.NotifyRotateRight();
-                    rotateRightTriggerd = true;
+                    base.NotifyMove(direction);
+                    moveTriggerd = true;
                 }
             }
         }

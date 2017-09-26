@@ -46,7 +46,6 @@ namespace ProjetSynthese
                 HandleUiInput();
                 HandleActionInput();
                 HandleDirectionInput();
-                HandleRotationInput();
             }
 
             public override IInputDevice this[int deviceIndex]
@@ -84,25 +83,21 @@ namespace ProjetSynthese
 
             private void HandleDirectionInput()
             {
-                if (keyboard.GetKey(KeyCode.UpArrow))
+                if (keyboard.GetKey(KeyCode.W))
                 {
-                    NotifyFoward();
+                    NotifyMove(Vector3.up);
                 }
-                if (keyboard.GetKey(KeyCode.DownArrow))
+                if (keyboard.GetKey(KeyCode.A))
                 {
-                    NotifyBackward();
+                    NotifyMove(Vector3.left);
                 }
-            }
-
-            private void HandleRotationInput()
-            {
-                if (keyboard.GetKey(KeyCode.LeftArrow))
+                if (keyboard.GetKey(KeyCode.S))
                 {
-                    NotifyRotateLeft();
+                    NotifyMove(Vector3.down);
                 }
-                if (keyboard.GetKey(KeyCode.RightArrow))
+                if (keyboard.GetKey(KeyCode.D))
                 {
-                    NotifyRotateRight();
+                    NotifyMove(Vector3.right);
                 }
             }
         }

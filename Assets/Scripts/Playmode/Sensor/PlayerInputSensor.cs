@@ -53,20 +53,14 @@ namespace ProjetSynthese
                 keyboardInputDevice.OnConfirm += NotifyConfirm;
                 keyboardInputDevice.OnTogglePause += NotifyTogglePause;
                 keyboardInputDevice.OnFire += NotifyFire;
-                keyboardInputDevice.OnFoward += NotifyFoward;
-                keyboardInputDevice.OnBackward += NotifyBackward;
-                keyboardInputDevice.OnRotateLeft += NotifyRotateLeft;
-                keyboardInputDevice.OnRotateRight += NotifyRotateRight;
+                keyboardInputDevice.OnMove += NotifyMove;
 
                 gamePadInputDevice.OnUp += NotifyUp;
                 gamePadInputDevice.OnDown += NotifyDown;
                 gamePadInputDevice.OnConfirm += NotifyConfirm;
                 gamePadInputDevice.OnTogglePause += NotifyTogglePause;
                 gamePadInputDevice.OnFire += NotifyFire;
-                gamePadInputDevice.OnFoward += NotifyFoward;
-                gamePadInputDevice.OnBackward += NotifyBackward;
-                gamePadInputDevice.OnRotateLeft += NotifyRotateLeft;
-                gamePadInputDevice.OnRotateRight += NotifyRotateRight;
+                gamePadInputDevice.OnMove += NotifyMove;
             }
 
             public override IInputDevice this[int deviceIndex]

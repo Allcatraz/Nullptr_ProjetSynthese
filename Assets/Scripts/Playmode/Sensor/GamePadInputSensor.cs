@@ -77,7 +77,6 @@ namespace ProjetSynthese
                 HandleUiInput();
                 HandleActionInput();
                 HandleDirectionInput();
-                HandleRotationInput();
 
                 previousFrameGamePadState = currentFrameGamePadState;
             }
@@ -114,23 +113,11 @@ namespace ProjetSynthese
             {
                 if (IsPressed(currentFrameGamePadState.DPad.Up))
                 {
-                    NotifyFoward();
+                    NotifyMove(Vector3.up);
                 }
                 if (IsPressed(currentFrameGamePadState.DPad.Down))
                 {
-                    NotifyBackward();
-                }
-            }
-
-            private void HandleRotationInput()
-            {
-                if (IsPressed(currentFrameGamePadState.DPad.Left))
-                {
-                    NotifyRotateLeft();
-                }
-                if (IsPressed(currentFrameGamePadState.DPad.Right))
-                {
-                    NotifyRotateRight();
+                    NotifyMove(Vector3.down);
                 }
             }
 

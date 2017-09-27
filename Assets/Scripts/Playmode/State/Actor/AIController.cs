@@ -14,12 +14,38 @@ namespace ProjetSynthese
         public bool OpponentTargetDestinationIsKnown { get; set; }
         public bool ItemTargetDestinationIsKnown { get; set; }
 
-        public enum MoveTarget { Item,Map,Opponent };
+        public enum MoveTarget { Item, Map, Opponent };
         public MoveTarget AIMoveTarget { get; set; }
 
-        public enum SpeedLevel { Walking, Jogging, Running,Swimming };
-        public SpeedLevel AISpeed { get; set; }
-
+        public enum SpeedLevel { Walking, Jogging, Running, Swimming };
+        public SpeedLevel AISpeed
+        {
+            get
+            {
+                return AISpeed;
+            }
+            set
+            {
+                AISpeed = value;
+                switch (AISpeed)
+                {
+                    case SpeedLevel.Walking:
+                        currentSpeedLevel = WalkingSpeed;
+                        break;
+                    case SpeedLevel.Jogging:
+                        currentSpeedLevel = JoggingSpeed;
+                        break;
+                    case SpeedLevel.Running:
+                        currentSpeedLevel = RunningSpeed;
+                        break;
+                    case SpeedLevel.Swimming:
+                        currentSpeedLevel = SwimmingSpeed;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
         [SerializeField]
         private const float WalkingSpeed = 0.75f;
         [SerializeField]
@@ -30,18 +56,22 @@ namespace ProjetSynthese
         private const float SwimmingSpeed = 0.5f;
 
         private float currentSpeedLevel;
+
         private const float RandomRadiusMoveRange = 5.0f;
 
         private const float errorPositionTolerance = 0.001f;
+
+        public AIRadar AISensor { get; private set; }
 
         private void Start()
         {
             MapDestinationIsKnown = false;
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
-         }
+            AISensor = new AIRadar();
+        }
 
-         public bool HasReachedMapDestination()
+        public bool HasReachedMapDestination()
         {
 
             float distance = Vector3.Distance(MapDestination, this.transform.position);
@@ -103,7 +133,7 @@ namespace ProjetSynthese
             Vector3 nouvellePosition = Vector3.MoveTowards(transform.position, destination, pas);
 
             ////Différence entre la nouvelle et l'ancienne position, pour calculer l'angle de rotation
-            Vector3 mouvement = new Vector3(nouvellePosition.x - transform.position.x, nouvellePosition.y - transform.position.y,nouvellePosition.z - transform.position.z);
+            Vector3 mouvement = new Vector3(nouvellePosition.x - transform.position.x, nouvellePosition.y - transform.position.y, nouvellePosition.z - transform.position.z);
 
             ////Angle de rotation en degrée (car l'affichage de Unity veut les angles en degrée); Mathf.Rad2Deg nécessaire car Mathf.Atan2 un résultat en radiants
             float angle = -Mathf.Atan2(mouvement.x, mouvement.y) * Mathf.Rad2Deg;
@@ -125,7 +155,7 @@ namespace ProjetSynthese
             //
             newDestination.x += signXOffset * xOffset;
             newDestination.y += signYOffset * yOffset;
-            MapDestination =  newDestination;
+            MapDestination = newDestination;
             MapDestinationIsKnown = true;
         }
     }

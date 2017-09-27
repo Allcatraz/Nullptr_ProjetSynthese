@@ -18,6 +18,12 @@
             aiController.AIMoveTarget = AIController.MoveTarget.Map;
             aiController.AISpeed = AIController.SpeedLevel.Walking;
             actor.ActorController.Move();
+
+            if (aiController.AISensor.AIPerceptionLevel != AIRadar.PerceptionLevel.High)
+            {
+                aiController.AISensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+            }
+            
         }
     }
 }

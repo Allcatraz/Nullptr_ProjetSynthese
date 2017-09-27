@@ -8,10 +8,8 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/State/Health")]
     public class Health : GameScript
     {
-        [SerializeField]
-        private int initialHealthPoints;
-        [SerializeField]
-        private int maxHealthPoints;
+        [SerializeField] private int initialHealthPoints;
+        [SerializeField] private int maxHealthPoints;
 
         private int healthPoints;
 
@@ -25,7 +23,9 @@ namespace ProjetSynthese
             {
                 int oldHealthPoints = healthPoints;
                 healthPoints = value < 0 ? 0 : (value > maxHealthPoints ? maxHealthPoints : value);
+
                 if (OnHealthChanged != null) OnHealthChanged(oldHealthPoints, healthPoints);
+
                 if (healthPoints <= 0 && OnDeath != null)
                 {
                     OnDeath();

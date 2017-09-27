@@ -6,17 +6,20 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : GameScript
     {
+        private Health health;
         private KeyboardInputSensor keyboardInputSensor;
         private MouseInputSensor mouseInputSensor;
         private PlayerMover playerMover;
 
         private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                             [ApplicationScope] MouseInputSensor mouseInputSensor,
-                                            [GameObjectScope] PlayerMover playerMover)
+                                            [GameObjectScope] PlayerMover playerMover,
+                                            [GameObjectScope] Health health)
         {
             this.mouseInputSensor = mouseInputSensor;
             this.keyboardInputSensor = keyboardInputSensor;
             this.playerMover = playerMover;
+            this.health = health;
         }
 
         private void Awake()

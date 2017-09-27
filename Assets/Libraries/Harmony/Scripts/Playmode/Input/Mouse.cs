@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.Experimental.UIElements;
 
 namespace Harmony
 {
     [AddComponentMenu("Game/Input/Mouse")]
     public class Mouse : Script
     {
-        public bool GetMouseButton(int button)
+        public bool GetMouseButton(MouseButton button)
         {
-            return Input.GetMouseButton(button);
+            return Input.GetMouseButton((int)button);
         }
 
-        public bool GetMouseButtonDown(int button)
+        public bool GetMouseButtonDown(MouseButton button)
         {
-            return Input.GetMouseButtonDown(button);
+            return Input.GetMouseButtonDown((int)button);
         }
     }
 }

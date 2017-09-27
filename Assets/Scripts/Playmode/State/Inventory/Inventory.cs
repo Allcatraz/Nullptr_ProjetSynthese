@@ -19,6 +19,7 @@ namespace ProjetSynthese
         private void Start()
         {
             parent = this.gameObject.transform.parent.gameObject;
+            CreateListeIsNotExist();
         }
 
         public void Add(GameObject game)

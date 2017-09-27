@@ -497,10 +497,10 @@ namespace Harmony
             {
                 controller = null;
 
-                string sceneNameToActivate = R.S.Scene.ToString(activity.ActiveFragmentOnLoad == null
-                    ? activity.Scene
-                    : activity.ActiveFragmentOnLoad.Scene);
-                SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneNameToActivate));
+                if (activity.ActiveFragmentOnLoad != null)
+                {
+                    SceneManager.SetActiveScene(SceneManager.GetSceneByName(R.S.Scene.ToString(activity.ActiveFragmentOnLoad.Scene)));
+                }
 
                 if (activity.Controller != R.E.GameObject.None)
                 {

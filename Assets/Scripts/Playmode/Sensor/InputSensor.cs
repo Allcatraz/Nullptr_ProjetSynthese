@@ -9,9 +9,12 @@ namespace ProjetSynthese
             public event UpEventHandler OnUp;
             public event DownEventHandler OnDown;
             public event ConfirmEventHandler OnConfirm;
+
+            public event InventoryEventHandler OnInventoryAction;
             public event TogglePauseEventHandler OnTogglePause;
             public event FireEventHandler OnFire;
             public event MoveTowardHandler OnMove;
+            public event PickupHandler OnPickup;
 
             public abstract IInputDevice this[int deviceIndex] { get; }
 
@@ -44,6 +47,16 @@ namespace ProjetSynthese
             {
                 if (OnMove != null) OnMove(direction);
             }
+
+            protected virtual void NotifyInventoryAction()
+            {
+                if (OnInventoryAction != null) OnInventoryAction();
+            }
+
+            protected virtual void NotifyPickup()
+            {
+                if (OnPickup != null) OnPickup();
+            }
         }
 
         protected abstract class TriggerOncePerFrameInputDevice : InputDevice
@@ -51,9 +64,12 @@ namespace ProjetSynthese
             private bool upTriggerd;
             private bool downTriggerd;
             private bool confirmedTriggerd;
+
+            private bool inventoryTriggerd;
             private bool togglePauseTriggerd;
             private bool fireTriggerd;
             private bool moveTriggerd;
+            private bool pickupTriggerd;
 
             public abstract override IInputDevice this[int deviceIndex] { get; }
 
@@ -62,9 +78,12 @@ namespace ProjetSynthese
                 upTriggerd = false;
                 downTriggerd = false;
                 confirmedTriggerd = false;
+
+                inventoryTriggerd = false;
                 togglePauseTriggerd = false;
                 fireTriggerd = false;
                 moveTriggerd = false;
+                pickupTriggerd = false;
             }
 
             protected override void NotifyUp()
@@ -118,6 +137,24 @@ namespace ProjetSynthese
                 {
                     base.NotifyMove(direction);
                     moveTriggerd = true;
+                }
+            }
+
+            protected override void NotifyInventoryAction()
+            {
+                if (!inventoryTriggerd)
+                {
+                    base.NotifyInventoryAction();
+                    inventoryTriggerd = true;
+                }
+            }
+
+            protected override void NotifyPickup()
+            {
+                if (!pickupTriggerd)
+                {
+                    base.NotifyPickup();
+                    pickupTriggerd = false;
                 }
             }
         }

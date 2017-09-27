@@ -85,7 +85,7 @@ namespace ProjetSynthese
             {
                 if (keyboard.GetKey(KeyCode.W))
                 {
-                    NotifyMove(Vector3.up);
+                    NotifyMove(Vector3.forward);
                 }
                 if (keyboard.GetKey(KeyCode.A))
                 {
@@ -93,7 +93,7 @@ namespace ProjetSynthese
                 }
                 if (keyboard.GetKey(KeyCode.S))
                 {
-                    NotifyMove(Vector3.down);
+                    NotifyMove(Vector3.back);
                 }
                 if (keyboard.GetKey(KeyCode.D))
                 {

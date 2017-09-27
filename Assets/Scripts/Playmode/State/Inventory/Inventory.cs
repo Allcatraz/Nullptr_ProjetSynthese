@@ -9,16 +9,53 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/State/Inventory/Inventory")]
     public class Inventory : GameScript
     {
-
         [SerializeField]
         private InventoryOf inventoryOf;
 
-        private List<Cell> listInventory;
+        public GameObject parent { get; set; }
+
+        public List<Cell> listInventory { get; private set; }
+
+        private void Start()
+        {
+            parent = this.gameObject.transform.parent.gameObject;
+        }
 
         public void Add(GameObject game)
         {
+            CreateListeIsNotExist();
             AddItemCellToInventory(game);
             AddPlayerCellToInventory(game);
+        }
+
+        public void Add(Item item)
+        {
+            CreateListeIsNotExist();
+            Cell cell = new CellItem(item);
+            if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+        }
+
+        public void Remove(GameObject game)
+        {
+            if (inventoryOf == InventoryOf.Item)
+            {
+                Cell temp = CreateItemCell(game);
+                CheckMultiplePresenceAndRemove(temp);
+            }
+            if (inventoryOf == InventoryOf.Player)
+            {
+                Cell temp = CreatePlayerCell(game);
+                CheckMultiplePresenceAndRemove(temp);
+            }
+
+        }
+
+        private void CreateListeIsNotExist()
+        {
+            if (listInventory == null)
+            {
+                listInventory = new List<Cell>();
+            }
         }
 
         private void AddPlayerCellToInventory(GameObject game)
@@ -26,7 +63,7 @@ namespace ProjetSynthese
             if (inventoryOf == InventoryOf.Player)
             {
                 Cell cell = CreatePlayerCell(game);
-                if (IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
 
             }
         }
@@ -40,7 +77,7 @@ namespace ProjetSynthese
                 {
                     item.AddCompteur();
                     itemIsPresentInInventory = true;
-                    break;
+                    break; 
                 }
             }
             return itemIsPresentInInventory;
@@ -59,7 +96,7 @@ namespace ProjetSynthese
             if (inventoryOf == InventoryOf.Item)
             {
                 Cell cell = CreateItemCell(game);
-                if (IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
             }
         }
 
@@ -69,21 +106,6 @@ namespace ProjetSynthese
             cell.SetItem(game);
             cell.SetImage();
             return cell;
-        }
-
-        public void Remove(GameObject game)
-        {
-            if (inventoryOf == InventoryOf.Item)
-            {
-                Cell temp = CreateItemCell(game);
-                CheckMultiplePresenceAndRemove(temp);
-            }
-            if (inventoryOf == InventoryOf.Player)
-            {
-                Cell temp = CreatePlayerCell(game);
-                CheckMultiplePresenceAndRemove(temp);
-            }
-            
         }
 
         private void CheckMultiplePresenceAndRemove(Cell temp)

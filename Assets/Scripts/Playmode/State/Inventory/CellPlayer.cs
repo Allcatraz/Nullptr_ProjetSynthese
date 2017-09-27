@@ -10,9 +10,9 @@ namespace ProjetSynthese
         private Item item;
 
         public CellPlayer()
-    {
+        {
 
-    }
+        }
 
         public override void SetItem(GameObject game)
         {

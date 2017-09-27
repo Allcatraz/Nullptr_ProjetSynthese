@@ -30,6 +30,7 @@ namespace ProjetSynthese
         private const float SwimmingSpeed = 0.5f;
 
         private float currentSpeedLevel;
+        private const float RandomRadiusMoveRange = 5.0f;
 
         private const float errorPositionTolerance = 0.001f;
 
@@ -38,9 +39,7 @@ namespace ProjetSynthese
             MapDestinationIsKnown = false;
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
-            AISpeed = SpeedLevel.Walking;
-            AIMoveTarget = MoveTarget.Map;
-        }
+         }
 
          public bool HasReachedMapDestination()
         {
@@ -116,5 +115,18 @@ namespace ProjetSynthese
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
+        public void GenerateRandomDestination()
+        {
+            Vector3 newDestination = this.transform.position;
+            float xOffset = Random.Range(0.0f, RandomRadiusMoveRange);
+            float yOffset = RandomRadiusMoveRange - xOffset;
+            float signXOffset = (Random.Range(0, 2) * 2) - 1;
+            float signYOffset = (Random.Range(0, 2) * 2) - 1;
+            //
+            newDestination.x += signXOffset * xOffset;
+            newDestination.y += signYOffset * yOffset;
+            MapDestination =  newDestination;
+            MapDestinationIsKnown = true;
+        }
     }
 }

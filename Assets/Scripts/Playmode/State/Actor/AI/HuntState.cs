@@ -6,7 +6,7 @@
         
         public override void Execute(Actor actor)
         {
-
+            actor.ActorController.Move();
         }
     }
 }

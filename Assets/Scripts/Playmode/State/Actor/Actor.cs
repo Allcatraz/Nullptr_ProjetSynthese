@@ -26,7 +26,7 @@ namespace ProjetSynthese
                     //update ui ....
                     break;
                 case ActorType.AI:
-                    CurrentState = new LootState();
+                    CurrentState = new ExploreState();
                     ActorController = new AIController();
                     break;
                 case ActorType.Vehicle:

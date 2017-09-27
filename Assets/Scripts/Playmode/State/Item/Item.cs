@@ -6,7 +6,7 @@ namespace ProjetSynthese
 {
     public abstract class Item : NetworkGameScript
     {
-        public ItemType Type { get; private set; }
+        public ItemType Type { get; set; }
         public abstract void Use();
 
 

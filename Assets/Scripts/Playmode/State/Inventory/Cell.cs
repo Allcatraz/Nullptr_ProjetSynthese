@@ -10,7 +10,7 @@ namespace ProjetSynthese
 
         public Cell()
         {
-            compteur = 0;
+            compteur = 1;
         }
 
         public void AddCompteur()

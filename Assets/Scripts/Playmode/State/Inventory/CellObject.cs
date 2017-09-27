@@ -17,6 +17,15 @@ namespace ProjetSynthese
 
         public Text TextNumber { get; private set; }
 
+        public void InstantiateFromCell(Cell cell)
+        {
+            string name = cell.GetItem().Type.ToString();
+            int compteur = cell.GetCompteur();
+            SetTextName(name);
+            SetTextNumber(compteur);
+            SetImageBackground();
+        }
+
         private void InjectCellObject([EntityScope] Text textName)
         {
             this.TextName = textName;
@@ -28,32 +37,22 @@ namespace ProjetSynthese
             InjectDependencies("InjectCellObject");
         }
 
-        private void Start ()
-        {
-            SetTextNumber();
-            SetTextName();
-            SetImageBackground();
-        }
-	 
-	    private void Update ()
-        {
-		
-	    }
-
         private void SetImageBackground()
         {
             
         }
 
-        private void SetTextName()
+        private void SetTextName(string name)
         {
-            TextName.text = "Allo Test 01";
+            TextName.text = name;
         }
 
-        private void SetTextNumber()
+        private void SetTextNumber(int compteur)
         {
-
+            TextName.text += " " + compteur;
         }
+
+        
 
 
     }

@@ -11,9 +11,14 @@ namespace ProjetSynthese
         private Item item;
 
         public CellItem()
-    {
+        {
 
-    }
+        }
+
+        public CellItem(Item item)
+        {
+            this.item = item;
+        }
 
         public override void SetItem(GameObject game)
         {

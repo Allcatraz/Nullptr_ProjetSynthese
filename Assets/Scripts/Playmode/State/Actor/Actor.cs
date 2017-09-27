@@ -23,7 +23,7 @@ namespace ProjetSynthese
                 case ActorType.None:
                     break;
                 case ActorType.Player:
-                    //update ui ....
+                    ActorController = new PlayerController();
                     break;
                 case ActorType.AI:
                     CurrentState = new ExploreState();

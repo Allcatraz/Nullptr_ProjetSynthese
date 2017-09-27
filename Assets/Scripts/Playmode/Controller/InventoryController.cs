@@ -19,13 +19,15 @@ namespace ProjetSynthese
 
         private void InstantiateCellObjectFromCell()
         {
-            foreach (Cell item in inven.listInventory)
+            if (inven != null)
             {
-                GameObject cellObject = Instantiate(cellObjectPrefab);
-                cellObject.transform.SetParent(this.gameObject.transform.GetChild(0).transform.GetChild(1).transform.GetChild(0), false);
-                cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
-            }
-            
+                foreach (Cell item in inven.listInventory)
+                {
+                    GameObject cellObject = Instantiate(cellObjectPrefab);
+                    cellObject.transform.SetParent(this.gameObject.transform.GetChild(0).transform.GetChild(1).transform.GetChild(0), false);
+                    cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
+                }
+            }  
         }
     }
 }

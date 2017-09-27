@@ -12,32 +12,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Applications/Application.unity
     guid: 4f0db1959bd3f994bb0bfa29420fc5ed
   - enabled: 1
-    path: Assets/Scenes/Util/LoadingScreen.unity
-    guid: d34726df14dac204da9073e9bfceb05d
-  - enabled: 1
-    path: Assets/Scenes/Activities/MainActivity.unity
-    guid: 8cf4996867e2abf4e99a22dc521ce55b
-  - enabled: 1
-    path: Assets/Scenes/Menus/MainMenu.unity
-    guid: ab27821e7a59a444cbe39deedd33d775
-  - enabled: 1
-    path: Assets/Scenes/Menus/HighScoreMenu.unity
-    guid: 4d0ed868162d6cb479463186d894811b
-  - enabled: 1
-    path: Assets/Scenes/Activities/GameActivity.unity
-    guid: 9c54c3b5a557495489273f2b15326ab8
-  - enabled: 1
-    path: Assets/Scenes/Fragments/GameFragment.unity
-    guid: 82d30cb8d23b5c0418f4f13a7b49eeb4
-  - enabled: 1
-    path: Assets/Scenes/Menus/HeadUpMenu.unity
-    guid: c856e5ec9d6a98d488e98ffc0cb0fa27
-  - enabled: 1
-    path: Assets/Scenes/Menus/PauseMenu.unity
-    guid: 450e7f1cc2bd3b341bfadaf838c544c0
-  - enabled: 1
-    path: Assets/Scenes/Menus/GameOverMenu.unity
-    guid: e69ea2ad9e3682f4eac0c2c982c6c250
-  - enabled: 1
-    path: Assets/Scenes/Menus/NewHighScoreMenu.unity
-    guid: ffd209b1ae70eb04b92f07c16e12bfb4
+    path: Assets/Scenes/Menu/InventoryMenu.unity
+    guid: e37f3c12d0b371a40ae96f9d4bef0a17

@@ -1,4 +1,6 @@
-﻿namespace ProjetSynthese
+﻿using UnityEngine;
+
+namespace ProjetSynthese
 {
     //Menu actions
     public delegate void UpEventHandler();
@@ -12,13 +14,7 @@
 
     public delegate void FireEventHandler();
 
-    public delegate void FowardEventHandler();
-
-    public delegate void BackwardEventHandler();
-
-    public delegate void RotateLeftEventHandler();
-
-    public delegate void RotateRightEventHandler();
+    public delegate void MoveTowardHandler(Vector3 direction);
 
     public interface IInputDevice
     {
@@ -27,10 +23,7 @@
         event ConfirmEventHandler OnConfirm;
         event TogglePauseEventHandler OnTogglePause;
         event FireEventHandler OnFire;
-        event FowardEventHandler OnFoward;
-        event BackwardEventHandler OnBackward;
-        event RotateLeftEventHandler OnRotateLeft;
-        event RotateRightEventHandler OnRotateRight;
+        event MoveTowardHandler OnMove;
 
         IInputDevice this[int deviceIndex] { get; }
     }

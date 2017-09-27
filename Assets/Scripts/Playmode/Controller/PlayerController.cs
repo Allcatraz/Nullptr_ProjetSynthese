@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ProjetSynthese
 {
     [AddComponentMenu("Game/Control/PlayerController")]
-    public class PlayerController : ActorController
+    public class PlayerController : GameScript
     {
         private Health health;
         private KeyboardInputSensor keyboardInputSensor;

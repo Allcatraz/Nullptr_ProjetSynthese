@@ -649,6 +649,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activity: {fileID: 0}
+--- !u!1 &1678702219 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1626650311002092, guid: f03d194e998c0c04d8f606aa1dc7a524,
+    type: 2}
+  m_PrefabInternal: {fileID: 1748466094}
+--- !u!114 &1678702220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1678702219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa4a88033de38242b6ed17dbf3ddbdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialHealthPoints: 100
+  maxHealthPoints: 100
 --- !u!1 &1681460883 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1485457504529160, guid: f03d194e998c0c04d8f606aa1dc7a524,

@@ -1,6 +1,6 @@
 ﻿namespace ProjetSynthese
 {
-    public interface IActor
+    public interface IActorAI
     {
         bool IsDead();
         void SetDead();

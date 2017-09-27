@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class Actor : NetworkGameScript, IActor
+    public class ActorAI : NetworkGameScript, IActorAI
     {
         public enum ActorType { None, AI, Vehicle };
         [SerializeField]
@@ -13,11 +13,11 @@ namespace ProjetSynthese
         public ActorController ActorController { get; private set; }
 
         private bool isDead;
-
+        
       
         private void Start()
         {
-            isDead = true;
+            isDead = false;
             switch (actorType)
             {
                 case ActorType.None:
@@ -25,6 +25,7 @@ namespace ProjetSynthese
                 case ActorType.AI:
                     CurrentState = new ExploreState();
                     ActorController = new AIController();
+                    
                     break;
                 case ActorType.Vehicle:
                     break;

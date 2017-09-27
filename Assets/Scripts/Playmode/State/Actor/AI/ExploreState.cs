@@ -2,7 +2,7 @@
 {
     public class ExploreState : StateMachine
     {
-        public override void Execute(Actor actor)
+        public override void Execute(ActorAI actor)
         {
           
             AIController aiController = (AIController)actor.ActorController;

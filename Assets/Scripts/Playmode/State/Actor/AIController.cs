@@ -4,6 +4,8 @@ namespace ProjetSynthese
 {
     public class AIController : ActorController
     {
+        public bool IsInBuilding { get; set; }
+
         public Vector3 MapDestination { get; set; }
         public Vector3 OpponentTargetDestination { get; set; }
         public Vector3 ItemTargetDestination { get; set; }
@@ -37,6 +39,7 @@ namespace ProjetSynthese
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
             AISpeed = SpeedLevel.Walking;
+            AIMoveTarget = MoveTarget.Map;
         }
 
          public bool HasReachedMapDestination()
@@ -74,44 +77,43 @@ namespace ProjetSynthese
 
         public override void Move()
         {
-            //move toward choix type
-            
-            //float pas = this.currentSpeedLevel * Time.deltaTime;
-
-            ////La méthode MoveTowards de vector2 fait pas mal la job de déplacement pour nous.  Pour le moment elle va chercher la nouvelle position, mais le déplacement n'est pas encore fait.
-            //Vector2 nouvellePosition = Vector2.MoveTowards(transform.position, GetDestination(), pas);
-
-            ////Différence entre la nouvelle et l'ancienne position, pour calculer l'angle de rotation
-            //Vector2 mouvement = new Vector2(nouvellePosition.x - transform.position.x, nouvellePosition.y - transform.position.y);
-
-            ////Angle de rotation en degrée (car l'affichage de Unity veut les angles en degrée); Mathf.Rad2Deg nécessaire car Mathf.Atan2 un résultat en radiants
-            //float angle = -Mathf.Atan2(mouvement.x, mouvement.y) * Mathf.Rad2Deg;
-
-            ////On applique la nouvelle position
-            //transform.position = nouvellePosition;
-
-            ////On applique la nouvelle rotation
-            //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            MoveDestination(AIMoveTarget);
         }
 
         private void MoveDestination(MoveTarget moveTarget)
         {
             float pas = this.currentSpeedLevel * Time.deltaTime;
+            Vector3 destination = Vector3.zero;
+
+            switch (moveTarget)
+            {
+                case MoveTarget.Item:
+                    destination = ItemTargetDestination;
+                    break;
+                case MoveTarget.Map:
+                    destination = MapDestination;
+                    break;
+                case MoveTarget.Opponent:
+                    destination = OpponentTargetDestination;
+                    break;
+                default:
+                    break;
+            }
 
             ////La méthode MoveTowards de vector2 fait pas mal la job de déplacement pour nous.  Pour le moment elle va chercher la nouvelle position, mais le déplacement n'est pas encore fait.
-            //Vector2 nouvellePosition = Vector2.MoveTowards(transform.position, GetDestination(), pas);
+            Vector3 nouvellePosition = Vector3.MoveTowards(transform.position, destination, pas);
 
             ////Différence entre la nouvelle et l'ancienne position, pour calculer l'angle de rotation
-            //Vector2 mouvement = new Vector2(nouvellePosition.x - transform.position.x, nouvellePosition.y - transform.position.y);
+            Vector3 mouvement = new Vector3(nouvellePosition.x - transform.position.x, nouvellePosition.y - transform.position.y,nouvellePosition.z - transform.position.z);
 
             ////Angle de rotation en degrée (car l'affichage de Unity veut les angles en degrée); Mathf.Rad2Deg nécessaire car Mathf.Atan2 un résultat en radiants
-            //float angle = -Mathf.Atan2(mouvement.x, mouvement.y) * Mathf.Rad2Deg;
+            float angle = -Mathf.Atan2(mouvement.x, mouvement.y) * Mathf.Rad2Deg;
 
             ////On applique la nouvelle position
-            //transform.position = nouvellePosition;
+            transform.position = nouvellePosition;
 
             ////On applique la nouvelle rotation
-            //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
     }

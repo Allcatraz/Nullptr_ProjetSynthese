@@ -1,7 +1,4 @@
-﻿//using System.Collections;
-//using System.Collections.Generic;
-
-using NullSurvival;
+﻿
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -15,11 +12,12 @@ namespace ProjetSynthese
         public StateMachine CurrentState { get; private set; }
         public ActorController ActorController { get; private set; }
 
-
+        private bool isDead;
 
         // Use this for initialization
         private void Start()
         {
+            isDead = true;
             switch (actorType)
             {
                 case ActorType.None:
@@ -28,7 +26,7 @@ namespace ProjetSynthese
                     //update ui ....
                     break;
                 case ActorType.AI:
-                    CurrentState = new LootState();
+                    CurrentState = new ExploreState();
                     ActorController = new AIController();
                     break;
                 case ActorType.Vehicle:
@@ -41,10 +39,10 @@ namespace ProjetSynthese
         // Update is called once per frame
         private void Update()
         {
-            //if (currentState != null)
-            //{
-            //    currentState.Execute(this);
-            //}
+            if (CurrentState != null)
+            {
+                CurrentState.Execute(this);
+            }
 
             switch (actorType)
             {
@@ -62,15 +60,25 @@ namespace ProjetSynthese
             }
         }
 
-        //    public void ChangeState(StateMachine newState)
-        //    {
+        public bool IsDead()
+        {
+            return isDead;
+        }
 
-        //#if UNITY_EDITOR
-        //        Debug.Assert(currentState != null && newState != null, "État nouveau ou courant de la state machine est null");
-        //#endif
+        public void SetDead()
+        {
+            isDead = true;
+        }
 
-        //        currentState = newState;
+        public void ChangeState(StateMachine newState)
+        {
 
-        //    }
+#if UNITY_EDITOR
+            Debug.Assert(CurrentState != null && newState != null, "État nouveau ou courant de la state machine est null");
+#endif
+
+           CurrentState = newState;
+
+        }
     }
 }

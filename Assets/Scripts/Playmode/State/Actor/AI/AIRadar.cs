@@ -49,20 +49,33 @@ public class AIRadar
         }
     }
 
+    public enum LayerType {None,Default,Item}
+
+    public readonly string[] LayerNames = { "None","Default", "Item" };
+
     public void Init()
     {
         AIPerceptionLevel = PerceptionLevel.Low;
         currentPerceptionRange = LowRangePerception;
+        
     }
 
-
-    public ObjectType NeareastGameObject<ObjectType>(Vector3 position, int layerMask)
+    public ObjectType NeareastGameObject<ObjectType>(Vector3 position, LayerType layerType)
     {
-
+        
+        
         ObjectType nearestObject = default(ObjectType);
         RaycastHit[] inRangeObjects;
-        inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
-        //inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection);
+        if (layerType == LayerType.None)
+        {
+            inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection);
+        }
+        else
+        {
+            LayerMask layerMask = GetLayerMask(layerType);
+            inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
+        }
+        
         int neareastItemIndex = -1;
         float smallestDistance = float.MaxValue;
         if (inRangeObjects != null)
@@ -81,5 +94,14 @@ public class AIRadar
             nearestObject = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponent<ObjectType>();
         }
         return nearestObject;
+    }
+
+    private int GetLayerMask(LayerType layerType)
+    {
+        
+        LayerMask layerMask = LayerMask.NameToLayer(LayerNames[(int)layerType]);
+        layerMask = 1 << layerMask;
+
+        return layerMask;
     }
 }

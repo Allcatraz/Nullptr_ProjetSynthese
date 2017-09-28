@@ -44,6 +44,10 @@ namespace ProjetSynthese
 
         public static bool operator ==(Cell one, Cell two)
         {
+            if ((object)one == null && (object)two == null)
+            {
+                return true;
+            }
             if ((object)one == null || (object)two == null)
                 return false;
             return one.GetItem() == two.GetItem();

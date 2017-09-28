@@ -330,9 +330,24 @@ Prefab:
       propertyPath: m_Name
       value: PlayerInventoryPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 114697625147899822, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: gridInventoryPlayer
+      value: 
+      objectReference: {fileID: 647854437}
+    - target: {fileID: 114697625147899822, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: gridEquippedByPlayer
+      value: 
+      objectReference: {fileID: 119995096}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3d96b1a6b15605c48af243df09595a75, type: 2}
   m_IsPrefabParent: 0
+--- !u!224 &647854437 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224029565692181116, guid: 3d96b1a6b15605c48af243df09595a75,
+    type: 2}
+  m_PrefabInternal: {fileID: 647854436}
 --- !u!1 &1109293766
 GameObject:
   m_ObjectHideFlags: 0

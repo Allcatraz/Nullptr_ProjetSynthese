@@ -7,6 +7,8 @@ namespace ProjetSynthese
     public enum InventoryOf { Player, Item }
     public enum EquipWeaponAt { Primary, Secondary}
 
+    public delegate void OnInventoryChange();
+
     [AddComponentMenu("Game/State/Inventory/Inventory")]
     public class Inventory : GameScript
     {
@@ -16,46 +18,91 @@ namespace ProjetSynthese
 
         private Cell secondaryWeapon;
 
+        private Cell helmet;
+
+        private Cell vest;
+
+        public event OnInventoryChange InventoryChange;
+
         public GameObject parent { get; set; }
 
         public List<Cell> listInventory { get; private set; }
 
-        private void Start()
+        public void EquipWeaponAt(EquipWeaponAt selection, Cell itemToEquip)
         {
-            parent = this.gameObject.transform.parent.gameObject;
-            CreateListeIsNotExist();
-        }
-
-        public void EquipAt(EquipWeaponAt selection, Cell itemToEquip)
-        {
-            if (selection == EquipWeaponAt.Primary)
+            if (selection == ProjetSynthese.EquipWeaponAt.Primary)
             {
                 if (primaryWeapon != null)
                 {
-                    UnequipAt(EquipWeaponAt.Primary, primaryWeapon);
+                    UnequipWeaponAt(ProjetSynthese.EquipWeaponAt.Primary);
                 }
                 primaryWeapon = itemToEquip;
+                CheckMultiplePresenceAndRemove(itemToEquip);
             }
-            if (selection == EquipWeaponAt.Secondary)
+            if (selection == ProjetSynthese.EquipWeaponAt.Secondary)
             {
                 if (secondaryWeapon != null)
                 {
-                    UnequipAt(EquipWeaponAt.Secondary, secondaryWeapon);
+                    UnequipWeaponAt(ProjetSynthese.EquipWeaponAt.Secondary);
                 }
                 secondaryWeapon = itemToEquip;
+                CheckMultiplePresenceAndRemove(itemToEquip);
+            }
+        }
+        
+        public void UnequipWeaponAt(EquipWeaponAt selection)
+        {
+            if (selection == ProjetSynthese.EquipWeaponAt.Primary && primaryWeapon != null)
+            {
+                if (!IsItemPresentInInventory(primaryWeapon)) listInventory.Add(primaryWeapon);
+                primaryWeapon = null;
+                NotifyInventoryChange();
+            }
+            if (selection == ProjetSynthese.EquipWeaponAt.Secondary && secondaryWeapon != null)
+            {
+                if (!IsItemPresentInInventory(secondaryWeapon)) listInventory.Add(secondaryWeapon);
+                secondaryWeapon = null;
+                NotifyInventoryChange();
             }
         }
 
-        public void UnequipAt(EquipWeaponAt selection, Cell itemToUnequip)
+        public void NotifyInventoryChange()
         {
-            if (selection == EquipWeaponAt.Primary && primaryWeapon != null)
+            if (InventoryChange != null) InventoryChange();
+        }
+
+        public void EquipHelmet(Cell itemToEquip)
+        {
+            if (helmet != null)
             {
-                if (!IsItemPresentInInventory(primaryWeapon)) listInventory.Add(primaryWeapon);
+                UnequipHelmet();
             }
-            if (selection == EquipWeaponAt.Secondary && secondaryWeapon != null)
+            helmet = itemToEquip;
+            CheckMultiplePresenceAndRemove(itemToEquip);
+        }
+
+        public void UnequipHelmet()
+        {
+            if (!IsItemPresentInInventory(helmet)) listInventory.Add(helmet);
+            helmet = null;
+            NotifyInventoryChange();
+        }
+
+        public void EquipVest(Cell itemToEquip)
+        {
+            if (vest != null)
             {
-                if (!IsItemPresentInInventory(secondaryWeapon)) listInventory.Add(secondaryWeapon);
+                UnequipVest();
             }
+            vest = itemToEquip;
+            CheckMultiplePresenceAndRemove(itemToEquip);
+        }
+
+        public void UnequipVest()
+        {
+            if (!IsItemPresentInInventory(vest)) listInventory.Add(vest);
+            vest = null;
+            NotifyInventoryChange();
         }
 
         public Item GetPrimaryWeapon()
@@ -80,6 +127,7 @@ namespace ProjetSynthese
             CreateListeIsNotExist();
             Cell cell = new CellItem(item);
             if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+            NotifyInventoryChange();
         }
 
         public void Remove(GameObject game)
@@ -97,6 +145,12 @@ namespace ProjetSynthese
 
         }
 
+        private void Start()
+        {
+            parent = this.gameObject.transform.parent.gameObject;
+            CreateListeIsNotExist();
+        }
+
         private void CreateListeIsNotExist()
         {
             if (listInventory == null)
@@ -111,6 +165,7 @@ namespace ProjetSynthese
             {
                 Cell cell = CreatePlayerCell(game);
                 if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                NotifyInventoryChange();
             }
         }
 
@@ -123,6 +178,7 @@ namespace ProjetSynthese
                 {
                     item.AddCompteur();
                     itemIsPresentInInventory = true;
+                    NotifyInventoryChange();
                     break;
                 }
             }
@@ -143,6 +199,7 @@ namespace ProjetSynthese
             {
                 Cell cell = CreateItemCell(game);
                 if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                NotifyInventoryChange();
             }
         }
 
@@ -159,11 +216,30 @@ namespace ProjetSynthese
             if (temp.GetCompteur() >= 2)
             {
                 temp.RemoveOneFromCompteur();
+                NotifyInventoryChange();
             }
             else
             {
                 listInventory.Remove(temp);
+                NotifyInventoryChange();
             }
+        }
+
+        public static bool operator ==(Inventory one, Inventory two)
+        {
+            if ((object)one == null || (object)two == null)
+                return false;
+            bool aRetourner = false;
+            if (one.listInventory == two.listInventory && one.helmet == two.helmet && one.vest == two.vest && one.primaryWeapon == two.primaryWeapon && one.secondaryWeapon == two.secondaryWeapon)
+            {
+                aRetourner = true;
+            }
+            return aRetourner;
+        }
+
+        public static bool operator !=(Inventory one,   Inventory two)
+        {
+            return !(one == two);
         }
     }
 }

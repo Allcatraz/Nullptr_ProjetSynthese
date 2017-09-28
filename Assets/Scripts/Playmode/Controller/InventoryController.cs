@@ -10,6 +10,7 @@ namespace ProjetSynthese
         [SerializeField] private Transform gridInventoryPlayer;
         [SerializeField] private Transform gridEquippedByPlayer;
 
+        private bool abonner = false;
         private Inventory inventory;
 
         private void ClearGridInventoryPlayer()
@@ -18,6 +19,12 @@ namespace ProjetSynthese
             {
                 Destroy(child.gameObject);
             }
+        }
+
+        private void Inventory_InventoryChange()
+        {
+            UpdateInventory();
+            CreateCellsForInventoryPlayer();
         }
 
         private void ClearGridEquippedByPlayer()
@@ -30,8 +37,35 @@ namespace ProjetSynthese
 
         private void FixedUpdate()
         {
-            UpdateInventory();
-            CreateCellsForInventoryPlayer();
+            if (inventory != StaticInventoryPass.Inventory)
+            {
+                UpdateInventory();
+                CreateCellsForInventoryPlayer();
+                DisconnectFromEvent();
+            }
+            else
+            {
+                ConnectToEvent();
+
+            }
+        }
+
+        private void DisconnectFromEvent()
+        {
+            if (abonner == true)
+            {
+                inventory.InventoryChange -= Inventory_InventoryChange;
+                abonner = false;
+            }
+        }
+
+        private void ConnectToEvent()
+        {
+            if (abonner == false)
+            {
+                inventory.InventoryChange += Inventory_InventoryChange;
+                abonner = true;
+            }
         }
 
         public void CreateCellsForInventoryPlayer()
@@ -44,6 +78,7 @@ namespace ProjetSynthese
                 {
                     GameObject cellObject = Instantiate(cellObjectPrefab);
                     cellObject.transform.SetParent(gridInventoryPlayer, false);
+                    cellObject.GetComponentInChildren<CellObject>().inventory = this.inventory;
                     cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
                 }
             }

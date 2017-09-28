@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class ActorAI : NetworkGameScript, IActorAI
+    //public class ActorAI : NetworkGameScript, IActorAI
+    public class ActorAI : GameScript, IActorAI
     {
         public enum ActorType { None, AI, Vehicle };
         [SerializeField]
@@ -36,8 +37,8 @@ namespace ProjetSynthese
                 case ActorType.AI:
                     CurrentState = new ExploreState();
                     ActorController = new AIController();
-                    Sensor = new AIRadar();
-                    Sensor.Init();
+                    //Sensor = new AIRadar();
+                    //Sensor.Init();
                     break;
                 case ActorType.Vehicle:
                     break;

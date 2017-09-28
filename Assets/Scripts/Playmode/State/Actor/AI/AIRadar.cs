@@ -17,16 +17,18 @@ public class AIRadar
     private Vector2 circleCastDirection = Vector2.zero;
 
     public enum PerceptionLevel { Low, Medium, High };
+
+    private PerceptionLevel aiPerceptionLevel;
     public PerceptionLevel AIPerceptionLevel
     {
         get
         {
-            return AIPerceptionLevel;
+            return aiPerceptionLevel;
         }
         set
         {
-            AIPerceptionLevel = value;
-            switch (AIPerceptionLevel)
+            aiPerceptionLevel = value;
+            switch (aiPerceptionLevel)
             {
                 case PerceptionLevel.Low:
                     currentPerceptionRange = LowRangePerception;

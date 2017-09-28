@@ -18,16 +18,18 @@ namespace ProjetSynthese
         public MoveTarget AIMoveTarget { get; set; }
 
         public enum SpeedLevel { Walking, Jogging, Running, Swimming };
+
+        private SpeedLevel aiSpeed;
         public SpeedLevel AISpeed
         {
             get
             {
-                return AISpeed;
+                return aiSpeed;
             }
             set
             {
-                AISpeed = value;
-                switch (AISpeed)
+                aiSpeed = value;
+                switch (aiSpeed)
                 {
                     case SpeedLevel.Walking:
                         currentSpeedLevel = WalkingSpeed;

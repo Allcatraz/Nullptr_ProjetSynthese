@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AIRadar
 {
+    private const float NoRangePerception = 0.0f;
 
     [SerializeField]
     private const float LowRangePerception = 50.0f;
@@ -16,7 +17,7 @@ public class AIRadar
     private float circleCastDistance = 0.0f;
     private Vector2 circleCastDirection = Vector2.zero;
 
-    public enum PerceptionLevel { Low, Medium, High };
+    public enum PerceptionLevel { None,Low, Medium, High };
 
     private PerceptionLevel aiPerceptionLevel;
     public PerceptionLevel AIPerceptionLevel
@@ -30,6 +31,9 @@ public class AIRadar
             aiPerceptionLevel = value;
             switch (aiPerceptionLevel)
             {
+                case PerceptionLevel.None:
+                    currentPerceptionRange = NoRangePerception;
+                    break;
                 case PerceptionLevel.Low:
                     currentPerceptionRange = LowRangePerception;
                     break;

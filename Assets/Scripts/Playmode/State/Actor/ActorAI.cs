@@ -37,8 +37,7 @@ namespace ProjetSynthese
                 case ActorType.AI:
                     CurrentState = new ExploreState();
                     ActorController = new AIController();
-                    Sensor = new AIRadar();
-                    Sensor.Init();
+                    ((AIController)ActorController).Init();
                     break;
                 case ActorType.Vehicle:
                     break;

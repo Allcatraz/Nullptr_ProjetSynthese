@@ -17,7 +17,7 @@ namespace ProjetSynthese
         public enum MoveTarget { Item, Map, Opponent };
         public MoveTarget AIMoveTarget { get; set; }
 
-        public enum SpeedLevel { Walking, Jogging, Running, Swimming };
+        public enum SpeedLevel { None,Walking, Jogging, Running, Swimming };
 
         private SpeedLevel aiSpeed;
         public SpeedLevel AISpeed
@@ -31,6 +31,9 @@ namespace ProjetSynthese
                 aiSpeed = value;
                 switch (aiSpeed)
                 {
+                    case SpeedLevel.None:
+                        currentSpeedLevel = NoSpeed;
+                        break;
                     case SpeedLevel.Walking:
                         currentSpeedLevel = WalkingSpeed;
                         break;
@@ -57,6 +60,8 @@ namespace ProjetSynthese
         [SerializeField]
         private const float SwimmingSpeed = 0.5f;
 
+        private const float NoSpeed = 0.0f;
+
         private float currentSpeedLevel;
 
         private const float RandomRadiusMoveRange = 5.0f;
@@ -64,17 +69,18 @@ namespace ProjetSynthese
         private const float errorPositionTolerance = 0.001f;
 
         public enum ControllerMode { None,Explore }
-        public ControllerMode AIControllerMode {get;private set;}
+        private ControllerMode aiControllerMode;
 
         public AIRadar AISensor { get; private set; }
 
-        private void Start()
+        public void Init()
         {
             MapDestinationIsKnown = false;
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
             AISensor = new AIRadar();
-            AIControllerMode = ControllerMode.None;
+            AISensor.Init();
+            SetAIControllerMode(ControllerMode.None);
         }
 
         public bool HasReachedMapDestination(ActorAI actor)
@@ -165,11 +171,20 @@ namespace ProjetSynthese
             MapDestinationIsKnown = true;
         }
 
+        public ControllerMode GetAIControllerMode()
+        {
+            return aiControllerMode;
+        }
+
         public void SetAIControllerMode(ControllerMode controllerMode)
         {
-            AIControllerMode = controllerMode;
+            aiControllerMode = controllerMode;
             switch (controllerMode)
             {
+                case ControllerMode.None:
+                    AISpeed = AIController.SpeedLevel.None;
+                    AISensor.AIPerceptionLevel = AIRadar.PerceptionLevel.None;
+                    break;
                 case ControllerMode.Explore:
                     AISpeed = AIController.SpeedLevel.Walking;
                     AISensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
@@ -177,8 +192,6 @@ namespace ProjetSynthese
                 default:
                     break;
             }
-
-            
         }
     }
 }

@@ -7,7 +7,7 @@
           
             AIController aiController = (AIController)actor.ActorController;
 
-            if (aiController.AIControllerMode != AIController.ControllerMode.Explore)
+            if (aiController.GetAIControllerMode() != AIController.ControllerMode.Explore)
             {
                 aiController.SetAIControllerMode(AIController.ControllerMode.Explore);
             }

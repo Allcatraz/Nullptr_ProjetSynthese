@@ -6,12 +6,19 @@ namespace ProjetSynthese
 {
     public class InventoryController : GameScript {
 
+        
+        [SerializeField] private Transform gridInventoryPlayer;
+        [SerializeField] private Transform gridEquippedByPlayer;
+        [SerializeField] private Transform gridProtectionPlayer;
+        [SerializeField] private GameObject cellEquippedWeaponPrefabs;
+        [SerializeField] private GameObject cellProtectionItemPrefabs;
         [SerializeField] private GameObject cellObjectPrefab;
-        [SerializeField] private Transform grid;
 
-        private Inventory inven;
 
-        private void Clear()
+        private bool abonner = false;
+        private Inventory inventory;
+
+        private void ClearGrid(Transform grid)
         {
             foreach (Transform child in grid)
             {
@@ -19,25 +26,116 @@ namespace ProjetSynthese
             }
         }
 
-        private void FixedUpdate()
+        private void Inventory_InventoryChange()
         {
-            InstantiateCellObjectFromCell();
+            UpdateInventory();
+            CreateCellsForInventoryPlayer();
+            CreateCellsForWeaponByPlayer();
+            CreateCellsForProtectionPlayer();
         }
 
-        public void InstantiateCellObjectFromCell()
+        private void FixedUpdate()
         {
-            Clear();
-            inven = StaticInventoryPass.Inventory;
-
-            if (inven != null)
+            if (inventory != StaticInventoryPass.Inventory)
             {
-                foreach (Cell item in inven.listInventory)
+                UpdateInventory();
+                CreateCellsForInventoryPlayer();
+                CreateCellsForWeaponByPlayer();
+                CreateCellsForProtectionPlayer();
+                DisconnectFromEvent();
+            }
+            else
+            {
+                ConnectToEvent();
+
+            }
+        }
+
+        private void DisconnectFromEvent()
+        {
+            if (abonner == true)
+            {
+                inventory.InventoryChange -= Inventory_InventoryChange;
+                abonner = false;
+            }
+        }
+
+        private void ConnectToEvent()
+        {
+            if (abonner == false)
+            {
+                inventory.InventoryChange += Inventory_InventoryChange;
+                abonner = true;
+            }
+        }
+
+        public void CreateCellsForInventoryPlayer()
+        {
+            ClearGrid(gridInventoryPlayer);
+
+            if (inventory != null)
+            {
+                foreach (Cell item in inventory.listInventory)
                 {
                     GameObject cellObject = Instantiate(cellObjectPrefab);
-                    cellObject.transform.SetParent(grid, false);
+                    cellObject.transform.SetParent(gridInventoryPlayer, false);
+                    cellObject.GetComponentInChildren<CellObject>().inventory = this.inventory;
                     cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
                 }
             }
+        }
+
+        public void CreateCellsForWeaponByPlayer()
+        {
+            ClearGrid(gridEquippedByPlayer);
+            if (inventory != null)
+            {
+                if (inventory.GetPrimaryWeapon() != null)
+                {
+                    GameObject cellWeaponTemp1 = Instantiate(cellEquippedWeaponPrefabs);
+                    cellWeaponTemp1.transform.SetParent(gridEquippedByPlayer, false);
+                    cellWeaponTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                    cellWeaponTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetPrimaryWeapon());
+                    cellWeaponTemp1.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Primary;
+                }
+                if (inventory.GetSecondaryWeapon() != null)
+                {
+                    GameObject cellWeaponTemp2 = Instantiate(cellEquippedWeaponPrefabs);
+                    cellWeaponTemp2.transform.SetParent(gridEquippedByPlayer, false);
+                    cellWeaponTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                    cellWeaponTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetSecondaryWeapon());
+                    cellWeaponTemp2.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Secondary;
+                }
+            }
+            
+        }
+
+        public void CreateCellsForProtectionPlayer()
+        {
+            ClearGrid(gridProtectionPlayer);
+            if (inventory != null)
+            {
+                if (inventory.GetVest() != null)
+                {
+                    GameObject cellProtectionTemp1 = Instantiate(cellProtectionItemPrefabs);
+                    cellProtectionTemp1.transform.SetParent(gridProtectionPlayer, false);
+                    cellProtectionTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                    cellProtectionTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetVest());
+                }
+                
+                if (inventory.GetHelmet() != null)
+                {
+                    GameObject cellProtectionTemp2 = Instantiate(cellProtectionItemPrefabs);
+                    cellProtectionTemp2.transform.SetParent(gridProtectionPlayer, false);
+                    cellProtectionTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                    cellProtectionTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetHelmet());
+                }    
+            }
+        }
+
+        private void UpdateInventory()
+        {
+            inventory = StaticInventoryPass.Inventory;
         }
     }
 }

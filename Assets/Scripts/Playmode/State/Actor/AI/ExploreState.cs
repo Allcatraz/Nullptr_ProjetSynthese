@@ -6,18 +6,18 @@
         {
           
             AIController aiController = (AIController)actor.ActorController;
-            if (aiController.MapDestinationIsKnown && aiController.HasReachedMapDestination())
+            if (aiController.MapDestinationIsKnown && aiController.HasReachedMapDestination(actor))
             {
                 aiController.MapDestinationIsKnown = false;
             }
             else
             {
-                aiController.GenerateRandomDestination();
+                aiController.GenerateRandomDestination(actor);
                 aiController.MapDestinationIsKnown = true; 
             }
             aiController.AIMoveTarget = AIController.MoveTarget.Map;
             aiController.AISpeed = AIController.SpeedLevel.Walking;
-            actor.ActorController.Move();
+            actor.ActorController.Move(actor);
 
             if (aiController.AISensor.AIPerceptionLevel != AIRadar.PerceptionLevel.High)
             {

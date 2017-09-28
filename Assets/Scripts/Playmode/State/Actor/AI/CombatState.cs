@@ -4,7 +4,7 @@
     {
         public override void Execute(ActorAI actor)
         {
-            actor.ActorController.Move();
+            actor.ActorController.Move(actor);
         }
     }
 }

@@ -7,8 +7,8 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/Actuator/PlayerMover")]
     public class PlayerMover : GameScript
     {
-        [SerializeField] private float moveSpeed;
-        [SerializeField] private float sprintSpeed;
+        [SerializeField] private readonly float moveSpeed;
+        [SerializeField] private readonly float sprintSpeed;
 
         private Transform topParentTransform;
         private float speed = 0;

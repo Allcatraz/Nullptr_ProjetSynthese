@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpawnPoint: {fileID: 1864799292586668}
-  bulletSpeed: 5
+  bulletSpeed: 250000
   bulletLivingTime: 2
 --- !u!136 &136398824515127470
 CapsuleCollider:

@@ -212,6 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellObjectPrefab: {fileID: 1199693001329074, guid: c2f1c327cf27e3f4f919307e485a3023,
     type: 2}
+  grid: {fileID: 224029565692181116}
 --- !u!114 &114833616954449470
 MonoBehaviour:
   m_ObjectHideFlags: 1

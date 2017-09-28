@@ -6,25 +6,35 @@ namespace ProjetSynthese
 {
     public class InventoryController : GameScript {
 
-        [SerializeField]
-        private GameObject cellObjectPrefab;
+        [SerializeField] private GameObject cellObjectPrefab;
+        [SerializeField] private Transform grid;
 
         private Inventory inven;
 
-        public void OpenInventory()
+        private void Clear()
         {
-            inven = StaticInventoryPass.inventory;
+            foreach (Transform child in grid)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        private void FixedUpdate()
+        {
             InstantiateCellObjectFromCell();
         }
 
-        private void InstantiateCellObjectFromCell()
+        public void InstantiateCellObjectFromCell()
         {
+            Clear();
+            inven = StaticInventoryPass.Inventory;
+
             if (inven != null)
             {
                 foreach (Cell item in inven.listInventory)
                 {
                     GameObject cellObject = Instantiate(cellObjectPrefab);
-                    cellObject.transform.SetParent(this.gameObject.transform.GetChild(0).transform.GetChild(0), false);
+                    cellObject.transform.SetParent(grid, false);
                     cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
                 }
             }

@@ -8,7 +8,7 @@ namespace ProjetSynthese
 {
     public class ItemSensor : GameScript
     {
-        [SerializeField] private Transform sensor;
+        private Transform sensor;
 
         private void InjectItemSensor([GameObjectScope] Transform sensor)
         {
@@ -29,7 +29,10 @@ namespace ProjetSynthese
 
         public GameObject GetItemNearest()
         {
-            return GetAllItems()[1];
+            List<GameObject> items = GetAllItems();
+            if (items.Count >= 1)
+                return GetAllItems()[0];
+            return null;
         }
     }
 }

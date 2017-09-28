@@ -544,6 +544,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1463063252352646, guid: ba227a9f07835d0469f7e0075390e16d,
     type: 2}
+  healPrefab: {fileID: 1052699911796752, guid: 115ad7cc0094f4b45a3007988d9716a8, type: 2}
+  boostPrefab: {fileID: 1000390021323102, guid: f2a0c21a465cd854d95dbecf09254127,
+    type: 2}
+  vestPrefab: {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
+  helmentPrefab: {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945,
+    type: 2}
+  bagPrefab: {fileID: 1435768373193942, guid: 135ec5e685633b842967446c947a6ca3, type: 2}
+  M16A4Prefab: {fileID: 1770264861260682, guid: c833a2fafc113a548a7d2e3fc198b2a6,
+    type: 2}
+  AWMPrefab: {fileID: 1770264861260682, guid: c833a2fafc113a548a7d2e3fc198b2a6, type: 2}
+  SAIGA12Prefab: {fileID: 1770264861260682, guid: c833a2fafc113a548a7d2e3fc198b2a6,
+    type: 2}
+  M1911Prefab: {fileID: 1770264861260682, guid: c833a2fafc113a548a7d2e3fc198b2a6,
+    type: 2}
+  ammoPackPrefab: {fileID: 1738024043829670, guid: 331ca4435a91b27448584b74b228d66a,
+    type: 2}
 --- !u!1 &1724042211
 GameObject:
   m_ObjectHideFlags: 0

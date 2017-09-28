@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class AWMFabric : ItemFabricMaster
+    public class AWMFabric : WeaponFabricMaster
     {
-        private static GameObject AWMPrefab;
+        public static GameObject AWMPrefab { get; set; }
 
         public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd)
         {
-            GameObject _object = SpawnObject(spawnPoint, AWMPrefab);
+            SpawnWeapon(itemList, spawnPoint, rnd, AWMPrefab, AmmoType.AmmoWinchester);
         }
     }
 }

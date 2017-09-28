@@ -19,11 +19,12 @@ namespace ProjetSynthese
         /// </summary>
         void Start()
         {
+            items = new List<Item>();
             System.Random rnd = new System.Random();
-            int numberOfItemsToSpawn = rnd.Next(0, MaxNumberOfItemsToSpawn + 1);
+            int numberOfItemsToSpawn = rnd.Next(3, MaxNumberOfItemsToSpawn + 1);
             for (int i = 0; i < numberOfItemsToSpawn; i++)
             {
-                
+                ItemFabric.CreateItem(items, gameObject, rnd);
             }
         }
 

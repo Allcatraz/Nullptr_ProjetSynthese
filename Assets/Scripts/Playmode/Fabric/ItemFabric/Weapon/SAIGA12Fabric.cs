@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class SAIGA12Fabric : ItemFabricMaster
+    public class SAIGA12Fabric : WeaponFabricMaster
     {
-        private static GameObject SAIGA12Prefab;
+        public static GameObject SAIGA12Prefab { get; set; }
 
         public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd)
         {
-            GameObject _object = SpawnObject(spawnPoint, SAIGA12Prefab);
+            SpawnWeapon(itemList, spawnPoint, rnd, SAIGA12Prefab, AmmoType.AmmoCalibre12);
         }
     }
 }

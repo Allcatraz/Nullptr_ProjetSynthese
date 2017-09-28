@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 33917708943392274}
   - component: {fileID: 65365664302693386}
   - component: {fileID: 23888793146947710}
+  - component: {fileID: 114255292616563340}
+  - component: {fileID: 114799295135684832}
   m_Layer: 0
   m_Name: Boost
   m_TagString: Untagged
@@ -93,3 +95,46 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114255292616563340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000390021323102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 242
+    i1: 160
+    i2: 194
+    i3: 26
+    i4: 70
+    i5: 92
+    i6: 216
+    i7: 84
+    i8: 217
+    i9: 93
+    i10: 190
+    i11: 207
+    i12: 9
+    i13: 37
+    i14: 65
+    i15: 39
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114799295135684832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000390021323102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ac7985bd4f7fb34099ff13327a7ee47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

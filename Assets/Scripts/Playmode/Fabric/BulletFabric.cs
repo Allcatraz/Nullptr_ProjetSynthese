@@ -15,7 +15,7 @@ namespace ProjetSynthese
             bullet.transform.rotation = spawnPoint.transform.rotation;
             Vector3 direction = Vector3.Normalize(spawnPoint.transform.position - spawnPoint.transform.parent.position);
             Vector3 velocity = direction * bulletSpeed;
-            bullet.GetComponent<Rigidbody2D>().velocity = velocity;
+            bullet.GetComponent<Rigidbody>().velocity = velocity;
             bullet.GetComponent<BulletController>().SetLivingTime(livingTime);
         }
     }

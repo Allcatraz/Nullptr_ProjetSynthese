@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Harmony;
+using UnityEngine.Experimental.UIElements;
 
 namespace ProjetSynthese
 {
@@ -44,12 +44,20 @@ namespace ProjetSynthese
 
             public void Update()
             {
-                
+                HandleActionInput();
             }
 
             public override IInputDevice this[int deviceIndex]
             {
                 get { return this; }
+            }
+
+            private void HandleActionInput()
+            {
+                if (mouse.GetMouseButton(MouseButton.LeftMouse))
+                {
+                    NotifyFire();
+                }
             }
         }
 

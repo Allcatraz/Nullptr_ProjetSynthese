@@ -1,33 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Harmony;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
     public class InventoryController : GameScript {
 
-        [SerializeField]
-        private GameObject cellObjectPrefab;
+        [SerializeField] private GameObject cellObjectPrefab;
+        [SerializeField] private Transform grid;
 
         private Inventory inven;
 
-	    private void Start ()
+        private void Clear()
         {
-            inven = StaticInventoryPass.inventory;
-            InstantiateCellObjectFromCell();
-	    }
+            foreach (Transform child in grid)
+            {
+                Destroy(child.gameObject);
+            }
+        }
 
-        private void InstantiateCellObjectFromCell()
+        private void FixedUpdate()
         {
+            InstantiateCellObjectFromCell();
+        }
+
+        public void InstantiateCellObjectFromCell()
+        {
+            Clear();
+            inven = StaticInventoryPass.Inventory;
+
             if (inven != null)
             {
                 foreach (Cell item in inven.listInventory)
                 {
                     GameObject cellObject = Instantiate(cellObjectPrefab);
-                    cellObject.transform.SetParent(this.gameObject.transform.GetChild(0).transform.GetChild(1).transform.GetChild(0), false);
+                    cellObject.transform.SetParent(grid, false);
                     cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
                 }
-            }  
+            }
         }
     }
 }

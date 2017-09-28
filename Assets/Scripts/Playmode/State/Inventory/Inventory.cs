@@ -4,13 +4,12 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public enum InventoryOf {Player, Item}
+    public enum InventoryOf { Player, Item }
 
     [AddComponentMenu("Game/State/Inventory/Inventory")]
     public class Inventory : GameScript
     {
-        [SerializeField]
-        private InventoryOf inventoryOf;
+        [SerializeField] private InventoryOf inventoryOf;
 
         public GameObject parent { get; set; }
 
@@ -19,6 +18,7 @@ namespace ProjetSynthese
         private void Start()
         {
             parent = this.gameObject.transform.parent.gameObject;
+            CreateListeIsNotExist();
         }
 
         public void Add(GameObject game)
@@ -64,7 +64,6 @@ namespace ProjetSynthese
             {
                 Cell cell = CreatePlayerCell(game);
                 if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
-
             }
         }
 
@@ -77,7 +76,7 @@ namespace ProjetSynthese
                 {
                     item.AddCompteur();
                     itemIsPresentInInventory = true;
-                    break; 
+                    break;
                 }
             }
             return itemIsPresentInInventory;

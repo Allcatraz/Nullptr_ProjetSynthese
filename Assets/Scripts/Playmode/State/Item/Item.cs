@@ -12,6 +12,9 @@ namespace ProjetSynthese
 
         public static bool operator==(Item item1, Item item2)
         {
+            if ((object)item1 == null || (object)item2 == null)
+                return false;
+
             return item1.Type == item2.Type;
         }
 

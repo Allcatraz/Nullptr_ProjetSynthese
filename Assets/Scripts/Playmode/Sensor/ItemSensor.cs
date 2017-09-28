@@ -1,39 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public delegate void ItemSensorEventHandler(Effect effect);
-
-    [AddComponentMenu("Game/Sensor/ItemSensor")]
     public class ItemSensor : GameScript
     {
-        private new Collider2D collider2D;
+        private Transform sensor;
 
-        public event ItemSensorEventHandler OnCollectItem;
-
-        private void InjectItemSensor([GameObjectScope] Collider2D collider2D)
+        private void InjectItemSensor([GameObjectScope] Transform sensor)
         {
-            this.collider2D = collider2D;
+            this.sensor = sensor;
         }
 
         private void Awake()
         {
             InjectDependencies("InjectItemSensor");
-
-            int layer = LayerMask.NameToLayer(R.S.Layer.ItemSensor);
-            if (layer == -1)
-            {
-                throw new Exception("In order to use a ItemSensor, you must have a " + R.S.Layer.ItemSensor + " layer.");
-            }
-            gameObject.layer = layer;
-            collider2D.isTrigger = true;
         }
 
-        public void CollectItem(Effect effect)
+        public List<GameObject> GetAllItems()
         {
-            if (OnCollectItem != null) OnCollectItem(effect);
+            List<RaycastHit> itemsRaycast = Physics.SphereCastAll(sensor.transform.position, 10, Vector3.down).ToList();
+            itemsRaycast.RemoveAll(item => !item.transform.gameObject.GetComponent<Item>());
+            return itemsRaycast.ConvertAll(item => item.transform.gameObject);
+        }
+
+        public GameObject GetItemNearest()
+        {
+            List<GameObject> items = GetAllItems();
+            if (items.Count >= 1)
+                return GetAllItems()[0];
+            return null;
         }
     }
 }

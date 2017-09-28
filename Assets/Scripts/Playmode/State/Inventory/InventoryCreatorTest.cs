@@ -29,7 +29,7 @@ namespace ProjetSynthese
             inven.Add(temp1);
             inven.Add(temp2);
             inven.Add(temp3);
-            StaticInventoryPass.inventory = inven;
+            StaticInventoryPass.Inventory = inven;
 
         }
 

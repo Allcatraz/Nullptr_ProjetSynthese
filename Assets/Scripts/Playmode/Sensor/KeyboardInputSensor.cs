@@ -71,13 +71,17 @@ namespace ProjetSynthese
 
             private void HandleActionInput()
             {
-                if (keyboard.GetKeyDown(KeyCode.Space))
-                {
-                    NotifyFire();
-                }
                 if (keyboard.GetKeyDown(KeyCode.Escape))
                 {
                     NotifyTogglePause();
+                }
+                if (keyboard.GetKeyDown(KeyCode.Tab))
+                {
+                    NotifyInventoryAction();
+                }
+                if (keyboard.GetKeyDown(KeyCode.F))
+                {
+                    NotifyPickup();
                 }
             }
 

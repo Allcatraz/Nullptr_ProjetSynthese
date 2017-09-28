@@ -2,7 +2,7 @@
 {
     public class ExploreState : StateMachine
     {
-        public override void Execute(Actor actor)
+        public override void Execute(ActorAI actor)
         {
           
             AIController aiController = (AIController)actor.ActorController;
@@ -18,6 +18,12 @@
             aiController.AIMoveTarget = AIController.MoveTarget.Map;
             aiController.AISpeed = AIController.SpeedLevel.Walking;
             actor.ActorController.Move();
+
+            if (aiController.AISensor.AIPerceptionLevel != AIRadar.PerceptionLevel.High)
+            {
+                aiController.AISensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+            }
+            
         }
     }
 }

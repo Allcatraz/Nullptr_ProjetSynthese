@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class Actor : NetworkGameScript
+    public class ActorAI : NetworkGameScript, IActorAI
     {
-        public enum ActorType { None, Player, AI, Vehicle };
+        public enum ActorType { None, AI, Vehicle };
         [SerializeField]
         private ActorType actorType = ActorType.None;
 
@@ -13,20 +13,19 @@ namespace ProjetSynthese
         public ActorController ActorController { get; private set; }
 
         private bool isDead;
-
-        // Use this for initialization
+        
+      
         private void Start()
         {
-            isDead = true;
+            isDead = false;
             switch (actorType)
             {
                 case ActorType.None:
                     break;
-                case ActorType.Player:
-                    break;
                 case ActorType.AI:
                     CurrentState = new ExploreState();
                     ActorController = new AIController();
+                    
                     break;
                 case ActorType.Vehicle:
                     break;
@@ -35,7 +34,7 @@ namespace ProjetSynthese
             }
         }
 
-        // Update is called once per frame
+       
         private void Update()
         {
             if (CurrentState != null)
@@ -47,9 +46,6 @@ namespace ProjetSynthese
             {
                 case ActorType.None:
                     break;
-                case ActorType.Player:
-                    //update ui ....
-                    break;
                 case ActorType.AI:
                     break;
                 case ActorType.Vehicle:
@@ -59,12 +55,12 @@ namespace ProjetSynthese
             }
         }
 
-        public bool IsDead()
+        public  bool IsDead()
         {
             return isDead;
         }
 
-        public void SetDead()
+        public  void SetDead()
         {
             isDead = true;
         }

@@ -63,6 +63,9 @@ namespace ProjetSynthese
 
         private const float errorPositionTolerance = 0.001f;
 
+        public enum ControllerMode { None,Explore }
+        public ControllerMode AIControllerMode {get;private set;}
+
         public AIRadar AISensor { get; private set; }
 
         private void Start()
@@ -71,6 +74,7 @@ namespace ProjetSynthese
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
             AISensor = new AIRadar();
+            AIControllerMode = ControllerMode.None;
         }
 
         public bool HasReachedMapDestination(ActorAI actor)
@@ -138,27 +142,43 @@ namespace ProjetSynthese
             Vector3 mouvement = new Vector3(nouvellePosition.x - actor.transform.position.x, nouvellePosition.y - actor.transform.position.y, nouvellePosition.z - actor.transform.position.z);
 
             ////Angle de rotation en degrée (car l'affichage de Unity veut les angles en degrée); Mathf.Rad2Deg nécessaire car Mathf.Atan2 un résultat en radiants
-            float angle = -Mathf.Atan2(mouvement.x, mouvement.y) * Mathf.Rad2Deg;
+           float angle = Mathf.Atan2(mouvement.x, mouvement.z) * Mathf.Rad2Deg;
 
             ////On applique la nouvelle position
             actor.transform.position = nouvellePosition;
 
             ////On applique la nouvelle rotation
-            actor.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            actor.transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
 
         public void GenerateRandomDestination(ActorAI actor)
         {
             Vector3 newDestination = actor.transform.position;
             float xOffset = Random.Range(0.0f, RandomRadiusMoveRange);
-            float yOffset = RandomRadiusMoveRange - xOffset;
+            float zOffset = RandomRadiusMoveRange - xOffset;
             float signXOffset = (Random.Range(0, 2) * 2) - 1;
             float signYOffset = (Random.Range(0, 2) * 2) - 1;
             //
             newDestination.x += signXOffset * xOffset;
-            newDestination.y += signYOffset * yOffset;
+            newDestination.z += signYOffset * zOffset;
             MapDestination = newDestination;
             MapDestinationIsKnown = true;
+        }
+
+        public void SetAIControllerMode(ControllerMode controllerMode)
+        {
+            AIControllerMode = controllerMode;
+            switch (controllerMode)
+            {
+                case ControllerMode.Explore:
+                    AISpeed = AIController.SpeedLevel.Walking;
+                    AISensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    break;
+                default:
+                    break;
+            }
+
+            
         }
     }
 }

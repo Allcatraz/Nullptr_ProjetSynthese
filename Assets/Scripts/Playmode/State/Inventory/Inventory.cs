@@ -5,11 +5,16 @@ using UnityEngine;
 namespace ProjetSynthese
 {
     public enum InventoryOf { Player, Item }
+    public enum EquipWeaponAt { Primary, Secondary}
 
     [AddComponentMenu("Game/State/Inventory/Inventory")]
     public class Inventory : GameScript
     {
         [SerializeField] private InventoryOf inventoryOf;
+
+        private Cell primaryWeapon;
+
+        private Cell secondaryWeapon;
 
         public GameObject parent { get; set; }
 
@@ -19,6 +24,48 @@ namespace ProjetSynthese
         {
             parent = this.gameObject.transform.parent.gameObject;
             CreateListeIsNotExist();
+        }
+
+        public void EquipAt(EquipWeaponAt selection, Cell itemToEquip)
+        {
+            if (selection == EquipWeaponAt.Primary)
+            {
+                if (primaryWeapon != null)
+                {
+                    UnequipAt(EquipWeaponAt.Primary, primaryWeapon);
+                }
+                primaryWeapon = itemToEquip;
+            }
+            if (selection == EquipWeaponAt.Secondary)
+            {
+                if (secondaryWeapon != null)
+                {
+                    UnequipAt(EquipWeaponAt.Secondary, secondaryWeapon);
+                }
+                secondaryWeapon = itemToEquip;
+            }
+        }
+
+        public void UnequipAt(EquipWeaponAt selection, Cell itemToUnequip)
+        {
+            if (selection == EquipWeaponAt.Primary && primaryWeapon != null)
+            {
+                if (!IsItemPresentInInventory(primaryWeapon)) listInventory.Add(primaryWeapon);
+            }
+            if (selection == EquipWeaponAt.Secondary && secondaryWeapon != null)
+            {
+                if (!IsItemPresentInInventory(secondaryWeapon)) listInventory.Add(secondaryWeapon);
+            }
+        }
+
+        public Item GetPrimaryWeapon()
+        {
+            return primaryWeapon.GetItem();
+        }
+
+        public Item GetSecondaryWeapon()
+        {
+            return secondaryWeapon.GetItem();
         }
 
         public void Add(GameObject game)

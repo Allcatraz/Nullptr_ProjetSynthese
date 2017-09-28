@@ -93,9 +93,11 @@ namespace ProjetSynthese
         private void OnPickup()
         {
             GameObject item = itemSensor.GetItemNearest();
-            if((object)item != null)
+            if ((object) item != null)
+            {
                 inventory.Add(item);
-            Destroy(item);
+                item.SetActive(false);
+            }
         }
 
         private void InventoryAction()

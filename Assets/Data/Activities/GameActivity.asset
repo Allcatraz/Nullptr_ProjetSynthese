@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8beb0a2cb4394e0bbd6b3375f8eeca67, type: 3}
   m_Name: GameActivity
   m_EditorClassIdentifier: 
-  scene: -1503227594
+  scene: 1222789680
   controller: -1503227594
   fragments:
   - {fileID: 11400000, guid: cbce8d96ce69a6c408a970441d62af11, type: 2}

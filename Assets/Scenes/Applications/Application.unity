@@ -551,12 +551,12 @@ MonoBehaviour:
   helmentPrefab: {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945,
     type: 2}
   bagPrefab: {fileID: 1435768373193942, guid: 135ec5e685633b842967446c947a6ca3, type: 2}
-  M16A4Prefab: {fileID: 1770264861260682, guid: c833a2fafc113a548a7d2e3fc198b2a6,
+  M16A4Prefab: {fileID: 1884589669727418, guid: 9b86ae4d4ffffa54ca650ea78b958e3b,
     type: 2}
-  AWMPrefab: {fileID: 1770264861260682, guid: c833a2fafc113a548a7d2e3fc198b2a6, type: 2}
-  SAIGA12Prefab: {fileID: 1770264861260682, guid: c833a2fafc113a548a7d2e3fc198b2a6,
+  AWMPrefab: {fileID: 1596026197941954, guid: 3157d5bada050174e92e3f6592029591, type: 2}
+  SAIGA12Prefab: {fileID: 1539770592342268, guid: e0224e8a0878e0e42893bf71948dba4c,
     type: 2}
-  M1911Prefab: {fileID: 1770264861260682, guid: c833a2fafc113a548a7d2e3fc198b2a6,
+  M1911Prefab: {fileID: 1006045350083210, guid: dbddbdf50d0ddeb47bb80e37350152d7,
     type: 2}
   ammoPackPrefab: {fileID: 1738024043829670, guid: 331ca4435a91b27448584b74b228d66a,
     type: 2}

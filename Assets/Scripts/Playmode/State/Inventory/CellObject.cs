@@ -7,13 +7,18 @@ using System;
 
 namespace ProjetSynthese
 {
-    public enum ButtonType { Weapon,Protection,Inventory}
+    public enum ButtonType {Weapon,Protection,Inventory}
 
     [AddComponentMenu("Game/State/Inventory/CellObject")]
     public class CellObject : GameScript
     {
         [SerializeField]
         private ButtonType buttonType;
+
+        [SerializeField]
+        private KeyCode key;
+
+        public EquipWeaponAt equipAt { get; set; }
 
         private Button button;
 
@@ -43,6 +48,7 @@ namespace ProjetSynthese
             this.button = button;
             this.TextName = textName;
             button.onClick.AddListener(TaskOnClick);
+            equipAt = EquipWeaponAt.Primary;
             //this.ImageBackground = imageBackground;
         }
 
@@ -52,7 +58,7 @@ namespace ProjetSynthese
             {
                 if (IsItem.GetItem() as Weapon)
                 {
-                    inventory.EquipWeaponAt(EquipWeaponAt.Primary, IsItem);
+                    inventory.EquipWeaponAt(equipAt, IsItem);
                 }
                 if (IsItem.GetItem() as Helmet)
                 {
@@ -67,7 +73,7 @@ namespace ProjetSynthese
             {
                 if (IsItem.GetItem() as Weapon)
                 {
-                    inventory.UnequipWeaponAt(EquipWeaponAt.Primary);
+                    inventory.UnequipWeaponAt(equipAt);
                 }
             }
             if (buttonType == ButtonType.Protection)
@@ -87,6 +93,29 @@ namespace ProjetSynthese
         private void Awake()
         {
             InjectDependencies("InjectCellObject");
+        }
+
+        private void Update()
+        {
+            ChangeWeaponSlotFromKeyPressed();
+        }
+
+        private void ChangeWeaponSlotFromKeyPressed()
+        {
+            if (Input.GetKeyDown(key))
+            {
+                if (equipAt != EquipWeaponAt.Secondary)
+                {
+                    equipAt = EquipWeaponAt.Secondary;
+                }
+            }
+            if (Input.GetKeyUp(key))
+            {
+                if (equipAt != EquipWeaponAt.Primary)
+                {
+                    equipAt = EquipWeaponAt.Primary;
+                }
+            }
         }
 
         private void SetImageBackground()

@@ -96,6 +96,7 @@ namespace ProjetSynthese
                     cellWeaponTemp1.transform.SetParent(gridEquippedByPlayer, false);
                     cellWeaponTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
                     cellWeaponTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetPrimaryWeapon());
+                    cellWeaponTemp1.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Primary;
                 }
                 if (inventory.GetSecondaryWeapon() != null)
                 {
@@ -103,6 +104,7 @@ namespace ProjetSynthese
                     cellWeaponTemp2.transform.SetParent(gridEquippedByPlayer, false);
                     cellWeaponTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
                     cellWeaponTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetSecondaryWeapon());
+                    cellWeaponTemp2.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Secondary;
                 }
             }
             

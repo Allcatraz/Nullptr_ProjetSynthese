@@ -1,4 +1,6 @@
-﻿namespace ProjetSynthese
+﻿using UnityEngine;
+
+namespace ProjetSynthese
 {
     public class ExploreState : StateMachine
     {
@@ -25,7 +27,12 @@
             {
                 aiController.MapDestinationIsKnown = false;
             }
-
+            LayerMask layerMask = LayerMask.NameToLayer("Item");
+            Weapon weapon = aiController.AISensor.NeareastGameObject<Weapon>(actor.transform.position, layerMask);
+            GameObject item = aiController.AISensor.NeareastGameObject<GameObject>(actor.transform.position, layerMask);
+            //dosomenthing switch state
+            //actor.AIInventory.
+            int g = 1;
         }
     }
 }

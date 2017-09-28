@@ -15,7 +15,7 @@ public class AIRadar
 
     private float currentPerceptionRange = LowRangePerception;
     private float circleCastDistance = 0.0f;
-    private Vector2 circleCastDirection = Vector2.zero;
+    private Vector3 circleCastDirection = Vector3.up;
 
     public enum PerceptionLevel { None,Low, Medium, High };
 
@@ -60,8 +60,9 @@ public class AIRadar
     {
 
         ObjectType nearestObject = default(ObjectType);
-        RaycastHit2D[] inRangeObjects;
-        inRangeObjects = Physics2D.CircleCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
+        RaycastHit[] inRangeObjects;
+        inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
+        //inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection);
         int neareastItemIndex = -1;
         float smallestDistance = float.MaxValue;
         if (inRangeObjects != null)

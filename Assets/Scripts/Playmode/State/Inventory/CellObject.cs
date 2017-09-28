@@ -7,9 +7,14 @@ using System;
 
 namespace ProjetSynthese
 {
+    public enum ButtonType { Weapon,Protection,Inventory}
+
     [AddComponentMenu("Game/State/Inventory/CellObject")]
     public class CellObject : GameScript
     {
+        [SerializeField]
+        private ButtonType buttonType;
+
         private Button button;
 
         public Inventory inventory { get; set; }
@@ -43,18 +48,40 @@ namespace ProjetSynthese
 
         private void TaskOnClick()
         {
-            if (IsItem.GetItem() as Weapon)
+            if (buttonType == ButtonType.Inventory)
             {
-                inventory.EquipWeaponAt(EquipWeaponAt.Primary, IsItem);
+                if (IsItem.GetItem() as Weapon)
+                {
+                    inventory.EquipWeaponAt(EquipWeaponAt.Primary, IsItem);
+                }
+                if (IsItem.GetItem() as Helmet)
+                {
+                    inventory.EquipHelmet(IsItem);
+                }
+                if (IsItem.GetItem() as Vest)
+                {
+                    inventory.EquipVest(IsItem);
+                }
             }
-            if (IsItem.GetItem() as Helmet)
+            if (buttonType == ButtonType.Weapon)
             {
-                inventory.EquipHelmet(IsItem);
+                if (IsItem.GetItem() as Weapon)
+                {
+                    inventory.UnequipWeaponAt(EquipWeaponAt.Primary);
+                }
             }
-            if (IsItem.GetItem() as Vest)
+            if (buttonType == ButtonType.Protection)
             {
-                inventory.EquipVest(IsItem);
+                if (IsItem.GetItem() as Helmet)
+                {
+                    inventory.UnequipHelmet();
+                }
+                if (IsItem.GetItem() as Vest)
+                {
+                    inventory.UnequipHelmet();
+                }
             }
+            
         }
 
         private void Awake()

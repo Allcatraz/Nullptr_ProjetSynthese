@@ -83,6 +83,14 @@ namespace ProjetSynthese
                 {
                     NotifyPickup();
                 }
+                if (keyboard.GetKeyDown(KeyCode.LeftShift))
+                {
+                    NotifySwitchSprintOn();
+                }
+                if (keyboard.GetKeyUp(KeyCode.LeftShift))
+                {
+                    NotifySwitchSprintOff();
+                }
             }
 
             private void HandleDirectionInput()

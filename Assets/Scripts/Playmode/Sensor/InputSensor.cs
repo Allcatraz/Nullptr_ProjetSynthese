@@ -10,8 +10,12 @@ namespace ProjetSynthese
             public event DownEventHandler OnDown;
             public event ConfirmEventHandler OnConfirm;
 
-            public event InventoryEventHandler OnInventoryAction;
+            public event ToggleInventoryEventHandler OnInventoryAction;
             public event TogglePauseEventHandler OnTogglePause;
+
+            public event SwitchSprintOnHandler OnSwitchSprintOn;
+            public event SwitchSprintOffHandler OnSwitchSprintOff;
+
             public event FireEventHandler OnFire;
             public event MoveTowardHandler OnMove;
             public event PickupHandler OnPickup;
@@ -57,6 +61,16 @@ namespace ProjetSynthese
             {
                 if (OnPickup != null) OnPickup();
             }
+
+            protected virtual void NotifySwitchSprintOn()
+            {
+                if (OnSwitchSprintOn != null) OnSwitchSprintOn();
+            }
+
+            protected virtual void NotifySwitchSprintOff()
+            {
+                if (OnSwitchSprintOff != null) OnSwitchSprintOff();
+            }
         }
 
         protected abstract class TriggerOncePerFrameInputDevice : InputDevice
@@ -67,6 +81,10 @@ namespace ProjetSynthese
 
             private bool inventoryTriggerd;
             private bool togglePauseTriggerd;
+
+            private bool switchSprintOnTriggerd;
+            private bool switchSrintOffTriggerd;
+
             private bool fireTriggerd;
             private bool moveTriggerd;
             private bool pickupTriggerd;
@@ -81,6 +99,10 @@ namespace ProjetSynthese
 
                 inventoryTriggerd = false;
                 togglePauseTriggerd = false;
+
+                switchSprintOnTriggerd = false;
+                switchSrintOffTriggerd = false;
+
                 fireTriggerd = false;
                 moveTriggerd = false;
                 pickupTriggerd = false;
@@ -154,7 +176,25 @@ namespace ProjetSynthese
                 if (!pickupTriggerd)
                 {
                     base.NotifyPickup();
-                    pickupTriggerd = false;
+                    pickupTriggerd = true;
+                }
+            }
+
+            protected override void NotifySwitchSprintOn()
+            {
+                if (!switchSprintOnTriggerd)
+                {
+                    base.NotifySwitchSprintOn();
+                    switchSprintOnTriggerd = true;
+                }
+            }
+
+            protected override void NotifySwitchSprintOff()
+            {
+                if (!switchSrintOffTriggerd)
+                {
+                    base.NotifySwitchSprintOff();
+                    switchSrintOffTriggerd = true;
                 }
             }
         }

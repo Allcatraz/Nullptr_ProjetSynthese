@@ -8,8 +8,10 @@ namespace ProjetSynthese
     public class PlayerMover : GameScript
     {
         [SerializeField] private float moveSpeed;
+        [SerializeField] private float sprintSpeed;
 
         private Transform topParentTransform;
+        private float speed = 0;
 
         private void InjectImpulseMover([TopParentScope] Transform topParentTransform)
         {
@@ -19,11 +21,22 @@ namespace ProjetSynthese
         private void Awake()
         {
             InjectDependencies("InjectImpulseMover");
+            speed = moveSpeed;
+        }
+
+        public void SwitchSprintOn()
+        {
+            speed = sprintSpeed;
+        }
+
+        public void SwitchSprintOff()
+        {
+            speed = moveSpeed;
         }
 
         public void Move(Vector3 direction)
         {
-            topParentTransform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
+            topParentTransform.Translate(direction * speed * Time.deltaTime, Space.World);
         }
 
         public void Rotate()

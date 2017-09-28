@@ -6,16 +6,21 @@ namespace ProjetSynthese
 {
     public class InventoryController : GameScript {
 
-        [SerializeField] private GameObject cellObjectPrefab;
+        
         [SerializeField] private Transform gridInventoryPlayer;
         [SerializeField] private Transform gridEquippedByPlayer;
+        [SerializeField] private Transform gridProtectionPlayer;
+        [SerializeField] private GameObject cellEquippedWeaponPrefabs;
+        [SerializeField] private GameObject cellProtectionItemPrefabs;
+        [SerializeField] private GameObject cellObjectPrefab;
+
 
         private bool abonner = false;
         private Inventory inventory;
 
-        private void ClearGridInventoryPlayer()
+        private void ClearGrid(Transform grid)
         {
-            foreach (Transform child in gridInventoryPlayer)
+            foreach (Transform child in grid)
             {
                 Destroy(child.gameObject);
             }
@@ -25,14 +30,8 @@ namespace ProjetSynthese
         {
             UpdateInventory();
             CreateCellsForInventoryPlayer();
-        }
-
-        private void ClearGridEquippedByPlayer()
-        {
-            foreach (Transform child in gridEquippedByPlayer)
-            {
-                Destroy(child.gameObject);
-            }
+            CreateCellsForWeaponByPlayer();
+            CreateCellsForProtectionPlayer();
         }
 
         private void FixedUpdate()
@@ -41,6 +40,8 @@ namespace ProjetSynthese
             {
                 UpdateInventory();
                 CreateCellsForInventoryPlayer();
+                CreateCellsForWeaponByPlayer();
+                CreateCellsForProtectionPlayer();
                 DisconnectFromEvent();
             }
             else
@@ -70,7 +71,7 @@ namespace ProjetSynthese
 
         public void CreateCellsForInventoryPlayer()
         {
-            ClearGridInventoryPlayer();
+            ClearGrid(gridInventoryPlayer);
 
             if (inventory != null)
             {
@@ -84,14 +85,50 @@ namespace ProjetSynthese
             }
         }
 
-        public void CreateCellsForEquippedByPlayer()
+        public void CreateCellsForWeaponByPlayer()
         {
-            ClearGridEquippedByPlayer();
+            ClearGrid(gridEquippedByPlayer);
             if (inventory != null)
             {
-
+                if (inventory.GetPrimaryWeapon() != null)
+                {
+                    GameObject cellWeaponTemp1 = Instantiate(cellEquippedWeaponPrefabs);
+                    cellWeaponTemp1.transform.SetParent(gridEquippedByPlayer, false);
+                    cellWeaponTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                    cellWeaponTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetPrimaryWeapon());
+                }
+                if (inventory.GetSecondaryWeapon() != null)
+                {
+                    GameObject cellWeaponTemp2 = Instantiate(cellEquippedWeaponPrefabs);
+                    cellWeaponTemp2.transform.SetParent(gridEquippedByPlayer, false);
+                    cellWeaponTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                    cellWeaponTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetSecondaryWeapon());
+                }
             }
             
+        }
+
+        public void CreateCellsForProtectionPlayer()
+        {
+            ClearGrid(gridProtectionPlayer);
+            if (inventory != null)
+            {
+                if (inventory.GetVest() != null)
+                {
+                    GameObject cellProtectionTemp1 = Instantiate(cellProtectionItemPrefabs);
+                    cellProtectionTemp1.transform.SetParent(gridProtectionPlayer, false);
+                    cellProtectionTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                    cellProtectionTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetVest());
+                }
+                
+                if (inventory.GetHelmet() != null)
+                {
+                    GameObject cellProtectionTemp2 = Instantiate(cellProtectionItemPrefabs);
+                    cellProtectionTemp2.transform.SetParent(gridProtectionPlayer, false);
+                    cellProtectionTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                    cellProtectionTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetHelmet());
+                }    
+            }
         }
 
         private void UpdateInventory()

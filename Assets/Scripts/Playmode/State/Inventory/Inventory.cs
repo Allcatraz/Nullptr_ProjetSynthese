@@ -105,14 +105,24 @@ namespace ProjetSynthese
             NotifyInventoryChange();
         }
 
-        public Item GetPrimaryWeapon()
+        public Cell GetPrimaryWeapon()
         {
-            return primaryWeapon.GetItem();
+            return primaryWeapon;
         }
 
-        public Item GetSecondaryWeapon()
+        public Cell GetSecondaryWeapon()
         {
-            return secondaryWeapon.GetItem();
+            return secondaryWeapon;
+        }
+
+        public Cell GetVest()
+        {
+            return this.vest;
+        }
+
+        public Cell GetHelmet()
+        {
+            return this.helmet;
         }
 
         public void Add(GameObject game)

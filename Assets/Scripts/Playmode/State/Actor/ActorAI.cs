@@ -12,6 +12,8 @@ namespace ProjetSynthese
         public StateMachine CurrentState { get; private set; }
         public ActorController ActorController { get; private set; }
 
+        public AIRadar Sensor { get; private set; }
+
         private bool isDead;
         
       
@@ -25,7 +27,8 @@ namespace ProjetSynthese
                 case ActorType.AI:
                     CurrentState = new ExploreState();
                     ActorController = new AIController();
-                    
+                    Sensor = new AIRadar();
+                    Sensor.Init();
                     break;
                 case ActorType.Vehicle:
                     break;

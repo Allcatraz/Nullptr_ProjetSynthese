@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIRadar : MonoBehaviour
+public class AIRadar
 {
 
     [SerializeField]
@@ -43,9 +43,10 @@ public class AIRadar : MonoBehaviour
         }
     }
 
-    void Start()
+    public void Init()
     {
         AIPerceptionLevel = PerceptionLevel.Low;
+        currentPerceptionRange = LowRangePerception;
     }
 
 

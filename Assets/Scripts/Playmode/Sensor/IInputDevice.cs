@@ -4,20 +4,18 @@ namespace ProjetSynthese
 {
     //Menu actions
     public delegate void UpEventHandler();
-
     public delegate void DownEventHandler();
-
     public delegate void ConfirmEventHandler();
 
     //Game actions
     public delegate void TogglePauseEventHandler();
+    public delegate void ToggleInventoryEventHandler();
 
-    public delegate void InventoryEventHandler();
+    public delegate void SwitchSprintOnHandler();
+    public delegate void SwitchSprintOffHandler();
 
     public delegate void FireEventHandler();
-
     public delegate void MoveTowardHandler(Vector3 direction);
-
     public delegate void PickupHandler();
 
     public interface IInputDevice
@@ -26,8 +24,12 @@ namespace ProjetSynthese
         event DownEventHandler OnDown;
         event ConfirmEventHandler OnConfirm;
 
-        event InventoryEventHandler OnInventoryAction;
+        event ToggleInventoryEventHandler OnInventoryAction;
         event TogglePauseEventHandler OnTogglePause;
+
+        event SwitchSprintOnHandler OnSwitchSprintOn;
+        event SwitchSprintOffHandler OnSwitchSprintOff;
+
         event FireEventHandler OnFire;
         event MoveTowardHandler OnMove;
         event PickupHandler OnPickup;

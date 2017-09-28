@@ -45,8 +45,12 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnMove += OnMove;
             keyboardInputSensor.Keyboards.OnInventoryAction += InventoryAction;
             keyboardInputSensor.Keyboards.OnPickup += OnPickup;
+            keyboardInputSensor.Keyboards.OnSwitchSprintOn += OnSwitchSprintOn;
+            keyboardInputSensor.Keyboards.OnSwitchSprintOff += OnSwitchSprintOff;
 
             mouseInputSensor.Mouses.OnFire += OnFire;
+
+            Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
         }
 
         private void OnDestroy()
@@ -54,6 +58,8 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnMove -= OnMove;
             keyboardInputSensor.Keyboards.OnInventoryAction -= InventoryAction;
             keyboardInputSensor.Keyboards.OnPickup -= OnPickup;
+            keyboardInputSensor.Keyboards.OnSwitchSprintOn -= OnSwitchSprintOn;
+            keyboardInputSensor.Keyboards.OnSwitchSprintOff -= OnSwitchSprintOff;
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
         }
@@ -61,6 +67,16 @@ namespace ProjetSynthese
         private void Update()
         {
             playerMover.Rotate();
+        }
+
+        private void OnSwitchSprintOn()
+        {
+            playerMover.SwitchSprintOn();
+        }
+
+        private void OnSwitchSprintOff()
+        {
+            playerMover.SwitchSprintOff();
         }
 
         private void OnMove(Vector3 direction)

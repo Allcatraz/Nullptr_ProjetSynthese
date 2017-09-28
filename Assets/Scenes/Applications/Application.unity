@@ -552,7 +552,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1724042212}
-  - component: {fileID: 1724042213}
   m_Layer: 0
   m_Name: ApplicationController
   m_TagString: Application Dependencies

@@ -28,5 +28,16 @@ namespace Harmony
         {
             return Input.GetKeyDown(key);
         }
+
+        /// <summary>
+        /// Indique si une touche vient d'être arrêter d'enfoncée. Autrement dit, vérifie si son état est passé
+        /// à <i>pas endoncée</i> depuis le dernier appel à cette méthode pour la même touche.
+        /// </summary>
+        /// <param name="key">Touche à vérifier.</param>
+        /// <returns>Vrai si la touche est désormais enfoncé, faux sinon.</returns>
+        public bool GetKeyUp(KeyCode key)
+        {
+            return Input.GetKeyUp(key);
+        }
     }
 }

@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class AmmoPack : Item
+    public class Bag : Item
     {
-        public AmmoType AmmoType { get; set; }
-        public int NumberOfAmmo { get; set; }
+        public int Level { get; set; }
 
         public override void Use()
         {

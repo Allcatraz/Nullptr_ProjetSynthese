@@ -15,8 +15,17 @@ namespace ProjetSynthese
         public AIRadar Sensor { get; private set; }
 
         private bool isDead;
+
+        [SerializeField]
+        private Inventory inventory;
         
-      
+        public Inventory AIInventory { get; private set; }
+
+        [SerializeField]
+        private Health health;
+
+        public Health AIHealth { get; private set; }
+
         private void Start()
         {
             isDead = false;

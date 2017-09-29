@@ -12,16 +12,15 @@ namespace Harmony
     /// Cette portée permet d'obtenir :
     /// <list type="bullet">
     /// <item>
-    /// Un des GameObjects dans le GameObject ciblé, incluant les enfants de ses enfants, mais pas lui-même.
+    /// Un des GameObjects dans le GameObject ciblé, incluant les enfants de ses enfants, sauf lui-même.
     /// </item>
     /// <item>
-    /// Un des Components dans le GameObject ciblé, incluant ses enfants et les enfants de ses enfants, mais pas lui-même.
+    /// Un des Components dans le GameObject ciblé, incluant ses enfants et les enfants de ses enfants, sauf lui-même.
     /// </item>
     /// </list>
     /// </para>
     /// </remarks>
-    [Obsolete("Please use \"ChildrensScope\" instead.")]
-    public class ChildScope : Scope
+    public class ChildrensScope : Scope
     {
         protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {

@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Harmony
 {
@@ -13,7 +14,7 @@ namespace Harmony
         [NotNull]
         public static string ApplicationDataPath
         {
-            get { return UnityEngine.Application.streamingAssetsPath; }
+            get { return Application.streamingAssetsPath; }
         }
 
         /// <summary>
@@ -22,7 +23,7 @@ namespace Harmony
         [NotNull]
         public static string PersistentDataPath
         {
-            get { return UnityEngine.Application.persistentDataPath; }
+            get { return Application.persistentDataPath; }
         }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace Harmony
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
-            UnityEngine.Application.Quit();
+            Application.Quit();
 #endif
         }
     }

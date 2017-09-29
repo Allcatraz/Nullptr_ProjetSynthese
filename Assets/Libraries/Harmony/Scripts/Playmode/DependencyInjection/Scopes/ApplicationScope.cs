@@ -12,7 +12,7 @@ namespace Harmony
     /// Cette portée permet d'obtenir :
     /// <list type="bullet">
     /// <item>
-    /// Le ou les GameObjects avec le tag « <c>Application Dependencies</c> ».
+    /// Un des GameObjects avec le tag « <c>Application Dependencies</c> ».
     /// </item>
     /// <item>
     /// Un des Components dans un des GameObjects avec le tag « <c>Application Dependencies</c> », incluant ses enfants et les enfants

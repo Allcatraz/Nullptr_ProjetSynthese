@@ -5,32 +5,31 @@ using UnityEngine;
 namespace Harmony
 {
     /// <summary>
-    /// Portée de niveau Enfants.
+    /// Portée de niveau Parents.
     /// </summary>
     /// <remarks>
     /// <para>
     /// Cette portée permet d'obtenir :
     /// <list type="bullet">
     /// <item>
-    /// Un des GameObjects dans le GameObject ciblé, incluant les enfants de ses enfants, mais pas lui-même.
+    /// L'un des GameObjects « <c>Parent</c> » du GameObject ciblé, sauf lui même.
     /// </item>
     /// <item>
-    /// Un des Components dans le GameObject ciblé, incluant ses enfants et les enfants de ses enfants, mais pas lui-même.
+    /// Un des Components dans l'un des GameObjects « <c>Parent</c> » du GameObject ciblé, sauf lui-même.
     /// </item>
     /// </list>
     /// </para>
     /// </remarks>
-    [Obsolete("Please use \"ChildrensScope\" instead.")]
-    public class ChildScope : Scope
+    public class ParentsScope : Scope
     {
         protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {
-            return target.GetAllChildrens();
+            return target.GetAllParents();
         }
 
         protected override IList<object> GetEligibleDependencies(IScript target, Type dependencyType)
         {
-            return new List<object>(target.GetComponentsInChildren(dependencyType)).Filter(delegate(object item)
+            return new List<object>(target.GetComponentsInParent(dependencyType)).Filter(delegate(object item)
             {
                 Component component = item as Component;
                 if (component != null)

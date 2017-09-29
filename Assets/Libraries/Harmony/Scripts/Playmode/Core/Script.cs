@@ -35,64 +35,99 @@ namespace Harmony
             return base.GetComponents<T>();
         }
 
+        public T GetComponentInRoot<T>() where T : class
+        {
+            return gameObject.GetComponentInRoot<T>();
+        }
+
+        public Component GetComponentInRoot(Type type)
+        {
+            return gameObject.GetComponentInRoot(type);
+        }
+
+        public T[] GetComponentsInRoot<T>() where T : class
+        {
+            return gameObject.GetComponentsInRoot<T>();
+        }
+
+        public Component[] GetComponentsInRoot(Type type)
+        {
+            return gameObject.GetComponentsInRoot(type);
+        }
+
+        public new T[] GetComponentsInParent<T>() where T : class
+        {
+            return gameObject.GetComponentsInParent<T>();
+        }
+
+        public T GetComponentInSiblings<T>() where T : class
+        {
+            return gameObject.GetComponentInSiblings<T>();
+        }
+
+        public Component GetComponentInSiblings(Type type)
+        {
+            return gameObject.GetComponentInSiblings(type);
+        }
+
+        public T[] GetComponentsInSiblings<T>() where T : class
+        {
+            return gameObject.GetComponentsInSiblings<T>();
+        }
+
+        public Component[] GetComponentsInSiblings(Type type)
+        {
+            return gameObject.GetComponentsInSiblings(type);
+        }
+
         public new T[] GetComponentsInChildren<T>() where T : class
         {
             return base.GetComponentsInChildren<T>();
         }
 
-        public virtual T GetComponentInTopParent<T>() where T : class
-        {
-            return gameObject.GetComponentInTopParent<T>();
-        }
-
-        public virtual Component GetComponentInTopParent([NotNull] Type type)
-        {
-            return gameObject.GetComponentInTopParent(type);
-        }
-
-        public virtual T[] GetComponentsInTopParent<T>() where T : class
-        {
-            return gameObject.GetComponentsInTopParent<T>();
-        }
-
-        public virtual Component[] GetComponentsInTopParent([NotNull] Type type)
-        {
-            return gameObject.GetComponentsInTopParent(type);
-        }
-
-        public virtual T GetComponentInChildrensParentsOrSiblings<T>() where T : class
+        public T GetComponentInChildrensParentsOrSiblings<T>() where T : class
         {
             return gameObject.GetComponentInChildrensParentsOrSiblings<T>();
         }
 
-        public virtual Component GetComponentInChildrensParentsOrSiblings(Type type)
+        public Component GetComponentInChildrensParentsOrSiblings(Type type)
         {
             return gameObject.GetComponentInChildrensParentsOrSiblings(type);
         }
 
-        public virtual T[] GetComponentsInChildrensParentsOrSiblings<T>() where T : class
+        public T[] GetComponentsInChildrensParentsOrSiblings<T>() where T : class
         {
             return gameObject.GetComponentsInChildrensParentsOrSiblings<T>();
         }
 
-        public virtual Component[] GetComponentsInChildrensParentsOrSiblings([NotNull] Type type)
+        public Component[] GetComponentsInChildrensParentsOrSiblings([NotNull] Type type)
         {
             return gameObject.GetComponentsInChildrensParentsOrSiblings(type);
         }
 
-        public virtual GameObject GetTopParent()
+        public GameObject GetRoot()
         {
-            return gameObject.GetTopParent();
+            return gameObject.GetRoot();
         }
 
-        public virtual IList<GameObject> GetAllChildrens()
-        {
-            return gameObject.GetAllChildrens();
-        }
-
-        public virtual IList<GameObject> GetAllHierachy()
+        public IList<GameObject> GetAllHierachy()
         {
             return gameObject.GetAllHierachy();
+        }
+
+        public IList<GameObject> GetAllParents()
+        {
+            return gameObject.GetAllParents();
+        }
+
+        public IList<GameObject> GetAllSiblings()
+        {
+            return gameObject.GetAllSiblings();
+        }
+
+        public IList<GameObject> GetAllChildrens()
+        {
+            return gameObject.GetAllChildrens();
         }
 
         //#Dirty Hack : Unity overrides the "==" operator on Components. For Unity, if the Component was destroyed or haven't been activated

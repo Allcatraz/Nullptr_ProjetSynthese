@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace Harmony
 {
 #if UNITY_EDITOR_WIN
     /// <summary>
-    /// Script Editor Unity déclanchant la génération du code.
+    /// Script Editor Unity déclanchant la génération des BuildSettings et des classes de constantes.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -368,23 +370,65 @@ namespace Harmony
     /// </para>
     /// </remarks>
     [InitializeOnLoad]
-    public static class ConstClassesGenerator
+    public static class AssetsGenerator
     {
-        static ConstClassesGenerator()
+        static AssetsGenerator()
         {
-            GenerateAllCode();
+            //Generate only const classes on Asset reload. Generating Build Settings can cause more trouble than anything.
+            GenerateConstClasses();
+        }
+
+        [MenuItem("Assets/Generate Build Settings From Activities")]
+        public static void GenerateBuildSettings()
+        {
+            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>();
+
+            //Add Main scene
+            scenes.Add(new EditorBuildSettingsScene(AssetsExtensions.FindScenePath(R.S.Scene.Main), true));
+
+            //Add Util scenes
+            foreach (string scenePath in AssetsExtensions.FindScenesPathIn("Scenes/Util"))
+            {
+                scenes.Add(new EditorBuildSettingsScene(scenePath, true));
+            }
+
+            //Add Activity scenes
+            foreach (Activity activity in AssetsExtensions.FindAssets<Activity>())
+            {
+                if (activity.Scene != R.E.Scene.None)
+                {
+                    scenes.Add(new EditorBuildSettingsScene(AssetsExtensions.FindScenePath(R.S.Scene.ToString(activity.Scene)), true));
+                }
+
+                foreach (Fragment fragment in activity.Fragments)
+                {
+                    if (fragment.Scene != R.E.Scene.None)
+                    {
+                        scenes.Add(new EditorBuildSettingsScene(AssetsExtensions.FindScenePath(R.S.Scene.ToString(fragment.Scene)), true));
+                    }
+                }
+
+                foreach (Menu menu in activity.Menus)
+                {
+                    if (menu.Scene != R.E.Scene.None)
+                    {
+                        scenes.Add(new EditorBuildSettingsScene(AssetsExtensions.FindScenePath(R.S.Scene.ToString(menu.Scene)), true));
+                    }
+                }
+            }
+
+            EditorBuildSettings.scenes = scenes.ToArray();
         }
 
         [MenuItem("Assets/Generate Const Classes")]
-        public static void GenerateAllCode()
+        public static void GenerateConstClasses()
         {
             //Prevent Unity from compiling code while generating more code.
             EditorApplication.LockReloadAssemblies();
 
-            string pathToCodeGenerator =
-                Path.GetFullPath(Path.Combine(UnityEngine.Application.dataPath, "../BuildTools/Harmony/HarmonyCodeGenerator.exe"));
-            string pathToProjectDirectory = Path.GetFullPath(Path.Combine(UnityEngine.Application.dataPath, ".."));
-            string pathToGeneratedDirectory = Path.GetFullPath(Path.Combine(UnityEngine.Application.dataPath, "Generated"));
+            string pathToCodeGenerator = Path.GetFullPath(Path.Combine(Application.dataPath, "../BuildTools/Harmony/HarmonyCodeGenerator.exe"));
+            string pathToProjectDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+            string pathToGeneratedDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, "Generated"));
 
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
@@ -417,12 +461,18 @@ namespace Harmony
                 //Sometimes, this line causes a NullReferenceException. This is a known issue in Unity. Just ignore it.
             }
         }
+
+        public static void Generate()
+        {
+            GenerateBuildSettings();
+            GenerateConstClasses();
+        }
     }
 
     /// <summary>
     /// Trigger Unity. Déclanché avant un build. Démarre la génération de code.
     /// </summary>
-    /// <see cref="ConstClassesGenerator"/>
+    /// <see cref="AssetsGenerator"/>
     public class GenerateCodeBeforeBuild : IPreprocessBuild
     {
         public int callbackOrder
@@ -432,14 +482,14 @@ namespace Harmony
 
         public void OnPreprocessBuild(BuildTarget target, string path)
         {
-            ConstClassesGenerator.GenerateAllCode();
+            AssetsGenerator.Generate();
         }
     }
 
     /// <summary>
     /// Trigger Unity. Déclanché avant la sauvegarde d'un fichier. Démarre la génération de code.
     /// </summary>
-    /// <see cref="ConstClassesGenerator"/>
+    /// <see cref="AssetsGenerator"/>
     public class GenerateCodeOnSave : UnityEditor.AssetModificationProcessor
     {
         //Resharper seems wrong about this. Warnings are disabled.
@@ -448,7 +498,7 @@ namespace Harmony
         // ReSharper disable once Unity.InvalidReturnType
         public static string[] OnWillSaveAssets(string[] paths)
         {
-            ConstClassesGenerator.GenerateAllCode();
+            AssetsGenerator.Generate();
             return paths;
         }
     }

@@ -12,7 +12,7 @@ namespace Harmony
     /// Cette portée permet d'obtenir :
     /// <list type="bullet">
     /// <item>
-    /// Le ou les GameObjects avec le tag « <c>Scene Dependencies</c> » de la scène du GameObject ciblé.
+    /// Un des GameObjects avec le tag « <c>Scene Dependencies</c> » de la scène du GameObject ciblé.
     /// </item>
     /// <item>
     /// Un des Components dans le GameObject avec le tag « <c>Scene Dependencies</c> » de la scène du GameObject ciblé, incluant 

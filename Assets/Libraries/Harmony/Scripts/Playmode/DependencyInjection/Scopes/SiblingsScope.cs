@@ -5,33 +5,31 @@ using UnityEngine;
 namespace Harmony
 {
     /// <summary>
-    /// Portée de niveau Entitée.
+    /// Portée de niveau Frères et soeurs.
     /// </summary>
     /// <remarks>
     /// <para>
     /// Cette portée permet d'obtenir :
     /// <list type="bullet">
     /// <item>
-    /// Un des GameObjects dans le GameObject ciblé, incluant lui-même, ses parents, ses frères et soeurs, ses enfants et les enfants 
-    /// de ses enfants.
+    /// Un des ses frères et soeurs du GameObject ciblé.
     /// </item>
     /// <item>
-    /// Un des Components dans le GameObject ciblé, incluant lui-même, ses parents, ses frères et soeurs, ses enfants et les enfants 
-    /// de ses enfants.
+    /// Un des Components dans un des ses frères et soeurs du GameObject ciblé.
     /// </item>
     /// </list>
     /// </para>
     /// </remarks>
-    public class EntityScope : Scope
+    public class SiblingsScope : Scope
     {
         protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {
-            return target.GetRoot().GetAllHierachy();
+            return target.GetAllSiblings();
         }
 
         protected override IList<object> GetEligibleDependencies(IScript target, Type dependencyType)
         {
-            return new List<object>(target.GetComponentsInChildrensParentsOrSiblings(dependencyType));
+            return new List<object>(target.GetComponentsInSiblings(dependencyType));
         }
     }
 }

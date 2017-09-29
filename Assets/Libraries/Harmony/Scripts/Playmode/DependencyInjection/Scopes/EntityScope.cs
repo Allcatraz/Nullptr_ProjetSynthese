@@ -26,7 +26,7 @@ namespace Harmony
     {
         protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {
-            return target.GetTopParent().GetAllHierachy();
+            return target.GetRoot().GetAllHierachy();
         }
 
         protected override IList<object> GetEligibleDependencies(IScript target, Type dependencyType)

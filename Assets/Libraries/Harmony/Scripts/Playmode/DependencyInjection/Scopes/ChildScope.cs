@@ -20,6 +20,7 @@ namespace Harmony
     /// </list>
     /// </para>
     /// </remarks>
+    [Obsolete("Please use \"ChildrensScope\" instead.")]
     public class ChildScope : Scope
     {
         protected override IList<GameObject> GetEligibleGameObjects(IScript target)

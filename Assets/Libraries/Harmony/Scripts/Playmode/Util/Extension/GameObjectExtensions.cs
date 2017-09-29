@@ -19,9 +19,9 @@ namespace Harmony
         /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
         /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
         [CanBeNull]
-        public static T GetComponentInTopParent<T>(this GameObject gameObject) where T : class
+        public static T GetComponentInRoot<T>(this GameObject gameObject) where T : class
         {
-            return gameObject.GetTopParent().GetComponent<T>();
+            return gameObject.GetRoot().GetComponent<T>();
         }
 
         /// <summary>
@@ -32,9 +32,9 @@ namespace Harmony
         /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
         /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
         [CanBeNull]
-        public static Component GetComponentInTopParent(this GameObject gameObject, Type type)
+        public static Component GetComponentInRoot(this GameObject gameObject, [NotNull] Type type)
         {
-            return gameObject.GetTopParent().GetComponent(type);
+            return gameObject.GetRoot().GetComponent(type);
         }
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace Harmony
         /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
         /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
         [NotNull]
-        public static T[] GetComponentsInTopParent<T>(this GameObject gameObject) where T : class
+        public static T[] GetComponentsInRoot<T>(this GameObject gameObject) where T : class
         {
-            return gameObject.GetTopParent().GetComponents<T>();
+            return gameObject.GetRoot().GetComponents<T>();
         }
 
         /// <summary>
@@ -58,9 +58,87 @@ namespace Harmony
         /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
         /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
         [NotNull]
-        public static Component[] GetComponentsInTopParent(this GameObject gameObject, [NotNull] Type type)
+        public static Component[] GetComponentsInRoot(this GameObject gameObject, [NotNull] Type type)
         {
-            return gameObject.GetTopParent().GetComponents(type);
+            return gameObject.GetRoot().GetComponents(type);
+        }
+
+        /// <summary>
+        /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le frères et soeurs  du <see cref="GameObject"/>,
+        /// et retourne le premier trouvé.
+        /// </summary>
+        /// <param name="gameObject">GameObject où obtenir le <see cref="Component"/>.</param>
+        /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
+        /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
+        [CanBeNull]
+        public static T GetComponentInSiblings<T>(this GameObject gameObject) where T : class
+        {
+            foreach (GameObject sibling in gameObject.GetAllSiblings())
+            {
+                T component = sibling.GetComponent<T>();
+                if (component != null)
+                {
+                    return component;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le frères et soeurs du <see cref="GameObject"/> 
+        /// et retourne le premier trouvé.
+        /// </summary>
+        /// <param name="gameObject">GameObject où obtenir le <see cref="Component"/>.</param>
+        /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
+        /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
+        [CanBeNull]
+        public static Component GetComponentInSiblings(this GameObject gameObject, [NotNull] Type type)
+        {
+            foreach (GameObject sibling in gameObject.GetAllSiblings())
+            {
+                Component component = sibling.GetComponent(type);
+                if (component != null)
+                {
+                    return component;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans dans le frères et soeurs 
+        /// du <see cref="GameObject"/> et les retourne tous.
+        /// </summary>
+        /// <param name="gameObject">GameObject où obtenir les <see cref="Component">Components</see>.</param>
+        /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
+        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
+        [NotNull]
+        public static T[] GetComponentsInSiblings<T>(this GameObject gameObject) where T : class
+        {
+            List<T> components = new List<T>();
+            foreach (GameObject sibling in gameObject.GetAllSiblings())
+            {
+                components.AddRange(sibling.GetComponents<T>());
+            }
+            return components.ToArray();
+        }
+
+        /// <summary>
+        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans dans le frères et soeurs  
+        /// du <see cref="GameObject"/> et les retourne tous.
+        /// </summary>
+        /// <param name="gameObject">GameObject où obtenir les <see cref="Component">Components</see>.</param>
+        /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
+        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
+        [NotNull]
+        public static Component[] GetComponentsInSiblings(this GameObject gameObject, [NotNull] Type type)
+        {
+            List<Component> components = new List<Component>();
+            foreach (GameObject sibling in gameObject.GetAllSiblings())
+            {
+                components.AddRange(sibling.GetComponents(type));
+            }
+            return components.ToArray();
         }
 
         /// <summary>
@@ -73,7 +151,7 @@ namespace Harmony
         [CanBeNull]
         public static T GetComponentInChildrensParentsOrSiblings<T>(this GameObject gameObject) where T : class
         {
-            return gameObject.GetTopParent().GetComponentInChildren<T>();
+            return gameObject.GetRoot().GetComponentInChildren<T>();
         }
 
         /// <summary>
@@ -84,9 +162,9 @@ namespace Harmony
         /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
         /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
         [CanBeNull]
-        public static Component GetComponentInChildrensParentsOrSiblings(this GameObject gameObject, Type type)
+        public static Component GetComponentInChildrensParentsOrSiblings(this GameObject gameObject, [NotNull] Type type)
         {
-            return gameObject.GetTopParent().GetComponentInChildren(type);
+            return gameObject.GetRoot().GetComponentInChildren(type);
         }
 
         /// <summary>
@@ -99,7 +177,7 @@ namespace Harmony
         [NotNull]
         public static T[] GetComponentsInChildrensParentsOrSiblings<T>(this GameObject gameObject) where T : class
         {
-            return gameObject.GetTopParent().GetComponentsInChildren<T>();
+            return gameObject.GetRoot().GetComponentsInChildren<T>();
         }
 
         /// <summary>
@@ -112,26 +190,85 @@ namespace Harmony
         [NotNull]
         public static Component[] GetComponentsInChildrensParentsOrSiblings(this GameObject gameObject, [NotNull] Type type)
         {
-            return gameObject.GetTopParent().GetComponentsInChildren(type);
+            return gameObject.GetRoot().GetComponentsInChildren(type);
         }
 
         /// <summary>
-        /// Retourne le <i>TopParent</i> du <see cref="GameObject"/>.
+        /// Retourne la hirachie complète de ce <see cref="GameObject"/>.
         /// </summary>
-        /// <param name="gameObject">GameObject où obtenir le <i>TopParent</i>.</param>
+        /// <param name="gameObject">GameObject où obtenir les enfants ainsi que lui même.</param>
         /// <returns>
-        /// <i>TopParent</i> du <see cref="GameObject"/>. Si le <see cref="GameObject"/> ne possède pas de parent, 
+        /// Tous les <see cref="GameObject"/> enfants de ce <see cref="GameObject"/>, récursivement, en incluant
+        /// le <see cref="GameObject"/> courant.
+        /// </returns>
+        [NotNull]
+        public static IList<GameObject> GetAllHierachy(this GameObject gameObject)
+        {
+            IList<GameObject> gameObjects = gameObject.GetAllChildrens();
+            gameObjects.Insert(0, gameObject.gameObject); //Parent will allways be first
+            return gameObjects;
+        }
+
+        /// <summary>
+        /// Retourne le <i>Root</i> du <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">GameObject où obtenir le <i>Root</i>.</param>
+        /// <returns>
+        /// <i>Root</i> du <see cref="GameObject"/>. Si le <see cref="GameObject"/> ne possède pas de parent, 
         /// c'est lui même qui est retourné par cette méthode.
         /// </returns>
         [NotNull]
-        public static GameObject GetTopParent(this GameObject gameObject)
+        public static GameObject GetRoot(this GameObject gameObject)
         {
-            Transform parent = gameObject.transform;
-            while (parent.parent != null)
+            return gameObject.transform.root.gameObject;
+        }
+
+        /// <summary>
+        /// Retourne tous les <see cref="GameObject"/> parents de ce <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">GameObject où obtenir les parents, sauf lui même.</param>
+        /// <returns>
+        /// Tous les <see cref="GameObject"/> parents de ce <see cref="GameObject"/>, récursivement, sans inclure 
+        /// le <see cref="GameObject"/> courant.
+        /// </returns>
+        [NotNull]
+        public static IList<GameObject> GetAllParents(this GameObject gameObject)
+        {
+            IList<GameObject> gameObjects = new List<GameObject>();
+            Transform currentParent = gameObject.transform.parent;
+            while (currentParent != null)
             {
-                parent = parent.parent;
+                gameObjects.Add(currentParent.gameObject);
+                currentParent = currentParent.parent;
             }
-            return parent.gameObject;
+            return gameObjects;
+        }
+
+        /// <summary>
+        /// Retourne tous les frères et soeurs <see cref="GameObject"/> de ce <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">GameObject où obtenir les frères et soeurs.</param>
+        /// <returns>
+        /// Tous les frères et soeurs <see cref="GameObject"/> de ce <see cref="GameObject"/>.
+        /// </returns>
+        [NotNull]
+        public static IList<GameObject> GetAllSiblings(this GameObject gameObject)
+        {
+            Transform parent = gameObject.transform.parent;
+            if (parent != null)
+            {
+                IList<GameObject> gameObjects = new List<GameObject>();
+                for (int i = 0; i < parent.childCount; i++)
+                {
+                    gameObjects.Add(parent.GetChild(i).gameObject);
+                }
+                return gameObjects;
+            }
+            else
+            {
+                //No parents ? Return all root gameobjects of scene.
+                return gameObject.scene.GetRootGameObjects();
+            }
         }
 
         /// <summary>
@@ -156,22 +293,6 @@ namespace Harmony
                     gameObjects.Add(childrenGameObject);
                 }
             }
-            return gameObjects;
-        }
-
-        /// <summary>
-        /// Retourne la hirachie complète de ce <see cref="GameObject"/>.
-        /// </summary>
-        /// <param name="gameObject">GameObject où obtenir les enfants ainsi que lui même.</param>
-        /// <returns>
-        /// Tous les <see cref="GameObject"/> enfants de ce <see cref="GameObject"/>, récursivement, en incluant
-        /// le <see cref="GameObject"/> courant.
-        /// </returns>
-        [NotNull]
-        public static IList<GameObject> GetAllHierachy(this GameObject gameObject)
-        {
-            IList<GameObject> gameObjects = gameObject.GetAllChildrens();
-            gameObjects.Insert(0, gameObject.gameObject); //Parent will allways be first
             return gameObjects;
         }
 

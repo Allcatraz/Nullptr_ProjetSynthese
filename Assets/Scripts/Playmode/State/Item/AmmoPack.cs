@@ -6,8 +6,8 @@ namespace ProjetSynthese
 {
     public class AmmoPack : Item
     {
-        public AmmoType AmmoType { get; private set; }
-        public int NumberOfAmmo { get; private set; }
+        public AmmoType AmmoType { get; set; }
+        public int NumberOfAmmo { get; set; }
 
         public override void Use()
         {

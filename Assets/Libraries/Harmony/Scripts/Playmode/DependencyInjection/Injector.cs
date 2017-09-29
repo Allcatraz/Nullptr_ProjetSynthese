@@ -225,22 +225,19 @@ namespace Harmony
         /// <param name="injectMethodName">
         /// Nom de la méthode où l'injection doit être effectuée.
         /// </param>
-        /// <param name="valueDependencies">
-        /// Les dépendences de <i>valeur</i> à envoyer à la méthode <i>Inject</i>. L'ordre est important.
-        /// </param>
         /// <remarks>
         /// Pour supporter les cas avec héritage, il est recommandé à ce que toutes les méthodes d'injection aient un nom unique.
         /// Ainsi, une classe "B" héritant d'une classe "A" peut elle aussi utiliser l'injection de dépendances sans risquer de 
         /// priver la classe "A" des dépendances dont elle a besoin.
         /// </remarks>
-        public void InjectDependencies([NotNull] IScript target, [NotNull] string injectMethodName, params object[] valueDependencies)
+        public void InjectDependencies([NotNull] IScript target, [NotNull] string injectMethodName)
         {
             MethodInfo injectMethod = target.GetType().GetMethod(injectMethodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             if (injectMethod != null)
             {
                 try
                 {
-                    injectMethod.Invoke(target, GetDependenciesForTarget(target, injectMethod, valueDependencies));
+                    injectMethod.Invoke(target, GetDependenciesForTarget(target, injectMethod));
                 }
                 catch (TargetParameterCountException e)
                 {
@@ -262,18 +259,12 @@ namespace Harmony
         }
 
         private static object[] GetDependenciesForTarget(IScript target,
-                                                         MethodInfo injectMethod,
-                                                         object[] valueDependencies)
+                                                         MethodInfo injectMethod)
         {
             List<object> dependencies = new List<object>();
-            foreach (object valueDependency in valueDependencies)
+            foreach (ParameterInfo parameter in injectMethod.GetParameters())
             {
-                dependencies.Add(valueDependency);
-            }
-            ParameterInfo[] parameters = injectMethod.GetParameters();
-            for (var i = valueDependencies.Length; i < parameters.Length; i++)
-            {
-                dependencies.Add(GetDependencyForTarget(target, parameters[i]));
+                dependencies.Add(GetDependencyForTarget(target, parameter));
             }
             return dependencies.ToArray();
         }

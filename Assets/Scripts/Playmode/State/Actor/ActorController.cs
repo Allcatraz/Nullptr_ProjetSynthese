@@ -1,9 +1,9 @@
 ﻿
 namespace ProjetSynthese
 {
-    public class ActorController : NetworkGameScript, IController
+    public class ActorController :  IController
     {
-        public virtual void Move() { }
+        public virtual void Move(ActorAI actor) { }
  
     }
 }

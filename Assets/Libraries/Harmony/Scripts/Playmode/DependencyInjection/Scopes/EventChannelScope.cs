@@ -12,7 +12,7 @@ namespace Harmony
     /// Cette portée permet d'obtenir :
     /// <list type="bullet">
     /// <item>
-    /// Le ou les GameObjects avec le tag « <c>Event Channels</c> ».
+    /// Un des GameObjects avec le tag « <c>Event Channels</c> ».
     /// </item>
     /// <item>
     /// Un des Components dans les GameObjects avec le tag « <c>Event Channels</c> », incluant leurs enfants et les enfants

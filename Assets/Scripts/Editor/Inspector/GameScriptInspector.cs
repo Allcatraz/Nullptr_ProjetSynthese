@@ -13,12 +13,12 @@ namespace ProjetSynthese
     {
         private GameScript gameScript;
 
-        private void Awake()
+        protected void Awake()
         {
             gameScript = target as GameScript;
         }
 
-        private void OnDestroy()
+        protected void OnDestroy()
         {
             gameScript = null;
         }

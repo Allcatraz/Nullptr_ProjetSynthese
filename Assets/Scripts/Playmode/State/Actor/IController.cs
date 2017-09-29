@@ -3,6 +3,6 @@ namespace ProjetSynthese
 {
     public interface IController
     {
-        void Move();
+        void Move(ActorAI actor);
     }
 }

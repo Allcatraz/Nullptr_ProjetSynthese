@@ -9,7 +9,7 @@
         Grenade,
         Helmet,
         Vest,
-        Sac,
+        Bag,
         Heal,
         Boost,
         AmmoPack

@@ -1,8 +1,6 @@
-﻿using ProjetSynthese;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditorInternal;
-using UnityEngine;
 
 namespace Harmony
 {
@@ -42,12 +40,10 @@ namespace Harmony
             BeginHorizontal();
             if (!EditorApplication.isPlaying)
             {
-                DrawButton("Start Activity", PlayInEditor);
                 DrawButton("Open Activity", OpenActivityInEditor);
             }
             else
             {
-                DrawButton("Stop Activity", StopPlayInEditor);
                 DrawDisabledButton("Open Activity");
             }
             EndHorizontal();
@@ -59,32 +55,12 @@ namespace Harmony
             DrawBasicPropertyTitleLabel(activeFragmentOnLoad);
         }
 
-        private void PlayInEditor()
-        {
-            if (!EditorApplication.isPlaying)
-            {
-                //The Application scene must allways be loaded
-                OpenSceneInEditor(R.E.Scene.Application, OpenSceneMode.Single);
-
-                //Tell the EditorActivityConfiguration to load a specific activity
-                GameObject.FindGameObjectWithTag(R.S.Tag.ApplicationDependencies).GetComponentInChildren<EditorActivityConfiguration>().Activity =
-                    target as Activity;
-
-                EditorApplication.isPlaying = true;
-            }
-        }
-
-        private void StopPlayInEditor()
-        {
-            EditorApplication.isPlaying = false;
-        }
-
         private void OpenActivityInEditor()
         {
             EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 
-            //The Application scene must allways be loaded
-            OpenSceneInEditor(R.E.Scene.Application, OpenSceneMode.Single);
+            //The Game scene must allways be loaded
+            OpenSceneInEditor(R.E.Scene.Game, OpenSceneMode.Single);
 
             //Load Activity controller scene
             R.E.Scene scene = (R.E.Scene) GetEnumProperty("scene", typeof(R.E.Scene)).CurrentValue;
@@ -106,7 +82,7 @@ namespace Harmony
             for (int i = 0; i < menus.serializedProperty.arraySize; i++)
             {
                 OpenMenuInEditor(menus.serializedProperty.GetArrayElementAtIndex(i).objectReferenceValue as Menu,
-                                 OpenSceneMode.AdditiveWithoutLoading);
+                                 OpenSceneMode.Additive);
             }
         }
 
@@ -114,7 +90,10 @@ namespace Harmony
         {
             foreach (EditorBuildSettingsScene builtScene in EditorBuildSettings.scenes)
             {
-                if (builtScene.path.EndsWith(R.S.Scene.ToString(scene) + ".unity"))
+                //The "/" in the front is to prevent some issues with similar scene names.
+                //EX :
+                //      NewHighScoreScene.unity and HighScoreScene.unity 
+                if (builtScene.path.EndsWith("/" + R.S.Scene.ToString(scene) + ".unity"))
                 {
                     EditorSceneManager.OpenScene(builtScene.path, mode);
                     break;

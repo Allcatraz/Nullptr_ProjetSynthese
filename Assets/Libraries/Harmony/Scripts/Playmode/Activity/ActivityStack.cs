@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Harmony.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Harmony
 {
+    /// <summary>
+    /// Signature de toute fonction désirant être notifié d'un chargement d'activité.
+    /// </summary>
+    public delegate void ActivityLoadingEventHandler();
+
     /// <summary>
     /// Représente une pile d'<see cref="Activity"/>. Permet de démarer/arrêter/redémarer des activités.
     /// </summary>
@@ -75,6 +79,25 @@ namespace Harmony
 
             StartOrContinueScheduledSceneTasks();
         }
+
+#if UNITY_EDITOR
+
+        /// <summary>
+        /// Démarre une activité en assumant que cette dernière est déjà chargée.
+        /// </summary>
+        /// <param name="activity">Activité à démarrer</param>
+        /// <remarks>
+        /// Cette fonction ne devrait être utilisée que dans un cadre de développement et non pas dans un cadre de production.
+        /// Elle est excessivement dangeureuse : À UTILISER AVEC PRÉCAUTION!
+        /// </remarks>
+        public void StartPreloadedActivity(Activity activity)
+        {
+            PushActivity(activity);
+
+            ShowCurrentActivity();
+        }
+
+#endif
 
         /// <summary>
         /// Redémarre l'activité courante, c'est-à-dire celle sur le dessus de la pile d'activités. 
@@ -151,6 +174,15 @@ namespace Harmony
         public bool HasActivityRunning()
         {
             return activityStack.Count > 0;
+        }
+
+        /// <summary>
+        /// Indique si, oui ou non, il y a une activité en cours de chargement.
+        /// </summary>
+        /// <returns>True s'il y a une activité en cours de chargement, faux sinon.</returns>
+        public bool HasActivityLoading()
+        {
+            return isLoadingActivity;
         }
 
         /// <summary>
@@ -281,13 +313,12 @@ namespace Harmony
         {
             foreach (string sceneName in GetCurrentActivity().GetScenes())
             {
-                if (IsSceneLoaded(sceneName) && !scenesToUnloadRemaining.Contains(sceneName))
+                if (SceneManagerExtensions.IsSceneLoaded(sceneName) && !scenesToUnloadRemaining.Contains(sceneName))
                 {
                     scenesToLoadRemaining.Clear(); //Prevent anything from happening
                     scenesToUnloadRemaining.Clear(); //Prevent anything from happening
                     throw new ArgumentException("Unable to load Activity : scene named \"" + sceneName +
-                                                "\" is allready loaded and " +
-                                                "is not scheduled to be unloaded. Can't proceed further.");
+                                                "\" is already loaded and is not scheduled to be unloaded. You may have loaded it manually somewhere.");
                 }
                 scenesToLoadRemaining.Enqueue(sceneName);
             }
@@ -297,11 +328,10 @@ namespace Harmony
         {
             foreach (string sceneName in GetCurrentActivity().GetScenes())
             {
-                if (!IsSceneLoaded(sceneName))
+                if (!SceneManagerExtensions.IsSceneLoaded(sceneName))
                 {
-                    Debug.LogWarning("Problem while stopping current Activity : scene named \"" + sceneName +
-                                     "\" is not loaded, " +
-                                     "but belongs to the Activity being closed. You may have unloaded it manually somewhere.");
+                    Debug.LogError("Problem while stopping current Activity : scene named \"" + sceneName +
+                                   "\" is not loaded, but belongs to the Activity being closed. You may have unloaded it manually somewhere.");
                 }
                 else
                 {
@@ -390,18 +420,6 @@ namespace Harmony
             GetCurrentMenu().OnPause();
         }
 
-        private bool IsSceneLoaded(string sceneName)
-        {
-            for (int i = 0; i < SceneManager.sceneCount; i++)
-            {
-                if (SceneManager.GetSceneAt(i).name == sceneName)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
             if (scenesToLoadRemaining.Contains(scene.name))
@@ -450,14 +468,22 @@ namespace Harmony
 
                 foreach (Fragment fragment in activity.Fragments)
                 {
-                    fragments.Add(new StackedFragment(fragment));
+                    //Unity sometimes add "null" elements in inspector edited lists...
+                    if (fragment != null)
+                    {
+                        fragments.Add(new StackedFragment(fragment));
+                    }
                 }
 
                 int currentMenuIndex = 0;
                 foreach (Menu menu in activity.Menus)
                 {
-                    menus.Add(new StackedMenu(menu, currentMenuIndex, activity.Menus.Count));
-                    currentMenuIndex++;
+                    //Unity sometimes add "null" elements in inspector edited lists...
+                    if (menu != null)
+                    {
+                        menus.Add(new StackedMenu(menu, currentMenuIndex, activity.Menus.Count));
+                        currentMenuIndex++;
+                    }
                 }
             }
 
@@ -501,6 +527,10 @@ namespace Harmony
                 {
                     SceneManager.SetActiveScene(SceneManager.GetSceneByName(R.S.Scene.ToString(activity.ActiveFragmentOnLoad.Scene)));
                 }
+                else if (activity.Scene != R.E.Scene.None)
+                {
+                    SceneManager.SetActiveScene(SceneManager.GetSceneByName(R.S.Scene.ToString(activity.Scene)));
+                }
 
                 if (activity.Controller != R.E.GameObject.None)
                 {
@@ -509,17 +539,15 @@ namespace Harmony
 
                     if (gameObject == null)
                     {
-                        throw new ArgumentException("Unable to find controller for Activity : no GameObject of name \""
-                                                    + gameObjectName + "\" found.");
+                        throw new ArgumentException("Unable to find controller for Activity : no GameObject of name \"" + gameObjectName + "\" found.");
                     }
 
                     controller = gameObject.GetComponentInChildren<IActivityController>();
 
                     if (controller == null)
                     {
-                        throw new ArgumentException(
-                            "Unable to find controller for Activity : no IActivityController exists "
-                            + "on GameObject of name \"" + gameObjectName + "\".");
+                        throw new ArgumentException("Unable to find controller for Activity : no IActivityController exists on GameObject of 7" +
+                                                    "name \"" + gameObjectName + "\".");
                     }
                 }
 
@@ -596,9 +624,8 @@ namespace Harmony
 
                     if (controller == null)
                     {
-                        throw new ArgumentException(
-                            "Unable to find controller for Fragment : no IFragmentController exists "
-                            + "on GameObject of name \"" + gameObjectName + "\".");
+                        throw new ArgumentException("Unable to find controller for Fragment : no IFragmentController exists "
+                                                    + "on GameObject of name \"" + gameObjectName + "\".");
                     }
                 }
             }
@@ -755,12 +782,4 @@ namespace Harmony
             }
         }
     }
-}
-
-namespace Harmony.Unity
-{
-    /// <summary>
-    /// Signature de toute fonction désirant être notifié d'un chargement d'activité.
-    /// </summary>
-    public delegate void ActivityLoadingEventHandler();
 }

@@ -20,16 +20,17 @@ namespace Harmony
     /// </list>
     /// </para>
     /// </remarks>
+	[Obsolete("Please use \"RootScope\" instead.")]
     public class TopParentScope : Scope
     {
         protected override IList<GameObject> GetEligibleGameObjects(IScript target)
         {
-            return new[] { target.GetTopParent() };
+            return new[] { target.GetRoot() };
         }
 
         protected override IList<object> GetEligibleDependencies(IScript target, Type dependencyType)
         {
-            return new List<object>(target.GetComponentsInTopParent(dependencyType));
+            return new List<object>(target.GetComponentsInRoot(dependencyType));
         }
     }
 }

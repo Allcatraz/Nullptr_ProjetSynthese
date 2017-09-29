@@ -41,6 +41,86 @@ namespace Harmony
         Component[] GetComponents(Type type);
 
         /// <summary>
+        /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le <i>TopParent</i> du <see cref="GameObject"/> et 
+        /// retourne le premier trouvé.
+        /// </summary>
+        /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
+        /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
+        T GetComponentInRoot<T>() where T : class;
+
+        /// <summary>
+        /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le <i>TopParent</i> du <see cref="GameObject"/> et 
+        /// retourne le premier trouvé.
+        /// </summary>
+        /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
+        /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
+        Component GetComponentInRoot([NotNull] Type type);
+
+        /// <summary>
+        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans le <i>TopParent</i> du 
+        /// <see cref="GameObject"/> et les retourne tous.
+        /// </summary>
+        /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
+        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
+        T[] GetComponentsInRoot<T>() where T : class;
+
+        /// <summary>
+        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans le <i>TopParent</i> du 
+        /// <see cref="GameObject"/> et les retourne tous.
+        /// </summary>
+        /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
+        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
+        Component[] GetComponentsInRoot([NotNull] Type type);
+
+        /// <summary>
+        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans les <i>Parents</i> du 
+        /// <see cref="GameObject"/> et les retourne tous.
+        /// </summary>
+        /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
+        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
+        T[] GetComponentsInParent<T>() where T : class;
+
+        /// <summary>
+        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans les <i>Parents</i> du 
+        /// <see cref="GameObject"/> et les retourne tous.
+        /// </summary>
+        /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
+        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
+        Component[] GetComponentsInParent(Type type);
+
+        /// <summary>
+        /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le frères et soeurs  du <see cref="GameObject"/>,
+        /// et retourne le premier trouvé.
+        /// </summary>
+        /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
+        /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
+        T GetComponentInSiblings<T>() where T : class;
+
+        /// <summary>
+        /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le frères et soeurs du <see cref="GameObject"/> 
+        /// et retourne le premier trouvé.
+        /// </summary>
+        /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
+        /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
+        Component GetComponentInSiblings(Type type);
+
+        /// <summary>
+        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans dans le frères et soeurs 
+        /// du <see cref="GameObject"/> et les retourne tous.
+        /// </summary>
+        /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
+        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
+        T[] GetComponentsInSiblings<T>() where T : class;
+
+        /// <summary>
+        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans dans le frères et soeurs  
+        /// du <see cref="GameObject"/> et les retourne tous.
+        /// </summary>
+        /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
+        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
+        Component[] GetComponentsInSiblings(Type type);
+
+        /// <summary>
         /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans le <see cref="GameObject"/>, ses enfants,
         /// et les retourne tous.
         /// </summary>
@@ -55,38 +135,6 @@ namespace Harmony
         /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
         /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
         Component[] GetComponentsInChildren(Type type);
-
-        /// <summary>
-        /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le <i>TopParent</i> du <see cref="GameObject"/> et 
-        /// retourne le premier trouvé.
-        /// </summary>
-        /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
-        /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
-        T GetComponentInTopParent<T>() where T : class;
-
-        /// <summary>
-        /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le <i>TopParent</i> du <see cref="GameObject"/> et 
-        /// retourne le premier trouvé.
-        /// </summary>
-        /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
-        /// <returns>Un <see cref="Component"/> du type demandé, ou null s'il en existe aucun.</returns>
-        Component GetComponentInTopParent([NotNull] Type type);
-
-        /// <summary>
-        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans le <i>TopParent</i> du 
-        /// <see cref="GameObject"/> et les retourne tous.
-        /// </summary>
-        /// <typeparam name="T">Type du <see cref="Component"/> à obtenir.</typeparam>
-        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
-        T[] GetComponentsInTopParent<T>() where T : class;
-
-        /// <summary>
-        /// Retourne tous les <see cref="Component">Components</see> du type spécifié. Recherche dans le <i>TopParent</i> du 
-        /// <see cref="GameObject"/> et les retourne tous.
-        /// </summary>
-        /// <param name="type">Type du <see cref="Component"/> à obtenir.</param>
-        /// <returns>Tableau contenant tous les <see cref="Component">Components</see> trouvés.</returns>
-        Component[] GetComponentsInTopParent([NotNull] Type type);
 
         /// <summary>
         /// Retourne le <see cref="Component"/> du type spécifié. Recherche dans le <i>TopParent</i> du <see cref="GameObject"/>,
@@ -121,22 +169,14 @@ namespace Harmony
         Component[] GetComponentsInChildrensParentsOrSiblings([NotNull] Type type);
 
         /// <summary>
-        /// Retourne le <i>TopParent</i> du <see cref="GameObject"/>.
+        /// Retourne le <i>Root</i> du <see cref="GameObject"/>.
         /// </summary>
         /// <returns>
-        /// <i>TopParent</i> du <see cref="GameObject"/>. Si le <see cref="GameObject"/> ne possède pas de parent, 
+        /// <i>Root</i> du <see cref="GameObject"/>. Si le <see cref="GameObject"/> ne possède pas de parent, 
         /// c'est lui même qui est retourné par cette méthode.
         /// </returns>
-        GameObject GetTopParent();
-
-        /// <summary>
-        /// Retourne tous les <see cref="GameObject"/> enfants de ce <see cref="GameObject"/>.
-        /// </summary>
-        /// <returns>
-        /// Tous les <see cref="GameObject"/> enfants de ce <see cref="GameObject"/>, récursivement, sans inclure 
-        /// le <see cref="GameObject"/> courant.
-        /// </returns>
-        IList<GameObject> GetAllChildrens();
+        [NotNull]
+        GameObject GetRoot();
 
         /// <summary>
         /// Retourne la hirachie complète de ce <see cref="GameObject"/>.
@@ -146,5 +186,31 @@ namespace Harmony
         /// le <see cref="GameObject"/> courant.
         /// </returns>
         IList<GameObject> GetAllHierachy();
+
+        /// <summary>
+        /// Retourne tous les <see cref="GameObject"/> parents de ce <see cref="GameObject"/>.
+        /// </summary>
+        /// <returns>
+        /// Tous les <see cref="GameObject"/> parents de ce <see cref="GameObject"/>, récursivement, sans inclure 
+        /// le <see cref="GameObject"/> courant.
+        /// </returns>
+        IList<GameObject> GetAllParents();
+
+        /// <summary>
+        /// Retourne tous les frères et soeurs <see cref="GameObject"/> de ce <see cref="GameObject"/>.
+        /// </summary>
+        /// <returns>
+        /// Tous les frères et soeurs <see cref="GameObject"/> de ce <see cref="GameObject"/>.
+        /// </returns>
+        IList<GameObject> GetAllSiblings();
+
+        /// <summary>
+        /// Retourne tous les <see cref="GameObject"/> enfants de ce <see cref="GameObject"/>.
+        /// </summary>
+        /// <returns>
+        /// Tous les <see cref="GameObject"/> enfants de ce <see cref="GameObject"/>, récursivement, sans inclure 
+        /// le <see cref="GameObject"/> courant.
+        /// </returns>
+        IList<GameObject> GetAllChildrens();
     }
 }

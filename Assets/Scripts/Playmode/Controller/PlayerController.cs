@@ -1,10 +1,11 @@
 ﻿using Harmony;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
     [AddComponentMenu("Game/Control/PlayerController")]
-    public class PlayerController : GameScript
+    public class PlayerController : NetworkGameScript
     {
         [SerializeField] private Menu inventoryMenu;
 
@@ -23,7 +24,7 @@ namespace ProjetSynthese
         private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                             [ApplicationScope] MouseInputSensor mouseInputSensor,
                                             [ApplicationScope] ActivityStack activityStack,
-                                            [GameObjectScope] PlayerMover playerMover,
+                                            [EntityScope] PlayerMover playerMover,
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
                                             [EntityScope] ItemSensor itemSensor)
@@ -41,6 +42,7 @@ namespace ProjetSynthese
         {
             InjectDependencies("InjectPlayerController");
 
+
             keyboardInputSensor.Keyboards.OnMove += OnMove;
             keyboardInputSensor.Keyboards.OnInventoryAction += InventoryAction;
             keyboardInputSensor.Keyboards.OnPickup += OnPickup;
@@ -50,6 +52,7 @@ namespace ProjetSynthese
             mouseInputSensor.Mouses.OnFire += OnFire;
 
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
+
         }
 
         private void OnDestroy()
@@ -65,34 +68,58 @@ namespace ProjetSynthese
 
         private void Update()
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
             playerMover.Rotate();
         }
 
         private void OnSwitchSprintOn()
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
             playerMover.SwitchSprintOn();
         }
 
         private void OnSwitchSprintOff()
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
             playerMover.SwitchSprintOff();
         }
 
         private void OnMove(Vector3 direction)
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
             playerMover.Move(direction);
         }
 
         private void OnFire()
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
             if ((object)currentWeapon != null)
                 currentWeapon.Use();
         }
 
         private void OnPickup()
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
             GameObject item = itemSensor.GetItemNearest();
-            if ((object) item != null)
+            if ((object)item != null)
             {
                 inventory.Add(item);
                 item.SetActive(false);
@@ -101,6 +128,10 @@ namespace ProjetSynthese
 
         private void InventoryAction()
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
             if (!isInventoryOpen)
             {
                 StaticInventoryPass.Inventory = inventory;

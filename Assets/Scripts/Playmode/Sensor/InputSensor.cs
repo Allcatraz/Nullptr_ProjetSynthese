@@ -10,14 +10,18 @@ namespace ProjetSynthese
             public event DownEventHandler OnDown;
             public event ConfirmEventHandler OnConfirm;
 
-            public event ToggleInventoryEventHandler OnInventoryAction;
+            public event ToggleInventoryEventHandler OnToggleInventory;
             public event TogglePauseEventHandler OnTogglePause;
 
+            public event MoveTowardHandler OnMove;
             public event SwitchSprintOnHandler OnSwitchSprintOn;
             public event SwitchSprintOffHandler OnSwitchSprintOff;
 
+            public event SwitchPrimaryWeaponHandler OnSwitchPrimaryWeapon;
+            public event SwitchSecondaryWeaponHandler OnSwitchSecondaryWeapon;
+
             public event FireEventHandler OnFire;
-            public event MoveTowardHandler OnMove;
+
             public event PickupHandler OnPickup;
 
             public abstract IInputDevice this[int deviceIndex] { get; }
@@ -37,29 +41,19 @@ namespace ProjetSynthese
                 if (OnConfirm != null) OnConfirm();
             }
 
+            protected virtual void NotifyInventoryAction()
+            {
+                if (OnToggleInventory != null) OnToggleInventory();
+            }
+
             protected virtual void NotifyTogglePause()
             {
                 if (OnTogglePause != null) OnTogglePause();
             }
 
-            protected virtual void NotifyFire()
-            {
-                if (OnFire != null) OnFire();
-            }
-
             protected virtual void NotifyMove(Vector3 direction)
             {
                 if (OnMove != null) OnMove(direction);
-            }
-
-            protected virtual void NotifyInventoryAction()
-            {
-                if (OnInventoryAction != null) OnInventoryAction();
-            }
-
-            protected virtual void NotifyPickup()
-            {
-                if (OnPickup != null) OnPickup();
             }
 
             protected virtual void NotifySwitchSprintOn()
@@ -71,6 +65,26 @@ namespace ProjetSynthese
             {
                 if (OnSwitchSprintOff != null) OnSwitchSprintOff();
             }
+
+            protected virtual void NotifySwitchPrimaryWeapon()
+            {
+                if (OnSwitchPrimaryWeapon != null) OnSwitchPrimaryWeapon();
+            }
+
+            protected virtual void NotifySwitchSecondaryWeapon()
+            {
+                if (OnSwitchSecondaryWeapon != null) OnSwitchSecondaryWeapon();
+            }
+
+            protected virtual void NotifyFire()
+            {
+                if (OnFire != null) OnFire();
+            }
+
+            protected virtual void NotifyPickup()
+            {
+                if (OnPickup != null) OnPickup();
+            }      
         }
 
         protected abstract class TriggerOncePerFrameInputDevice : InputDevice
@@ -82,11 +96,15 @@ namespace ProjetSynthese
             private bool inventoryTriggerd;
             private bool togglePauseTriggerd;
 
+            private bool moveTriggerd;
             private bool switchSprintOnTriggerd;
             private bool switchSrintOffTriggerd;
 
+            private bool switchPrimaryWeaponTriggerd;
+            private bool switchSecondaryWeaponTriggerd;
+
             private bool fireTriggerd;
-            private bool moveTriggerd;
+
             private bool pickupTriggerd;
 
             public abstract override IInputDevice this[int deviceIndex] { get; }
@@ -100,11 +118,15 @@ namespace ProjetSynthese
                 inventoryTriggerd = false;
                 togglePauseTriggerd = false;
 
+                moveTriggerd = false;
                 switchSprintOnTriggerd = false;
                 switchSrintOffTriggerd = false;
 
+                switchPrimaryWeaponTriggerd = false;
+                switchSecondaryWeaponTriggerd = false;
+
                 fireTriggerd = false;
-                moveTriggerd = false;
+
                 pickupTriggerd = false;
             }
 
@@ -135,33 +157,6 @@ namespace ProjetSynthese
                 }
             }
 
-            protected override void NotifyTogglePause()
-            {
-                if (!togglePauseTriggerd)
-                {
-                    base.NotifyTogglePause();
-                    togglePauseTriggerd = true;
-                }
-            }
-
-            protected override void NotifyFire()
-            {
-                if (!fireTriggerd)
-                {
-                    base.NotifyFire();
-                    fireTriggerd = true;
-                }
-            }
-
-            protected override void NotifyMove(Vector3 direction)
-            {
-                if (!moveTriggerd)
-                {
-                    base.NotifyMove(direction);
-                    moveTriggerd = true;
-                }
-            }
-
             protected override void NotifyInventoryAction()
             {
                 if (!inventoryTriggerd)
@@ -171,12 +166,21 @@ namespace ProjetSynthese
                 }
             }
 
-            protected override void NotifyPickup()
+            protected override void NotifyTogglePause()
             {
-                if (!pickupTriggerd)
+                if (!togglePauseTriggerd)
                 {
-                    base.NotifyPickup();
-                    pickupTriggerd = true;
+                    base.NotifyTogglePause();
+                    togglePauseTriggerd = true;
+                }
+            }
+
+            protected override void NotifyMove(Vector3 direction)
+            {
+                if (!moveTriggerd)
+                {
+                    base.NotifyMove(direction);
+                    moveTriggerd = true;
                 }
             }
 
@@ -195,6 +199,42 @@ namespace ProjetSynthese
                 {
                     base.NotifySwitchSprintOff();
                     switchSrintOffTriggerd = true;
+                }
+            }
+
+            protected override void NotifySwitchPrimaryWeapon()
+            {
+                if (!switchPrimaryWeaponTriggerd)
+                {
+                    base.NotifySwitchPrimaryWeapon();
+                    switchPrimaryWeaponTriggerd = true;
+                }
+            }
+
+            protected override void NotifySwitchSecondaryWeapon()
+            {
+                if (!switchSecondaryWeaponTriggerd)
+                {
+                    base.NotifySwitchSecondaryWeapon();
+                    switchSecondaryWeaponTriggerd = true;
+                }              
+            }
+
+            protected override void NotifyFire()
+            {
+                if (!fireTriggerd)
+                {
+                    base.NotifyFire();
+                    fireTriggerd = true;
+                }
+            }
+
+            protected override void NotifyPickup()
+            {
+                if (!pickupTriggerd)
+                {
+                    base.NotifyPickup();
+                    pickupTriggerd = true;
                 }
             }
         }

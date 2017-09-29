@@ -43,10 +43,12 @@ namespace ProjetSynthese
             InjectDependencies("InjectPlayerController");
 
             keyboardInputSensor.Keyboards.OnMove += OnMove;
-            keyboardInputSensor.Keyboards.OnInventoryAction += InventoryAction;
+            keyboardInputSensor.Keyboards.OnToggleInventory += InventoryAction;
             keyboardInputSensor.Keyboards.OnPickup += OnPickup;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn += OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff += OnSwitchSprintOff;
+            keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon += OnSwitchPrimaryWeapon;
+            keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon += OnSwitchSecondaryWeapon;
 
             mouseInputSensor.Mouses.OnFire += OnFire;
 
@@ -57,10 +59,12 @@ namespace ProjetSynthese
         private void OnDestroy()
         {
             keyboardInputSensor.Keyboards.OnMove -= OnMove;
-            keyboardInputSensor.Keyboards.OnInventoryAction -= InventoryAction;
+            keyboardInputSensor.Keyboards.OnToggleInventory -= InventoryAction;
             keyboardInputSensor.Keyboards.OnPickup -= OnPickup;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn -= OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff -= OnSwitchSprintOff;
+            keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon += OnSwitchPrimaryWeapon;
+            keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon += OnSwitchSecondaryWeapon;
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
         }
@@ -73,6 +77,16 @@ namespace ProjetSynthese
             }
 
             playerMover.Rotate();
+        }
+
+        private void OnSwitchPrimaryWeapon()
+        {
+            currentWeapon = inventory.GetPrimaryWeapon().GetItem() as Weapon;
+        }
+
+        private void OnSwitchSecondaryWeapon()
+        {
+            currentWeapon = inventory.GetSecondaryWeapon().GetItem() as Weapon;
         }
 
         private void OnSwitchSprintOn()

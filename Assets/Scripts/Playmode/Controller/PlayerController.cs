@@ -42,7 +42,6 @@ namespace ProjetSynthese
         {
             InjectDependencies("InjectPlayerController");
 
-
             keyboardInputSensor.Keyboards.OnMove += OnMove;
             keyboardInputSensor.Keyboards.OnInventoryAction += InventoryAction;
             keyboardInputSensor.Keyboards.OnPickup += OnPickup;
@@ -72,52 +71,33 @@ namespace ProjetSynthese
             {
                 return;
             }
+
             playerMover.Rotate();
         }
 
         private void OnSwitchSprintOn()
         {
-            if (!isLocalPlayer)
-            {
-                return;
-            }
             playerMover.SwitchSprintOn();
         }
 
         private void OnSwitchSprintOff()
         {
-            if (!isLocalPlayer)
-            {
-                return;
-            }
             playerMover.SwitchSprintOff();
         }
 
         private void OnMove(Vector3 direction)
         {
-            if (!isLocalPlayer)
-            {
-                return;
-            }
             playerMover.Move(direction);
         }
 
         private void OnFire()
         {
-            if (!isLocalPlayer)
-            {
-                return;
-            }
             if ((object)currentWeapon != null)
                 currentWeapon.Use();
         }
 
         private void OnPickup()
         {
-            if (!isLocalPlayer)
-            {
-                return;
-            }
             GameObject item = itemSensor.GetItemNearest();
             if ((object)item != null)
             {
@@ -128,10 +108,6 @@ namespace ProjetSynthese
 
         private void InventoryAction()
         {
-            if (!isLocalPlayer)
-            {
-                return;
-            }
             if (!isInventoryOpen)
             {
                 StaticInventoryPass.Inventory = inventory;

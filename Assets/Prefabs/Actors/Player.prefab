@@ -329,6 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryMenu: {fileID: 11400000, guid: 589e738a3b2298e4588b3051b4c164ac, type: 2}
+  inventoryTransform: {fileID: 4132227477362130}
 --- !u!114 &114169419075714274
 MonoBehaviour:
   m_ObjectHideFlags: 1

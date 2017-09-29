@@ -210,9 +210,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f60360e16383fb4c8e58d2144334952, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridInventoryPlayer: {fileID: 224029565692181116}
+  gridEquippedByPlayer: {fileID: 224095362555923904, guid: a25e5238bede9324ebd2b1539757abaf,
+    type: 2}
+  gridProtectionPlayer: {fileID: 224467804407364730, guid: 54f44febc25a44d4f869d3073a1d501d,
+    type: 2}
+  cellEquippedWeaponPrefabs: {fileID: 1445196662450070, guid: 1134f7e206eb2324490f5b1dfe20ef79,
+    type: 2}
+  cellProtectionItemPrefabs: {fileID: 1782649055674634, guid: 2d7aa403d7d19c64fbd88d775069d66c,
+    type: 2}
   cellObjectPrefab: {fileID: 1199693001329074, guid: c2f1c327cf27e3f4f919307e485a3023,
     type: 2}
-  grid: {fileID: 224029565692181116}
 --- !u!114 &114833616954449470
 MonoBehaviour:
   m_ObjectHideFlags: 1

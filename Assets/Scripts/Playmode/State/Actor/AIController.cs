@@ -70,16 +70,18 @@ namespace ProjetSynthese
 
         public enum ControllerMode { None,Explore }
         private ControllerMode aiControllerMode;
+        private readonly ActorAI actor;
 
-        public AIRadar AISensor { get; private set; }
+        public AIController(ActorAI actor)
+        {
+            this.actor = actor;
+        }
 
         public void Init()
         {
             MapDestinationIsKnown = false;
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
-            AISensor = new AIRadar();
-            AISensor.Init();
             SetAIControllerMode(ControllerMode.None);
         }
 
@@ -183,11 +185,11 @@ namespace ProjetSynthese
             {
                 case ControllerMode.None:
                     AISpeed = AIController.SpeedLevel.None;
-                    AISensor.AIPerceptionLevel = AIRadar.PerceptionLevel.None;
+                    actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.None;
                     break;
                 case ControllerMode.Explore:
                     AISpeed = AIController.SpeedLevel.Walking;
-                    AISensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;
                 default:
                     break;

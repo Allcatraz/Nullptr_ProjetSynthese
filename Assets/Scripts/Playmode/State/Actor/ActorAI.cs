@@ -6,7 +6,7 @@ namespace ProjetSynthese
     //public class ActorAI : NetworkGameScript, IActorAI
     public class ActorAI : GameScript, IActorAI
     {
-        public enum ActorType { None, AI, Vehicle };
+        public enum ActorType { None, AI };
         [SerializeField]
         private ActorType actorType = ActorType.None;
 
@@ -14,6 +14,7 @@ namespace ProjetSynthese
         public ActorController ActorController { get; private set; }
 
         public AIRadar Sensor { get; private set; }
+        public AIBrain Brain { get; private set; }
 
         private bool isDead;
 
@@ -36,10 +37,11 @@ namespace ProjetSynthese
                     break;
                 case ActorType.AI:
                     CurrentState = new ExploreState();
-                    ActorController = new AIController();
+                    ActorController = new AIController(this);
                     ((AIController)ActorController).Init();
-                    break;
-                case ActorType.Vehicle:
+                    Sensor = new AIRadar();
+                    Sensor.Init();
+                    Brain = new AIBrain(this);
                     break;
                 default:
                     break;
@@ -59,8 +61,6 @@ namespace ProjetSynthese
                 case ActorType.None:
                     break;
                 case ActorType.AI:
-                    break;
-                case ActorType.Vehicle:
                     break;
                 default:
                     break;

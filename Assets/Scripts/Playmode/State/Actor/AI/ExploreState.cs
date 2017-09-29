@@ -28,12 +28,7 @@ namespace ProjetSynthese
                 aiController.MapDestinationIsKnown = false;
             }
             
-            Weapon weapon = aiController.AISensor.NeareastGameObject<Weapon>(actor.transform.position, AIRadar.LayerType.Item);
-            Item item = aiController.AISensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
-            
-            //dosomenthing switch state
-            //actor.AIInventory.
-            int g = 1;
+           
         }
     }
 }

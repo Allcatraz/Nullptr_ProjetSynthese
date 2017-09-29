@@ -70,17 +70,13 @@ namespace ProjetSynthese
 
             private void HandleActionInput()
             {
-                if (keyboard.GetKeyDown(KeyCode.Escape))
-                {
-                    NotifyTogglePause();
-                }
                 if (keyboard.GetKeyDown(KeyCode.Tab))
                 {
                     NotifyInventoryAction();
                 }
-                if (keyboard.GetKeyDown(KeyCode.F))
+                if (keyboard.GetKeyDown(KeyCode.Escape))
                 {
-                    NotifyPickup();
+                    NotifyTogglePause();
                 }
                 if (keyboard.GetKeyDown(KeyCode.LeftShift))
                 {
@@ -89,6 +85,18 @@ namespace ProjetSynthese
                 if (keyboard.GetKeyUp(KeyCode.LeftShift))
                 {
                     NotifySwitchSprintOff();
+                }
+                if (keyboard.GetKey(KeyCode.Alpha1))
+                {
+                    NotifySwitchPrimaryWeapon();
+                }
+                if (keyboard.GetKey(KeyCode.Alpha2))
+                {
+                    NotifySwitchSecondaryWeapon();
+                }
+                if (keyboard.GetKeyDown(KeyCode.F))
+                {
+                    NotifyPickup();
                 }
             }
 

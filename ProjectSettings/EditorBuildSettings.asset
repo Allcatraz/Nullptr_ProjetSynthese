@@ -9,6 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu/LobbyFragment.unity
     guid: 2eadd10b7197d3744b82952bac7d0007
   - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 40d6bf8743983b24a9a4affd13cf2662
+  - enabled: 1
+    path: Assets/Scenes/Applications/Application.unity
+    guid: 4f0db1959bd3f994bb0bfa29420fc5ed
+  - enabled: 1
     path: Assets/Scenes/Fragments/GameFragment.unity
     guid: 7cb049851215aa94689ef89de70220a8
   - enabled: 1

@@ -10,10 +10,17 @@ namespace ProjetSynthese
         [SerializeField] private float moveSpeed;
         [SerializeField] private float sprintSpeed;
 
+        private Transform topParentTransform;
         private float speed = 0;
+
+        private void InjectPlayerMover([TopParentScope] Transform topParentTransform)
+        {
+            this.topParentTransform = topParentTransform;
+        }
 
         private void Awake()
         {
+            InjectDependencies("InjectPlayerMover");
             speed = moveSpeed;
         }
 
@@ -29,15 +36,15 @@ namespace ProjetSynthese
 
         public void Move(Vector3 direction)
         {
-            transform.Translate(direction * speed * Time.deltaTime, Space.World);
+            topParentTransform.Translate(direction * speed * Time.deltaTime, Space.World);
         }
 
         public void Rotate()
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y, mousePos.z - transform.position.z);
+            Vector3 distance = new Vector3(mousePos.x - topParentTransform.position.x, mousePos.y - topParentTransform.position.y, mousePos.z - topParentTransform.position.z);
             float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
-            transform.eulerAngles = new Vector3(0, angle, 0);
+            topParentTransform.eulerAngles = new Vector3(0, angle, 0);
         }
     }
 }

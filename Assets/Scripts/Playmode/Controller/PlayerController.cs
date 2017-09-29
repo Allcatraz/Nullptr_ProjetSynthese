@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Harmony;
+﻿using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -7,6 +6,8 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : GameScript
     {
+        [SerializeField] private Menu inventoryMenu;
+
         private ActivityStack activityStack;
         private Health health;
         private KeyboardInputSensor keyboardInputSensor;
@@ -19,11 +20,26 @@ namespace ProjetSynthese
 
         private bool isInventoryOpen = false;
 
+        private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
+                                            [ApplicationScope] MouseInputSensor mouseInputSensor,
+                                            [ApplicationScope] ActivityStack activityStack,
+                                            [GameObjectScope] PlayerMover playerMover,
+                                            [EntityScope] Health health,
+                                            [EntityScope] Inventory inventory,
+                                            [EntityScope] ItemSensor itemSensor)
+        {
+            this.keyboardInputSensor = keyboardInputSensor;
+            this.mouseInputSensor = mouseInputSensor;
+            this.activityStack = activityStack;
+            this.playerMover = playerMover;
+            this.health = health;
+            this.inventory = inventory;
+            this.itemSensor = itemSensor;
+        }
+
         private void Awake()
         {
-            playerMover = GetComponentInChildren<PlayerMover>();
-            keyboardInputSensor = GetComponent<KeyboardInputSensor>();
-            mouseInputSensor = GetComponent<MouseInputSensor>();
+            InjectDependencies("InjectPlayerController");
 
             keyboardInputSensor.Keyboards.OnMove += OnMove;
             keyboardInputSensor.Keyboards.OnInventoryAction += InventoryAction;
@@ -88,7 +104,7 @@ namespace ProjetSynthese
             if (!isInventoryOpen)
             {
                 StaticInventoryPass.Inventory = inventory;
-                //activityStack.StartMenu(inventoryMenu);
+                activityStack.StartMenu(inventoryMenu);
                 isInventoryOpen = true;
             }
             else

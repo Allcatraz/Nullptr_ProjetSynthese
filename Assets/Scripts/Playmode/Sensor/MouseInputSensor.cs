@@ -16,9 +16,14 @@ namespace ProjetSynthese
             get { return mouseInputDevice; }
         }
 
+        private void InjectMouseInputSensor([GameObjectScope] Mouse mouse)
+        {
+            this.mouse = mouse;
+        }
+
         private void Awake()
         {
-            mouse = GetComponent<Mouse>();
+            InjectDependencies("InjectMouseInputSensor");
             mouseInputDevice = new MouseInputDevice(mouse);
         }
 

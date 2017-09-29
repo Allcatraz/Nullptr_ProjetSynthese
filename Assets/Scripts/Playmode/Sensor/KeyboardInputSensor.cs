@@ -15,9 +15,14 @@ namespace ProjetSynthese
             get { return keyboardsInputDevice; }
         }
 
+        private void InjectKeyboardInputSensor([GameObjectScope] Keyboard keyboard)
+        {
+            this.keyboard = keyboard;
+        }
+
         private void Awake()
         {
-            keyboard = GetComponent<Keyboard>();
+            InjectDependencies("InjectKeyboardInputSensor");
             keyboardsInputDevice = new KeyboardsInputDevice(keyboard);
         }
 

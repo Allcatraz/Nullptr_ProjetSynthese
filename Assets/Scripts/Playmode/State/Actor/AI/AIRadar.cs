@@ -49,9 +49,9 @@ public class AIRadar
         }
     }
 
-    public enum LayerType {None,Default,Item}
+    public enum LayerType {None,Default,Item,Player,AI,Building}
 
-    public readonly string[] LayerNames = { "None","Default", "Item" };
+    public readonly string[] LayerNames = { "None","Default", "Item", "Player", "AI", "Building" };
 
     public void Init()
     {

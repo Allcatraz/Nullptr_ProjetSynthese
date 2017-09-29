@@ -383,8 +383,9 @@ namespace Harmony
         {
             List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>();
 
-            //Add Main scene
+            //Add Main and Main scene
             scenes.Add(new EditorBuildSettingsScene(AssetsExtensions.FindScenePath(R.S.Scene.Main), true));
+            scenes.Add(new EditorBuildSettingsScene(AssetsExtensions.FindScenePath(R.S.Scene.Game), true));
 
             //Add Util scenes
             foreach (string scenePath in AssetsExtensions.FindScenesPathIn("Scenes/Util"))

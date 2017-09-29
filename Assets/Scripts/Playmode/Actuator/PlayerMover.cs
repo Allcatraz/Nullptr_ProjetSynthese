@@ -7,20 +7,20 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/Actuator/PlayerMover")]
     public class PlayerMover : GameScript
     {
-        [SerializeField] private readonly float moveSpeed;
-        [SerializeField] private readonly float sprintSpeed;
+        [SerializeField] private float moveSpeed;
+        [SerializeField] private float sprintSpeed;
 
         private Transform topParentTransform;
         private float speed = 0;
 
-        private void InjectImpulseMover([TopParentScope] Transform topParentTransform)
+        private void InjectPlayerMover([TopParentScope] Transform topParentTransform)
         {
             this.topParentTransform = topParentTransform;
         }
 
         private void Awake()
         {
-            InjectDependencies("InjectImpulseMover");
+            InjectDependencies("InjectPlayerMover");
             speed = moveSpeed;
         }
 

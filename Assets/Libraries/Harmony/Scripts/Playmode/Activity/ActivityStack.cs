@@ -177,6 +177,15 @@ namespace Harmony
         }
 
         /// <summary>
+        /// Indique si, oui ou non, il y a une activité en cours de chargement.
+        /// </summary>
+        /// <returns>True s'il y a une activité en cours de chargement, faux sinon.</returns>
+        public bool HasActivityLoading()
+        {
+            return isLoadingActivity;
+        }
+
+        /// <summary>
         /// Active le menu donné et l'ajoute sur le dessus de la pile de menus.
         /// </summary>
         /// <param name="menu">Menu à activer.</param>

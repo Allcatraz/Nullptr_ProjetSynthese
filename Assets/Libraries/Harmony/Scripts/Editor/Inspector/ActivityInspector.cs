@@ -59,8 +59,8 @@ namespace Harmony
         {
             EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 
-            //The Main scene must allways be loaded
-            OpenSceneInEditor(R.E.Scene.Main, OpenSceneMode.Single);
+            //The Game scene must allways be loaded
+            OpenSceneInEditor(R.E.Scene.Game, OpenSceneMode.Single);
 
             //Load Activity controller scene
             R.E.Scene scene = (R.E.Scene) GetEnumProperty("scene", typeof(R.E.Scene)).CurrentValue;

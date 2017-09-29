@@ -1,11 +1,11 @@
-﻿using System.Runtime.InteropServices;
-using Harmony;
+﻿using Harmony;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
     [AddComponentMenu("Game/Control/PlayerController")]
-    public class PlayerController : GameScript
+    public class PlayerController : NetworkGameScript
     {
         [SerializeField] private Menu inventoryMenu;
 
@@ -24,14 +24,14 @@ namespace ProjetSynthese
         private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                             [ApplicationScope] MouseInputSensor mouseInputSensor,
                                             [ApplicationScope] ActivityStack activityStack,
-                                            [GameObjectScope] PlayerMover playerMover,
+                                            [EntityScope] PlayerMover playerMover,
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
                                             [EntityScope] ItemSensor itemSensor)
         {
-            this.activityStack = activityStack;
-            this.mouseInputSensor = mouseInputSensor;
             this.keyboardInputSensor = keyboardInputSensor;
+            this.mouseInputSensor = mouseInputSensor;
+            this.activityStack = activityStack;
             this.playerMover = playerMover;
             this.health = health;
             this.inventory = inventory;
@@ -51,6 +51,7 @@ namespace ProjetSynthese
             mouseInputSensor.Mouses.OnFire += OnFire;
 
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
+
         }
 
         private void OnDestroy()
@@ -66,6 +67,11 @@ namespace ProjetSynthese
 
         private void Update()
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
+
             playerMover.Rotate();
         }
 
@@ -93,12 +99,11 @@ namespace ProjetSynthese
         private void OnPickup()
         {
             GameObject item = itemSensor.GetItemNearest();
-            if((object)item != null)
+            if ((object)item != null)
             {
                 inventory.Add(item);
                 item.SetActive(false);
             }
-                
         }
 
         private void InventoryAction()

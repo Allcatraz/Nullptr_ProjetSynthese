@@ -81,7 +81,6 @@ namespace ProjetSynthese
                 }
                 else if (ExistShootableOpponent())
                 {
-                   //si ennemy in weapon range et visible combat
                     nextState = AIState.Combat;
                 }
                 else
@@ -189,7 +188,6 @@ namespace ProjetSynthese
                 itemInPerceptionRange = item;
                 return true;
             }
-
             return false;
         }
 
@@ -201,31 +199,37 @@ namespace ProjetSynthese
                 {
                     return true;
                 }
-                
             }
-           
             return false;
         }
         private bool IsOpponentInWeaponRange()
         {
-            float sqrtTargetDistance = 0.0f;
+            float sqrtTargetDistance = -1.0f;
             Vector3 directionVector;
             if (playerInPerceptionRange != null)
             {
                 directionVector = playerInPerceptionRange.transform.position - Actor.transform.position;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
-                //actor.AIInventory.GetPrimaryWeapon
-                
-                return true;
             }
             else if (aiInPerceptionRange != null)
             {
                 directionVector = aiInPerceptionRange.transform.position - Actor.transform.position;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
-                //actor.AIInventory.GetPrimaryWeapon
-                return true;
-            } 
-           return false;
+            }
+
+            if (sqrtTargetDistance > 0.0f)
+            {
+                Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
+                if (equippedPrimaryWeapon != null)
+                {
+                    float range = equippedPrimaryWeapon.EffectiveWeaponRange;
+                    if (sqrtTargetDistance < range * range)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private bool ExistVisibleOpponent()
@@ -234,7 +238,7 @@ namespace ProjetSynthese
             {
                 if (playerInPerceptionRange != null)
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight<PlayerController>(Actor.transform.position,playerInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight<PlayerController>(Actor.transform.position, playerInPerceptionRange))
                     {
                         return true;
                     }
@@ -247,7 +251,7 @@ namespace ProjetSynthese
                     }
                 }
             }
-           
+
             return false;
         }
         private void ResetActualPerception()

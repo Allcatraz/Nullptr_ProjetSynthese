@@ -16,6 +16,6 @@ MonoBehaviour:
   fragments:
   - {fileID: 11400000, guid: cbce8d96ce69a6c408a970441d62af11, type: 2}
   menus:
-  - {fileID: 11400000, guid: 589e738a3b2298e4588b3051b4c164ac, type: 2}
   - {fileID: 11400000, guid: c1a96c45c3dade44c8ca780fbe720fed, type: 2}
+  - {fileID: 11400000, guid: 589e738a3b2298e4588b3051b4c164ac, type: 2}
   activeFragmentOnLoad: {fileID: 0}

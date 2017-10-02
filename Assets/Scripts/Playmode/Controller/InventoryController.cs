@@ -36,7 +36,7 @@ namespace ProjetSynthese
 
         private void FixedUpdate()
         {
-            if (inventory != StaticInventoryPass.Inventory)
+            if (inventory == null || inventory != StaticInventoryPass.Inventory)
             {
                 UpdateInventory();
                 CreateCellsForInventoryPlayer();
@@ -72,24 +72,18 @@ namespace ProjetSynthese
         public void CreateCellsForInventoryPlayer()
         {
             ClearGrid(gridInventoryPlayer);
-
-            if (inventory != null)
+            foreach (Cell item in inventory.listInventory)
             {
-                foreach (Cell item in inventory.listInventory)
-                {
-                    GameObject cellObject = Instantiate(cellObjectPrefab);
-                    cellObject.transform.SetParent(gridInventoryPlayer, false);
-                    cellObject.GetComponentInChildren<CellObject>().inventory = this.inventory;
-                    cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
-                }
+                GameObject cellObject = Instantiate(cellObjectPrefab);
+                cellObject.transform.SetParent(gridInventoryPlayer, false);
+                cellObject.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
             }
         }
 
         public void CreateCellsForWeaponByPlayer()
         {
             ClearGrid(gridEquippedByPlayer);
-            if (inventory != null)
-            {
                 if (inventory.GetPrimaryWeapon() != null)
                 {
                     GameObject cellWeaponTemp1 = Instantiate(cellEquippedWeaponPrefabs);
@@ -108,13 +102,10 @@ namespace ProjetSynthese
                 }
             }
             
-        }
 
         public void CreateCellsForProtectionPlayer()
         {
             ClearGrid(gridProtectionPlayer);
-            if (inventory != null)
-            {
                 if (inventory.GetVest() != null)
                 {
                     GameObject cellProtectionTemp1 = Instantiate(cellProtectionItemPrefabs);
@@ -130,7 +121,6 @@ namespace ProjetSynthese
                     cellProtectionTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
                     cellProtectionTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetHelmet());
                 }    
-            }
         }
 
         private void UpdateInventory()

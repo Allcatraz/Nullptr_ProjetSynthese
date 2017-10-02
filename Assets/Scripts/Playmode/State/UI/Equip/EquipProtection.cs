@@ -19,7 +19,7 @@ namespace ProjetSynthese
 
         private void UpdateInventory()
         {
-            if (inventory != StaticInventoryPass.Inventory)
+            if (inventory == null || inventory != StaticInventoryPass.Inventory)
             {
                 inventory = StaticInventoryPass.Inventory;
             }
@@ -27,13 +27,15 @@ namespace ProjetSynthese
 
         private void UpdateImage()
         {
-            if (type == ItemType.Vest)
+            Cell vestCell = inventory.GetVest();
+            Cell helmetCell = inventory.GetHelmet();
+            if (type == ItemType.Vest && vestCell != null)
             {
-                Item vest = inventory.GetVest().GetItem();
+                Item vest = vestCell.GetItem();
             }
-            if (type == ItemType.Helmet)
+            if (type == ItemType.Helmet && helmetCell != null)
             {
-                Item helmet = inventory.GetHelmet().GetItem();
+                Item helmet = helmetCell.GetItem();
             }
         }
 

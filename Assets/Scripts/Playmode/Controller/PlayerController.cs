@@ -167,9 +167,9 @@ namespace ProjetSynthese
             }
         }
 
-        private void OnHealthChanged()
+        private void OnHealthChanged(int oldHealthPoints, int newHealthPoints)
         {
-            //Appeler la fonction static qui sera implémenter pour.
+            StaticHealthPass.health = health;
         }
     }
 }

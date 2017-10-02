@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
@@ -17,6 +16,8 @@ namespace ProjetSynthese
             Vector3 velocity = direction * bulletSpeed;
             bullet.GetComponent<Rigidbody>().velocity = velocity;
             bullet.GetComponent<BulletController>().SetLivingTime(livingTime);
+
+            NetworkServer.Spawn(bullet);
         }
     }
 }

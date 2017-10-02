@@ -11,11 +11,11 @@ namespace ProjetSynthese
 
         private readonly float LifeFleeThreshold;
         private float lastLifePointLevel;
-        private const float errorLifeTolerance = 0.001f;
+        private const float ErrorLifeTolerance = 0.001f;
 
         public enum AIState { Dead, Explore, Loot, Hunt, Combat, Flee }
 
-        private readonly ActorAI actor;
+        private readonly ActorAI Actor;
 
         private ActorAI aiInPerceptionRange = null;
         private PlayerController playerInPerceptionRange = null;
@@ -23,7 +23,7 @@ namespace ProjetSynthese
 
         public AIBrain(ActorAI actor)
         {
-            this.actor = actor;
+            this.Actor = actor;
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
         }
@@ -75,7 +75,7 @@ namespace ProjetSynthese
 
             if (HasBeenInjured())
             {
-                if (actor.AIHealth.HealthPoints < LifeFleeThreshold)
+                if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
                 {
                     nextState = AIState.Flee;
                 }
@@ -141,7 +141,7 @@ namespace ProjetSynthese
 
         private bool HasBeenInjured()
         {
-            if ((lastLifePointLevel - actor.AIHealth.HealthPoints) > errorLifeTolerance)
+            if ((lastLifePointLevel - Actor.AIHealth.HealthPoints) > ErrorLifeTolerance)
             {
                 return true;
             }
@@ -150,7 +150,7 @@ namespace ProjetSynthese
 
         private bool HasBeenHealed()
         {
-            if ((lastLifePointLevel - actor.AIHealth.HealthPoints) < errorLifeTolerance)
+            if ((lastLifePointLevel - Actor.AIHealth.HealthPoints) < ErrorLifeTolerance)
             {
                 return true;
             }
@@ -160,7 +160,7 @@ namespace ProjetSynthese
         public bool FoundAIInPerceptionRange()
         {
 
-            ActorAI opponentAI = actor.Sensor.NeareastGameObject<ActorAI>(actor.transform.position, AIRadar.LayerType.AI);
+            ActorAI opponentAI = Actor.Sensor.NeareastGameObject<ActorAI>(Actor.transform.position, AIRadar.LayerType.AI);
             if (opponentAI != null)
             {
                 aiInPerceptionRange = opponentAI;
@@ -171,7 +171,7 @@ namespace ProjetSynthese
 
         public bool FoundPlayerInPerceptionRange()
         {
-            PlayerController opponentPlayer = actor.Sensor.NeareastGameObject<PlayerController>(actor.transform.position, AIRadar.LayerType.Player);
+            PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
             if (opponentPlayer != null)
             {
                 playerInPerceptionRange = opponentPlayer;
@@ -183,7 +183,7 @@ namespace ProjetSynthese
 
         public bool FoundItemInPerceptionRange()
         {
-            Item item = actor.Sensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
+            Item item = Actor.Sensor.NeareastGameObject<Item>(Actor.transform.position, AIRadar.LayerType.Item);
             if (item != null)
             {
                 itemInPerceptionRange = item;
@@ -212,7 +212,7 @@ namespace ProjetSynthese
             Vector3 directionVector;
             if (playerInPerceptionRange != null)
             {
-                directionVector = playerInPerceptionRange.transform.position - actor.transform.position;
+                directionVector = playerInPerceptionRange.transform.position - Actor.transform.position;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
                 //actor.AIInventory.GetPrimaryWeapon
                 
@@ -220,7 +220,7 @@ namespace ProjetSynthese
             }
             else if (aiInPerceptionRange != null)
             {
-                directionVector = aiInPerceptionRange.transform.position - actor.transform.position;
+                directionVector = aiInPerceptionRange.transform.position - Actor.transform.position;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
                 //actor.AIInventory.GetPrimaryWeapon
                 return true;
@@ -234,14 +234,14 @@ namespace ProjetSynthese
             {
                 if (playerInPerceptionRange != null)
                 {
-                    if (actor.Sensor.IsGameObjectHasLineOfSight<PlayerController>(actor.transform.position,playerInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight<PlayerController>(Actor.transform.position,playerInPerceptionRange))
                     {
                         return true;
                     }
                 }
                 else
                 {
-                    if (actor.Sensor.IsGameObjectHasLineOfSight<ActorAI>(actor.transform.position, aiInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight<ActorAI>(Actor.transform.position, aiInPerceptionRange))
                     {
                         return true;
                     }

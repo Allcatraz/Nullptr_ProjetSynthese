@@ -66,15 +66,15 @@ namespace ProjetSynthese
 
         private const float RandomRadiusMoveRange = 5.0f;
 
-        private const float errorPositionTolerance = 0.001f;
+        private const float ErrorPositionTolerance = 0.001f;
 
         public enum ControllerMode { None,Explore }
         private ControllerMode aiControllerMode;
-        private readonly ActorAI actor;
+        private readonly ActorAI Actor;
 
         public AIController(ActorAI actor)
         {
-            this.actor = actor;
+            this.Actor = actor;
         }
 
         public void Init()
@@ -89,7 +89,7 @@ namespace ProjetSynthese
         {
 
             float distance = Vector3.Distance(MapDestination, actor.transform.position);
-            if (distance < errorPositionTolerance)
+            if (distance < ErrorPositionTolerance)
             {
                 return true;
             }
@@ -100,7 +100,7 @@ namespace ProjetSynthese
         {
 
             float distance = Vector3.Distance(OpponentTargetDestination, actor.transform.position);
-            if (distance < errorPositionTolerance)
+            if (distance < ErrorPositionTolerance)
             {
                 return true;
             }
@@ -111,7 +111,7 @@ namespace ProjetSynthese
         {
 
             float distance = Vector3.Distance(ItemTargetDestination, actor.transform.position);
-            if (distance < errorPositionTolerance)
+            if (distance < ErrorPositionTolerance)
             {
                 return true;
             }
@@ -185,11 +185,11 @@ namespace ProjetSynthese
             {
                 case ControllerMode.None:
                     AISpeed = AIController.SpeedLevel.None;
-                    actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.None;
+                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.None;
                     break;
                 case ControllerMode.Explore:
                     AISpeed = AIController.SpeedLevel.Walking;
-                    actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;
                 default:
                     break;

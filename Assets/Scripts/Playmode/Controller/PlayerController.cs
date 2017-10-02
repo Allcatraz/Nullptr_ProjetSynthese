@@ -1,6 +1,5 @@
 ﻿using Harmony;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
@@ -39,10 +38,11 @@ namespace ProjetSynthese
             this.itemSensor = itemSensor;
         }
 
-        private void Awake()
+        private void Start()
         {
             if (!isLocalPlayer)
             {
+                Destroy(this);
                 return;
             }
 
@@ -59,6 +59,8 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnToggleMap += OnToggleMap;
 
             mouseInputSensor.Mouses.OnFire += OnFire;
+
+            health.OnHealthChanged += OnHealthChanged;
 
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
@@ -82,15 +84,12 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnToggleMap -= OnToggleMap;
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
+
+            health.OnHealthChanged -= OnHealthChanged;
         }
 
         private void Update()
         {
-            if (!isLocalPlayer)
-            {
-                return;
-            }
-
             playerMover.Rotate();
         }
 
@@ -166,6 +165,11 @@ namespace ProjetSynthese
             {
                 //Do not show the map
             }
+        }
+
+        private void OnHealthChanged()
+        {
+            //Appeler la fonction static qui sera implémenter pour.
         }
     }
 }

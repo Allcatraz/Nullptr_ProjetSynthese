@@ -20,6 +20,7 @@ namespace ProjetSynthese
         private Weapon currentWeapon;
 
         private bool isInventoryOpen = false;
+        private bool isMapOpen = false;
 
         private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                             [ApplicationScope] MouseInputSensor mouseInputSensor,
@@ -40,15 +41,22 @@ namespace ProjetSynthese
 
         private void Awake()
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
+
             InjectDependencies("InjectPlayerController");
 
-            keyboardInputSensor.Keyboards.OnMove += OnMove;
-            keyboardInputSensor.Keyboards.OnToggleInventory += InventoryAction;
+            keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
+            keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
             keyboardInputSensor.Keyboards.OnPickup += OnPickup;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn += OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff += OnSwitchSprintOff;
             keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon += OnSwitchPrimaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon += OnSwitchSecondaryWeapon;
+            keyboardInputSensor.Keyboards.OnSwitchThridWeapon += OnSwitchThirdWeapon;
+            keyboardInputSensor.Keyboards.OnToggleMap += OnToggleMap;
 
             mouseInputSensor.Mouses.OnFire += OnFire;
 
@@ -58,13 +66,20 @@ namespace ProjetSynthese
 
         private void OnDestroy()
         {
-            keyboardInputSensor.Keyboards.OnMove -= OnMove;
-            keyboardInputSensor.Keyboards.OnToggleInventory -= InventoryAction;
+            if (!isLocalPlayer)
+            {
+                return;
+            }
+
+            keyboardInputSensor.Keyboards.OnMoveToward -= OnMoveToward;
+            keyboardInputSensor.Keyboards.OnToggleInventory -= OnToggleInventory;
             keyboardInputSensor.Keyboards.OnPickup -= OnPickup;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn -= OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff -= OnSwitchSprintOff;
-            keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon += OnSwitchPrimaryWeapon;
-            keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon += OnSwitchSecondaryWeapon;
+            keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon -= OnSwitchPrimaryWeapon;
+            keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon -= OnSwitchSecondaryWeapon;
+            keyboardInputSensor.Keyboards.OnSwitchThridWeapon -= OnSwitchThirdWeapon;
+            keyboardInputSensor.Keyboards.OnToggleMap -= OnToggleMap;
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
         }
@@ -89,6 +104,12 @@ namespace ProjetSynthese
             currentWeapon = inventory.GetSecondaryWeapon().GetItem() as Weapon;
         }
 
+        private void OnSwitchThirdWeapon()
+        {
+            //Take the grenade
+            //currentWeapon = inventory.GetThirdWeapon().GetItem() as Weapon;
+        }
+
         private void OnSwitchSprintOn()
         {
             playerMover.SwitchSprintOn();
@@ -99,7 +120,7 @@ namespace ProjetSynthese
             playerMover.SwitchSprintOff();
         }
 
-        private void OnMove(Vector3 direction)
+        private void OnMoveToward(Vector3 direction)
         {
             playerMover.Move(direction);
         }
@@ -120,7 +141,7 @@ namespace ProjetSynthese
             }
         }
 
-        private void InventoryAction()
+        private void OnToggleInventory()
         {
             if (!isInventoryOpen)
             {
@@ -132,6 +153,18 @@ namespace ProjetSynthese
             {
                 activityStack.StopCurrentMenu();
                 isInventoryOpen = false;
+            }
+        }
+
+        private void OnToggleMap()
+        {
+            if (!isMapOpen)
+            {
+                //Show the map
+            }
+            else
+            {
+                //Do not show the map
             }
         }
     }

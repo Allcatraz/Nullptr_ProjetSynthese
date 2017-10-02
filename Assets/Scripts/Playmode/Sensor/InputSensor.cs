@@ -11,18 +11,20 @@ namespace ProjetSynthese
             public event ConfirmEventHandler OnConfirm;
 
             public event ToggleInventoryEventHandler OnToggleInventory;
+            public event ToggleMapEventHandler OnToggleMap;
             public event TogglePauseEventHandler OnTogglePause;
 
-            public event MoveTowardHandler OnMove;
-            public event SwitchSprintOnHandler OnSwitchSprintOn;
-            public event SwitchSprintOffHandler OnSwitchSprintOff;
+            public event MoveTowardEventHandler OnMoveToward;
+            public event SwitchSprintOnEventHandler OnSwitchSprintOn;
+            public event SwitchSprintOffEventHandler OnSwitchSprintOff;
 
-            public event SwitchPrimaryWeaponHandler OnSwitchPrimaryWeapon;
-            public event SwitchSecondaryWeaponHandler OnSwitchSecondaryWeapon;
+            public event SwitchPrimaryWeaponEventHandler OnSwitchPrimaryWeapon;
+            public event SwitchSecondaryWeaponEventHandler OnSwitchSecondaryWeapon;
+            public event SwitchThirdWeaponEventHandler OnSwitchThridWeapon;
 
             public event FireEventHandler OnFire;
 
-            public event PickupHandler OnPickup;
+            public event PickupEventHandler OnPickup;
 
             public abstract IInputDevice this[int deviceIndex] { get; }
 
@@ -41,9 +43,14 @@ namespace ProjetSynthese
                 if (OnConfirm != null) OnConfirm();
             }
 
-            protected virtual void NotifyInventoryAction()
+            protected virtual void NotifyToggleInventory()
             {
                 if (OnToggleInventory != null) OnToggleInventory();
+            }
+
+            protected virtual void NotifyToggleMap()
+            {
+                if (OnToggleMap != null) OnToggleMap();
             }
 
             protected virtual void NotifyTogglePause()
@@ -53,7 +60,7 @@ namespace ProjetSynthese
 
             protected virtual void NotifyMove(Vector3 direction)
             {
-                if (OnMove != null) OnMove(direction);
+                if (OnMoveToward != null) OnMoveToward(direction);
             }
 
             protected virtual void NotifySwitchSprintOn()
@@ -76,6 +83,11 @@ namespace ProjetSynthese
                 if (OnSwitchSecondaryWeapon != null) OnSwitchSecondaryWeapon();
             }
 
+            protected virtual void NotifySwitchThridWeapon()
+            {
+                if (OnSwitchThridWeapon != null) OnSwitchThridWeapon();
+            }
+
             protected virtual void NotifyFire()
             {
                 if (OnFire != null) OnFire();
@@ -94,6 +106,7 @@ namespace ProjetSynthese
             private bool confirmedTriggerd;
 
             private bool inventoryTriggerd;
+            private bool mapTriggerd;
             private bool togglePauseTriggerd;
 
             private bool moveTriggerd;
@@ -102,6 +115,7 @@ namespace ProjetSynthese
 
             private bool switchPrimaryWeaponTriggerd;
             private bool switchSecondaryWeaponTriggerd;
+            private bool switchThirdWeaponTriggerd;
 
             private bool fireTriggerd;
 
@@ -116,6 +130,7 @@ namespace ProjetSynthese
                 confirmedTriggerd = false;
 
                 inventoryTriggerd = false;
+                mapTriggerd = false;
                 togglePauseTriggerd = false;
 
                 moveTriggerd = false;
@@ -124,6 +139,7 @@ namespace ProjetSynthese
 
                 switchPrimaryWeaponTriggerd = false;
                 switchSecondaryWeaponTriggerd = false;
+                switchThirdWeaponTriggerd = false;
 
                 fireTriggerd = false;
 
@@ -157,13 +173,22 @@ namespace ProjetSynthese
                 }
             }
 
-            protected override void NotifyInventoryAction()
+            protected override void NotifyToggleInventory()
             {
                 if (!inventoryTriggerd)
                 {
-                    base.NotifyInventoryAction();
+                    base.NotifyToggleInventory();
                     inventoryTriggerd = true;
                 }
+            }
+
+            protected override void NotifyToggleMap()
+            {
+                if (!mapTriggerd)
+                {
+                    base.NotifyToggleMap();
+                    mapTriggerd = true;
+                }                
             }
 
             protected override void NotifyTogglePause()
@@ -218,6 +243,15 @@ namespace ProjetSynthese
                     base.NotifySwitchSecondaryWeapon();
                     switchSecondaryWeaponTriggerd = true;
                 }              
+            }
+
+            protected override void NotifySwitchThridWeapon()
+            {
+                if (!switchThirdWeaponTriggerd)
+                {
+                    base.NotifySwitchThridWeapon();
+                    switchThirdWeaponTriggerd = true;
+                }
             }
 
             protected override void NotifyFire()

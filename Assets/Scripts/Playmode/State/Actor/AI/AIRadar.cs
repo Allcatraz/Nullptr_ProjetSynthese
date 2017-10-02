@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AIRadar
 {
+    private const float NoRangePerception = 0.0f;
 
     [SerializeField]
     private const float LowRangePerception = 50.0f;
@@ -14,20 +15,25 @@ public class AIRadar
 
     private float currentPerceptionRange = LowRangePerception;
     private float circleCastDistance = 0.0f;
-    private Vector2 circleCastDirection = Vector2.zero;
+    private Vector3 circleCastDirection = Vector3.up;
 
-    public enum PerceptionLevel { Low, Medium, High };
+    public enum PerceptionLevel { None,Low, Medium, High };
+
+    private PerceptionLevel aiPerceptionLevel;
     public PerceptionLevel AIPerceptionLevel
     {
         get
         {
-            return AIPerceptionLevel;
+            return aiPerceptionLevel;
         }
         set
         {
-            AIPerceptionLevel = value;
-            switch (AIPerceptionLevel)
+            aiPerceptionLevel = value;
+            switch (aiPerceptionLevel)
             {
+                case PerceptionLevel.None:
+                    currentPerceptionRange = NoRangePerception;
+                    break;
                 case PerceptionLevel.Low:
                     currentPerceptionRange = LowRangePerception;
                     break;
@@ -43,19 +49,33 @@ public class AIRadar
         }
     }
 
+    public enum LayerType {None,Default,Item,Player,AI,Building}
+
+    public readonly string[] LayerNames = { "None","Default", "Item", "Player", "AI", "Building" };
+
     public void Init()
     {
         AIPerceptionLevel = PerceptionLevel.Low;
         currentPerceptionRange = LowRangePerception;
+        
     }
 
-
-    public ObjectType NeareastGameObject<ObjectType>(Vector3 position, int layerMask)
+    public ObjectType NeareastGameObject<ObjectType>(Vector3 position, LayerType layerType)
     {
-
+        
+        
         ObjectType nearestObject = default(ObjectType);
-        RaycastHit2D[] inRangeObjects;
-        inRangeObjects = Physics2D.CircleCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
+        RaycastHit[] inRangeObjects;
+        if (layerType == LayerType.None)
+        {
+            inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection);
+        }
+        else
+        {
+            LayerMask layerMask = GetLayerMask(layerType);
+            inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
+        }
+        
         int neareastItemIndex = -1;
         float smallestDistance = float.MaxValue;
         if (inRangeObjects != null)
@@ -74,5 +94,23 @@ public class AIRadar
             nearestObject = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponent<ObjectType>();
         }
         return nearestObject;
+    }
+
+    private int GetLayerMask(LayerType layerType)
+    {
+        
+        LayerMask layerMask = LayerMask.NameToLayer(LayerNames[(int)layerType]);
+        layerMask = 1 << layerMask;
+
+        return layerMask;
+    }
+
+    public bool IsGameObjectHasLineOfSight<ObjectType>(Vector3 position, ObjectType targetObject)
+    {
+        //direction
+        //distance
+        //masque ignore tous sauf building 
+        //Physics.Raycast(position,)
+        return false;
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ProjetSynthese
+﻿using UnityEngine;
+
+namespace ProjetSynthese
 {
     public class ExploreState : StateMachine
     {
@@ -6,24 +8,27 @@
         {
           
             AIController aiController = (AIController)actor.ActorController;
-            if (aiController.MapDestinationIsKnown && aiController.HasReachedMapDestination(actor))
+
+            if (aiController.GetAIControllerMode() != AIController.ControllerMode.Explore)
+            {
+                aiController.SetAIControllerMode(AIController.ControllerMode.Explore);
+            }
+
+            if (!aiController.MapDestinationIsKnown)
+            {
+                aiController.GenerateRandomDestination(actor);
+                aiController.MapDestinationIsKnown = true;
+            }
+
+            aiController.AIMoveTarget = AIController.MoveTarget.Map;
+            actor.ActorController.Move(actor);
+
+            if (aiController.HasReachedMapDestination(actor))
             {
                 aiController.MapDestinationIsKnown = false;
             }
-            else
-            {
-                aiController.GenerateRandomDestination(actor);
-                aiController.MapDestinationIsKnown = true; 
-            }
-            aiController.AIMoveTarget = AIController.MoveTarget.Map;
-            aiController.AISpeed = AIController.SpeedLevel.Walking;
-            actor.ActorController.Move(actor);
-
-            if (aiController.AISensor.AIPerceptionLevel != AIRadar.PerceptionLevel.High)
-            {
-                aiController.AISensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
-            }
             
+           
         }
     }
 }

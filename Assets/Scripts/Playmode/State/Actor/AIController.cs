@@ -17,18 +17,23 @@ namespace ProjetSynthese
         public enum MoveTarget { Item, Map, Opponent };
         public MoveTarget AIMoveTarget { get; set; }
 
-        public enum SpeedLevel { Walking, Jogging, Running, Swimming };
+        public enum SpeedLevel { None,Walking, Jogging, Running, Swimming };
+
+        private SpeedLevel aiSpeed;
         public SpeedLevel AISpeed
         {
             get
             {
-                return AISpeed;
+                return aiSpeed;
             }
             set
             {
-                AISpeed = value;
-                switch (AISpeed)
+                aiSpeed = value;
+                switch (aiSpeed)
                 {
+                    case SpeedLevel.None:
+                        currentSpeedLevel = NoSpeed;
+                        break;
                     case SpeedLevel.Walking:
                         currentSpeedLevel = WalkingSpeed;
                         break;
@@ -55,20 +60,29 @@ namespace ProjetSynthese
         [SerializeField]
         private const float SwimmingSpeed = 0.5f;
 
+        private const float NoSpeed = 0.0f;
+
         private float currentSpeedLevel;
 
         private const float RandomRadiusMoveRange = 5.0f;
 
         private const float errorPositionTolerance = 0.001f;
 
-        public AIRadar AISensor { get; private set; }
+        public enum ControllerMode { None,Explore }
+        private ControllerMode aiControllerMode;
+        private readonly ActorAI actor;
 
-        private void Start()
+        public AIController(ActorAI actor)
+        {
+            this.actor = actor;
+        }
+
+        public void Init()
         {
             MapDestinationIsKnown = false;
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
-            AISensor = new AIRadar();
+            SetAIControllerMode(ControllerMode.None);
         }
 
         public bool HasReachedMapDestination(ActorAI actor)
@@ -136,27 +150,50 @@ namespace ProjetSynthese
             Vector3 mouvement = new Vector3(nouvellePosition.x - actor.transform.position.x, nouvellePosition.y - actor.transform.position.y, nouvellePosition.z - actor.transform.position.z);
 
             ////Angle de rotation en degrée (car l'affichage de Unity veut les angles en degrée); Mathf.Rad2Deg nécessaire car Mathf.Atan2 un résultat en radiants
-            float angle = -Mathf.Atan2(mouvement.x, mouvement.y) * Mathf.Rad2Deg;
+           float angle = Mathf.Atan2(mouvement.x, mouvement.z) * Mathf.Rad2Deg;
 
             ////On applique la nouvelle position
             actor.transform.position = nouvellePosition;
 
             ////On applique la nouvelle rotation
-            actor.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            actor.transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
 
         public void GenerateRandomDestination(ActorAI actor)
         {
             Vector3 newDestination = actor.transform.position;
             float xOffset = Random.Range(0.0f, RandomRadiusMoveRange);
-            float yOffset = RandomRadiusMoveRange - xOffset;
+            float zOffset = RandomRadiusMoveRange - xOffset;
             float signXOffset = (Random.Range(0, 2) * 2) - 1;
             float signYOffset = (Random.Range(0, 2) * 2) - 1;
             //
             newDestination.x += signXOffset * xOffset;
-            newDestination.y += signYOffset * yOffset;
+            newDestination.z += signYOffset * zOffset;
             MapDestination = newDestination;
             MapDestinationIsKnown = true;
+        }
+
+        public ControllerMode GetAIControllerMode()
+        {
+            return aiControllerMode;
+        }
+
+        public void SetAIControllerMode(ControllerMode controllerMode)
+        {
+            aiControllerMode = controllerMode;
+            switch (controllerMode)
+            {
+                case ControllerMode.None:
+                    AISpeed = AIController.SpeedLevel.None;
+                    actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.None;
+                    break;
+                case ControllerMode.Explore:
+                    AISpeed = AIController.SpeedLevel.Walking;
+                    actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

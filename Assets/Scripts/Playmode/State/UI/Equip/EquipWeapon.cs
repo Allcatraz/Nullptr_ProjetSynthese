@@ -56,8 +56,12 @@ namespace ProjetSynthese
         void FixedUpdate()
         {
             UpdateInventory();
-            UpdateText();
-            UpdateImage();
+            if (!(inventory == null))
+            {
+                UpdateText();
+                UpdateImage();
+            }
+                       
         }
     }
 }

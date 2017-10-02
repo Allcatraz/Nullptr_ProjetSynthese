@@ -7,8 +7,6 @@ namespace ProjetSynthese
 {
     public class EquipProtection : GameScript
     {
-
-
         [SerializeField]
         private ItemType type;
 
@@ -42,7 +40,11 @@ namespace ProjetSynthese
         void Update()
         {
             UpdateInventory();
-            UpdateImage();
+            if (!(inventory == null))
+            {
+                UpdateImage();
+            }
+            
         }
     }
 }

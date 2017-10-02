@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Menu/InventoryMenu.unity
     guid: e37f3c12d0b371a40ae96f9d4bef0a17
+  - enabled: 1
+    path: Assets/Scenes/Menu/UIActor.unity
+    guid: 0a192be647811cb4193ac33589f7c3f8

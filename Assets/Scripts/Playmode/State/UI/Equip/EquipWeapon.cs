@@ -18,7 +18,7 @@ namespace ProjetSynthese
 
         private void UpdateInventory()
         {
-            if (inventory != StaticInventoryPass.Inventory)
+            if (inventory == null || inventory != StaticInventoryPass.Inventory)
             {
                 inventory = StaticInventoryPass.Inventory;
             } 
@@ -28,13 +28,21 @@ namespace ProjetSynthese
         {
             textSlot.text = typeSlot.ToString();
             string name = "";
+            Cell primary = inventory.GetPrimaryWeapon();
+            Cell secondary = inventory.GetSecondaryWeapon();
             if (typeSlot == EquipWeaponAt.Primary)
             {
-                name = inventory.GetPrimaryWeapon().GetItem().Type.ToString();
+                if (primary != null)
+                {
+                    name = primary.GetItem().Type.ToString();
+                }               
             }
             if (typeSlot == EquipWeaponAt.Secondary)
             {
-                name = inventory.GetSecondaryWeapon().GetItem().Type.ToString();
+                if (secondary != null)
+                {
+                    name = secondary.GetItem().Type.ToString();
+                } 
             }
             textName.text = name;
             

@@ -237,8 +237,14 @@ namespace ProjetSynthese
 
         public static bool operator ==(Inventory one, Inventory two)
         {
+            if ((object)one == null && (object)two == null)
+            {
+                return true;
+            }
             if ((object)one == null || (object)two == null)
+            {
                 return false;
+            } 
             bool aRetourner = false;
             if (one.listInventory == two.listInventory && one.helmet == two.helmet && one.vest == two.vest && one.primaryWeapon == two.primaryWeapon && one.secondaryWeapon == two.secondaryWeapon)
             {
@@ -249,6 +255,10 @@ namespace ProjetSynthese
 
         public static bool operator !=(Inventory one,   Inventory two)
         {
+            if ((object)one == null || (object)two == null)
+            {
+                return false;
+            }
             return !(one == two);
         }
     }

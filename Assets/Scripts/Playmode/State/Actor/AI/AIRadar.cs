@@ -104,4 +104,13 @@ public class AIRadar
 
         return layerMask;
     }
+
+    public bool IsGameObjectHasLineOfSight<ObjectType>(Vector3 position, ObjectType targetObject)
+    {
+        //direction
+        //distance
+        //masque ignore tous sauf building 
+        //Physics.Raycast(position,)
+        return false;
+    }
 }

@@ -72,7 +72,11 @@ namespace ProjetSynthese
             {
                 if (keyboard.GetKeyDown(KeyCode.Tab))
                 {
-                    NotifyInventoryAction();
+                    NotifyToggleInventory();
+                }
+                if (keyboard.GetKeyDown(KeyCode.M))
+                {
+                    NotifyToggleMap();
                 }
                 if (keyboard.GetKeyDown(KeyCode.Escape))
                 {
@@ -86,13 +90,17 @@ namespace ProjetSynthese
                 {
                     NotifySwitchSprintOff();
                 }
-                if (keyboard.GetKey(KeyCode.Alpha1))
+                if (keyboard.GetKeyDown(KeyCode.Alpha1))
                 {
                     NotifySwitchPrimaryWeapon();
                 }
-                if (keyboard.GetKey(KeyCode.Alpha2))
+                if (keyboard.GetKeyDown(KeyCode.Alpha2))
                 {
                     NotifySwitchSecondaryWeapon();
+                }
+                if (keyboard.GetKeyDown(KeyCode.Alpha3))
+                {
+                    NotifySwitchThridWeapon();
                 }
                 if (keyboard.GetKeyDown(KeyCode.F))
                 {

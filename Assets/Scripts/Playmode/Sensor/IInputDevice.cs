@@ -10,37 +10,43 @@ namespace ProjetSynthese
     //Game actions
     public delegate void TogglePauseEventHandler();
     public delegate void ToggleInventoryEventHandler();
+    public delegate void ToggleMapEventHandler();
 
-    public delegate void MoveTowardHandler(Vector3 direction);
-    public delegate void SwitchSprintOnHandler();
-    public delegate void SwitchSprintOffHandler();
+    public delegate void MoveTowardEventHandler(Vector3 direction);
+    public delegate void SwitchSprintOnEventHandler();
+    public delegate void SwitchSprintOffEventHandler();
 
-    public delegate void SwitchPrimaryWeaponHandler();
-    public delegate void SwitchSecondaryWeaponHandler();
+    public delegate void SwitchPrimaryWeaponEventHandler();
+    public delegate void SwitchSecondaryWeaponEventHandler();
+    public delegate void SwitchThirdWeaponEventHandler();
 
     public delegate void FireEventHandler();
     
-    public delegate void PickupHandler();
+    public delegate void PickupEventHandler();
 
     public interface IInputDevice
     {
+        //Menu Action
         event UpEventHandler OnUp;
         event DownEventHandler OnDown;
         event ConfirmEventHandler OnConfirm;
 
-        event MoveTowardHandler OnMove;
-        event ToggleInventoryEventHandler OnToggleInventory;
+        //Game Action
         event TogglePauseEventHandler OnTogglePause;
+        event ToggleInventoryEventHandler OnToggleInventory;
+        event ToggleMapEventHandler OnToggleMap;
 
-        event SwitchSprintOnHandler OnSwitchSprintOn;
-        event SwitchSprintOffHandler OnSwitchSprintOff;
+        event MoveTowardEventHandler OnMoveToward;
+        event SwitchSprintOnEventHandler OnSwitchSprintOn;
+        event SwitchSprintOffEventHandler OnSwitchSprintOff;
 
-        event SwitchPrimaryWeaponHandler OnSwitchPrimaryWeapon;
-        event SwitchSecondaryWeaponHandler OnSwitchSecondaryWeapon;
+        event SwitchPrimaryWeaponEventHandler OnSwitchPrimaryWeapon;
+        event SwitchSecondaryWeaponEventHandler OnSwitchSecondaryWeapon;
+        event SwitchThirdWeaponEventHandler OnSwitchThridWeapon;
 
         event FireEventHandler OnFire;
        
-        event PickupHandler OnPickup;
+        event PickupEventHandler OnPickup;
 
         IInputDevice this[int deviceIndex] { get; }
     }

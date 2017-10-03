@@ -98,14 +98,16 @@ namespace ProjetSynthese
         private void OnSwitchPrimaryWeapon()
         {
             SetCurrentWeaponActive(false);
-            currentWeapon = inventory.GetPrimaryWeapon().GetItem() as Weapon;
+            Cell weapon = inventory.GetPrimaryWeapon();
+            currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
         }
 
         private void OnSwitchSecondaryWeapon()
         {
             SetCurrentWeaponActive(false);
-            currentWeapon = inventory.GetSecondaryWeapon().GetItem() as Weapon;
+            Cell weapon = inventory.GetSecondaryWeapon();
+            currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
         }
 
@@ -156,7 +158,7 @@ namespace ProjetSynthese
 
                 if (item.GetComponent<Item>() is Weapon)
                 {
-                    item.transform.SetParent(weaponHolderTransform);               
+                    item.transform.SetParent(weaponHolderTransform);
                 }
                 else
                 {
@@ -194,7 +196,7 @@ namespace ProjetSynthese
             }
         }
 
-        private void OnHealthChanged(int oldHealthPoints, int newHealthPoints)
+        private void OnHealthChanged(int oldHealthPoints, int healthPoints)
         {
             StaticHealthPass.health = health;
         }

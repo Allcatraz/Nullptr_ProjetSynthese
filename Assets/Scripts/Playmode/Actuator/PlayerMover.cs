@@ -13,7 +13,7 @@ namespace ProjetSynthese
         private Transform topParentTransform;
         private float speed = 0;
 
-        private void InjectPlayerMover([TopParentScope] Transform topParentTransform)
+        private void InjectPlayerMover([RootScope] Transform topParentTransform)
         {
             this.topParentTransform = topParentTransform;
         }
@@ -21,6 +21,7 @@ namespace ProjetSynthese
         private void Awake()
         {
             InjectDependencies("InjectPlayerMover");
+            topParentTransform.rotation = Quaternion.identity;
             speed = moveSpeed;
         }
 
@@ -36,7 +37,7 @@ namespace ProjetSynthese
 
         public void Move(Vector3 direction)
         {
-            topParentTransform.Translate(direction * speed * Time.deltaTime, Space.World);
+            topParentTransform.position += direction * speed * Time.deltaTime;
         }
 
         public void Rotate()

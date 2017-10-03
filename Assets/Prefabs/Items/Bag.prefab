@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 418e6bdd95f5e5c418035435a1501a1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 7
 --- !u!114 &114656140394144252
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -137,4 +138,4 @@ MonoBehaviour:
     i14: 108
     i15: 163
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1

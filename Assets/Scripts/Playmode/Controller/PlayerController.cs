@@ -7,6 +7,8 @@ namespace ProjetSynthese
     public class PlayerController : NetworkGameScript
     {
         [SerializeField] private Menu inventoryMenu;
+        [SerializeField] private Transform weaponHolderTransform;
+        [SerializeField] private Transform inventoryTransform;
 
         private ActivityStack activityStack;
         private Health health;
@@ -95,12 +97,27 @@ namespace ProjetSynthese
 
         private void OnSwitchPrimaryWeapon()
         {
+            SetCurrentWeaponActive(false);
             currentWeapon = inventory.GetPrimaryWeapon().GetItem() as Weapon;
+            SetCurrentWeaponActive(true);
         }
 
         private void OnSwitchSecondaryWeapon()
         {
+            SetCurrentWeaponActive(false);
             currentWeapon = inventory.GetSecondaryWeapon().GetItem() as Weapon;
+            SetCurrentWeaponActive(true);
+        }
+
+        private void SetCurrentWeaponActive(bool isActive)
+        {
+            if ((object)currentWeapon != null)
+            { 
+                currentWeapon.gameObject.SetActive(isActive);
+                currentWeapon.transform.position = weaponHolderTransform.position;
+                currentWeapon.transform.rotation = weaponHolderTransform.rotation;
+                currentWeapon.transform.Rotate(90, 0, 0);
+            }
         }
 
         private void OnSwitchThirdWeapon()
@@ -136,6 +153,16 @@ namespace ProjetSynthese
             if ((object)item != null)
             {
                 inventory.Add(item);
+
+                if (item.GetComponent<Item>() is Weapon)
+                {
+                    item.transform.SetParent(weaponHolderTransform);               
+                }
+                else
+                {
+                    item.transform.SetParent(inventoryTransform);
+                }
+
                 item.SetActive(false);
             }
         }

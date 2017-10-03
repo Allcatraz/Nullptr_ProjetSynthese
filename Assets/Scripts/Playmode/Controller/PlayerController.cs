@@ -63,6 +63,7 @@ namespace ProjetSynthese
             mouseInputSensor.Mouses.OnFire += OnFire;
 
             health.OnHealthChanged += OnHealthChanged;
+            OnHealthChanged(0, 0);
 
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 

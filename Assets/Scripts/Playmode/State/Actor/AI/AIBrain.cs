@@ -112,28 +112,30 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromHuntState()
         {
-            AIState nextState = AIState.Hunt;
+            AIState nextState = AIState.Explore;
+
+
 
             return nextState;
         }
 
         private AIState ChooseANewStateFromLootState()
         {
-            AIState nextState = AIState.Loot;
+            AIState nextState = AIState.Explore;
 
             return nextState;
         }
 
         private AIState ChooseANewStateFromCombatState()
         {
-            AIState nextState = AIState.Dead;
+            AIState nextState = AIState.Explore;
 
             return nextState;
         }
 
         private AIState ChooseANewStateFromFleeState()
         {
-            AIState nextState = AIState.Dead;
+            AIState nextState = AIState.Explore;
 
             return nextState;
         }

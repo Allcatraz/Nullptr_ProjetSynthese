@@ -27,8 +27,12 @@ namespace ProjetSynthese
             {
                 aiController.MapDestinationIsKnown = false;
             }
-            
-           
+
+            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Explore);
+            if (nextState != AIBrain.AIState.Explore)
+            {
+                SwitchState(actor, nextState);
+            }
         }
     }
 }

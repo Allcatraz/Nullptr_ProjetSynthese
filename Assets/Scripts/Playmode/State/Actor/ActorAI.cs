@@ -20,7 +20,7 @@ namespace ProjetSynthese
 
         [SerializeField]
         private Inventory inventory;
-        
+
         public Inventory AIInventory { get; private set; }
 
         [SerializeField]
@@ -36,11 +36,12 @@ namespace ProjetSynthese
                 case ActorType.None:
                     break;
                 case ActorType.AI:
+                    //Ordre d'initialisation important
                     CurrentState = new ExploreState();
-                    ActorController = new AIController(this);
-                    ((AIController)ActorController).Init();
                     Sensor = new AIRadar();
                     Sensor.Init();
+                    ActorController = new AIController(this);
+                    ((AIController)ActorController).Init();
                     Brain = new AIBrain(this);
                     break;
                 default:
@@ -48,7 +49,7 @@ namespace ProjetSynthese
             }
         }
 
-       
+
         private void Update()
         {
             if (CurrentState != null)
@@ -67,12 +68,12 @@ namespace ProjetSynthese
             }
         }
 
-        public  bool IsDead()
+        public bool IsDead()
         {
             return isDead;
         }
 
-        public  void SetDead()
+        public void SetDead()
         {
             isDead = true;
         }
@@ -84,7 +85,7 @@ namespace ProjetSynthese
             Debug.Assert(CurrentState != null && newState != null, "État nouveau ou courant de la state machine est null");
 #endif
 
-           CurrentState = newState;
+            CurrentState = newState;
 
         }
     }

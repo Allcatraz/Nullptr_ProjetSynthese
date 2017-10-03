@@ -13,7 +13,7 @@ namespace ProjetSynthese
         private float lastLifePointLevel;
         private const float ErrorLifeTolerance = 0.001f;
 
-        public enum AIState { Dead, Explore, Loot, Hunt, Combat, Flee }
+        public enum AIState { None, Dead, Explore, Loot, Hunt, Combat, Flee }
 
         private readonly ActorAI Actor;
 
@@ -71,24 +71,10 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromExploreState()
         {
-            AIState nextState = AIState.Explore;
 
-            if (HasBeenInjured())
-            {
-                if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
-                {
-                    nextState = AIState.Flee;
-                }
-                else if (ExistShootableOpponent())
-                {
-                    nextState = AIState.Combat;
-                }
-                else
-                {
-                    nextState = AIState.Hunt;
-                }
-            }
-            else
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
             {
                 if (ExistVisibleOpponent())
                 {
@@ -100,7 +86,12 @@ namespace ProjetSynthese
                 }
             }
 
-             return nextState;
+            if (nextState == AIState.None)
+            {
+                nextState = AIState.Explore;
+            }
+           
+            return nextState;
         }
 
         private AIState ChooseANewStateFromHuntState()
@@ -252,6 +243,27 @@ namespace ProjetSynthese
             aiInPerceptionRange = null;
             playerInPerceptionRange = null;
             itemInPerceptionRange = null;
+        }
+
+        private AIState HasBeenInjuredRelatedStateCheck()
+        {
+            AIState nextState = AIState.None;
+            if (HasBeenInjured())
+            {
+                if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
+                {
+                    nextState = AIState.Flee;
+                }
+                else if (ExistShootableOpponent())
+                {
+                    nextState = AIState.Combat;
+                }
+                else
+                {
+                    nextState = AIState.Hunt;
+                }
+            }
+            return nextState;
         }
 
     }

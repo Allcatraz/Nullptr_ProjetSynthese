@@ -8,7 +8,7 @@ namespace ProjetSynthese
     {
         protected static void SpawnWeapon(List<Item> itemList, GameObject spawnPoint, System.Random rnd, GameObject weaponPrefab, AmmoType ammoType)
         {
-            GameObject _object = SpawnObject(spawnPoint, weaponPrefab);
+            GameObject _object = CmdSpawnObject(spawnPoint, weaponPrefab);
             Weapon w = _object.GetComponent<Weapon>();
             itemList.Add(w);
             AmmoFabric.CreateItem(itemList, spawnPoint, rnd, ammoType);

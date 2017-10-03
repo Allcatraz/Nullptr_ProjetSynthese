@@ -9,7 +9,9 @@ namespace ProjetSynthese
     {
         [SerializeField]
         private Image image;
+
         private Health health;
+
         private float fillAmount;
 
         private void Start()
@@ -19,8 +21,14 @@ namespace ProjetSynthese
 
         private void Update()
         {
+            UpdateHelth();
             SetFillAmountFromHealth();
             UpdateBar();
+        }
+
+        private void UpdateHelth()
+        {
+            health = StaticHealthPass.health;
         }
 
         private void SetFillAmountFromHealth()

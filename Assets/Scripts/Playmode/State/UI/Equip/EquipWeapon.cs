@@ -53,7 +53,7 @@ namespace ProjetSynthese
 
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             UpdateInventory();
             if (!(inventory == null))

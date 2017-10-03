@@ -28,6 +28,15 @@ namespace ProjetSynthese
 
         public List<Cell> listInventory { get; private set; }
 
+        public void ResetInventory()
+        {
+            primaryWeapon = null;
+            secondaryWeapon = null;
+            helmet = null;
+            vest = null;
+            listInventory = null;
+        }
+
         public void EquipWeaponAt(EquipWeaponAt selection, Cell itemToEquip)
         {
             if (selection == ProjetSynthese.EquipWeaponAt.Primary)

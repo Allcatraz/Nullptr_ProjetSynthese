@@ -7,6 +7,8 @@ namespace ProjetSynthese
     public class PlayerController : NetworkGameScript
     {
         [SerializeField] private Menu inventoryMenu;
+        [SerializeField] private Transform weaponHolderTransform;
+        [SerializeField] private Transform inventoryTransform;
 
         private ActivityStack activityStack;
         private Health health;
@@ -61,6 +63,7 @@ namespace ProjetSynthese
             mouseInputSensor.Mouses.OnFire += OnFire;
 
             health.OnHealthChanged += OnHealthChanged;
+            OnHealthChanged(0, 0);
 
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
@@ -95,12 +98,29 @@ namespace ProjetSynthese
 
         private void OnSwitchPrimaryWeapon()
         {
-            currentWeapon = inventory.GetPrimaryWeapon().GetItem() as Weapon;
+            SetCurrentWeaponActive(false);
+            Cell weapon = inventory.GetPrimaryWeapon();
+            currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
+            SetCurrentWeaponActive(true);
         }
 
         private void OnSwitchSecondaryWeapon()
         {
-            currentWeapon = inventory.GetSecondaryWeapon().GetItem() as Weapon;
+            SetCurrentWeaponActive(false);
+            Cell weapon = inventory.GetSecondaryWeapon();
+            currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
+            SetCurrentWeaponActive(true);
+        }
+
+        private void SetCurrentWeaponActive(bool isActive)
+        {
+            if ((object)currentWeapon != null)
+            { 
+                currentWeapon.gameObject.SetActive(isActive);
+                currentWeapon.transform.position = weaponHolderTransform.position;
+                currentWeapon.transform.rotation = weaponHolderTransform.rotation;
+                currentWeapon.transform.Rotate(90, 0, 0);
+            }
         }
 
         private void OnSwitchThirdWeapon()
@@ -136,6 +156,16 @@ namespace ProjetSynthese
             if ((object)item != null)
             {
                 inventory.Add(item);
+
+                if (item.GetComponent<Item>() is Weapon)
+                {
+                    item.transform.SetParent(weaponHolderTransform);
+                }
+                else
+                {
+                    item.transform.SetParent(inventoryTransform);
+                }
+
                 item.SetActive(false);
             }
         }
@@ -167,7 +197,7 @@ namespace ProjetSynthese
             }
         }
 
-        private void OnHealthChanged(int oldHealthPoints, int newHealthPoints)
+        private void OnHealthChanged(int oldHealthPoints, int healthPoints)
         {
             StaticHealthPass.health = health;
         }

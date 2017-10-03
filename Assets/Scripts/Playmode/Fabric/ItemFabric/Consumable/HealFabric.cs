@@ -18,7 +18,7 @@ namespace ProjetSynthese
 
         public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd)
         {
-            GameObject _object = SpawnObject(spawnPoint, HealPrefab);
+            GameObject _object = CmdSpawnObject(spawnPoint, HealPrefab);
 
             Heal heal = _object.GetComponent<Heal>();
 

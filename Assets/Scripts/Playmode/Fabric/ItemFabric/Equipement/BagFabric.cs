@@ -18,7 +18,7 @@ namespace ProjetSynthese
 
         public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd)
         {
-            GameObject _object = SpawnObject(spawnPoint, BagPrefab);
+            GameObject _object = CmdSpawnObject(spawnPoint, BagPrefab);
 
             Bag bag = _object.GetComponent<Bag>();
 

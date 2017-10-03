@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Harmony;
 
 namespace ProjetSynthese
@@ -12,13 +10,12 @@ namespace ProjetSynthese
             Destroy(gameObject, livingTime);
         }
 
-
-        public void OnTriggerEnter(Collider collision)
+        private void OnCollisionEnter(Collision other)
         {
-            if (collision.gameObject.tag == R.S.Tag.Player)
+            if (other.gameObject.CompareTag(R.S.Tag.Player) || other.gameObject.CompareTag(R.S.Tag.Ai))
             {
-                // TODO Ajouter le code pour gèrer les dégâts au player
-                throw new System.NotImplementedException("TODO Ajouter le code pour gèrer les dégâts au player");
+                Health health = other.gameObject.GetComponentInChildren<Health>();
+                health.Hit(1);
             }
             Destroy(gameObject);
         }

@@ -8,6 +8,12 @@ namespace ProjetSynthese
         {
             actor.ActorController.Move(actor);
 
+            // Weapon weapon = actor.AISensor.NeareastGameObject<Weapon>(actor.transform.position, AIRadar.LayerType.Item);
+            //Item item = actor.AISensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
+
+            //dosomenthing switch state
+            //actor.AIInventory.
+
             AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Explore);
             if (nextState != AIBrain.AIState.Loot)
             {

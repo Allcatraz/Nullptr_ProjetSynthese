@@ -100,21 +100,12 @@ namespace ProjetSynthese
                 }
             }
 
-            // Weapon weapon = actor.AISensor.NeareastGameObject<Weapon>(actor.transform.position, AIRadar.LayerType.Item);
-            //Item item = actor.AISensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
-
-            //dosomenthing switch state
-            //actor.AIInventory.
-
-
-            return nextState;
+             return nextState;
         }
 
         private AIState ChooseANewStateFromHuntState()
         {
             AIState nextState = AIState.Explore;
-
-
 
             return nextState;
         }

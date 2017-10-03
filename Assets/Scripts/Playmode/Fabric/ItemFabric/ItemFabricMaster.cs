@@ -1,17 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Networking;
 
 
 namespace ProjetSynthese
 {
     public class ItemFabricMaster
     {
-        public static GameObject SpawnObject(GameObject spawnPoint, GameObject prefab)
+        [Command]
+        public static GameObject CmdSpawnObject(GameObject spawnPoint, GameObject prefab)
         {
-            GameObject _object = Object.Instantiate(prefab);
-            _object.transform.position = spawnPoint.transform.position + new Vector3(Random.value, 0, Random.value);
-            //_object.transform.rotation = Random.rotation;
+            GameObject _object = Object.Instantiate(prefab, spawnPoint.transform);
+            _object.transform.position += new Vector3(Random.value, 0, Random.value);
+            //_object.transform.rotation = Random.rotation.y;
+
+            NetworkServer.Spawn(_object);
+
             return _object;
         }
     }

@@ -18,7 +18,7 @@ namespace ProjetSynthese
 
         public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd)
         {
-            GameObject _object = SpawnObject(spawnPoint, HelmetPrefab);
+            GameObject _object = CmdSpawnObject(spawnPoint, HelmetPrefab);
 
             Helmet helmet = _object.GetComponent<Helmet>();
 

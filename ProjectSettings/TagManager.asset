@@ -8,6 +8,7 @@ TagManager:
   - Activity Dependencies
   - Scene Dependencies
   - Event Channels
+  - AI
   layers:
   - Default
   - TransparentFX

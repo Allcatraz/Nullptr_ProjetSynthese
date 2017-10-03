@@ -14,10 +14,9 @@ namespace ProjetSynthese
 
         private void OnCollisionEnter(Collision other)
         {
-            if (other.gameObject.CompareTag(R.S.Tag.Player))
+            if (other.gameObject.CompareTag(R.S.Tag.Player) || other.gameObject.CompareTag(R.S.Tag.Ai))
             {
-                GameObject hit = other.gameObject;
-                Health health = hit.GetComponentInChildren<Health>();
+                Health health = other.gameObject.GetComponentInChildren<Health>();
                 health.Hit(1);
             }
             Destroy(gameObject);

@@ -1,12 +1,11 @@
-﻿using Harmony;
+﻿
 using UnityEngine;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace ProjetSynthese
 {
-    public class InventoryController : GameScript {
-
-        
+    public class InventoryController : GameScript
+    {
         [SerializeField] private Transform gridInventoryPlayer;
         [SerializeField] private Transform gridEquippedByPlayer;
         [SerializeField] private Transform gridProtectionPlayer;
@@ -76,19 +75,23 @@ namespace ProjetSynthese
         {
             ClearGrid(gridNerbyItem);
             CreateInventoryGround();
-            foreach (Cell item in inventoryGround.listInventory)
+            if (inventoryGround.listInventory != null)
             {
-                GameObject cellObject = Instantiate(cellObjectPrefab);
-                cellObject.transform.SetParent(gridNerbyItem, false);
-                cellObject.GetComponentInChildren<CellObject>().inventory = inventoryGround;
-                cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
+                foreach (Cell item in inventoryGround.listInventory)
+                {
+                    GameObject cellObject = Instantiate(cellObjectPrefab);
+                    cellObject.transform.SetParent(gridNerbyItem, false);
+                    cellObject.GetComponentInChildren<CellObject>().inventory = inventoryGround;
+                    cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
+                }
             }
         }
 
         private void CreateInventoryGround()
         {
             inventoryGround.ResetInventory();
-            foreach (GameObject item in sensorItem.GetAllItems())
+            List<GameObject> listTemp = sensorItem.GetAllItems();
+            foreach (GameObject item in listTemp)
             {
                 inventoryGround.Add(item);
             }
@@ -108,17 +111,14 @@ namespace ProjetSynthese
             CreateCellsForInventoryPlayer();
             CreateCellsForWeaponByPlayer();
             CreateCellsForProtectionPlayer();
+            CreateCellsForNearbyItem();
         }
 
         private void FixedUpdate()
         {
             if (inventory == null || inventory != StaticInventoryPass.Inventory)
             {
-                UpdateInventory();
-                CreateCellsForInventoryPlayer();
-                CreateCellsForWeaponByPlayer();
-                CreateCellsForProtectionPlayer();
-                CreateCellsForNearbyItem();
+                Inventory_InventoryChange();
                 DisconnectFromEvent();
             }
             else

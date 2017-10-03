@@ -19,8 +19,14 @@ namespace ProjetSynthese
 
         private void Update()
         {
+            UpdateBoost();
             SetFillAmountFromBoost();
             UpdateBar();
+        }
+
+        private void UpdateBoost()
+        {
+            this.boostStats = StaticBoostPass.boostStats;
         }
 
         private void SetFillAmountFromBoost()

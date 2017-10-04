@@ -11,15 +11,11 @@ namespace ProjetSynthese
 
     public class CellObject : GameScript
     {
-        [SerializeField]
-        private ButtonType buttonType;
-
-        [SerializeField]
-        private KeyCode key;
-
+        [SerializeField] private ButtonType buttonType;
+        [SerializeField] private KeyCode key;
+        private Button button;
         public EquipWeaponAt equipAt { get; set; }
 
-        private Button button;
 
         public Inventory inventory { get; set; }
 

@@ -62,8 +62,6 @@ public class AIRadar
 
     public ObjectType NeareastGameObject<ObjectType>(Vector3 position, LayerType layerType)
     {
-        
-        
         ObjectType nearestObject = default(ObjectType);
         RaycastHit[] inRangeObjects;
         if (layerType == LayerType.None)

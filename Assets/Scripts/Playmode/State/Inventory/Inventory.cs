@@ -9,7 +9,6 @@ namespace ProjetSynthese
 
     public delegate void OnInventoryChange();
 
-    [AddComponentMenu("Game/State/Inventory/Inventory")]
     public class Inventory : GameScript
     {
         [SerializeField] private InventoryOf inventoryOf;
@@ -27,6 +26,15 @@ namespace ProjetSynthese
         public GameObject parent { get; set; }
 
         public List<Cell> listInventory { get; private set; }
+
+        public void ResetInventory()
+        {
+            primaryWeapon = null;
+            secondaryWeapon = null;
+            helmet = null;
+            vest = null;
+            listInventory = null;
+        }
 
         public void EquipWeaponAt(EquipWeaponAt selection, Cell itemToEquip)
         {

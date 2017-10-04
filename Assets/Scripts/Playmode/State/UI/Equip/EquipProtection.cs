@@ -11,7 +11,7 @@ namespace ProjetSynthese
         private ItemType type;
 
         [SerializeField]
-        private Image iamge;
+        private Image image;
 
         private Inventory inventory;
 
@@ -37,7 +37,7 @@ namespace ProjetSynthese
             }
         }
 
-        void Update()
+        private void FixedUpdate()
         {
             UpdateInventory();
             if (!(inventory == null))

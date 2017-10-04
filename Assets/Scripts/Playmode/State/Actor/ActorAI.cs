@@ -3,8 +3,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    //public class ActorAI : NetworkGameScript, IActorAI
-    public class ActorAI : GameScript, IActorAI
+     public class ActorAI : NetworkGameScript, IActorAI
     {
         public enum ActorType { None, AI };
         [SerializeField]
@@ -20,14 +19,25 @@ namespace ProjetSynthese
 
         [SerializeField]
         private Inventory inventory;
-        
-        public Inventory AIInventory { get; private set; }
+
+        public Inventory AIInventory
+        {
+            get
+            {
+                return inventory;
+            }
+        }
 
         [SerializeField]
         private Health health;
 
-        public Health AIHealth { get; private set; }
-
+        public Health AIHealth
+        {
+            get
+            {
+                return health;
+            }
+        }
         private void Start()
         {
             isDead = false;
@@ -36,11 +46,12 @@ namespace ProjetSynthese
                 case ActorType.None:
                     break;
                 case ActorType.AI:
+                    //Ordre d'initialisation important
                     CurrentState = new ExploreState();
-                    ActorController = new AIController(this);
-                    ((AIController)ActorController).Init();
                     Sensor = new AIRadar();
                     Sensor.Init();
+                    ActorController = new AIController(this);
+                    ((AIController)ActorController).Init();
                     Brain = new AIBrain(this);
                     break;
                 default:
@@ -48,7 +59,7 @@ namespace ProjetSynthese
             }
         }
 
-       
+
         private void Update()
         {
             if (CurrentState != null)
@@ -67,12 +78,12 @@ namespace ProjetSynthese
             }
         }
 
-        public  bool IsDead()
+        public bool IsDead()
         {
             return isDead;
         }
 
-        public  void SetDead()
+        public void SetDead()
         {
             isDead = true;
         }
@@ -84,7 +95,7 @@ namespace ProjetSynthese
             Debug.Assert(CurrentState != null && newState != null, "État nouveau ou courant de la state machine est null");
 #endif
 
-           CurrentState = newState;
+            CurrentState = newState;
 
         }
     }

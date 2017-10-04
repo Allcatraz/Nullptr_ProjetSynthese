@@ -13,7 +13,7 @@ namespace ProjetSynthese
         private float lastLifePointLevel;
         private const float ErrorLifeTolerance = 0.001f;
 
-        public enum AIState { Dead, Explore, Loot, Hunt, Combat, Flee }
+        public enum AIState { None, Dead, Explore, Loot, Hunt, Combat, Flee }
 
         private readonly ActorAI Actor;
 
@@ -71,25 +71,10 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromExploreState()
         {
-            AIState nextState = AIState.Explore;
 
-            if (HasBeenInjured())
-            {
-                if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
-                {
-                    nextState = AIState.Flee;
-                }
-                else if (ExistShootableOpponent())
-                {
-                   //si ennemy in weapon range et visible combat
-                    nextState = AIState.Combat;
-                }
-                else
-                {
-                    nextState = AIState.Hunt;
-                }
-            }
-            else
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
             {
                 if (ExistVisibleOpponent())
                 {
@@ -101,40 +86,38 @@ namespace ProjetSynthese
                 }
             }
 
-            // Weapon weapon = actor.AISensor.NeareastGameObject<Weapon>(actor.transform.position, AIRadar.LayerType.Item);
-            //Item item = actor.AISensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
-
-            //dosomenthing switch state
-            //actor.AIInventory.
-
-
+            if (nextState == AIState.None)
+            {
+                nextState = AIState.Explore;
+            }
+           
             return nextState;
         }
 
         private AIState ChooseANewStateFromHuntState()
         {
-            AIState nextState = AIState.Hunt;
+            AIState nextState = AIState.Explore;
 
             return nextState;
         }
 
         private AIState ChooseANewStateFromLootState()
         {
-            AIState nextState = AIState.Loot;
+            AIState nextState = AIState.Explore;
 
             return nextState;
         }
 
         private AIState ChooseANewStateFromCombatState()
         {
-            AIState nextState = AIState.Dead;
+            AIState nextState = AIState.Explore;
 
             return nextState;
         }
 
         private AIState ChooseANewStateFromFleeState()
         {
-            AIState nextState = AIState.Dead;
+            AIState nextState = AIState.Explore;
 
             return nextState;
         }
@@ -189,7 +172,6 @@ namespace ProjetSynthese
                 itemInPerceptionRange = item;
                 return true;
             }
-
             return false;
         }
 
@@ -201,31 +183,37 @@ namespace ProjetSynthese
                 {
                     return true;
                 }
-                
             }
-           
             return false;
         }
         private bool IsOpponentInWeaponRange()
         {
-            float sqrtTargetDistance = 0.0f;
+            float sqrtTargetDistance = -1.0f;
             Vector3 directionVector;
             if (playerInPerceptionRange != null)
             {
                 directionVector = playerInPerceptionRange.transform.position - Actor.transform.position;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
-                //actor.AIInventory.GetPrimaryWeapon
-                
-                return true;
             }
             else if (aiInPerceptionRange != null)
             {
                 directionVector = aiInPerceptionRange.transform.position - Actor.transform.position;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
-                //actor.AIInventory.GetPrimaryWeapon
-                return true;
-            } 
-           return false;
+            }
+
+            if (sqrtTargetDistance > 0.0f)
+            {
+                Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
+                if (equippedPrimaryWeapon != null)
+                {
+                    float range = equippedPrimaryWeapon.EffectiveWeaponRange;
+                    if (sqrtTargetDistance < range * range)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private bool ExistVisibleOpponent()
@@ -234,7 +222,7 @@ namespace ProjetSynthese
             {
                 if (playerInPerceptionRange != null)
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight<PlayerController>(Actor.transform.position,playerInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight<PlayerController>(Actor.transform.position, playerInPerceptionRange))
                     {
                         return true;
                     }
@@ -247,7 +235,7 @@ namespace ProjetSynthese
                     }
                 }
             }
-           
+
             return false;
         }
         private void ResetActualPerception()
@@ -255,6 +243,27 @@ namespace ProjetSynthese
             aiInPerceptionRange = null;
             playerInPerceptionRange = null;
             itemInPerceptionRange = null;
+        }
+
+        private AIState HasBeenInjuredRelatedStateCheck()
+        {
+            AIState nextState = AIState.None;
+            if (HasBeenInjured())
+            {
+                if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
+                {
+                    nextState = AIState.Flee;
+                }
+                else if (ExistShootableOpponent())
+                {
+                    nextState = AIState.Combat;
+                }
+                else
+                {
+                    nextState = AIState.Hunt;
+                }
+            }
+            return nextState;
         }
 
     }

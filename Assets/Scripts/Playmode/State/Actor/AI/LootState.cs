@@ -6,8 +6,19 @@ namespace ProjetSynthese
 
         public override void Execute(ActorAI actor)
         {
-            actor.ActorController.Move(actor);
-            
+           
+
+            //Weapon weapon = actor.AISensor.NeareastGameObject<Weapon>(actor.transform.position, AIRadar.LayerType.Item);
+            //Item item = actor.AISensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
+
+            //actor.AIInventory.
+
+            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Explore);
+            if (nextState != AIBrain.AIState.Loot)
+            {
+                SwitchState(actor, nextState);
+            }
+
         }
     }
 }

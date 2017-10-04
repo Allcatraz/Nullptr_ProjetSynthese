@@ -13,6 +13,14 @@ namespace ProjetSynthese
         [SerializeField]
         private float bulletLivingTime;
 
+        public float EffectiveWeaponRange
+        {
+            get
+            {
+                return bulletLivingTime * bulletSpeed;
+            }
+        }
+
         public override void Use()
         {
             BulletFabric.CreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);

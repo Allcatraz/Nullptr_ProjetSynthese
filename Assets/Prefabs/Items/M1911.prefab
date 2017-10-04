@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23688013620504966}
   - component: {fileID: 114751654864556258}
   - component: {fileID: 114207786147267550}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: M1911
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4754660327858484}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}

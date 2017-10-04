@@ -7,6 +7,7 @@ namespace ProjetSynthese
     public class PlayerController : NetworkGameScript
     {
         [SerializeField] private Menu inventoryMenu;
+        [SerializeField] private Menu mapMenu;
         [SerializeField] private Transform weaponHolderTransform;
         [SerializeField] private Transform inventoryTransform;
 
@@ -189,11 +190,13 @@ namespace ProjetSynthese
         {
             if (!isMapOpen)
             {
-                //Show the map
+                activityStack.StartMenu(mapMenu);
+                isMapOpen = true;
             }
             else
             {
-                //Do not show the map
+                activityStack.StopCurrentMenu();
+                isMapOpen = false;
             }
         }
 

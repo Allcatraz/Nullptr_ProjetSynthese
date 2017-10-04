@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23305657943102882}
   - component: {fileID: 114638805742334982}
   - component: {fileID: 114418355000203604}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: AmmoPack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

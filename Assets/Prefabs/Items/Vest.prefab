@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23502495604379640}
   - component: {fileID: 114983175674410706}
   - component: {fileID: 114311144040036584}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Vest
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,7 +12,7 @@ namespace ProjetSynthese
 
         private void OnCollisionEnter(Collision other)
         {
-            if (other.gameObject.CompareTag(R.S.Tag.Player) || other.gameObject.CompareTag(R.S.Tag.Ai))
+            if (other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Player) || other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
             {
                 Health health = other.gameObject.GetComponentInChildren<Health>();
                 health.Hit(1);

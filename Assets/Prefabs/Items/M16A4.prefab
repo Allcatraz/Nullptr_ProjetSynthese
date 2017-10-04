@@ -67,7 +67,7 @@ Transform:
   m_GameObject: {fileID: 1884589669727418}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.5, z: 0.25}
+  m_LocalScale: {x: 2.5, y: 5, z: 2.5}
   m_Children:
   - {fileID: 4200583916274588}
   m_Father: {fileID: 0}
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   bulletSpawnPoint: {fileID: 1840684040347732}
-  bulletSpeed: 5
+  bulletSpeed: 50
   bulletLivingTime: 2
 --- !u!136 &136632997646461256
 CapsuleCollider:

@@ -9,7 +9,6 @@ namespace ProjetSynthese
 
     public delegate void OnInventoryChange();
 
-    [AddComponentMenu("Game/State/Inventory/Inventory")]
     public class Inventory : GameScript
     {
         [SerializeField] private InventoryOf inventoryOf;

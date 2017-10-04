@@ -9,7 +9,6 @@ namespace ProjetSynthese
 {
     public enum ButtonType {Weapon,Protection,Inventory}
 
-    [AddComponentMenu("Game/State/Inventory/CellObject")]
     public class CellObject : GameScript
     {
         [SerializeField]
@@ -33,12 +32,15 @@ namespace ProjetSynthese
         public Text TextNumber { get; private set; }
 
         public void InstantiateFromCell(Cell cell)
-        {
+        {   
             string name = cell.GetItem().Type.ToString();
-            this.IsItem = cell;
+            IsItem = cell;
             int compteur = cell.GetCompteur();
             SetTextName(name);
-            SetTextNumber(compteur);
+            if (buttonType != ButtonType.Weapon)
+            {
+                SetTextNumber(compteur);
+            }
             SetImageBackground();
         }
 
@@ -84,7 +86,7 @@ namespace ProjetSynthese
                 }
                 if (IsItem.GetItem() as Vest)
                 {
-                    inventory.UnequipHelmet();
+                    inventory.UnequipVest();
                 }
             }
             

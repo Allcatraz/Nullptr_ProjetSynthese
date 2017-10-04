@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23908465756388800}
   - component: {fileID: 114656140394144252}
   - component: {fileID: 114165328005504904}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bag
   m_TagString: Untagged
   m_Icon: {fileID: 0}

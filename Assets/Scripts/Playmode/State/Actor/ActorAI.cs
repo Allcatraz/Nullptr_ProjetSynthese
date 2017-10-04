@@ -20,13 +20,24 @@ namespace ProjetSynthese
         [SerializeField]
         private Inventory inventory;
 
-        public Inventory AIInventory { get; private set; }
+        public Inventory AIInventory
+        {
+            get
+            {
+                return inventory;
+            }
+        }
 
         [SerializeField]
         private Health health;
 
-        public Health AIHealth { get; private set; }
-
+        public Health AIHealth
+        {
+            get
+            {
+                return health;
+            }
+        }
         private void Start()
         {
             isDead = false;

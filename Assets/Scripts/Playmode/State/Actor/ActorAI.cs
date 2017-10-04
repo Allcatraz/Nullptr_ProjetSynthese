@@ -3,8 +3,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    //public class ActorAI : NetworkGameScript, IActorAI
-    public class ActorAI : GameScript, IActorAI
+     public class ActorAI : NetworkGameScript, IActorAI
     {
         public enum ActorType { None, AI };
         [SerializeField]

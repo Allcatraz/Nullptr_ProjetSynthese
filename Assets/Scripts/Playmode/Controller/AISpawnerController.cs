@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
@@ -19,9 +19,9 @@ namespace ProjetSynthese
 
         private void SpawnAIs()
         {
-            Vector3 position = Vector3.zero;
-            AIprefab.transform.position = position;
-            
+            Vector3 position = new Vector3(45,1,-45);
+           
+            AIprefab.GetComponent<NetworkStartPosition>().transform.position = position;
             for (int i = 0; i < AINumber; i++)
             {
                 AIFabric.CmdSpawnAI(AIprefab);

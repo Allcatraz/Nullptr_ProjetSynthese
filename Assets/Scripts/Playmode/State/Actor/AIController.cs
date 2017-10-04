@@ -52,7 +52,7 @@ namespace ProjetSynthese
             }
         }
         [SerializeField]
-        private const float WalkingSpeed = 0.75f;
+        private const float WalkingSpeed = 7.5f;
         [SerializeField]
         private const float JoggingSpeed = 2.0f;
         [SerializeField]
@@ -64,7 +64,7 @@ namespace ProjetSynthese
 
         private float currentSpeedLevel;
 
-        private const float RandomRadiusMoveRange = 5.0f;
+        private const float RandomRadiusMoveRange = 200.0f;
 
         private const float ErrorPositionTolerance = 0.001f;
 
@@ -169,6 +169,7 @@ namespace ProjetSynthese
             //
             newDestination.x += signXOffset * xOffset;
             newDestination.z += signYOffset * zOffset;
+            newDestination.y = 10.5f;
             MapDestination = newDestination;
             MapDestinationIsKnown = true;
         }

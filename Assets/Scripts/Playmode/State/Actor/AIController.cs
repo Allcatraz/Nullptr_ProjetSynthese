@@ -174,6 +174,27 @@ namespace ProjetSynthese
             MapDestinationIsKnown = true;
         }
 
+        public void FindTargetItemMapDestination(ActorAI actor)
+        {
+            Item item = actor.Sensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
+            actor.Brain.UpdateItemOnMapKnowledge(item);
+            if (item != null)
+            {
+                Vector3 newDestination = actor.transform.position;
+                float xOffset = item.transform.position.x;
+                float zOffset = item.transform.position.y;
+                
+                newDestination.x += xOffset;
+                newDestination.z += zOffset;
+
+                newDestination.y = 10.0f;
+                ItemTargetDestination = newDestination;
+                
+                ItemTargetDestinationIsKnown = true;
+            }
+            ItemTargetDestinationIsKnown = false;
+        }
+
         public ControllerMode GetAIControllerMode()
         {
             return aiControllerMode;

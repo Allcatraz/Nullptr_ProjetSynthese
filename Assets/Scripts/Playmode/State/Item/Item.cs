@@ -9,6 +9,7 @@ namespace ProjetSynthese
         [SerializeField]
         private ItemType type;
 
+        
         public ItemType Type
         {
             get
@@ -20,6 +21,20 @@ namespace ProjetSynthese
                 type = value;
             }
         }
+        private bool isEquipped = false;
+        public bool IsEquipped
+        {
+            get
+            {
+                return isEquipped;
+            }
+            set
+            {
+                isEquipped = value;
+            }
+
+        }
+        
 
         public abstract void Use();
 

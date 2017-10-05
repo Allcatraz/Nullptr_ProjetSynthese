@@ -13,17 +13,33 @@ namespace ProjetSynthese
                 aiController.SetAIControllerMode(AIController.ControllerMode.Loot);
             }
 
-            //Weapon weapon = actor.AISensor.NeareastGameObject<Weapon>(actor.transform.position, AIRadar.LayerType.Item);
-            //Item item = actor.AISensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
+            if (!aiController.ItemTargetDestinationIsKnown)
+            {
+                aiController.FindTargetItemMapDestination(actor);
+            }
 
-            //actor.AIInventory.
+            if (aiController.ItemTargetDestinationIsKnown)
+            {
+                aiController.AIMoveTarget = AIController.MoveTarget.Item;
+                actor.ActorController.Move(actor);
+                if (aiController.HasReachedItemTargetDestination(actor))
+                {
+                    aiController.ItemTargetDestinationIsKnown = false;
 
-            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Explore);
+                    //picku item
+                    //Weapon weapon = actor.AISensor.NeareastGameObject<Weapon>(actor.transform.position, AIRadar.LayerType.Item);
+                    //Item item = actor.AISensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
+
+                    //actor.AIInventory.
+                }
+            }
+
+            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Loot);
             if (nextState != AIBrain.AIState.Loot)
             {
                 SwitchState(actor, nextState);
             }
-
-        }
+            
+         }
     }
 }

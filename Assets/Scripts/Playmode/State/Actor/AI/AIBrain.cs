@@ -26,6 +26,7 @@ namespace ProjetSynthese
             this.Actor = actor;
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
+            ResetActualPerception();
         }
 
 
@@ -33,8 +34,7 @@ namespace ProjetSynthese
         public AIState WhatIsMyNextState(AIState currentState)
         {
             AIState nextState = currentState;
-            ResetActualPerception();
-
+            
             switch (currentState)
             {
                 case AIState.Dead:
@@ -103,8 +103,17 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromLootState()
         {
-            AIState nextState = AIState.Explore;
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            //vérifie se fait tirer dessus
+            //sinon hunt en plus ennemi
+            //sinon loot à fond et reste loot
 
+            //vérifier si iteem toujours là et le même 
+            //sinon vérifier si autre item
+            
+            //vérifier les changemenst ailleurs dans le loot décision
+            //vérifier si item toujousr là
             return nextState;
         }
 
@@ -245,11 +254,17 @@ namespace ProjetSynthese
             itemInPerceptionRange = null;
         }
 
+        public void UpdateItemOnMapKnowledge(Item newTargetItem)
+        {
+            itemInPerceptionRange = newTargetItem;
+        }
+
         private AIState HasBeenInjuredRelatedStateCheck()
         {
             AIState nextState = AIState.None;
             if (HasBeenInjured())
             {
+                Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
                 {
                     nextState = AIState.Flee;

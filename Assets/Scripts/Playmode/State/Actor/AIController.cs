@@ -68,7 +68,7 @@ namespace ProjetSynthese
 
         private const float ErrorPositionTolerance = 0.001f;
 
-        public enum ControllerMode { None,Explore }
+        public enum ControllerMode { None,Explore,Loot }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -190,6 +190,10 @@ namespace ProjetSynthese
                     break;
                 case ControllerMode.Explore:
                     AISpeed = AIController.SpeedLevel.Walking;
+                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    break;
+                case ControllerMode.Loot:
+                    AISpeed = AIController.SpeedLevel.Jogging;
                     Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;
                 default:

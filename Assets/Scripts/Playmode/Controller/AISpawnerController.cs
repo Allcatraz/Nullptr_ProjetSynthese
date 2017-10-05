@@ -19,7 +19,7 @@ namespace ProjetSynthese
 
         private void SpawnAIs()
         {
-            Vector3 position = new Vector3(45,1,-45);
+            Vector3 position = new Vector3(200,10.0f,-200);
            
             AIprefab.GetComponent<NetworkStartPosition>().transform.position = position;
             for (int i = 0; i < AINumber; i++)

@@ -169,7 +169,7 @@ namespace ProjetSynthese
             //
             newDestination.x += signXOffset * xOffset;
             newDestination.z += signYOffset * zOffset;
-            newDestination.y = 10.5f;
+            newDestination.y = 10.0f;
             MapDestination = newDestination;
             MapDestinationIsKnown = true;
         }

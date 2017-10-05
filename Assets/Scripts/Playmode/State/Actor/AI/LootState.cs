@@ -25,13 +25,12 @@ namespace ProjetSynthese
                 if (aiController.HasReachedItemTargetDestination(actor))
                 {
                     aiController.ItemTargetDestinationIsKnown = false;
-
-                    //picku item
-                    //Weapon weapon = actor.AISensor.NeareastGameObject<Weapon>(actor.transform.position, AIRadar.LayerType.Item);
-                    //Item item = actor.AISensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
-
-                    //actor.AIInventory.
-                }
+                    if (actor.Brain.ItemInPerceptionRange != null)
+                    {
+                        actor.Brain.ItemInPerceptionRange.IsEquipped = true;
+                        actor.AIInventory.Add(actor.Brain.ItemInPerceptionRange.gameObject);
+                    }
+                 }
             }
 
             AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Loot);

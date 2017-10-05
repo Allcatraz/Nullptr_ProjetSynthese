@@ -17,7 +17,7 @@ namespace ProjetSynthese
         public enum MoveTarget { Item, Map, Opponent };
         public MoveTarget AIMoveTarget { get; set; }
 
-        public enum SpeedLevel { None,Walking, Jogging, Running, Swimming };
+        public enum SpeedLevel { None, Walking, Jogging, Running, Swimming };
 
         private SpeedLevel aiSpeed;
         public SpeedLevel AISpeed
@@ -68,7 +68,7 @@ namespace ProjetSynthese
 
         private const float ErrorPositionTolerance = 0.001f;
 
-        public enum ControllerMode { None,Explore,Loot }
+        public enum ControllerMode { None, Explore, Loot }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -109,7 +109,6 @@ namespace ProjetSynthese
 
         public bool HasReachedItemTargetDestination(ActorAI actor)
         {
-
             float distance = Vector3.Distance(ItemTargetDestination, actor.transform.position);
             if (distance < ErrorPositionTolerance)
             {
@@ -123,7 +122,7 @@ namespace ProjetSynthese
             MoveDestination(AIMoveTarget, actor);
         }
 
-        private void MoveDestination(MoveTarget moveTarget,ActorAI actor)
+        private void MoveDestination(MoveTarget moveTarget, ActorAI actor)
         {
             float pas = this.currentSpeedLevel * Time.deltaTime;
             Vector3 destination = Vector3.zero;
@@ -142,21 +141,13 @@ namespace ProjetSynthese
                 default:
                     break;
             }
-
-            ////La méthode MoveTowards de vector2 fait pas mal la job de déplacement pour nous.  Pour le moment elle va chercher la nouvelle position, mais le déplacement n'est pas encore fait.
             Vector3 nouvellePosition = Vector3.MoveTowards(actor.transform.position, destination, pas);
-
-            ////Différence entre la nouvelle et l'ancienne position, pour calculer l'angle de rotation
             Vector3 mouvement = new Vector3(nouvellePosition.x - actor.transform.position.x, nouvellePosition.y - actor.transform.position.y, nouvellePosition.z - actor.transform.position.z);
 
-            ////Angle de rotation en degrée (car l'affichage de Unity veut les angles en degrée); Mathf.Rad2Deg nécessaire car Mathf.Atan2 un résultat en radiants
-           float angle = Mathf.Atan2(mouvement.x, mouvement.z) * Mathf.Rad2Deg;
-
-            ////On applique la nouvelle position
+            float angle = Mathf.Atan2(mouvement.x, mouvement.z) * Mathf.Rad2Deg;
             actor.transform.position = nouvellePosition;
-
-            ////On applique la nouvelle rotation
             actor.transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
+
         }
 
         public void GenerateRandomDestination(ActorAI actor)
@@ -183,13 +174,13 @@ namespace ProjetSynthese
                 Vector3 newDestination = actor.transform.position;
                 float xOffset = item.transform.position.x;
                 float zOffset = item.transform.position.y;
-                
+
                 newDestination.x += xOffset;
                 newDestination.z += zOffset;
 
                 newDestination.y = 10.0f;
                 ItemTargetDestination = newDestination;
-                
+
                 ItemTargetDestinationIsKnown = true;
             }
             ItemTargetDestinationIsKnown = false;

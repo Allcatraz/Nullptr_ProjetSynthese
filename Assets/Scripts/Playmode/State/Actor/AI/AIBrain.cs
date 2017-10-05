@@ -21,6 +21,8 @@ namespace ProjetSynthese
         private PlayerController playerInPerceptionRange = null;
         private Item itemInPerceptionRange = null;
 
+        public Item ItemInPerceptionRange { get; private set; }
+
         public AIBrain(ActorAI actor)
         {
             this.Actor = actor;
@@ -34,7 +36,7 @@ namespace ProjetSynthese
         public AIState WhatIsMyNextState(AIState currentState)
         {
             AIState nextState = currentState;
-            
+
             switch (currentState)
             {
                 case AIState.Dead:
@@ -90,7 +92,7 @@ namespace ProjetSynthese
             {
                 nextState = AIState.Explore;
             }
-           
+
             return nextState;
         }
 
@@ -111,26 +113,29 @@ namespace ProjetSynthese
                 {
                     nextState = AIState.Hunt;
                 }
-                else if (FoundItemInPerceptionRange())
+                else
                 {
-                    nextState = AIState.Loot;
+                    UpdateItemLootKnowledge();
+                    if (itemInPerceptionRange != null)
+                    {
+                        nextState = AIState.Loot;
+                    }
+                    else if (FoundItemInPerceptionRange())
+                    {
+                        nextState = AIState.Loot;
+                    }
+                    else
+                    {
+                        nextState = AIState.Explore;
+                    }
                 }
             }
-            
-            //sinon loot à fond et reste loot
-
-            //vérifier si iteem toujours là et le même 
-            //sinon vérifier si autre item
-
-            //vérifier les changemenst ailleurs dans le loot décision
-            //vérifier si item toujousr là
             return nextState;
         }
 
         private AIState ChooseANewStateFromCombatState()
         {
             AIState nextState = AIState.Explore;
-
             return nextState;
         }
 
@@ -269,11 +274,20 @@ namespace ProjetSynthese
             itemInPerceptionRange = newTargetItem;
         }
 
-        private void UpdateItemLootDecision()
+        private void UpdateItemLootKnowledge()
         {
-            //le même
-            //encore là
-            //pu là
+            if (itemInPerceptionRange != null)
+            {
+                if (itemInPerceptionRange.IsEquipped)
+                {
+                    itemInPerceptionRange = null;
+                    ((AIController)Actor.ActorController).ItemTargetDestinationIsKnown = false;
+                }
+            }
+            else
+            {
+                ((AIController)Actor.ActorController).ItemTargetDestinationIsKnown = false;
+            }
         }
 
 

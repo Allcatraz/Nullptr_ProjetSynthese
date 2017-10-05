@@ -167,7 +167,7 @@ namespace ProjetSynthese
 
         public void FindTargetItemMapDestination(ActorAI actor)
         {
-            Item item = actor.Sensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
+            Item item = actor.Sensor.NeareastNonEquippedItem(actor.transform.position);
             actor.Brain.UpdateItemOnMapKnowledge(item);
             if (item != null)
             {

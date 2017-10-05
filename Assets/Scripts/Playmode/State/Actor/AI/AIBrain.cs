@@ -167,30 +167,30 @@ namespace ProjetSynthese
         public bool FoundAIInPerceptionRange()
         {
 
-            ActorAI opponentAI = Actor.Sensor.NeareastGameObject<ActorAI>(Actor.transform.position, AIRadar.LayerType.AI);
-            if (opponentAI != null)
-            {
-                aiInPerceptionRange = opponentAI;
-                return true;
-            }
+            //ActorAI opponentAI = Actor.Sensor.NeareastGameObject<ActorAI>(Actor.transform.position, AIRadar.LayerType.AI);
+            //if (opponentAI != null)
+            //{
+            //    aiInPerceptionRange = opponentAI;
+            //    return true;
+            //}
             return false;
         }
 
         public bool FoundPlayerInPerceptionRange()
         {
-            PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
-            if (opponentPlayer != null)
-            {
-                playerInPerceptionRange = opponentPlayer;
-                return true;
-            }
+            //PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
+            //if (opponentPlayer != null)
+            //{
+            //    playerInPerceptionRange = opponentPlayer;
+            //    return true;
+            //}
 
             return false;
         }
 
         public bool FoundItemInPerceptionRange()
         {
-            Item item = Actor.Sensor.NeareastGameObject<Item>(Actor.transform.position, AIRadar.LayerType.Item);
+            Item item = Actor.Sensor.NeareastNonEquippedItem(Actor.transform.position);
             if (item != null)
             {
                 itemInPerceptionRange = item;

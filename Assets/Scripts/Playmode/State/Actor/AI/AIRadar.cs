@@ -2,113 +2,166 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIRadar
+namespace ProjetSynthese
 {
-    private const float NoRangePerception = 0.0f;
-
-    [SerializeField]
-    private const float LowRangePerception = 50.0f;
-    [SerializeField]
-    private const float MediumRangePerception = 100.0f;
-    [SerializeField]
-    private const float HighRangePerception = 150.0f;
-
-    private float currentPerceptionRange = LowRangePerception;
-    private float circleCastDistance = 0.0f;
-    private Vector3 circleCastDirection = Vector3.up;
-
-    public enum PerceptionLevel { None,Low, Medium, High };
-
-    private PerceptionLevel aiPerceptionLevel;
-    public PerceptionLevel AIPerceptionLevel
+    public class AIRadar
     {
-        get
+        private const float NoRangePerception = 0.0f;
+
+        [SerializeField]
+        private const float LowRangePerception = 50.0f;
+        [SerializeField]
+        private const float MediumRangePerception = 100.0f;
+        [SerializeField]
+        private const float HighRangePerception = 150.0f;
+
+        private float currentPerceptionRange = LowRangePerception;
+        private float circleCastDistance = 0.0f;
+        private Vector3 circleCastDirection = Vector3.up;
+
+        public enum PerceptionLevel { None, Low, Medium, High };
+
+        private PerceptionLevel aiPerceptionLevel;
+        public PerceptionLevel AIPerceptionLevel
         {
-            return aiPerceptionLevel;
-        }
-        set
-        {
-            aiPerceptionLevel = value;
-            switch (aiPerceptionLevel)
+            get
             {
-                case PerceptionLevel.None:
-                    currentPerceptionRange = NoRangePerception;
-                    break;
-                case PerceptionLevel.Low:
-                    currentPerceptionRange = LowRangePerception;
-                    break;
-                case PerceptionLevel.Medium:
-                    currentPerceptionRange = MediumRangePerception;
-                    break;
-                case PerceptionLevel.High:
-                    currentPerceptionRange = HighRangePerception;
-                    break;
-                default:
-                    break;
+                return aiPerceptionLevel;
             }
-        }
-    }
-
-    public enum LayerType {None,Default,Item,Player,AI,Building}
-
-    public readonly string[] LayerNames = { "None","Default", "Item", "Player", "AI", "Building" };
-
-    public void Init()
-    {
-        AIPerceptionLevel = PerceptionLevel.Low;
-        currentPerceptionRange = LowRangePerception;
-        
-    }
-
-    public ObjectType NeareastGameObject<ObjectType>(Vector3 position, LayerType layerType)
-    {
-        ObjectType nearestObject = default(ObjectType);
-        RaycastHit[] inRangeObjects;
-        if (layerType == LayerType.None)
-        {
-            inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection);
-        }
-        else
-        {
-            LayerMask layerMask = GetLayerMask(layerType);
-            inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
-        }
-        
-        int neareastItemIndex = -1;
-        float smallestDistance = float.MaxValue;
-        if (inRangeObjects != null)
-        {
-            for (int i = 0; i < inRangeObjects.Length; i++)
+            set
             {
-                if (inRangeObjects[i].distance < smallestDistance)
+                aiPerceptionLevel = value;
+                switch (aiPerceptionLevel)
                 {
-                    smallestDistance = inRangeObjects[i].distance;
-                    neareastItemIndex = i;
+                    case PerceptionLevel.None:
+                        currentPerceptionRange = NoRangePerception;
+                        break;
+                    case PerceptionLevel.Low:
+                        currentPerceptionRange = LowRangePerception;
+                        break;
+                    case PerceptionLevel.Medium:
+                        currentPerceptionRange = MediumRangePerception;
+                        break;
+                    case PerceptionLevel.High:
+                        currentPerceptionRange = HighRangePerception;
+                        break;
+                    default:
+                        break;
                 }
             }
         }
-        if (neareastItemIndex != -1)
+
+        public enum LayerType { None, Default, Item, Player, AI, Building }
+
+        public readonly string[] LayerNames = { "None", "Default", "Item", "Player", "AI", "Building" };
+
+        public void Init()
         {
-            nearestObject = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponent<ObjectType>();
+            AIPerceptionLevel = PerceptionLevel.Low;
+            currentPerceptionRange = LowRangePerception;
+
         }
-        return nearestObject;
-    }
 
-    private int GetLayerMask(LayerType layerType)
-    {
-        
-        LayerMask layerMask = LayerMask.NameToLayer(LayerNames[(int)layerType]);
-        layerMask = 1 << layerMask;
+        public ObjectType NeareastGameObject<ObjectType>(Vector3 position, LayerType layerType)
+        {
+            ObjectType nearestObject = default(ObjectType);
+            RaycastHit[] inRangeObjects;
+            if (layerType == LayerType.None)
+            {
+                inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection);
+            }
+            else
+            {
+                LayerMask layerMask = GetLayerMask(layerType);
+                inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
+            }
 
-        return layerMask;
-    }
+            int neareastItemIndex = -1;
+            float smallestDistance = float.MaxValue;
+            if (inRangeObjects != null)
+            {
+                for (int i = 0; i < inRangeObjects.Length; i++)
+                {
+                    if (inRangeObjects[i].distance < smallestDistance)
+                    {
+                        smallestDistance = inRangeObjects[i].distance;
+                        neareastItemIndex = i;
+                    }
+                }
+            }
+            if (neareastItemIndex != -1)
+            {
+                nearestObject = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponent<ObjectType>();
+            }
+            return nearestObject;
+        }
 
-    public bool IsGameObjectHasLineOfSight<ObjectType>(Vector3 position, ObjectType targetObject)
-    {
-        //direction
-        //distance
-        //masque ignore tous sauf building 
-        //Physics.Raycast(position,)
-        return false;
+        private RaycastHit[] AllNeareastGameObjects(Vector3 position, LayerType layerType)
+        {
+            RaycastHit[] inRangeObjects;
+            if (layerType == LayerType.None)
+            {
+                inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection);
+            }
+            else
+            {
+                LayerMask layerMask = GetLayerMask(layerType);
+                inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
+            }
+            
+            return inRangeObjects;
+        }
+
+        private int GetLayerMask(LayerType layerType)
+        {
+
+            LayerMask layerMask = LayerMask.NameToLayer(LayerNames[(int)layerType]);
+            layerMask = 1 << layerMask;
+
+            return layerMask;
+        }
+
+        public Item NeareastNonEquippedItem(Vector3 position)
+        {
+            RaycastHit[] itemsInPerceptionRange = AllNeareastGameObjects(position, AIRadar.LayerType.Item);
+            Item nonEquippedNearestItem = null;
+            int nonEquippedNeareastItemIndex = -1;
+            float smallestDistance = float.MaxValue;
+            if (itemsInPerceptionRange != null)
+            {
+                for (int i = 0; i < itemsInPerceptionRange.Length; i++)
+                {
+                    if (!itemsInPerceptionRange[i].collider.gameObject.GetComponent<Item>().IsEquipped && itemsInPerceptionRange[i].distance < smallestDistance)
+                    {
+                        smallestDistance = itemsInPerceptionRange[i].distance;
+                        nonEquippedNeareastItemIndex = i;
+                    }
+                }
+            }
+            if (nonEquippedNeareastItemIndex != -1)
+            {
+                nonEquippedNearestItem = itemsInPerceptionRange[nonEquippedNeareastItemIndex].collider.gameObject.GetComponent<Item>();
+            }
+            return nonEquippedNearestItem;
+
+        }
+
+        public bool IsGameObjectHasLineOfSight<ObjectType>(Vector3 position, PlayerController target)
+        {
+            LayerMask layerMask = GetLayerMask(AIRadar.LayerType.Building);
+            Vector3 direction = Vector3.zero;
+            direction = target.transform.position - position;          
+            return Physics.Raycast(position, direction, currentPerceptionRange, layerMask);
+        }
+
+        public bool IsGameObjectHasLineOfSight<ObjectType>(Vector3 position, ActorAI target)
+        {
+            LayerMask layerMask = GetLayerMask(AIRadar.LayerType.Building);
+            Vector3 direction = Vector3.zero;
+            direction = target.transform.position - position;
+            return Physics.Raycast(position, direction, currentPerceptionRange, layerMask);
+        }
+
+
     }
 }

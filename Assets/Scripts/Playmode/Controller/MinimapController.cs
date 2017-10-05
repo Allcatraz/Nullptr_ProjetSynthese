@@ -12,17 +12,21 @@ namespace ProjetSynthese
         private RectTransform rectTransform;
         private PlayerController playerController;
         private Camera minimapCam;
+        private PlayerMoveEventChannel playerMoveEventChannel;
 
         private void InjectMinimapController([EntityScope] Camera minimapCam,
-                                             [GameObjectScope] RectTransform rectTransform)
+                                             [GameObjectScope] RectTransform rectTransform,
+                                             [EventChannelScope] PlayerMoveEventChannel playerMoveEventChannel)
         {
             this.rectTransform = rectTransform;
             this.minimapCam = minimapCam;
+            this.playerMoveEventChannel = playerMoveEventChannel;
         }
  
         private void Awake()
         {
             InjectDependencies("InjectMinimapController");
+            playerMoveEventChannel.OnEventPublished += OnPlayerMove;
         }
 
         private void Start()
@@ -35,9 +39,9 @@ namespace ProjetSynthese
             minimapCam.targetTexture = texture;
         }
 
-        private void FixedUpdate()
+        private void OnPlayerMove(PlayerMoveEvent playerMoveEvent)
         {
-            minimapCam.transform.position = new Vector3(StaticMinimapPass.PlayerTransform.position.x, 10, StaticMinimapPass.PlayerTransform.position.z);
+            minimapCam.transform.position = new Vector3(playerMoveEvent.PlayerMover.transform.position.x, 10, playerMoveEvent.PlayerMover.transform.position.z);
         }
     }
 

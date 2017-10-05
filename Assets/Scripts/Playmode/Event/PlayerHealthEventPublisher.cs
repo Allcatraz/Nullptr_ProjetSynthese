@@ -10,7 +10,7 @@ namespace ProjetSynthese
         private PlayerHealthEventChannel eventChannel;
 
         private void InjectPlayerHealthEventPublisher([EntityScope] Health health,
-                                                     [EventChannelScope] PlayerHealthEventChannel eventChannel)
+                                                      [EventChannelScope] PlayerHealthEventChannel eventChannel)
         {
             this.health = health;
             this.eventChannel = eventChannel;

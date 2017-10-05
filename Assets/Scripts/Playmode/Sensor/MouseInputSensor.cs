@@ -32,6 +32,11 @@ namespace ProjetSynthese
             mouseInputDevice.Update();
         }
 
+        public Vector3 GetPosition()
+        {
+            return mouse.GetMousePosition();
+        }
+
         private class MouseInputDevice : InputDevice
         {
             private readonly Mouse mouse;
@@ -59,6 +64,5 @@ namespace ProjetSynthese
                 }
             }
         }
-
     }
 }

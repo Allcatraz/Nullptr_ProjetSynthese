@@ -31,7 +31,6 @@ namespace ProjetSynthese
             mapCamera.orthographicSize = tileMap.MapWidthInPixels / 2.0f;
             mapCamera.targetTexture = mapTexture;
             mapCamera.gameObject.SetActive(true);
-
         }
     }
 }

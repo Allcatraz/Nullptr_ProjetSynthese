@@ -87,6 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4540052388450462}
   - component: {fileID: 114557487456833158}
+  - component: {fileID: 114541165062068710}
   m_Layer: 8
   m_Name: PlayerMover
   m_TagString: Untagged
@@ -139,6 +140,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4291559882653628}
   - component: {fileID: 114405339645637836}
+  - component: {fileID: 114829462464532168}
+  - component: {fileID: 114107453897673614}
   m_Layer: 8
   m_Name: ActorHealth
   m_TagString: Untagged
@@ -377,6 +380,17 @@ MonoBehaviour:
   mapMenu: {fileID: 11400000, guid: a90bf0f1f67a57e41b2286896d6bda89, type: 2}
   weaponHolderTransform: {fileID: 4236748107255540}
   inventoryTransform: {fileID: 4132227477362130}
+--- !u!114 &114107453897673614
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1915978590610782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f9b2ed1ab9e4c5ab22f644614514ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114169419075714274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -434,6 +448,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14991f33ef254d9d9cf628d7d4ee964f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114541165062068710
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1260605328440928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5d199ec517ff4745b26635920bcfba5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114557487456833158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -479,6 +504,17 @@ MonoBehaviour:
     i15: 21
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114829462464532168
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1915978590610782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e56133ed9c84c9fb8cd0b57e293b427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114884844836443650
 MonoBehaviour:
   m_ObjectHideFlags: 1

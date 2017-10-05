@@ -63,8 +63,7 @@ namespace ProjetSynthese
 
             mouseInputSensor.Mouses.OnFire += OnFire;
 
-            health.OnHealthChanged += OnHealthChanged;
-            OnHealthChanged(0, 0);
+            health.OnDeath += OnDeath;
 
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
@@ -89,12 +88,16 @@ namespace ProjetSynthese
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
 
-            health.OnHealthChanged -= OnHealthChanged;
+            health.OnDeath -= OnDeath;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            playerMover.Rotate();
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
+            Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y, mousePos.z - transform.position.z);
+            float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
+
+            playerMover.Rotate(angle);
         }
 
         private void OnSwitchPrimaryWeapon()
@@ -200,9 +203,9 @@ namespace ProjetSynthese
             }
         }
 
-        private void OnHealthChanged(int oldHealthPoints, int healthPoints)
+        private void OnDeath()
         {
-            StaticHealthPass.health = health;
+            Destroy(gameObject);
         }
     }
 }

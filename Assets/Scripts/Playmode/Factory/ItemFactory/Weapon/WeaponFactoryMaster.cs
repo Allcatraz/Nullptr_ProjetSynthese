@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class WeaponFabricMaster : ItemFabricMaster
+    public class WeaponFactoryMaster : ItemFactoryMaster
     {
         protected static void SpawnWeapon(List<Item> itemList, GameObject spawnPoint, System.Random rnd, GameObject weaponPrefab, AmmoType ammoType)
         {
             GameObject _object = CmdSpawnObject(spawnPoint, weaponPrefab);
             Weapon w = _object.GetComponent<Weapon>();
             itemList.Add(w);
-            AmmoFabric.CreateItem(itemList, spawnPoint, rnd, ammoType);
+            AmmoFactory.CreateItem(itemList, spawnPoint, rnd, ammoType);
         }
     }
 }

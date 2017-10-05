@@ -24,7 +24,7 @@ namespace ProjetSynthese
             int numberOfItemsToSpawn = rnd.Next(3, MaxNumberOfItemsToSpawn + 1);
             for (int i = 0; i < numberOfItemsToSpawn; i++)
             {
-                ItemFabric.CreateItem(items, gameObject, rnd);
+                ItemFactory.CreateItem(items, gameObject, rnd);
             }
         }
 

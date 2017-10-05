@@ -23,7 +23,7 @@ namespace ProjetSynthese
 
         public override void Use()
         {
-            BulletFabric.CreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);
+            BulletFactory.CreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ProjetSynthese
             AIprefab.GetComponent<NetworkStartPosition>().transform.position = position;
             for (int i = 0; i < AINumber; i++)
             {
-                AIFabric.CmdSpawnAI(AIprefab);
+                AIFactory.CmdSpawnAI(AIprefab);
             }
         }
     }

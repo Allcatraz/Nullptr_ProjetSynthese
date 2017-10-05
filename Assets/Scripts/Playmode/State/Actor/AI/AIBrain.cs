@@ -105,13 +105,23 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            //vérifie se fait tirer dessus
-            //sinon hunt en plus ennemi
+            if (nextState == AIState.None)
+            {
+                if (ExistVisibleOpponent())
+                {
+                    nextState = AIState.Hunt;
+                }
+                else if (FoundItemInPerceptionRange())
+                {
+                    nextState = AIState.Loot;
+                }
+            }
+            
             //sinon loot à fond et reste loot
 
             //vérifier si iteem toujours là et le même 
             //sinon vérifier si autre item
-            
+
             //vérifier les changemenst ailleurs dans le loot décision
             //vérifier si item toujousr là
             return nextState;
@@ -258,6 +268,14 @@ namespace ProjetSynthese
         {
             itemInPerceptionRange = newTargetItem;
         }
+
+        private void UpdateItemLootDecision()
+        {
+            //le même
+            //encore là
+            //pu là
+        }
+
 
         private AIState HasBeenInjuredRelatedStateCheck()
         {

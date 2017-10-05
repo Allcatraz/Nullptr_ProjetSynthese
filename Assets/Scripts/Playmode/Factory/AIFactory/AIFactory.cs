@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
-    public class AIFabric
+    public class AIFactory
     {
         [Command]
         public static GameObject CmdSpawnAI( GameObject prefab)

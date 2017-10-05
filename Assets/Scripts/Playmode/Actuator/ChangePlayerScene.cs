@@ -1,4 +1,6 @@
-﻿using Harmony;
+﻿using Castle.Core.Internal;
+using Harmony;
+using Tiled2Unity;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 using UnityEngine.SceneManagement;
@@ -10,6 +12,7 @@ namespace ProjetSynthese
         [SerializeField] private Menu mapMenu;
 
         private ActivityStack activityStack;
+        private TiledMap tileMap;
         private bool hasMapMenuLoaded = true;
 
         private void InjectChangePlayerScene([ApplicationScope] ActivityStack activityStack)
@@ -29,15 +32,14 @@ namespace ProjetSynthese
                 if (hasMapMenuLoaded)
                 {
                     activityStack.StartMenu(mapMenu);
+                    GameObject[] gameObjects = SceneManager.GetSceneByName(R.S.Scene.GameFragment).GetRootGameObjects();
+                    tileMap = gameObjects.Find(obj => obj.name == "Map").GetComponent<TiledMap>();
                     hasMapMenuLoaded = false;
                 }
 
                 Vector3 viewportPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
                 viewportPosition.y = 1 - viewportPosition.y;
-                Vector3 worldPos = new Vector3(viewportPosition.x * 800, 10, -viewportPosition.y * 800);
-
-                //Vector2 proportionalPosition = new Vector2(ViewportPosition.x * Screen.width, ViewportPosition.y * Screen.height);
-                //Vector3 proportionalPositionVec3 = new Vector3(proportionalPosition.x, 10, -proportionalPosition.y);
+                Vector3 worldPos = new Vector3(viewportPosition.x * tileMap.MapWidthInPixels, 10, -viewportPosition.y * tileMap.MapHeightInPixels);
                 if (Input.GetMouseButtonDown((int) MouseButton.LeftMouse))
                 {
                     activityStack.StopCurrentMenu();

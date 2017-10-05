@@ -18,7 +18,6 @@ namespace ProjetSynthese
         {
             GameObject[] gameObjects = SceneManager.GetSceneByName(R.S.Scene.GameFragment).GetRootGameObjects();
             tileMap = gameObjects.Find(obj => obj.name == "Map").GetComponent<TiledMap>();
-     
         }
 
         void Start()

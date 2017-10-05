@@ -7,20 +7,20 @@ using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    public class MapSizeController : GameScript
+    public class MapController : GameScript
     {
         [SerializeField] private RectTransform mapRectTransform;
         [SerializeField] private Camera mapCamera;
 
         private TiledMap tileMap;
 
-        void Awake()
+        private void Awake()
         {
             GameObject[] gameObjects = SceneManager.GetSceneByName(R.S.Scene.GameFragment).GetRootGameObjects();
             tileMap = gameObjects.Find(obj => obj.name == "Map").GetComponent<TiledMap>();
         }
 
-        void Start()
+        private void Start()
         {
             RenderTexture mapTexture = new RenderTexture(tileMap.MapWidthInPixels, tileMap.MapHeightInPixels, 24);
             GetComponent<RawImage>().texture = mapTexture;
@@ -31,6 +31,7 @@ namespace ProjetSynthese
             mapCamera.orthographicSize = tileMap.MapWidthInPixels / 2.0f;
             mapCamera.targetTexture = mapTexture;
             mapCamera.gameObject.SetActive(true);
+
         }
     }
 }

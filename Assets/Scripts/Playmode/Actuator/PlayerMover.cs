@@ -46,6 +46,7 @@ namespace ProjetSynthese
             Vector3 distance = new Vector3(mousePos.x - topParentTransform.position.x, mousePos.y - topParentTransform.position.y, mousePos.z - topParentTransform.position.z);
             float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
             topParentTransform.eulerAngles = new Vector3(0, angle, 0);
+            StaticMinimapPass.PlayerTransform = topParentTransform;
         }
     }
 }

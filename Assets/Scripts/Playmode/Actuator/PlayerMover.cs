@@ -4,6 +4,8 @@ using Time = UnityEngine.Time;
 
 namespace ProjetSynthese
 {
+    public delegate void MoveEventHandler();
+
     [AddComponentMenu("Game/Actuator/PlayerMover")]
     public class PlayerMover : GameScript
     {
@@ -12,6 +14,8 @@ namespace ProjetSynthese
 
         private Transform topParentTransform;
         private float speed = 0;
+
+        public event MoveEventHandler OnMove;
 
         private void InjectPlayerMover([RootScope] Transform topParentTransform)
         {
@@ -38,15 +42,12 @@ namespace ProjetSynthese
         public void Move(Vector3 direction)
         {
             topParentTransform.position += direction * speed * Time.deltaTime;
+            if (OnMove != null) OnMove();
         }
 
-        public void Rotate()
+        public void Rotate(float angle)
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 distance = new Vector3(mousePos.x - topParentTransform.position.x, mousePos.y - topParentTransform.position.y, mousePos.z - topParentTransform.position.z);
-            float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
             topParentTransform.eulerAngles = new Vector3(0, angle, 0);
-            StaticMinimapPass.PlayerTransform = topParentTransform;
         }
     }
 }

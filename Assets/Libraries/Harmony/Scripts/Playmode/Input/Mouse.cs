@@ -15,5 +15,10 @@ namespace Harmony
         {
             return Input.GetMouseButtonDown((int)button);
         }
+
+        public Vector3 GetMousePosition()
+        {
+            return Input.mousePosition;
+        }
     }
 }

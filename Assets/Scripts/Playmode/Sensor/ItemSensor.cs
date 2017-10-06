@@ -20,6 +20,13 @@ namespace ProjetSynthese
             InjectDependencies("InjectItemSensor");
         }
 
+        public List<GameObject> GetAllItems(Transform transform)
+        {
+            List<RaycastHit> itemsRaycast = Physics.SphereCastAll(transform.position, 10, Vector3.down).ToList();
+            itemsRaycast.RemoveAll(item => !item.transform.gameObject.GetComponent<Item>());
+            return itemsRaycast.ConvertAll(item => item.transform.gameObject);
+        }
+
         public List<GameObject> GetAllItems()
         {
             List<RaycastHit> itemsRaycast = Physics.SphereCastAll(sensor.transform.position, 10, Vector3.down).ToList();

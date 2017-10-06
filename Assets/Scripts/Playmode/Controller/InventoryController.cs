@@ -1,4 +1,4 @@
-﻿
+﻿using Harmony;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -15,6 +15,7 @@ namespace ProjetSynthese
         [SerializeField] private GameObject cellObjectPrefab;
         [SerializeField] private Inventory inventoryGround;
         [SerializeField] private ItemSensor sensorItem;
+        private PlayerMoveEventChannel playerMoveEventChannel;
         private bool abonner = false;
         private Inventory inventory;
 
@@ -87,10 +88,41 @@ namespace ProjetSynthese
             }
         }
 
+        private void Awake()
+        {
+            InjectDependencies("InjectEventSensor");
+            playerMoveEventChannel.OnEventPublished += PlayerMoveEventChannel_OnEventPublished;
+
+        }
+
+        private void FixedUpdate()
+        {
+            if (inventory == null || inventory != StaticInventoryPass.Inventory)
+            {
+                Inventory_InventoryChange();
+                DisconnectFromEvent();
+            }
+            else
+            {
+                ConnectToEvent();
+
+            }
+        }
+
+        private void PlayerMoveEventChannel_OnEventPublished(PlayerMoveEvent newEvent)
+        {
+            CreateCellsForNearbyItem();
+        }
+
+        private void InjectEventSensor([EventChannelScope] PlayerMoveEventChannel playerMoveEventChannel)
+        {
+            this.playerMoveEventChannel = playerMoveEventChannel;
+        }
+
         private void CreateInventoryGround()
         {
             inventoryGround.ResetInventory();
-            List<GameObject> listTemp = sensorItem.GetAllItems();
+            List<GameObject> listTemp = sensorItem.GetAllItems(inventory.transform);
             foreach (GameObject item in listTemp)
             {
                 inventoryGround.Add(item);
@@ -110,22 +142,7 @@ namespace ProjetSynthese
             UpdateInventory();
             CreateCellsForInventoryPlayer();
             CreateCellsForWeaponByPlayer();
-            CreateCellsForProtectionPlayer();
-            CreateCellsForNearbyItem();
-        }
-
-        private void FixedUpdate()
-        {
-            if (inventory == null || inventory != StaticInventoryPass.Inventory)
-            {
-                Inventory_InventoryChange();
-                DisconnectFromEvent();
-            }
-            else
-            {
-                ConnectToEvent();
-
-            }
+            CreateCellsForProtectionPlayer();   
         }
 
         private void DisconnectFromEvent()

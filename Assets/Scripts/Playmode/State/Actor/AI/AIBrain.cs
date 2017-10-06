@@ -246,14 +246,14 @@ namespace ProjetSynthese
             {
                 if (playerInPerceptionRange != null)
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight<PlayerController>(Actor.transform.position, playerInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, playerInPerceptionRange))
                     {
                         return true;
                     }
                 }
                 else
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight<ActorAI>(Actor.transform.position, aiInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
                     {
                         return true;
                     }

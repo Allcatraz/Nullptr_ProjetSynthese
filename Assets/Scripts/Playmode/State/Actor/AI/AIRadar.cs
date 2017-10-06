@@ -51,9 +51,9 @@ namespace ProjetSynthese
             }
         }
 
-        public enum LayerType { None, Default, Item, Player, AI, Building }
+        public enum LayerType { None, Default, Item, EquippedItem,Player, AI, Building }
 
-        public readonly string[] LayerNames = { "None", "Default", "Item", "Player", "AI", "Building" };
+        public static readonly string[] LayerNames = { "None", "Default", "Item", "EquippedItem", "Player", "AI", "Building" };
 
         public void Init()
         {
@@ -146,7 +146,7 @@ namespace ProjetSynthese
 
         }
 
-        public bool IsGameObjectHasLineOfSight<ObjectType>(Vector3 position, PlayerController target)
+        public bool IsGameObjectHasLineOfSight(Vector3 position, PlayerController target)
         {
             LayerMask layerMask = GetLayerMask(AIRadar.LayerType.Building);
             Vector3 direction = Vector3.zero;
@@ -154,7 +154,7 @@ namespace ProjetSynthese
             return Physics.Raycast(position, direction, currentPerceptionRange, layerMask);
         }
 
-        public bool IsGameObjectHasLineOfSight<ObjectType>(Vector3 position, ActorAI target)
+        public bool IsGameObjectHasLineOfSight(Vector3 position, ActorAI target)
         {
             LayerMask layerMask = GetLayerMask(AIRadar.LayerType.Building);
             Vector3 direction = Vector3.zero;

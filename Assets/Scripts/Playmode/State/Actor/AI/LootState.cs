@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 namespace ProjetSynthese
 {
     public class LootState : StateMachine
@@ -27,6 +28,7 @@ namespace ProjetSynthese
                     aiController.ItemTargetDestinationIsKnown = false;
                     if (actor.Brain.ItemInPerceptionRange != null)
                     {
+                        actor.gameObject.layer = LayerMask.NameToLayer(AIRadar.LayerNames[(int)AIRadar.LayerType.EquippedItem]);
                         actor.Brain.ItemInPerceptionRange.IsEquipped = true;
                         actor.AIInventory.Add(actor.Brain.ItemInPerceptionRange.gameObject);
                     }

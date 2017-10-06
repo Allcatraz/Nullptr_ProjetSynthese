@@ -11,3 +11,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35dc01d017e287446a8c599e08cf8ed5, type: 3}
   m_Name: DeathCircle
   m_EditorClassIdentifier: 
+  waitTimeInSecond: 030000003c0000003c00000064000000780000005a0000003c0000003c000000
+  moveTimeInSecond: 030000008c0000005a0000003c000000280000001e0000001e0000001e000000
+  domagePerSecond:
+  - 0.4
+  - 0.6
+  - 0.8
+  - 1
+  - 2
+  - 5
+  - 7
+  - 9
+  shrink:
+  - 0.4
+  - 0.65
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5

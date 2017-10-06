@@ -9,6 +9,7 @@ TagManager:
   - Scene Dependencies
   - Event Channels
   - AI
+  - DeathCircle
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Item
   - AI
   - Building
-  - 
+  - DeathCircle
   - 
   - 
   - 

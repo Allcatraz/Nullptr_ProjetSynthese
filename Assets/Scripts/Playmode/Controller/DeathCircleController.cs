@@ -17,8 +17,8 @@ namespace ProjetSynthese
         private float shrinkTime = InitialShrinkTime;
         private bool hasMoveTimeSet = false;
 
-        private Torus safeCircle;
-        private Torus deathCircle;
+        private LineRendererCircle safeCircle;
+        private LineRendererCircle deathCircle;
         private TiledMap tiledMap;
         private Phases currentPhase = Phases.Phase1;
 
@@ -32,54 +32,64 @@ namespace ProjetSynthese
             InjectDependencies("InjectDeathCircleController");
             waitTime = deathCircleValues.WaitTimeInSecond[(int)currentPhase];
 
-            safeCircle = GetAllChildrens()[0].GetComponent<Torus>();
-            deathCircle = GetAllChildrens()[1].GetComponent<Torus>();
+            safeCircle = GetAllChildrens()[0].GetComponent<LineRendererCircle>();
+            deathCircle = GetAllChildrens()[1].GetComponent<LineRendererCircle>();
 
-            transform.position = new Vector3(tiledMap.MapWidthInPixels / 2f, 110, -tiledMap.MapHeightInPixels / 2f);
+            transform.position = new Vector3(tiledMap.MapWidthInPixels / 2f, 90, -tiledMap.MapHeightInPixels / 2f);
             float mapDiagonalRadius = Mathf.Sqrt((tiledMap.MapWidthInPixels * tiledMap.MapWidthInPixels) + (tiledMap.MapHeightInPixels * tiledMap.MapHeightInPixels)) / 2;
 
             CreateCircle(ref safeCircle, mapDiagonalRadius);
             CreateCircle(ref deathCircle, mapDiagonalRadius);
         }
 
-        void Update()
+        void FixedUpdate()
         {
-            waitTime -= Time.deltaTime;
-
-            if (waitTime <= 0.0f)
+            if (currentPhase <= Phases.Phase8)
             {
-                Debug.Log("WaitTimeFinish");
-                if (!hasMoveTimeSet)
+                waitTime -= Time.deltaTime;
+
+                if (waitTime <= 0.0f)
                 {
-                    moveTime = deathCircleValues.MoveTimeInSecond[(int) currentPhase];
-                    CreateCircle(ref safeCircle, safeCircle.Radius * deathCircleValues.Shrink[(int)currentPhase]);
-
-                    hasMoveTimeSet = true;
-                }
-
-                moveTime -= Time.deltaTime;
-
-                if (moveTime <= 0.0f)
-                {
-                    Debug.Log("MoveTimeFinish");
-                    shrinkTime -= Time.deltaTime;
-                    if (shrinkTime <= 0.0f)
+                    if (!hasMoveTimeSet)
                     {
-                        Debug.Log("Shink");
-                        deathCircle.Radius -= 1f;
-                        deathCircle.Create();
-                        shrinkTime = InitialShrinkTime;
+                        moveTime = deathCircleValues.MoveTimeInSecond[(int) currentPhase];
+                        CreateCircle(ref safeCircle, safeCircle.Radius * deathCircleValues.Shrink[(int) currentPhase]);
 
-                        //s'il a fini de shrink, réinitialise + change la phase
+                        hasMoveTimeSet = true;
+                    }
+
+                    moveTime -= Time.deltaTime;
+
+                    if (moveTime <= 0.0f)
+                    {
+                        shrinkTime -= Time.deltaTime;
+                        if (shrinkTime <= 0.0f)
+                        {
+                            deathCircle.Radius -= 1f;
+                            deathCircle.Create();
+
+                            if (deathCircle.Radius <= safeCircle.Radius)
+                            {
+                                if (currentPhase < Phases.Phase8)
+                                {
+                                    currentPhase += 1;
+                                }
+                                waitTime = deathCircleValues.WaitTimeInSecond[(int) currentPhase];
+                                hasMoveTimeSet = false;
+                                return;
+                            }
+
+                            shrinkTime = InitialShrinkTime;
+                        }
                     }
                 }
             }
         }
 
-        private void CreateCircle(ref Torus torus, float radius)
+        private void CreateCircle(ref LineRendererCircle lineRendererCircle, float radius)
         {
-            torus.Radius = radius;
-            torus.Create();
+            lineRendererCircle.Radius = radius;
+            lineRendererCircle.Create();
         }
     }
 }

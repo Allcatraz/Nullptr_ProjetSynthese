@@ -41,7 +41,7 @@ namespace ProjetSynthese
 
         private void OnPlayerMove(PlayerMoveEvent playerMoveEvent)
         {
-            minimapCam.transform.position = new Vector3(playerMoveEvent.PlayerMover.transform.position.x, 10, playerMoveEvent.PlayerMover.transform.position.z);
+            minimapCam.transform.position = new Vector3(playerMoveEvent.PlayerMover.transform.position.x, 100, playerMoveEvent.PlayerMover.transform.position.z);
         }
     }
 

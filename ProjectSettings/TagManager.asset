@@ -10,6 +10,7 @@ TagManager:
   - Event Channels
   - AI
   - DeathCircle
+  - Map
   layers:
   - Default
   - TransparentFX

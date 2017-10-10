@@ -24,6 +24,8 @@ namespace ProjetSynthese
     
     public delegate void PickupEventHandler();
 
+    public delegate void ReloadEventHandler();
+
     public interface IInputDevice
     {
         //Menu Action
@@ -47,6 +49,8 @@ namespace ProjetSynthese
         event FireEventHandler OnFire;
        
         event PickupEventHandler OnPickup;
+
+        event ReloadEventHandler OnReload;
 
         IInputDevice this[int deviceIndex] { get; }
     }

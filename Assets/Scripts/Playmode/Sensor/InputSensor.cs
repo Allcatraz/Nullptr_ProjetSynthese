@@ -26,6 +26,8 @@ namespace ProjetSynthese
 
             public event PickupEventHandler OnPickup;
 
+            public event ReloadEventHandler OnReload;
+
             public abstract IInputDevice this[int deviceIndex] { get; }
 
             protected virtual void NotifyUp()
@@ -96,7 +98,12 @@ namespace ProjetSynthese
             protected virtual void NotifyPickup()
             {
                 if (OnPickup != null) OnPickup();
-            }      
+            }
+            
+            protected virtual void NotifyReload()
+            {
+                if (OnReload != null) OnReload();
+            }
         }
 
         protected abstract class TriggerOncePerFrameInputDevice : InputDevice
@@ -121,6 +128,8 @@ namespace ProjetSynthese
 
             private bool pickupTriggerd;
 
+            private bool reloadTriggerd;
+
             public abstract override IInputDevice this[int deviceIndex] { get; }
 
             public virtual void Reset()
@@ -144,6 +153,8 @@ namespace ProjetSynthese
                 fireTriggerd = false;
 
                 pickupTriggerd = false;
+
+                reloadTriggerd = false;
             }
 
             protected override void NotifyUp()
@@ -269,6 +280,15 @@ namespace ProjetSynthese
                 {
                     base.NotifyPickup();
                     pickupTriggerd = true;
+                }
+            }
+
+            protected override void NotifyReload()
+            {
+                if(!reloadTriggerd)
+                {
+                    base.NotifyReload();
+                    reloadTriggerd = true;
                 }
             }
         }

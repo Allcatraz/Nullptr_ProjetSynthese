@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 23042721999950946}
   - component: {fileID: 114724182066724082}
   - component: {fileID: 114626473777302560}
+  - component: {fileID: 114302715723661442}
   m_Layer: 10
   m_Name: AWM
   m_TagString: Untagged
@@ -112,6 +113,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1596026197941954}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114302715723661442
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1596026197941954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39103100b4a6b9947a6799faaa8e671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114626473777302560
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,6 +171,9 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 1739869433896542}
   bulletSpeed: 50
   bulletLivingTime: 2
+  bulletPrefab: {fileID: 1894154968439106, guid: a4fa262ffb390b445b932d04992af590,
+    type: 2}
+  magazineMaxAmount: 10
 --- !u!136 &136758123883380380
 CapsuleCollider:
   m_ObjectHideFlags: 1

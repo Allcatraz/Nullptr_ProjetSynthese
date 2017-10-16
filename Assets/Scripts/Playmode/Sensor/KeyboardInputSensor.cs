@@ -106,6 +106,10 @@ namespace ProjetSynthese
                 {
                     NotifyPickup();
                 }
+                if(keyboard.GetKeyDown(KeyCode.R))
+                {
+                    NotifyReload();
+                }                 
             }
 
             private void HandleDirectionInput()

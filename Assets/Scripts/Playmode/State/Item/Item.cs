@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ProjetSynthese
 {
@@ -23,8 +21,7 @@ namespace ProjetSynthese
 
         public abstract void Use();
 
-
-        public static bool operator==(Item item1, Item item2)
+        public static bool operator ==(Item item1, Item item2)
         {
             if ((object)item1 == null && (object)item2 == null)
             {
@@ -41,6 +38,24 @@ namespace ProjetSynthese
         public static bool operator !=(Item item1, Item item2)
         {
             return !(item1 == item2);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as Item;
+            return item != null &&
+                   base.Equals(obj) &&
+                   type == item.type &&
+                   Type == item.Type;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -747960638;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + type.GetHashCode();
+            hashCode = hashCode * -1521134295 + Type.GetHashCode();
+            return hashCode;
         }
     }
 }

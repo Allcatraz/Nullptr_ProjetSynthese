@@ -13,6 +13,11 @@ namespace ProjetSynthese
             compteur = 1;
         }
 
+        public Cell(int compteur)
+        {
+            this.compteur = compteur;
+        }
+
         public void AddCompteur()
         {
             compteur++;
@@ -58,7 +63,16 @@ namespace ProjetSynthese
             return !(one == two);
         }
 
+        public override bool Equals(object obj)
+        {
+            var cell = obj as Cell;
+            return cell != null &&
+                   compteur == cell.compteur;
+        }
 
-
+        public override int GetHashCode()
+        {
+            return 2064421790 + compteur.GetHashCode();
+        }
     }
 }

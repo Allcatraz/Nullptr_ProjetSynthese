@@ -127,8 +127,9 @@ namespace ProjetSynthese
             List<GameObject> listTemp = sensorItem.GetAllItems(inventory.transform);
             foreach (GameObject item in listTemp)
             {
-               inventoryGround.Add(item);
-            }          
+                    inventoryGround.Add(item);
+            }
+                   
         }
 
         private void ClearGrid(Transform grid)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class StaticFabricController : GameScript
+    public class StaticFactoryController : GameScript
     {
         [SerializeField]
         GameObject bulletPrefab;
@@ -39,29 +39,29 @@ namespace ProjetSynthese
 
         private void Awake()
         {
-            BulletFabric.BulletPrefab = bulletPrefab;
+            BulletFactory.BulletPrefab = bulletPrefab;
             InitializeItemFabrics();
         }
 
         private void InitializeItemFabrics()
         {
             // Consumable
-            HealFabric.HealPrefab = healPrefab;
-            BoostFabric.BoostPrefab = boostPrefab;
+            HealFactory.HealPrefab = healPrefab;
+            BoostFactory.BoostPrefab = boostPrefab;
 
             // Equipement
-            VestFabric.VestPrefab = vestPrefab;
-            HelmentFabric.HelmetPrefab = helmentPrefab;
-            BagFabric.BagPrefab = bagPrefab;
+            VestFactory.VestPrefab = vestPrefab;
+            HelmentFactory.HelmetPrefab = helmentPrefab;
+            BagFactory.BagPrefab = bagPrefab;
 
             //Weapon
-            M16A4Fabric.M16A4Prefab = M16A4Prefab;
-            AWMFabric.AWMPrefab = AWMPrefab;
-            SAIGA12Fabric.SAIGA12Prefab = SAIGA12Prefab;
-            M1911Fabric.M1911Prefab = M1911Prefab;
+            M16A4Factory.M16A4Prefab = M16A4Prefab;
+            AWMFactory.AWMPrefab = AWMPrefab;
+            SAIGA12Factory.SAIGA12Prefab = SAIGA12Prefab;
+            M1911Factory.M1911Prefab = M1911Prefab;
 
             // AmmoPack
-            AmmoFabric.AmmoPackPrefab = ammoPackPrefab;
+            AmmoFactory.AmmoPackPrefab = ammoPackPrefab;
         }
     }
 }

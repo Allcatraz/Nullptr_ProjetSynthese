@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public static class ItemFabric
+    public static class ItemFactory
     {
         private static int percentChanceSpawnConsumable = 40;
         private static int percentChanceSpawnEquipement = 30;
@@ -21,15 +21,15 @@ namespace ProjetSynthese
 
             if (item >= range1.x && item < range1.y)
             {
-                ConsumableFabric.CreateItem(itemList, spawnPoint, rnd);
+                ConsumableFactory.CreateItem(itemList, spawnPoint, rnd);
             }
             else if (item >= range2.x && item < range2.y)
             {
-                EquipementFabric.CreateItem(itemList, spawnPoint, rnd);
+                EquipementFactory.CreateItem(itemList, spawnPoint, rnd);
             }
             else if (item >= range3.x && item < range3.y)
             {
-                WeaponFabric.CreateItem(itemList, spawnPoint, rnd);
+                WeaponFactory.CreateItem(itemList, spawnPoint, rnd);
             }
 
         }

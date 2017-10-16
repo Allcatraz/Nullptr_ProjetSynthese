@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class ConsumableFabric
+    public class ConsumableFactory
     {
         private static int PercentChanceHeal = 50;
         private static int PercentChanceBoost = 50;
@@ -19,11 +19,11 @@ namespace ProjetSynthese
 
             if (item >= range1.x && item < range1.y)
             {
-                HealFabric.CreateItem(itemList, spawnPoint, rnd);
+                HealFactory.CreateItem(itemList, spawnPoint, rnd);
             }
             else if (item >= range2.x && item < range2.y)
             {
-                BoostFabric.CreateItem(itemList, spawnPoint, rnd);
+                BoostFactory.CreateItem(itemList, spawnPoint, rnd);
             }
         }
     }

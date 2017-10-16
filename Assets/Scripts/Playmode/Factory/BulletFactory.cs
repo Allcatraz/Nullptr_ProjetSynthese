@@ -3,7 +3,7 @@ using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
-    public static class BulletFabric
+    public static class BulletFactory
     {
         public static GameObject BulletPrefab { get; set; }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class AmmoFabric : ItemFabricMaster
+    public class AmmoFactory : ItemFactoryMaster
     {
         private static int percentChanceSpawn30Ammo = 60;
         private static int percentChanceSpawn60Ammo = 30;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class AWMFabric : WeaponFabricMaster
+    public class AWMFactory : WeaponFactoryMaster
     {
         public static GameObject AWMPrefab { get; set; }
 

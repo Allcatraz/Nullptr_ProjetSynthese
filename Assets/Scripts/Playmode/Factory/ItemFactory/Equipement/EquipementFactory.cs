@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class EquipementFabric
+    public class EquipementFactory
     {
         private static int percentChanceSpawnVest = 30;
         private static int percentChanceSpawnHelmet = 30;
@@ -20,15 +20,15 @@ namespace ProjetSynthese
 
             if (item >= range1.x && item < range1.y)
             {
-                VestFabric.CreateItem(itemList, spawnPoint, rnd);
+                VestFactory.CreateItem(itemList, spawnPoint, rnd);
             }
             else if (item >= range2.x && item < range2.y)
             {
-                HelmentFabric.CreateItem(itemList, spawnPoint, rnd);
+                HelmentFactory.CreateItem(itemList, spawnPoint, rnd);
             }
             else if (item >= range3.x && item < range3.y)
             {
-                BagFabric.CreateItem(itemList, spawnPoint, rnd);
+                BagFactory.CreateItem(itemList, spawnPoint, rnd);
             }
         }
     }

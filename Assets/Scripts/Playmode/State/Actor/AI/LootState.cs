@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 namespace ProjetSynthese
 {
     public class LootState : StateMachine
@@ -6,19 +7,39 @@ namespace ProjetSynthese
 
         public override void Execute(ActorAI actor)
         {
-           
+            AIController aiController = (AIController)actor.ActorController;
 
-            //Weapon weapon = actor.AISensor.NeareastGameObject<Weapon>(actor.transform.position, AIRadar.LayerType.Item);
-            //Item item = actor.AISensor.NeareastGameObject<Item>(actor.transform.position, AIRadar.LayerType.Item);
+            if (aiController.GetAIControllerMode() != AIController.ControllerMode.Loot)
+            {
+                aiController.SetAIControllerMode(AIController.ControllerMode.Loot);
+            }
 
-            //actor.AIInventory.
+            if (!aiController.ItemTargetDestinationIsKnown)
+            {
+                aiController.FindTargetItemMapDestination(actor);
+            }
 
-            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Explore);
+            if (aiController.ItemTargetDestinationIsKnown)
+            {
+                aiController.AIMoveTarget = AIController.MoveTarget.Item;
+                actor.ActorController.Move(actor);
+                if (aiController.HasReachedItemTargetDestination(actor))
+                {
+                    aiController.ItemTargetDestinationIsKnown = false;
+                    if (actor.Brain.ItemInPerceptionRange != null)
+                    {
+                        actor.Brain.ItemInPerceptionRange.gameObject.layer = LayerMask.NameToLayer(AIRadar.LayerNames[(int)AIRadar.LayerType.EquippedItem]);
+                        actor.AIInventory.Add(actor.Brain.ItemInPerceptionRange.gameObject);
+                    }
+                 }
+            }
+
+            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Loot);
             if (nextState != AIBrain.AIState.Loot)
             {
                 SwitchState(actor, nextState);
             }
-
-        }
+            
+         }
     }
 }

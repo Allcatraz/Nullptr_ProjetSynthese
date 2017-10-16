@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class WeaponFabric
+    public class WeaponFactory
     {
         private static int percentChanceSpawnM16A4 = 40;
         private static int percentChanceSpawnAWM = 10;
@@ -22,19 +22,19 @@ namespace ProjetSynthese
 
             if (item >= range1.x && item < range1.y)
             {
-                M16A4Fabric.CreateItem(itemList, spawnPoint, rnd);
+                M16A4Factory.CreateItem(itemList, spawnPoint, rnd);
             }
             else if (item >= range2.x && item < range2.y)
             {
-                AWMFabric.CreateItem(itemList, spawnPoint, rnd);
+                AWMFactory.CreateItem(itemList, spawnPoint, rnd);
             }
             else if (item >= range3.x && item < range3.y)
             {
-                SAIGA12Fabric.CreateItem(itemList, spawnPoint, rnd);
+                SAIGA12Factory.CreateItem(itemList, spawnPoint, rnd);
             }
             else if (item >= range4.x && item < range4.y)
             {
-                M1911Fabric.CreateItem(itemList, spawnPoint, rnd);
+                M1911Factory.CreateItem(itemList, spawnPoint, rnd);
             }
         }
     }

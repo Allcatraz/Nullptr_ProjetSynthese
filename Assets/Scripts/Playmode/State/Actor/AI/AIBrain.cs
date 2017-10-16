@@ -21,11 +21,20 @@ namespace ProjetSynthese
         private PlayerController playerInPerceptionRange = null;
         private Item itemInPerceptionRange = null;
 
+        public Item ItemInPerceptionRange
+        {
+            get
+            { return itemInPerceptionRange; }
+            private set
+            { itemInPerceptionRange = value; }
+        }
+
         public AIBrain(ActorAI actor)
         {
             this.Actor = actor;
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
+            ResetActualPerception();
         }
 
 
@@ -33,7 +42,6 @@ namespace ProjetSynthese
         public AIState WhatIsMyNextState(AIState currentState)
         {
             AIState nextState = currentState;
-            ResetActualPerception();
 
             switch (currentState)
             {
@@ -90,7 +98,7 @@ namespace ProjetSynthese
             {
                 nextState = AIState.Explore;
             }
-           
+
             return nextState;
         }
 
@@ -103,15 +111,37 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromLootState()
         {
-            AIState nextState = AIState.Explore;
-
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
+            {
+                if (ExistVisibleOpponent())
+                {
+                    nextState = AIState.Hunt;
+                }
+                else
+                {
+                    UpdateItemLootKnowledge();
+                    if (itemInPerceptionRange != null)
+                    {
+                        nextState = AIState.Loot;
+                    }
+                    else if (FoundItemInPerceptionRange())
+                    {
+                        nextState = AIState.Loot;
+                    }
+                    else
+                    {
+                        nextState = AIState.Explore;
+                    }
+                }
+            }
             return nextState;
         }
 
         private AIState ChooseANewStateFromCombatState()
         {
             AIState nextState = AIState.Explore;
-
             return nextState;
         }
 
@@ -143,30 +173,30 @@ namespace ProjetSynthese
         public bool FoundAIInPerceptionRange()
         {
 
-            ActorAI opponentAI = Actor.Sensor.NeareastGameObject<ActorAI>(Actor.transform.position, AIRadar.LayerType.AI);
-            if (opponentAI != null)
-            {
-                aiInPerceptionRange = opponentAI;
-                return true;
-            }
+            //ActorAI opponentAI = Actor.Sensor.NeareastGameObject<ActorAI>(Actor.transform.position, AIRadar.LayerType.AI);
+            //if (opponentAI != null)
+            //{
+            //    aiInPerceptionRange = opponentAI;
+            //    return true;
+            //}
             return false;
         }
 
         public bool FoundPlayerInPerceptionRange()
         {
-            PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
-            if (opponentPlayer != null)
-            {
-                playerInPerceptionRange = opponentPlayer;
-                return true;
-            }
+            //PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
+            //if (opponentPlayer != null)
+            //{
+            //    playerInPerceptionRange = opponentPlayer;
+            //    return true;
+            //}
 
             return false;
         }
 
         public bool FoundItemInPerceptionRange()
         {
-            Item item = Actor.Sensor.NeareastGameObject<Item>(Actor.transform.position, AIRadar.LayerType.Item);
+            Item item = Actor.Sensor.NeareastNonEquippedItem(Actor.transform.position);
             if (item != null)
             {
                 itemInPerceptionRange = item;
@@ -222,14 +252,14 @@ namespace ProjetSynthese
             {
                 if (playerInPerceptionRange != null)
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight<PlayerController>(Actor.transform.position, playerInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, playerInPerceptionRange))
                     {
                         return true;
                     }
                 }
                 else
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight<ActorAI>(Actor.transform.position, aiInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
                     {
                         return true;
                     }
@@ -245,11 +275,34 @@ namespace ProjetSynthese
             itemInPerceptionRange = null;
         }
 
+        public void UpdateItemOnMapKnowledge(Item newTargetItem)
+        {
+            itemInPerceptionRange = newTargetItem;
+        }
+
+        private void UpdateItemLootKnowledge()
+        {
+            if (itemInPerceptionRange != null)
+            {
+                if (itemInPerceptionRange.gameObject.layer == LayerMask.NameToLayer(AIRadar.LayerNames[(int)AIRadar.LayerType.EquippedItem]))
+                {
+                    itemInPerceptionRange = null;
+                    ((AIController)Actor.ActorController).ItemTargetDestinationIsKnown = false;
+                }
+            }
+            else
+            {
+                ((AIController)Actor.ActorController).ItemTargetDestinationIsKnown = false;
+            }
+        }
+
+
         private AIState HasBeenInjuredRelatedStateCheck()
         {
             AIState nextState = AIState.None;
             if (HasBeenInjured())
             {
+                Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
                 {
                     nextState = AIState.Flee;

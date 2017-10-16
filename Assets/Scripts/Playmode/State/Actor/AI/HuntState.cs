@@ -12,6 +12,7 @@
             {
                 SwitchState(actor, nextState);
             }
+            //doit quitte ce state si pas d'arme équipé et n'en trouve pas à porté
         }
     }
 }

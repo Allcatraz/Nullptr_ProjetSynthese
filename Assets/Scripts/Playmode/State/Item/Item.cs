@@ -7,6 +7,7 @@ namespace ProjetSynthese
         [SerializeField]
         private ItemType type;
 
+        
         public ItemType Type
         {
             get
@@ -18,6 +19,8 @@ namespace ProjetSynthese
                 type = value;
             }
         }
+        
+        
 
         public abstract void Use();
 

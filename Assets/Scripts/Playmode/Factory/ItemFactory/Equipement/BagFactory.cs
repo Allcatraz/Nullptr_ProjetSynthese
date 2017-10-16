@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class BagFabric : ItemFabricMaster
+    public class BagFactory : ItemFactoryMaster
     {
         private static int percentChanceSpawnLevel1 = 40;
         private static int percentChanceSpawnLevel2 = 40;

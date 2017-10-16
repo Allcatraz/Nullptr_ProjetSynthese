@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
-    public class ItemFabricMaster
+    public class ItemFactoryMaster
     {
         [Command]
         public static GameObject CmdSpawnObject(GameObject spawnPoint, GameObject prefab)

@@ -42,3 +42,4 @@ sysinfo.txt
 #DLL and EXE is still commited
 !*.exe
 !*.dll
+Assets/Sounds.meta

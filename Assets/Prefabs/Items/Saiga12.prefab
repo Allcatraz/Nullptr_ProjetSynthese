@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 23661850869080730}
   - component: {fileID: 114103435733479718}
   - component: {fileID: 114035658276076112}
+  - component: {fileID: 114237370751285876}
   m_Layer: 10
   m_Name: Saiga12
   m_TagString: Untagged
@@ -67,7 +68,7 @@ Transform:
   m_GameObject: {fileID: 1539770592342268}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 3.5, y: 5, z: 3.5}
+  m_LocalScale: {x: 0.35, y: 0.5, z: 0.35}
   m_Children:
   - {fileID: 4288120972329488}
   m_Father: {fileID: 0}
@@ -159,6 +160,20 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 1469824044949264}
   bulletSpeed: 50
   bulletLivingTime: 2
+  bulletPrefab: {fileID: 1633773936076980, guid: 7e01291ca95d67e44a38fe09a977227c,
+    type: 2}
+  magazineMaxAmount: 5
+--- !u!114 &114237370751285876
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1539770592342268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39103100b4a6b9947a6799faaa8e671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136646239225602214
 CapsuleCollider:
   m_ObjectHideFlags: 1

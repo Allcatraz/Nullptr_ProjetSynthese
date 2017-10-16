@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Harmony;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,7 @@ namespace ProjetSynthese
     {
         [SerializeField]
         private Image image;
-
+        private PlayerHealthEventChannel playerHealthEventChannel;
         private Health health;
 
         private float fillAmount;
@@ -21,14 +20,24 @@ namespace ProjetSynthese
 
         private void Update()
         {
-            UpdateHelth();
             SetFillAmountFromHealth();
             UpdateBar();
         }
 
-        private void UpdateHelth()
+        private void InjectHealthBarController([EventChannelScope] PlayerHealthEventChannel playerHealthEventChannel)
         {
-            health = StaticHealthPass.health;
+            this.playerHealthEventChannel = playerHealthEventChannel;
+        }
+
+        private void Awake()
+        {
+            InjectDependencies("InjectHealthBarController");
+            playerHealthEventChannel.OnEventPublished += PlayerHealthEventChannel_OnEventPublished;
+        }
+
+        private void PlayerHealthEventChannel_OnEventPublished(PlayerHealthEvent newEvent)
+        {
+            this.health = newEvent.PlayerHealth;
         }
 
         private void SetFillAmountFromHealth()

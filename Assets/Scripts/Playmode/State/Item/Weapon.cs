@@ -33,7 +33,7 @@ namespace ProjetSynthese
 
         private void Awake()
         {
-            Reload();            
+            MagazineAmount = MagazineMax;
         }
 
         public override void Use()
@@ -49,7 +49,7 @@ namespace ProjetSynthese
 
         public void Reload()
         {
-            MagazineAmount = magazineMaxAmount;
+            MagazineAmount = MagazineMax;
             NotidyMunitionChanged();
         }
 

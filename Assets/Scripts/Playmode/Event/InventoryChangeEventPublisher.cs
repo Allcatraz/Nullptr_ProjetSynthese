@@ -10,7 +10,7 @@ namespace ProjetSynthese
         private Inventory inventory;
         private InventoryChangedEventChannel inventoryChangedEventChannel;
 
-        private void InjectInventoryChangeEventPublisher([EntityScope] Inventory inventory,
+        private void InjectInventoryChangeEventPublisher([GameObjectScope] Inventory inventory,
                                                     [EventChannelScope] InventoryChangedEventChannel inventoryChangedEventChannel)
         {
             this.inventory = inventory;

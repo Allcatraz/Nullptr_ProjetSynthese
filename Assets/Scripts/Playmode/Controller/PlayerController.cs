@@ -196,7 +196,6 @@ namespace ProjetSynthese
         {
             if (!isInventoryOpen)
             {
-                StaticInventoryPass.Inventory = inventory;
                 activityStack.StartMenu(inventoryMenu);
                 isInventoryOpen = true;
             }

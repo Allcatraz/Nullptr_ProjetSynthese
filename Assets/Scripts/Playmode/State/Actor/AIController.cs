@@ -174,13 +174,9 @@ namespace ProjetSynthese
             actor.Brain.UpdateItemOnMapKnowledge(item);
             if (item != null)
             {
-                Vector3 newDestination = actor.transform.position;
-                float xOffset = item.transform.position.x;
-                float zOffset = item.transform.position.y;
-
-                newDestination.x += xOffset;
-                newDestination.z += zOffset;
-
+                Vector3 newDestination = Vector3.zero;
+                newDestination.x = item.transform.position.x;
+                newDestination.z = item.transform.position.z;
                 newDestination.y = 10.0f;
                 ItemTargetDestination = newDestination;
 

@@ -21,19 +21,7 @@ namespace ProjetSynthese
                 type = value;
             }
         }
-        private bool isEquipped = false;
-        public bool IsEquipped
-        {
-            get
-            {
-                return isEquipped;
-            }
-            set
-            {
-                isEquipped = value;
-            }
-
-        }
+        
         
 
         public abstract void Use();

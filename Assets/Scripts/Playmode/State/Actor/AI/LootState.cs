@@ -28,8 +28,7 @@ namespace ProjetSynthese
                     aiController.ItemTargetDestinationIsKnown = false;
                     if (actor.Brain.ItemInPerceptionRange != null)
                     {
-                        actor.gameObject.layer = LayerMask.NameToLayer(AIRadar.LayerNames[(int)AIRadar.LayerType.EquippedItem]);
-                        actor.Brain.ItemInPerceptionRange.IsEquipped = true;
+                        actor.Brain.ItemInPerceptionRange.gameObject.layer = LayerMask.NameToLayer(AIRadar.LayerNames[(int)AIRadar.LayerType.EquippedItem]);
                         actor.AIInventory.Add(actor.Brain.ItemInPerceptionRange.gameObject);
                     }
                  }

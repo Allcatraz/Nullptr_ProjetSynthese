@@ -54,7 +54,7 @@ namespace ProjetSynthese
         [SerializeField]
         private const float WalkingSpeed = 7.5f;
         [SerializeField]
-        private const float JoggingSpeed = 2.0f;
+        private const float JoggingSpeed = 10.0f;
         [SerializeField]
         private const float RunningSpeed = 5.0f;
         [SerializeField]
@@ -67,6 +67,8 @@ namespace ProjetSynthese
         private const float RandomRadiusMoveRange = 200.0f;
 
         private const float ErrorPositionTolerance = 0.001f;
+
+        private const float FloorYOffset = 10.0f;
 
         public enum ControllerMode { None, Explore, Loot }
         private ControllerMode aiControllerMode;
@@ -141,6 +143,7 @@ namespace ProjetSynthese
                 default:
                     break;
             }
+            destination.y = FloorYOffset;
             Vector3 nouvellePosition = Vector3.MoveTowards(actor.transform.position, destination, pas);
             Vector3 mouvement = new Vector3(nouvellePosition.x - actor.transform.position.x, nouvellePosition.y - actor.transform.position.y, nouvellePosition.z - actor.transform.position.z);
 
@@ -160,7 +163,7 @@ namespace ProjetSynthese
             //
             newDestination.x += signXOffset * xOffset;
             newDestination.z += signYOffset * zOffset;
-            newDestination.y = 10.0f;
+            newDestination.y = FloorYOffset;
             MapDestination = newDestination;
             MapDestinationIsKnown = true;
         }
@@ -183,7 +186,11 @@ namespace ProjetSynthese
 
                 ItemTargetDestinationIsKnown = true;
             }
-            ItemTargetDestinationIsKnown = false;
+            else
+            {
+                ItemTargetDestinationIsKnown = false;
+            }
+           
         }
 
         public ControllerMode GetAIControllerMode()

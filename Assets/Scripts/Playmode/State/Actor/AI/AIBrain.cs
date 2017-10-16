@@ -278,7 +278,7 @@ namespace ProjetSynthese
         {
             if (itemInPerceptionRange != null)
             {
-                if (itemInPerceptionRange.IsEquipped)
+                if (itemInPerceptionRange.gameObject.layer == LayerMask.NameToLayer(AIRadar.LayerNames[(int)AIRadar.LayerType.EquippedItem]))
                 {
                     itemInPerceptionRange = null;
                     ((AIController)Actor.ActorController).ItemTargetDestinationIsKnown = false;

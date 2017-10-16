@@ -131,7 +131,7 @@ namespace ProjetSynthese
             {
                 for (int i = 0; i < itemsInPerceptionRange.Length; i++)
                 {
-                    if (!itemsInPerceptionRange[i].collider.gameObject.GetComponent<Item>().IsEquipped && itemsInPerceptionRange[i].distance < smallestDistance)
+                    if (itemsInPerceptionRange[i].distance < smallestDistance)
                     {
                         smallestDistance = itemsInPerceptionRange[i].distance;
                         nonEquippedNeareastItemIndex = i;

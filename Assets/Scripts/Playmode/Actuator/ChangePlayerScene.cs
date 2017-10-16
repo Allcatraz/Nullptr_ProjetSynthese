@@ -21,8 +21,6 @@ namespace ProjetSynthese
         private float right = 0;
         private float top = 0;
 
-        private Vector2 viewport;
-
         private void InjectChangePlayerScene([ApplicationScope] ActivityStack activityStack)
         {
             this.activityStack = activityStack;
@@ -51,17 +49,16 @@ namespace ProjetSynthese
                     right = mapRectTransform.position.x + mapRectTransform.offsetMax.x * mapRectTransform.localScale.x;
                     top = mapRectTransform.position.y + mapRectTransform.offsetMax.y * mapRectTransform.localScale.y;
 
-                    viewport = new Vector2(left / right, bottom / top);
-
                     hasMapMenuLoaded = false;
                 }
 
                 Vector3 mousePos = Input.mousePosition;
                 if (mousePos.x >= left && mousePos.x <= right && mousePos.y >= bottom && mousePos.y <= top && Input.GetMouseButtonDown((int)MouseButton.LeftMouse))
                 {
+                    Vector2 tiledMapScaled = new Vector2((float)tileMap.MapWidthInPixels / tileMap.TileWidth, (float)tileMap.MapHeightInPixels / tileMap.TileHeight);
                     Vector3 viewportPosition = new Vector3((mousePos.x - left) / (right - left), (mousePos.y - bottom) / (top - bottom));
                     viewportPosition.y = 1 - viewportPosition.y;
-                    Vector3 worldPos = new Vector3(viewportPosition.x * tileMap.MapWidthInPixels, 10, -viewportPosition.y * tileMap.MapHeightInPixels);
+                    Vector3 worldPos = new Vector3(viewportPosition.x * tiledMapScaled.x, 10, -viewportPosition.y * tiledMapScaled.y);
 
                     activityStack.StopCurrentMenu();
                     transform.position = worldPos;

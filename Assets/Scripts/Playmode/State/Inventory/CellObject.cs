@@ -7,7 +7,7 @@ using System;
 
 namespace ProjetSynthese
 {
-    public enum ButtonType {Weapon,Protection,Inventory}
+    public enum ButtonType {Weapon,Protection,Inventory, Ground}
 
     public class CellObject : GameScript
     {
@@ -83,6 +83,26 @@ namespace ProjetSynthese
                 if (IsItem.GetItem() as Vest)
                 {
                     inventory.UnequipVest();
+                }
+            }
+            if (buttonType == ButtonType.Ground)
+            {
+                GameObject toAdd = IsItem.GetItem().gameObject;
+                PlayerController player = inventory.parent.GetComponent<PlayerController>();
+                if ((object)IsItem.GetItem() != null)
+                {  
+                    inventory.Add(toAdd);
+
+                    if (toAdd.GetComponent<Item>() is Weapon)
+                    {
+                        toAdd.transform.SetParent(player.GetWeaponHolderTransform());
+                    }
+                    else
+                    {
+                        toAdd.transform.SetParent(player.GetInventoryTransform());
+                    }
+
+                    toAdd.SetActive(false);
                 }
             }
             

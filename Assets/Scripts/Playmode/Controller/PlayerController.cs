@@ -24,6 +24,16 @@ namespace ProjetSynthese
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
 
+        public Transform GetWeaponHolderTransform()
+        {
+            return weaponHolderTransform;
+        }
+
+        public Transform GetInventoryTransform()
+        {
+            return inventoryTransform;
+        }
+
         private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                             [ApplicationScope] MouseInputSensor mouseInputSensor,
                                             [ApplicationScope] ActivityStack activityStack,
@@ -156,6 +166,7 @@ namespace ProjetSynthese
 
         private void OnPickup()
         {
+
             GameObject item = itemSensor.GetItemNearest();
             if ((object)item != null)
             {

@@ -13,6 +13,7 @@ namespace ProjetSynthese
         [SerializeField] private GameObject cellEquippedWeaponPrefabs;
         [SerializeField] private GameObject cellProtectionItemPrefabs;
         [SerializeField] private GameObject cellObjectPrefab;
+        [SerializeField] private GameObject cellObjectGround;
         [SerializeField] private Inventory inventoryGround;
         [SerializeField] private ItemSensor sensorItem;
         private PlayerMoveEventChannel playerMoveEventChannel;
@@ -80,7 +81,7 @@ namespace ProjetSynthese
             {
                 foreach (Cell item in inventoryGround.listInventory)
                 {
-                    GameObject cellObject = Instantiate(cellObjectPrefab);
+                    GameObject cellObject = Instantiate(cellObjectGround);
                     cellObject.transform.SetParent(gridNerbyItem, false);
                     cellObject.GetComponentInChildren<CellObject>().inventory = inventoryGround;
                     cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);

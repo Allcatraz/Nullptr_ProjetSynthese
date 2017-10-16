@@ -87,25 +87,32 @@ namespace ProjetSynthese
             }
             if (buttonType == ButtonType.Ground)
             {
-                GameObject toAdd = IsItem.GetItem().gameObject;
-                PlayerController player = inventory.parent.GetComponent<PlayerController>();
-                if ((object)IsItem.GetItem() != null)
-                {  
-                    inventory.Add(toAdd);
-
-                    if (toAdd.GetComponent<Item>() is Weapon)
-                    {
-                        toAdd.transform.SetParent(player.GetWeaponHolderTransform());
-                    }
-                    else
-                    {
-                        toAdd.transform.SetParent(player.GetInventoryTransform());
-                    }
-
-                    toAdd.SetActive(false);
-                }
+                PickUpFromGroundInventoryClick();
             }
-            
+
+        }
+
+        private void PickUpFromGroundInventoryClick()
+        {
+            GameObject toAdd = IsItem.GetItem().gameObject;
+            InventoryController control = inventory.parent.GetComponent<InventoryController>();
+            PlayerController player = control.Player.GetComponent<PlayerController>();
+            Inventory playerInventory = player.GetComponent<PlayerController>().GetInventory();
+            if ((object)IsItem.GetItem() != null)
+            {
+                playerInventory.Add(toAdd);
+                if (toAdd.GetComponent<Item>() is Weapon)
+                {
+                    toAdd.transform.SetParent(player.GetWeaponHolderTransform());
+                }
+                else
+                {
+                    toAdd.transform.SetParent(player.GetInventoryTransform());
+                }
+
+                toAdd.SetActive(false);
+            }
+            control.Inventory_InventoryChange();
         }
 
         private void Awake()
@@ -150,9 +157,5 @@ namespace ProjetSynthese
         {
             TextName.text += " " + compteur;
         }
-
-        
-
-
     }
 }

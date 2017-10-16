@@ -20,6 +20,8 @@ namespace ProjetSynthese
         private bool abonner = false;
         private Inventory inventory;
 
+        public GameObject Player { get; set; }
+
         public void CreateCellsForInventoryPlayer()
         {
             ClearGrid(gridInventoryPlayer);
@@ -126,8 +128,9 @@ namespace ProjetSynthese
             List<GameObject> listTemp = sensorItem.GetAllItems(inventory.transform);
             foreach (GameObject item in listTemp)
             {
-                inventoryGround.Add(item);
+               inventoryGround.Add(item);
             }
+            
         }
 
         private void ClearGrid(Transform grid)
@@ -138,7 +141,7 @@ namespace ProjetSynthese
             }
         }
 
-        private void Inventory_InventoryChange()
+        public void Inventory_InventoryChange()
         {
             UpdateInventory();
             CreateCellsForInventoryPlayer();
@@ -167,6 +170,7 @@ namespace ProjetSynthese
         private void UpdateInventory()
         {
             inventory = StaticInventoryPass.Inventory;
+            Player = StaticInventoryPass.Inventory.parent;
         }
     }
 }

@@ -34,6 +34,11 @@ namespace ProjetSynthese
             return inventoryTransform;
         }
 
+        public Inventory GetInventory()
+        {
+            return inventory;
+        }
+
         private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                             [ApplicationScope] MouseInputSensor mouseInputSensor,
                                             [ApplicationScope] ActivityStack activityStack,

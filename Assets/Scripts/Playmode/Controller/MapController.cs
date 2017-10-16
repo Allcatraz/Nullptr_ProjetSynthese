@@ -33,16 +33,17 @@ namespace ProjetSynthese
             RenderTexture mapTexture = new RenderTexture(tileMap.MapWidthInPixels, tileMap.MapHeightInPixels, 24);
             GetComponent<RawImage>().texture = mapTexture;
 
+            
             float widthScale = (float)Screen.width / tileMap.MapWidthInPixels;
             float heightScale = (float)Screen.height / tileMap.MapHeightInPixels;
             float scale = widthScale < heightScale ? widthScale : heightScale;
-
+            
             mapRectTransform.localScale = new Vector3(scale, scale, 0);
             mapRectTransform.sizeDelta = new Vector2(tileMap.MapWidthInPixels, tileMap.MapHeightInPixels);
-            //mapRectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
 
-            mapCamera.transform.position = new Vector3(tileMap.MapWidthInPixels / 2.0f, 100, -tileMap.MapWidthInPixels / 2.0f);
-            mapCamera.orthographicSize = tileMap.MapWidthInPixels / 2.0f;
+            Vector2 tiledMapScaled = new Vector2((float)tileMap.MapWidthInPixels / tileMap.TileWidth, (float)tileMap.MapHeightInPixels / tileMap.TileHeight);
+            mapCamera.transform.position = new Vector3(tiledMapScaled.x / 2.0f, 100, -tiledMapScaled.y / 2.0f);
+            mapCamera.orthographicSize = tiledMapScaled.x / 2.0f;
             mapCamera.targetTexture = mapTexture;
             mapCamera.gameObject.SetActive(true);
         }

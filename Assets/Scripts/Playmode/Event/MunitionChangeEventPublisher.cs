@@ -7,7 +7,7 @@ namespace ProjetSynthese
         private Weapon weapon;
         private MunitionChangeEventChannel munitionChangeEventChannel;
 
-        private void InjectMunitionChangeEventPublisher([EntityScope] Weapon weapon,
+        private void InjectMunitionChangeEventPublisher([GameObjectScope] Weapon weapon,
                                                         [EventChannelScope] MunitionChangeEventChannel munitionChangeEventChannel)
         {
             this.munitionChangeEventChannel = munitionChangeEventChannel;

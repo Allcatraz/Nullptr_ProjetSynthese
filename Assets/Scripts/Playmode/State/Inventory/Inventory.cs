@@ -269,6 +269,34 @@ namespace ProjetSynthese
             }
             return !(one == two);
         }
+
+        public override bool Equals(object obj)
+        {
+            var inventory = obj as Inventory;
+            return inventory != null &&
+                   base.Equals(obj) &&
+                   inventoryOf == inventory.inventoryOf &&
+                   EqualityComparer<Cell>.Default.Equals(primaryWeapon, inventory.primaryWeapon) &&
+                   EqualityComparer<Cell>.Default.Equals(secondaryWeapon, inventory.secondaryWeapon) &&
+                   EqualityComparer<Cell>.Default.Equals(helmet, inventory.helmet) &&
+                   EqualityComparer<Cell>.Default.Equals(vest, inventory.vest) &&
+                   EqualityComparer<GameObject>.Default.Equals(parent, inventory.parent) &&
+                   EqualityComparer<List<Cell>>.Default.Equals(listInventory, inventory.listInventory);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1922053015;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + inventoryOf.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<Cell>.Default.GetHashCode(primaryWeapon);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Cell>.Default.GetHashCode(secondaryWeapon);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Cell>.Default.GetHashCode(helmet);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Cell>.Default.GetHashCode(vest);
+            hashCode = hashCode * -1521134295 + EqualityComparer<GameObject>.Default.GetHashCode(parent);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cell>>.Default.GetHashCode(listInventory);
+            return hashCode;
+        }
     }
 }
 

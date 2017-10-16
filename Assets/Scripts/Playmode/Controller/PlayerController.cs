@@ -60,6 +60,7 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon += OnSwitchSecondaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon += OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap += OnToggleMap;
+            keyboardInputSensor.Keyboards.OnReload += OnReload;
 
             mouseInputSensor.Mouses.OnFire += OnFire;
 
@@ -85,6 +86,7 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon -= OnSwitchSecondaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon -= OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap -= OnToggleMap;
+            keyboardInputSensor.Keyboards.OnReload -= OnReload;
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
 
@@ -200,6 +202,14 @@ namespace ProjetSynthese
             {
                 activityStack.StopCurrentMenu();
                 isMapOpen = false;
+            }
+        }
+
+        private void OnReload()
+        {
+            if((object)currentWeapon != null)
+            {
+                currentWeapon.Reload();
             }
         }
 

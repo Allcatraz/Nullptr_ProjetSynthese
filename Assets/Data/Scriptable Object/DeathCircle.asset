@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35dc01d017e287446a8c599e08cf8ed5, type: 3}
+  m_Name: DeathCircle
+  m_EditorClassIdentifier: 
+  waitTimeInSecond: 1e0000003c0000003c00000064000000780000005a0000003c0000003c000000
+  moveTimeInSecond: 2c0100008c0000005a0000003c000000280000001e0000001e0000001e000000
+  domagePerSecond:
+  - 0.4
+  - 0.6
+  - 0.8
+  - 1
+  - 2
+  - 5
+  - 7
+  - 9
+  shrink:
+  - 0.4
+  - 0.65
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5

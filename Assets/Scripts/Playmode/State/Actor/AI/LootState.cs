@@ -30,6 +30,7 @@ namespace ProjetSynthese
                     {
                         actor.Brain.ItemInPerceptionRange.gameObject.layer = LayerMask.NameToLayer(AIRadar.LayerNames[(int)AIRadar.LayerType.EquippedItem]);
                         actor.AIInventory.Add(actor.Brain.ItemInPerceptionRange.gameObject);
+                        actor.Brain.ItemInPerceptionRange.gameObject.SetActive(false);
                     }
                  }
             }

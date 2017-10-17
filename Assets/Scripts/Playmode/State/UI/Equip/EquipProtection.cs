@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Harmony;
 
 namespace ProjetSynthese
 {
@@ -13,17 +14,26 @@ namespace ProjetSynthese
         [SerializeField]
         private Image image;
 
-        private Inventory inventory;
+        private InventoryChangedEventChannel inventoryChangedEventChannel;
 
-        private void UpdateInventory()
+
+        private void InjectInventoryChange([EventChannelScope] InventoryChangedEventChannel inventoryChangedEventChannel)
         {
-            if (inventory == null || inventory != StaticInventoryPass.Inventory)
-            {
-                inventory = StaticInventoryPass.Inventory;
-            }
+            this.inventoryChangedEventChannel = inventoryChangedEventChannel;
         }
 
-        private void UpdateImage()
+        private void Awake()
+        {
+            InjectDependencies("InjectInventoryChange");
+            inventoryChangedEventChannel.OnEventPublished += InventoryChangedEventChannel_OnEventPublished; ;
+        }
+
+        private void InventoryChangedEventChannel_OnEventPublished(InventoryChangeEvent newEvent)
+        {
+            UpdateImage(newEvent.Inventory);
+        }
+
+        private void UpdateImage(Inventory inventory)
         {
             Cell vestCell = inventory.GetVest();
             Cell helmetCell = inventory.GetHelmet();
@@ -37,15 +47,6 @@ namespace ProjetSynthese
             }
         }
 
-        private void FixedUpdate()
-        {
-            UpdateInventory();
-            if (!(inventory == null))
-            {
-                UpdateImage();
-            }
-            
-        }
     }
 }
 

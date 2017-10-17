@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Harmony;
 
 namespace ProjetSynthese
 {
@@ -14,54 +15,40 @@ namespace ProjetSynthese
         [SerializeField]
         private Text textSlot;
 
-        private Inventory inventory;
+        private InventoryChangedEventChannel inventoryChangedEventChannel;
 
-        private void UpdateInventory()
+
+        private void InjectInventoryChange([EventChannelScope] InventoryChangedEventChannel inventoryChangedEventChannel)
         {
-            if (inventory == null || inventory != StaticInventoryPass.Inventory)
-            {
-                inventory = StaticInventoryPass.Inventory;
-            } 
+            this.inventoryChangedEventChannel = inventoryChangedEventChannel;
         }
 
-        private void UpdateText()
+        private void Awake()
+        {
+            InjectDependencies("InjectInventoryChange");
+            inventoryChangedEventChannel.OnEventPublished += InventoryChangedEventChannel_OnEventPublished; ;
+        }
+
+        private void InventoryChangedEventChannel_OnEventPublished(InventoryChangeEvent newEvent)
+        {
+            UpdateText(newEvent.Inventory);
+        }
+
+        private void UpdateText(Inventory inventory)
         {
             textSlot.text = typeSlot.ToString();
             string name = "";
-            Cell primary = inventory.GetPrimaryWeapon();
-            Cell secondary = inventory.GetSecondaryWeapon();
-            if (typeSlot == EquipWeaponAt.Primary)
+            Weapon equipped = inventory.parent.GetComponent<PlayerController>().GetCurrentWeapon();
+            if (equipped != null)
             {
-                if (primary != null)
-                {
-                    name = primary.GetItem().Type.ToString();
-                }               
+                name = equipped.Type.ToString();
             }
-            if (typeSlot == EquipWeaponAt.Secondary)
-            {
-                if (secondary != null)
-                {
-                    name = secondary.GetItem().Type.ToString();
-                } 
-            }
-            textName.text = name;
-            
+            textName.text = name;  
         }
 
         private void UpdateImage()
         {
 
-        }
-
-        private void FixedUpdate()
-        {
-            UpdateInventory();
-            if (!(inventory == null))
-            {
-                UpdateText();
-                UpdateImage();
-            }
-                       
         }
     }
 }

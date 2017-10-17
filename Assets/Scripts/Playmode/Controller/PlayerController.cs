@@ -39,6 +39,11 @@ namespace ProjetSynthese
             return inventory;
         }
 
+        public Weapon GetCurrentWeapon()
+        {
+            return currentWeapon;
+        }
+
         private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                             [ApplicationScope] MouseInputSensor mouseInputSensor,
                                             [ApplicationScope] ActivityStack activityStack,
@@ -83,6 +88,7 @@ namespace ProjetSynthese
 
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
+            inventory.NotifyInventoryChange();
         }
 
         private void OnDestroy()
@@ -123,6 +129,7 @@ namespace ProjetSynthese
             Cell weapon = inventory.GetPrimaryWeapon();
             currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
+            inventory.NotifyInventoryChange();
         }
 
         private void OnSwitchSecondaryWeapon()
@@ -131,6 +138,7 @@ namespace ProjetSynthese
             Cell weapon = inventory.GetSecondaryWeapon();
             currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
+            inventory.NotifyInventoryChange();
         }
 
         private void SetCurrentWeaponActive(bool isActive)
@@ -196,7 +204,6 @@ namespace ProjetSynthese
         {
             if (!isInventoryOpen)
             {
-                StaticInventoryPass.Inventory = inventory;
                 activityStack.StartMenu(inventoryMenu);
                 isInventoryOpen = true;
             }

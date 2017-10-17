@@ -263,10 +263,6 @@ namespace ProjetSynthese
 
         public static bool operator !=(Inventory one,   Inventory two)
         {
-            if ((object)one == null || (object)two == null)
-            {
-                return false;
-            }
             return !(one == two);
         }
 

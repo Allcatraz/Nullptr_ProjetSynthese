@@ -19,6 +19,7 @@ namespace ProjetSynthese
         private PlayerMoveEventChannel playerMoveEventChannel;
         private bool abonner = false;
         private Inventory inventory;
+        private InventoryChangedEventChannel inventoryChangedEventChannel;
 
         public GameObject Player { get; set; }
 
@@ -95,21 +96,18 @@ namespace ProjetSynthese
         {
             InjectDependencies("InjectEventSensor");
             playerMoveEventChannel.OnEventPublished += PlayerMoveEventChannel_OnEventPublished;
+            inventoryChangedEventChannel.OnEventPublished += InventoryChangedEventChannel_OnEventPublished;
 
         }
 
-        private void FixedUpdate()
+        private void InventoryChangedEventChannel_OnEventPublished(InventoryChangeEvent newEvent)
         {
-            if (inventory == null || inventory != StaticInventoryPass.Inventory)
-            {
-                Inventory_InventoryChange();
-                DisconnectFromEvent();
-            }
-            else
-            {
-                ConnectToEvent();
-
-            }
+            inventory = newEvent.Inventory;
+            Player = inventory.parent;
+            CreateCellsForInventoryPlayer();
+            CreateCellsForWeaponByPlayer();
+            CreateCellsForProtectionPlayer();
+            CreateCellsForNearbyItem();
         }
 
         private void PlayerMoveEventChannel_OnEventPublished(PlayerMoveEvent newEvent)
@@ -117,20 +115,24 @@ namespace ProjetSynthese
             CreateCellsForNearbyItem();
         }
 
-        private void InjectEventSensor([EventChannelScope] PlayerMoveEventChannel playerMoveEventChannel)
+        private void InjectEventSensor([EventChannelScope] PlayerMoveEventChannel playerMoveEventChannel,
+                                        [EventChannelScope] InventoryChangedEventChannel inventoryChangedEventChannel)
         {
             this.playerMoveEventChannel = playerMoveEventChannel;
+            this.inventoryChangedEventChannel = inventoryChangedEventChannel;
         }
 
         private void CreateInventoryGround()
         {
-            inventoryGround.ResetInventory();
-            List<GameObject> listTemp = sensorItem.GetAllItems(inventory.transform);
-            foreach (GameObject item in listTemp)
+            if (inventory != null)
             {
-               inventoryGround.Add(item);
-            }
-            
+                inventoryGround.ResetInventory();
+                List<GameObject> listTemp = sensorItem.GetAllItems(inventory.transform);
+                foreach (GameObject item in listTemp)
+                {
+                    inventoryGround.Add(item);
+                }
+            }        
         }
 
         private void ClearGrid(Transform grid)
@@ -139,38 +141,6 @@ namespace ProjetSynthese
             {
                 Destroy(child.gameObject);
             }
-        }
-
-        public void Inventory_InventoryChange()
-        {
-            UpdateInventory();
-            CreateCellsForInventoryPlayer();
-            CreateCellsForWeaponByPlayer();
-            CreateCellsForProtectionPlayer();   
-        }
-
-        private void DisconnectFromEvent()
-        {
-            if (abonner == true)
-            {
-                inventory.InventoryChange -= Inventory_InventoryChange;
-                abonner = false;
-            }
-        }
-
-        private void ConnectToEvent()
-        {
-            if (abonner == false)
-            {
-                inventory.InventoryChange += Inventory_InventoryChange;
-                abonner = true;
-            }
-        }
-
-        private void UpdateInventory()
-        {
-            inventory = StaticInventoryPass.Inventory;
-            Player = StaticInventoryPass.Inventory.parent;
         }
     }
 }

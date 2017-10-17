@@ -112,7 +112,6 @@ namespace ProjetSynthese
 
                 toAdd.SetActive(false);
             }
-            control.Inventory_InventoryChange();
         }
 
         private void Awake()

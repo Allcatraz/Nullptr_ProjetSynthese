@@ -70,7 +70,7 @@ namespace ProjetSynthese
 
         private const float FloorYOffset = 10.0f;
 
-        public enum ControllerMode { None, Explore, Loot }
+        public enum ControllerMode { None, Explore, Loot,Combat }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -208,6 +208,10 @@ namespace ProjetSynthese
                     Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;
                 case ControllerMode.Loot:
+                    AISpeed = AIController.SpeedLevel.Jogging;
+                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    break;
+                case ControllerMode.Combat:
                     AISpeed = AIController.SpeedLevel.Jogging;
                     Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;

@@ -141,6 +141,7 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromCombatState()
         {
+            //
             AIState nextState = AIState.Explore;
             return nextState;
         }

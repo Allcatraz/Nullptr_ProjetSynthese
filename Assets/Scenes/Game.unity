@@ -388,6 +388,7 @@ GameObject:
   - component: {fileID: 1032707487}
   - component: {fileID: 1032707490}
   - component: {fileID: 1032707489}
+  - component: {fileID: 1032707491}
   m_Layer: 0
   m_Name: EventChannels
   m_TagString: Event Channels
@@ -450,6 +451,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90bb086111caf0d49a85834a8e23d59e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1032707491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1032707485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ce048a070badb4a8945d5b1466c609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1032707493

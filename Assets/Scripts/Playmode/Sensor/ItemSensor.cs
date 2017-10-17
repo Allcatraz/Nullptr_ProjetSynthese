@@ -22,14 +22,14 @@ namespace ProjetSynthese
 
         public List<GameObject> GetAllItems(Transform transform)
         {
-            List<RaycastHit> itemsRaycast = Physics.SphereCastAll(transform.position, 10, Vector3.down).ToList();
+            List<Collider> itemsRaycast = Physics.OverlapSphere(sensor.transform.position, 10).ToList();
             itemsRaycast.RemoveAll(item => !item.transform.gameObject.GetComponent<Item>());
             return itemsRaycast.ConvertAll(item => item.transform.gameObject);
         }
 
         public List<GameObject> GetAllItems()
         {
-            List<RaycastHit> itemsRaycast = Physics.SphereCastAll(sensor.transform.position, 10, Vector3.down).ToList();
+            List<Collider> itemsRaycast = Physics.OverlapSphere(sensor.transform.position, 10).ToList();
             itemsRaycast.RemoveAll(item => !item.transform.gameObject.GetComponent<Item>());
             return itemsRaycast.ConvertAll(item => item.transform.gameObject);
         }
@@ -37,8 +37,9 @@ namespace ProjetSynthese
         public GameObject GetItemNearest()
         {
             List<GameObject> items = GetAllItems();
+			items.Sort ((x, y) => Vector3.Distance(transform.position, x.transform.position).CompareTo(Vector3.Distance(transform.position, y.transform.position)));
             if (items.Count >= 1)
-                return GetAllItems()[0];
+                return items[0];
             return null;
         }
     }

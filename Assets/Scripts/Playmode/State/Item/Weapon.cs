@@ -13,13 +13,13 @@ namespace ProjetSynthese
         [SerializeField]
         private float bulletLivingTime;
         [SerializeField]
-        private GameObject bulletPrefab;
-        [SerializeField]
         private int magazineMaxAmount;
 
         public event OnMunitionChanged OnMunitionChanged;
 
-        public int MagazineMax 
+        private static int weight = 0;
+
+        public int MagazineMax
         {
             get { return magazineMaxAmount; }
         }
@@ -40,7 +40,6 @@ namespace ProjetSynthese
         {
             if (MagazineAmount > 0)
             {
-                BulletFabric.BulletPrefab = bulletPrefab;
                 BulletFabric.CreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);
                 MagazineAmount -= 1;
                 NotidyMunitionChanged();
@@ -56,6 +55,11 @@ namespace ProjetSynthese
         private void NotidyMunitionChanged()
         {
             if (OnMunitionChanged != null) OnMunitionChanged();
+        }
+
+        public override int GetWeight()
+        {
+            return weight;
         }
     }
 }

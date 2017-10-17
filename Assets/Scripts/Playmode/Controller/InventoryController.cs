@@ -103,6 +103,7 @@ namespace ProjetSynthese
         private void InventoryChangedEventChannel_OnEventPublished(InventoryChangeEvent newEvent)
         {
             inventory = newEvent.Inventory;
+            Player = inventory.parent;
             CreateCellsForInventoryPlayer();
             CreateCellsForWeaponByPlayer();
             CreateCellsForProtectionPlayer();
@@ -123,13 +124,15 @@ namespace ProjetSynthese
 
         private void CreateInventoryGround()
         {
-            inventoryGround.ResetInventory();
-            List<GameObject> listTemp = sensorItem.GetAllItems(inventory.transform);
-            foreach (GameObject item in listTemp)
+            if (inventory != null)
             {
+                inventoryGround.ResetInventory();
+                List<GameObject> listTemp = sensorItem.GetAllItems(inventory.transform);
+                foreach (GameObject item in listTemp)
+                {
                     inventoryGround.Add(item);
-            }
-                   
+                }
+            }        
         }
 
         private void ClearGrid(Transform grid)

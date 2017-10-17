@@ -83,6 +83,7 @@ namespace ProjetSynthese
 
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
+            inventory.NotifyInventoryChange();
         }
 
         private void OnDestroy()

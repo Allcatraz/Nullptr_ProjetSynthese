@@ -66,6 +66,11 @@ namespace ProjetSynthese
                 {
                     inventory.EquipVest(IsItem);
                 }
+                if (IsItem.GetItem() as Heal || IsItem.GetItem() as Boost)
+                {
+                    IsItem.GetItem().Use();
+                    inventory.CheckMultiplePresenceAndRemove(IsItem);
+                }
             }
             if (buttonType == ButtonType.Weapon)
             {

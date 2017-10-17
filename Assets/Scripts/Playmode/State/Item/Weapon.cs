@@ -40,7 +40,7 @@ namespace ProjetSynthese
         {
             if (MagazineAmount > 0)
             {
-                BulletFabric.CreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);
+                BulletFactory.CreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);
                 MagazineAmount -= 1;
                 NotidyMunitionChanged();
             }

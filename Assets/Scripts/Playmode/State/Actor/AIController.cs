@@ -119,6 +119,11 @@ namespace ProjetSynthese
             return false;
         }
 
+        public void Shoot()
+        {
+
+        }
+
         public override void Move(ActorAI actor)
         {
             MoveDestination(AIMoveTarget, actor);
@@ -177,7 +182,7 @@ namespace ProjetSynthese
                 Vector3 newDestination = Vector3.zero;
                 newDestination.x = item.transform.position.x;
                 newDestination.z = item.transform.position.z;
-                newDestination.y = 10.0f;
+                newDestination.y = FloorYOffset;
                 ItemTargetDestination = newDestination;
 
                 ItemTargetDestinationIsKnown = true;
@@ -187,6 +192,36 @@ namespace ProjetSynthese
                 ItemTargetDestinationIsKnown = false;
             }
            
+        }
+
+        public void FindTargetOpponnentMapDestination(ActorAI actor)
+        {
+            //check player
+            //check ai
+            PlayerController opponentPlayer = null;// actor.Sensor.NeareastNonEquippedItem(actor.transform.position);
+            ActorAI opponentAI = null;
+            //actor.Brain.UpdateItemOnMapKnowledge(item);
+            Vector3 newDestination = Vector3.zero;
+            newDestination.y = FloorYOffset;
+            if (opponentPlayer != null)
+            {
+              
+                newDestination.x = opponentPlayer.transform.position.x;
+                newDestination.z = opponentPlayer.transform.position.z;
+                OpponentTargetDestination = newDestination;
+                OpponentTargetDestinationIsKnown = true;
+            }
+            else if (opponentAI != null)
+            {
+                newDestination.x = opponentAI.transform.position.x;
+                newDestination.z = opponentAI.transform.position.z;
+                OpponentTargetDestination = newDestination;
+                OpponentTargetDestinationIsKnown = true;
+            }
+            else
+            {
+                OpponentTargetDestinationIsKnown = false;
+            }
         }
 
         public ControllerMode GetAIControllerMode()

@@ -16,8 +16,8 @@
             //    aiController.FindTargetItemMapDestination(actor);
             //}
 
-            //if (aiController.ItemTargetDestinationIsKnown)
-            //{
+            if (aiController.OpponentTargetDestinationIsKnown)
+            {
             //    aiController.AIMoveTarget = AIController.MoveTarget.Item;
             //    actor.ActorController.Move(actor);
             //    if (aiController.HasReachedItemTargetDestination(actor))
@@ -29,7 +29,7 @@
             //            actor.AIInventory.Add(actor.Brain.ItemInPerceptionRange.gameObject);
             //        }
             //    }
-            //}
+            }
 
             AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Combat);
             if (nextState != AIBrain.AIState.Combat)

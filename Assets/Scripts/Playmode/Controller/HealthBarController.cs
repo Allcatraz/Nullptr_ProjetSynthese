@@ -13,11 +13,6 @@ namespace ProjetSynthese
 
         private float fillAmount;
 
-        private void Start()
-        {
-            health = StaticHealthPass.health;
-        }
-
         private void Update()
         {
             SetFillAmountFromHealth();

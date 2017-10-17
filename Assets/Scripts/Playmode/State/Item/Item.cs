@@ -7,7 +7,9 @@ namespace ProjetSynthese
         [SerializeField]
         private ItemType type;
 
-        
+        public GameObject Player { get; set; }
+
+
         public ItemType Type
         {
             get
@@ -19,10 +21,9 @@ namespace ProjetSynthese
                 type = value;
             }
         }
-        
-        
 
         public abstract void Use();
+        public abstract int GetWeight();
 
         public static bool operator ==(Item item1, Item item2)
         {

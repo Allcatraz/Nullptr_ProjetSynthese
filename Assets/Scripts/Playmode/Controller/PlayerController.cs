@@ -18,8 +18,8 @@ namespace ProjetSynthese
         private PlayerMover playerMover;
         private Inventory inventory;
         private ItemSensor itemSensor;
-
         private Weapon currentWeapon;
+        private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
 
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
@@ -50,7 +50,8 @@ namespace ProjetSynthese
                                             [EntityScope] PlayerMover playerMover,
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
-                                            [EntityScope] ItemSensor itemSensor)
+                                            [EntityScope] ItemSensor itemSensor,
+                                            [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel)
         {
             this.keyboardInputSensor = keyboardInputSensor;
             this.mouseInputSensor = mouseInputSensor;
@@ -59,6 +60,7 @@ namespace ProjetSynthese
             this.health = health;
             this.inventory = inventory;
             this.itemSensor = itemSensor;
+            this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
         }
 
         private void Start()
@@ -85,6 +87,8 @@ namespace ProjetSynthese
             mouseInputSensor.Mouses.OnFire += OnFire;
 
             health.OnDeath += OnDeath;
+
+            deathCircleHurtEventChannel.OnEventPublished += OnPlayerOutDeathCircle;
 
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
@@ -181,8 +185,9 @@ namespace ProjetSynthese
 
         private void OnPickup()
         {
-
             GameObject item = itemSensor.GetItemNearest();
+            item.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+
             if ((object)item != null)
             {
                 inventory.Add(item);
@@ -239,6 +244,15 @@ namespace ProjetSynthese
         private void OnDeath()
         {
             Destroy(gameObject);
+        }
+
+        private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
+        {
+            health.Hit(deathCircleHurtEvent.HurtPoints);
+            for (int i = 0; i < UPPER; i++)
+            {
+                   
+            }
         }
     }
 }

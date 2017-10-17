@@ -39,7 +39,7 @@ namespace ProjetSynthese
         {
             if (health != null)
             {
-                fillAmount = health.HealthPoints / health.MaxHealthPoints;
+                fillAmount = (float)health.HealthPoints / health.MaxHealthPoints;
             }
         }
 

@@ -19,7 +19,9 @@ namespace ProjetSynthese
         private float playerHurtTime;
         private float shrinkTime = InitialShrinkTime;
         private bool hasMoveTimeSet = false;
+        private bool isPlayerHit = false;
 
+        private PlayerMoveEventChannel playerMoveEventChannel;
         private LineRendererCircle safeCircle;
         private LineRendererCircle deathCircle;
         private TiledMap tiledMap;
@@ -27,9 +29,11 @@ namespace ProjetSynthese
 
         public event OnPlayerHurtEventHandler OnPlayerHurt;
 
-        private void InjectDeathCircleController([SiblingsScope] TiledMap tiledMap)
+        private void InjectDeathCircleController([SiblingsScope] TiledMap tiledMap,
+                                                 [EventChannelScope] PlayerMoveEventChannel playerMoveEventChannel)
         {
             this.tiledMap = tiledMap;
+            this.playerMoveEventChannel = playerMoveEventChannel;
         }
 
         private void Awake()
@@ -40,6 +44,8 @@ namespace ProjetSynthese
 
             safeCircle = GetAllChildrens()[0].GetComponent<LineRendererCircle>();
             deathCircle = GetAllChildrens()[1].GetComponent<LineRendererCircle>();
+
+            playerMoveEventChannel.OnEventPublished += OnPlayerMove;
             
             Vector2 tiledMapScaled = new Vector2((float)tiledMap.MapWidthInPixels / tiledMap.TileWidth, (float)tiledMap.MapHeightInPixels / tiledMap.TileHeight);
             transform.position = new Vector3(tiledMapScaled.x / 2f, 90, -tiledMapScaled.y / 2f);
@@ -93,12 +99,24 @@ namespace ProjetSynthese
             }
 
             // à faire si le joueur est à l'extérieur du cercle
-            //playerHurtTime -= Time.deltaTime;
-            //if (playerHurtTime <= 0.0f)
-            //{
-            //    playerHurtTime = InitialPlayerHurtTime;
-            //    if (OnPlayerHurt != null) OnPlayerHurt(deathCircleValues.DomagePerSecond[(int)currentPhase]);
-            //}
+            if (isPlayerHit)
+            {
+                playerHurtTime -= Time.deltaTime;
+                if (playerHurtTime <= 0.0f)
+                {
+                    playerHurtTime = InitialPlayerHurtTime;
+                    if (OnPlayerHurt != null) OnPlayerHurt(deathCircleValues.DomagePerSecond[(int) currentPhase]);
+                }
+            }
+        }
+
+        private void OnPlayerMove(PlayerMoveEvent playerMoveEvent)
+        {
+            float distancePlayerFromSafeCircle = Vector3.Distance(safeCircle.transform.position, playerMoveEvent.PlayerMover.transform.position);
+            if (distancePlayerFromSafeCircle > safeCircle.Radius)
+            {
+                isPlayerHit = true;
+            }
         }
 
         private void CreateCircle(ref LineRendererCircle lineRendererCircle, float radius)

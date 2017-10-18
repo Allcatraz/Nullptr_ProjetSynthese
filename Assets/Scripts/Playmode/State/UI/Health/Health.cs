@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Harmony;
+using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public delegate void HealthChangedEventHandler(int oldHealthPoints, int newHealthPoints);
+    public delegate void HealthChangedEventHandler(float oldHealthPoints, float newHealthPoints);
     public delegate void DeathEventHandler();
 
     [AddComponentMenu("Game/State/Health")]
@@ -11,17 +12,17 @@ namespace ProjetSynthese
         [SerializeField] private int initialHealthPoints;
         [SerializeField] private int maxHealthPoints;
 
-        private int healthPoints;
+        private float healthPoints;
 
         public event HealthChangedEventHandler OnHealthChanged;
         public event DeathEventHandler OnDeath;
 
-        public int HealthPoints
+        public float HealthPoints
         {
             get { return healthPoints; }
             private set
             {
-                int oldHealthPoints = healthPoints;
+                float oldHealthPoints = healthPoints;
                 healthPoints = value < 0 ? 0 : (value > maxHealthPoints ? maxHealthPoints : value);
 
                 if (OnHealthChanged != null) OnHealthChanged(oldHealthPoints, healthPoints);
@@ -44,12 +45,12 @@ namespace ProjetSynthese
             healthPoints = initialHealthPoints;
         }
 
-        public void Hit(int hitPoints)
+        public void Hit(float hitPoints)
         {
             HealthPoints -= hitPoints;
         }
 
-        public void Heal(int healPoints)
+        public void Heal(float healPoints)
         {
             HealthPoints += healPoints;
         }

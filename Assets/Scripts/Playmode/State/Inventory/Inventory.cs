@@ -229,7 +229,7 @@ namespace ProjetSynthese
             return cell;
         }
 
-        private void CheckMultiplePresenceAndRemove(Cell temp)
+        public void CheckMultiplePresenceAndRemove(Cell temp)
         {
             if (temp.GetCompteur() >= 2)
             {

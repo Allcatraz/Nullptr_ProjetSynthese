@@ -389,6 +389,8 @@ GameObject:
   - component: {fileID: 1032707490}
   - component: {fileID: 1032707489}
   - component: {fileID: 1032707491}
+  - component: {fileID: 1032707492}
+  - component: {fileID: 1032707494}
   m_Layer: 0
   m_Name: EventChannels
   m_TagString: Event Channels
@@ -464,6 +466,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ce048a070badb4a8945d5b1466c609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1032707492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1032707485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d06d2384772d44499f2e40712326bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1032707493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,6 +486,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d280ef933aa74e448f502c2f6b24d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1032707494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1032707485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 852c2c760dcb10d47ade4a285c215c0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1185954213

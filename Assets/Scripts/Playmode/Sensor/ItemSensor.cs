@@ -20,25 +20,24 @@ namespace ProjetSynthese
             InjectDependencies("InjectItemSensor");
         }
 
-        public List<GameObject> GetAllItems(Transform transform)
+        public List<GameObject> GetAllItems(Transform transformPlayer)
         {
-            List<RaycastHit> itemsRaycast = Physics.SphereCastAll(transform.position, 10, Vector3.down).ToList();
-            itemsRaycast.RemoveAll(item => !item.transform.gameObject.GetComponent<Item>());
+            List<Collider> itemsRaycast = Physics.OverlapSphere(transformPlayer.position, 10, 1 << LayerMask.NameToLayer(R.S.Layer.Item)).ToList();
             return itemsRaycast.ConvertAll(item => item.transform.gameObject);
         }
 
         public List<GameObject> GetAllItems()
         {
-            List<RaycastHit> itemsRaycast = Physics.SphereCastAll(sensor.transform.position, 10, Vector3.down).ToList();
-            itemsRaycast.RemoveAll(item => !item.transform.gameObject.GetComponent<Item>());
+            List<Collider> itemsRaycast = Physics.OverlapSphere(sensor.transform.position, 10, 1 << LayerMask.NameToLayer(R.S.Layer.Item)).ToList();
             return itemsRaycast.ConvertAll(item => item.transform.gameObject);
         }
 
         public GameObject GetItemNearest()
         {
             List<GameObject> items = GetAllItems();
+			items.Sort ((x, y) => Vector3.Distance(transform.position, x.transform.position).CompareTo(Vector3.Distance(transform.position, y.transform.position)));
             if (items.Count >= 1)
-                return GetAllItems()[0];
+                return items[0];
             return null;
         }
     }

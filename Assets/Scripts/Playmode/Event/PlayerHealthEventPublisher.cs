@@ -31,7 +31,7 @@ namespace ProjetSynthese
             health.OnHealthChanged -= OnHealthChanged;
         }
 
-        private void OnHealthChanged(int oldHealthPoints, int newHealthPoints)
+        private void OnHealthChanged(float oldHealthPoints, float newHealthPoints)
         {
             eventChannel.Publish(new PlayerHealthEvent(health, oldHealthPoints, newHealthPoints));
         }

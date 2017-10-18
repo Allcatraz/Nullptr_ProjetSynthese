@@ -29,24 +29,43 @@ namespace ProjetSynthese
 
         private void OnDistanceChanged(DeathCircleDistanceEvent deathCircleDistanceEvent)
         {
-            if (deathCircleDistanceEvent.DeathCircleRadius - deathCircleDistanceEvent.SafeCircleRadius > 0)
-            {
-                float pourcentage =
-                    (deathCircleDistanceEvent.PlayerRadius - deathCircleDistanceEvent.SafeCircleRadius) /
-                    (deathCircleDistanceEvent.DeathCircleRadius - deathCircleDistanceEvent.SafeCircleRadius);
-                runnerImage.transform.position = new Vector3(runnerImage.transform.position.x + rectTransform.sizeDelta.x * pourcentage,
-                                                             runnerImage.transform.position.y, 
-                                                             runnerImage.transform.position.z);
+            float playerDistance = deathCircleDistanceEvent.PlayerRadius - deathCircleDistanceEvent.SafeCircleRadius;
+            float circleDistance = deathCircleDistanceEvent.DeathCircleRadius - deathCircleDistanceEvent.SafeCircleRadius;
+            float distanceLeft = 0;
 
-                runnerImage.transform.position = new Vector3((runnerImage.transform.position.x < transform.position.x
-                                                              || runnerImage.transform.position.x < transform.position.x + rectTransform.sizeDelta.x ? 0: 1), 
-                                                              runnerImage.transform.position.y, 
-                                                              runnerImage.transform.position.z);
+            if (circleDistance > 0)
+            {
+                distanceLeft = playerDistance / circleDistance;
+            }
+
+            if (distanceLeft <= 0 && playerDistance <= 0)
+            {
+                ComputeDistance(0);
+                SetAlpha(0.5f);
+            }
+            else if (distanceLeft <= 0 && playerDistance >= 0  || distanceLeft >= 1 && playerDistance >= 0)
+            {
+                ComputeDistance(1);
+                SetAlpha(1f);
             }
             else
             {
-                
+                ComputeDistance(distanceLeft);
+                SetAlpha(1f);
             }
+        }
+
+        private void SetAlpha(float alpha)
+        {
+            Color temp = runnerImage.color;
+            temp.a = alpha;
+            runnerImage.color = temp;
+        }
+
+        private void ComputeDistance(float distanceLeft)
+        {
+            distanceLeft = rectTransform.sizeDelta.x * distanceLeft;
+            runnerImage.transform.position = new Vector3(distanceLeft, runnerImage.transform.position.y, runnerImage.transform.position.z);
         }
     }
 }

@@ -120,15 +120,8 @@ namespace ProjetSynthese
         {
             float distancePlayerFromSafeCircle = Mathf.Sqrt(Mathf.Pow(deathCircle.transform.position.x - playerMoveEvent.PlayerMover.transform.position.x, 2) +
                                                             Mathf.Pow(deathCircle.transform.position.z - playerMoveEvent.PlayerMover.transform.position.z, 2));
-            if (distancePlayerFromSafeCircle > deathCircle.Radius)
-            {
-                playerRadius = distancePlayerFromSafeCircle;
-                isPlayerHit = true;
-            }
-            else
-            {
-                isPlayerHit = false;
-            }
+            playerRadius = distancePlayerFromSafeCircle;
+            isPlayerHit = distancePlayerFromSafeCircle > deathCircle.Radius;
         }
 
         private void CreateCircle(ref LineRendererCircle lineRendererCircle, float radius)

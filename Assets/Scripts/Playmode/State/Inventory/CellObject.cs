@@ -71,6 +71,10 @@ namespace ProjetSynthese
                     IsItem.GetItem().Use();
                     inventory.CheckMultiplePresenceAndRemove(IsItem);
                 }
+                if (IsItem.GetItem() as Bag)
+                {
+                    inventory.EquipBag(IsItem);
+                }
             }
             if (buttonType == ButtonType.Weapon)
             {
@@ -88,6 +92,10 @@ namespace ProjetSynthese
                 if (IsItem.GetItem() as Vest)
                 {
                     inventory.UnequipVest();
+                }
+                if (IsItem.GetItem() as Bag)
+                {
+                    inventory.UnequipBag();
                 }
             }
             if (buttonType == ButtonType.Ground)

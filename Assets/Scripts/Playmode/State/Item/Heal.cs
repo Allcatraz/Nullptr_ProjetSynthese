@@ -23,9 +23,9 @@ namespace ProjetSynthese
 
         private static int[] efficacities = { level1Efficacity, level2Efficacity, level3Efficacity };
 
-        private static int level1Weight = 5;
-        private static int level2Weight = 75;
-        private static int level3Weight = 100;
+        private static int level1Weight = 1;
+        private static int level2Weight = 10;
+        private static int level3Weight = 15;
 
         private static int[] weights = { level1Weight, level2Weight, level3Weight };
 

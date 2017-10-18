@@ -74,6 +74,13 @@ namespace ProjetSynthese
                 cellProtectionTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
                 cellProtectionTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetHelmet());
             }
+            if (inventory.GetBag() != null)
+            {
+                GameObject cellProtectionTemp3 = Instantiate(cellProtectionItemPrefabs);
+                cellProtectionTemp3.transform.SetParent(gridProtectionPlayer, false);
+                cellProtectionTemp3.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellProtectionTemp3.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetBag());
+            }
         }
 
         public void CreateCellsForNearbyItem()

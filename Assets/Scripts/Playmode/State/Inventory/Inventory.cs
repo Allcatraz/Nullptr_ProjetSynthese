@@ -81,8 +81,11 @@ namespace ProjetSynthese
             ChangeMaxWeight((bag.GetItem() as Bag).Capacity, false);
             AddWeight(bag.GetItem().GetWeight());
             bag = null;
-            
+            NotifyInventoryChange();
+
         }
+
+        
 
         public void ResetInventory()
         {
@@ -168,6 +171,11 @@ namespace ProjetSynthese
             if (!IsItemPresentInInventory(vest)) listInventory.Add(vest);
             vest = null;
             NotifyInventoryChange();
+        }
+
+        public Cell GetBag()
+        {
+            return bag;
         }
 
         public Cell GetPrimaryWeapon()

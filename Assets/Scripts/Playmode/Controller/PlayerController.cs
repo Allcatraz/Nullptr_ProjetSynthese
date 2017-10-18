@@ -90,6 +90,7 @@ namespace ProjetSynthese
 
             deathCircleHurtEventChannel.OnEventPublished += OnPlayerOutDeathCircle;
 
+            transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
             inventory.NotifyInventoryChange();

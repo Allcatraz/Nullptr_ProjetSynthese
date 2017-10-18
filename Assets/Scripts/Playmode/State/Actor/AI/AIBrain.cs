@@ -273,7 +273,8 @@ namespace ProjetSynthese
 
         private bool ExistVisibleOpponent()
         {
-            if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
+            if (FoundAIInPerceptionRange())
+            //    if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
             {
                 if (playerInPerceptionRange != null)
                 {

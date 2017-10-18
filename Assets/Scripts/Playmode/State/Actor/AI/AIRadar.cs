@@ -111,7 +111,7 @@ namespace ProjetSynthese
             {
                 for (int i = 0; i < inRangeObjects.Length; i++)
                 {
-                    if (inRangeObjects[i].distance < smallestDistance && !(Object.ReferenceEquals(selfAI, inRangeObjects[i])))
+                    if (inRangeObjects[i].distance < smallestDistance && !(Object.ReferenceEquals(selfAI, inRangeObjects[i].collider.gameObject.GetComponentInParent<ActorAI>())))
                     {
                         smallestDistance = inRangeObjects[i].distance;
                         neareastItemIndex = i;
@@ -120,7 +120,7 @@ namespace ProjetSynthese
             }
             if (neareastItemIndex != -1)
             {
-                nearestNonAllyAI = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponent<ActorAI>();
+                nearestNonAllyAI = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponentInParent<ActorAI>();
             }
             return nearestNonAllyAI;
         }
@@ -177,18 +177,17 @@ namespace ProjetSynthese
 
         public bool IsGameObjectHasLineOfSight(Vector3 position, PlayerController target)
         {
-            LayerMask layerMask = GetLayerMask(AIRadar.LayerType.Building);
+         
             Vector3 direction = Vector3.zero;
             direction = target.transform.position - position;          
-            return Physics.Raycast(position, direction, currentPerceptionRange, layerMask);
+            return Physics.Raycast(position, direction, currentPerceptionRange);
         }
         //Nécessaire pour disinguer AI opponent et AI ally research vs player
         public bool IsGameObjectHasLineOfSight(Vector3 position, ActorAI target)
         {
-            LayerMask layerMask = GetLayerMask(AIRadar.LayerType.Building);
             Vector3 direction = Vector3.zero;
             direction = target.transform.position - position;
-            return Physics.Raycast(position, direction, currentPerceptionRange, layerMask);
+            return Physics.Raycast(position, direction, currentPerceptionRange);
         }
 
 

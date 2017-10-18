@@ -52,13 +52,13 @@ namespace ProjetSynthese
             }
         }
         [SerializeField]
-        private const float WalkingSpeed = 7.5f;
+        private const float WalkingSpeed = 0.0f;
         [SerializeField]
-        private const float JoggingSpeed = 10.0f;
+        private const float JoggingSpeed = 0.0f;
         [SerializeField]
-        private const float RunningSpeed = 5.0f;
+        private const float RunningSpeed = 0.0f;
         [SerializeField]
-        private const float SwimmingSpeed = 0.5f;
+        private const float SwimmingSpeed = 0.0f;
 
         private const float NoSpeed = 0.0f;
 

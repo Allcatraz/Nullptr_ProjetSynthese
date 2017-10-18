@@ -7,7 +7,8 @@ namespace ProjetSynthese
     {
         public static GameObject BulletPrefab { get; set; }
 
-        public static void CreateBullet(GameObject spawnPoint, float bulletSpeed, float livingTime)
+        [Command]
+        public static void CmdCreateBullet(GameObject spawnPoint, float bulletSpeed, float livingTime)
         {
             GameObject bullet = Object.Instantiate(BulletPrefab);
             bullet.transform.position = spawnPoint.transform.position;

@@ -19,11 +19,13 @@ namespace ProjetSynthese
 
         private void SpawnAIs()
         {
-            Vector3 position = new Vector3(15,1.0f,-15);
-           
-            AIprefab.GetComponent<NetworkStartPosition>().transform.position = position;
+            Vector3[] position = new Vector3[2];
+            position[0] = new Vector3(-15, 1.0f, 15);
+            position[1] = new Vector3(15, 1.0f, -15);
+            
             for (int i = 0; i < AINumber; i++)
             {
+                AIprefab.GetComponent<NetworkStartPosition>().transform.position = position[i];
                 AIFactory.CmdSpawnAI(AIprefab);
             }
         }

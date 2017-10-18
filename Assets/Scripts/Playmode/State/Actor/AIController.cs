@@ -198,6 +198,7 @@ namespace ProjetSynthese
         {
             //check player
             //check ai
+            //attention e^tre pret à réassigner à cause meme cible a bougé
             PlayerController opponentPlayer = null;// actor.Sensor.NeareastNonEquippedItem(actor.transform.position);
             ActorAI opponentAI = null;
             //actor.Brain.UpdateItemOnMapKnowledge(item);

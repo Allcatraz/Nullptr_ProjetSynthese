@@ -183,6 +183,9 @@ namespace ProjetSynthese
             return Physics.Raycast(position, direction, currentPerceptionRange);
         }
         //Nécessaire pour disinguer AI opponent et AI ally research vs player
+        //plus rapide à cause du ou dans le if de décision ailleurs d'avaoir deux fonctions
+        //Évite aussi des vérification de type et casting lents
+        
         public bool IsGameObjectHasLineOfSight(Vector3 position, ActorAI target)
         {
             Vector3 direction = Vector3.zero;

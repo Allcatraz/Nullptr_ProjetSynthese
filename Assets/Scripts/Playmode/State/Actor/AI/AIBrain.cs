@@ -17,6 +17,16 @@ namespace ProjetSynthese
 
         private readonly ActorAI Actor;
 
+        public enum OpponentType {None, AI,Player};
+        private OpponentType currentOpponentType;
+        public OpponentType CurrentOpponentType
+        {
+            get
+            { return currentOpponentType; }
+            private set
+            { currentOpponentType = value; }
+        }
+
         private ActorAI aiInPerceptionRange = null;
         private PlayerController playerInPerceptionRange = null;
         private Item itemInPerceptionRange = null;
@@ -35,6 +45,7 @@ namespace ProjetSynthese
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
             ResetActualPerception();
+            currentOpponentType = OpponentType.None;
         }
 
 
@@ -142,7 +153,12 @@ namespace ProjetSynthese
         private AIState ChooseANewStateFromCombatState()
         {
             AIState nextState = AIState.None;
+            //ennemi killed, check other ennemi
+            //flee state check si ca va mal ou n'a pas d'Arme ou pu de munition
+            //check range, recheck line of sigth go to hunt possiblement
             //nextState = HasBeenInjuredRelatedStateCheck();
+            //vérife loot
+            //go explore
             if (nextState == AIState.None)
             {
                 if (ExistVisibleOpponent())
@@ -273,8 +289,7 @@ namespace ProjetSynthese
 
         private bool ExistVisibleOpponent()
         {
-            if (FoundAIInPerceptionRange())
-            //    if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
+            if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
             {
                 if (playerInPerceptionRange != null)
                 {

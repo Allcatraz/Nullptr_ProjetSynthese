@@ -21,11 +21,68 @@ namespace ProjetSynthese
 
         private Cell vest;
 
+        private Cell bag;
+
+        private float maxWeight = 100;
+
+        private float currentWeight;
+
         public event OnInventoryChange InventoryChange;
 
         public GameObject parent { get; set; }
 
         public List<Cell> listInventory { get; private set; }
+
+        private void ChangeMaxWeight(float newWeightToAdd, bool addOrRemove = true)
+        {
+            if (addOrRemove)
+            {
+                maxWeight += newWeightToAdd;
+            }
+            else
+            {
+                maxWeight -= newWeightToAdd;
+            }
+        }
+
+        private void RemoveWeight(float weightToRemove)
+        {
+            currentWeight -= weightToRemove;
+            if (currentWeight < 0)
+            {
+                currentWeight = 0;
+            }
+        }
+
+        private bool AddWeight(float weightToAdd)
+        {
+            if (currentWeight + weightToAdd <= maxWeight)
+            {
+                currentWeight += weightToAdd;
+                return true;
+            }
+            return false;
+        }
+
+        public void EquipBag(Cell itemToEquip)
+        {
+            if (bag != null)
+            {
+                UnequipBag();
+            }
+            bag = itemToEquip;
+            CheckMultiplePresenceAndRemove(itemToEquip);
+            ChangeMaxWeight((itemToEquip.GetItem() as Bag).Capacity);
+        }
+
+        public void UnequipBag()
+        {
+            if (!IsItemPresentInInventory(bag)) listInventory.Add(bag);
+            ChangeMaxWeight((bag.GetItem() as Bag).Capacity, false);
+            AddWeight(bag.GetItem().GetWeight());
+            bag = null;
+            
+        }
 
         public void ResetInventory()
         {
@@ -216,7 +273,10 @@ namespace ProjetSynthese
             if (inventoryOf == InventoryOf.Item)
             {
                 Cell cell = CreateItemCell(game);
-                if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                if (AddWeight(cell.GetItem().GetWeight()))
+                {
+                    if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                }
                 NotifyInventoryChange();
             }
         }
@@ -241,6 +301,7 @@ namespace ProjetSynthese
                 listInventory.Remove(temp);
                 NotifyInventoryChange();
             }
+            RemoveWeight(temp.GetItem().GetWeight());
         }
 
         public static bool operator ==(Inventory one, Inventory two)

@@ -54,7 +54,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1840684040347732}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: -0, y: 1.241, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4620439946851526}
@@ -66,9 +66,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1884589669727418}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.5, z: 0.25}
+  m_LocalRotation: {x: 0.7071068, y: -0.000000039512674, z: 0.00000009746459, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0, z: -4.04}
+  m_LocalScale: {x: 0.18518522, y: 0.37037054, z: 0.1851852}
   m_Children:
   - {fileID: 4200583916274588}
   m_Father: {fileID: 0}
@@ -171,8 +171,6 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 1840684040347732}
   bulletSpeed: 50
   bulletLivingTime: 2
-  bulletPrefab: {fileID: 1952078678239082, guid: 6c14901fdfdae5342a49cdcaa31e9d75,
-    type: 2}
   magazineMaxAmount: 30
 --- !u!136 &136632997646461256
 CapsuleCollider:

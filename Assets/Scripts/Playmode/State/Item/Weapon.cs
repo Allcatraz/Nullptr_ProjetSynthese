@@ -40,9 +40,9 @@ namespace ProjetSynthese
         {
             if (MagazineAmount > 0)
             {
-                BulletFactory.CreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);
+                BulletFactory.CmdCreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);
                 MagazineAmount -= 1;
-                NotidyMunitionChanged();
+                NotidyMunitionChanged(); 
             }
         }
 

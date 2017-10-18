@@ -249,10 +249,6 @@ namespace ProjetSynthese
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
         {
             health.Hit(deathCircleHurtEvent.HurtPoints);
-            for (int i = 0; i < UPPER; i++)
-            {
-                   
-            }
         }
     }
 }

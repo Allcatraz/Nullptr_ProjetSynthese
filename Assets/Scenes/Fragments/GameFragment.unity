@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 143199758}
   - component: {fileID: 143199759}
   - component: {fileID: 143199760}
+  - component: {fileID: 143199761}
   m_Layer: 0
   m_Name: DeathCircles
   m_TagString: Untagged
@@ -161,6 +162,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b428c960b935efc4c9eec6772d9e84bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &143199761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 143199757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93bcc0b3665219b4dac49d21e1951241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1650045077

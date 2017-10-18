@@ -91,9 +91,38 @@ namespace ProjetSynthese
             }
             if (neareastItemIndex != -1)
             {
-                nearestObject = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponent<ObjectType>();
+                nearestObject = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponentInParent<ObjectType>();
             }
             return nearestObject;
+        }
+
+        public ActorAI NeareastNonAllyAI(ActorAI selfAI)
+        {
+            Vector3 position = selfAI.transform.position;
+            ActorAI nearestNonAllyAI = default(ActorAI);
+            RaycastHit[] inRangeObjects;
+            LayerType layerType = LayerType.AI;
+            LayerMask layerMask = GetLayerMask(layerType);
+            inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
+           
+            int neareastItemIndex = -1;
+            float smallestDistance = float.MaxValue;
+            if (inRangeObjects != null)
+            {
+                for (int i = 0; i < inRangeObjects.Length; i++)
+                {
+                    if (inRangeObjects[i].distance < smallestDistance && !(Object.ReferenceEquals(selfAI, inRangeObjects[i])))
+                    {
+                        smallestDistance = inRangeObjects[i].distance;
+                        neareastItemIndex = i;
+                    }
+                }
+            }
+            if (neareastItemIndex != -1)
+            {
+                nearestNonAllyAI = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponent<ActorAI>();
+            }
+            return nearestNonAllyAI;
         }
 
         private RaycastHit[] AllNeareastGameObjects(Vector3 position, LayerType layerType)
@@ -153,7 +182,7 @@ namespace ProjetSynthese
             direction = target.transform.position - position;          
             return Physics.Raycast(position, direction, currentPerceptionRange, layerMask);
         }
-
+        //Nécessaire pour disinguer AI opponent et AI ally research vs player
         public bool IsGameObjectHasLineOfSight(Vector3 position, ActorAI target)
         {
             LayerMask layerMask = GetLayerMask(AIRadar.LayerType.Building);

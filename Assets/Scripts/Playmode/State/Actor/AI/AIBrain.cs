@@ -141,8 +141,32 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromCombatState()
         {
-            //
-            AIState nextState = AIState.Explore;
+            AIState nextState = AIState.None;
+            //nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
+            {
+                if (ExistVisibleOpponent())
+                {
+                    //nextState = AIState.Hunt;
+                }
+                else
+                {
+                    //UpdateItemLootKnowledge();
+                    //if (itemInPerceptionRange != null)
+                    //{
+                    //    nextState = AIState.Loot;
+                    //}
+                    //else if (FoundItemInPerceptionRange())
+                    //{
+                    //    nextState = AIState.Loot;
+                    //}
+                    //else
+                    //{
+                    //    nextState = AIState.Explore;
+                    //}
+                }
+            }
+            nextState = AIState.Combat;
             return nextState;
         }
 
@@ -174,23 +198,23 @@ namespace ProjetSynthese
         public bool FoundAIInPerceptionRange()
         {
 
-            //ActorAI opponentAI = Actor.Sensor.NeareastGameObject<ActorAI>(Actor.transform.position, AIRadar.LayerType.AI);
-            //if (opponentAI != null)
-            //{
-            //    aiInPerceptionRange = opponentAI;
-            //    return true;
-            //}
+            ActorAI opponentAI = Actor.Sensor.NeareastNonAllyAI(Actor);
+            if (opponentAI != null)
+            {
+                aiInPerceptionRange = opponentAI;
+                return true;
+            }
             return false;
         }
 
         public bool FoundPlayerInPerceptionRange()
         {
-            //PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
-            //if (opponentPlayer != null)
-            //{
-            //    playerInPerceptionRange = opponentPlayer;
-            //    return true;
-            //}
+            PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
+            if (opponentPlayer != null)
+            {
+                playerInPerceptionRange = opponentPlayer;
+                return true;
+            }
 
             return false;
         }

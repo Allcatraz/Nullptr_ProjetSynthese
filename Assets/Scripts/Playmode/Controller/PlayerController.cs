@@ -21,6 +21,7 @@ namespace ProjetSynthese
         private ItemSensor itemSensor;
         private Weapon currentWeapon;
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
+        private SoldierAnimatorUpdater soldierAnimatorUpdater;
 
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
@@ -52,7 +53,8 @@ namespace ProjetSynthese
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
                                             [EntityScope] ItemSensor itemSensor,
-                                            [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel)
+                                            [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel,
+                                            [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater)
         {
             this.keyboardInputSensor = keyboardInputSensor;
             this.mouseInputSensor = mouseInputSensor;
@@ -62,6 +64,7 @@ namespace ProjetSynthese
             this.inventory = inventory;
             this.itemSensor = itemSensor;
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
+            this.soldierAnimatorUpdater = soldierAnimatorUpdater;
         }
 
         private void Start()
@@ -127,6 +130,9 @@ namespace ProjetSynthese
             float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
 
             playerMover.Rotate(angle);
+            distance.y = transform.position.y;
+            soldierAnimatorUpdater.ViewDirection = distance;
+            soldierAnimatorUpdater.UpdateAnimator();
         }
 
         private void OnSwitchPrimaryWeapon()
@@ -177,6 +183,7 @@ namespace ProjetSynthese
         private void OnMoveToward(Vector3 direction)
         {
             playerMover.Move(direction);
+            soldierAnimatorUpdater.MouvementDirection = direction;
         }
 
         private void OnFire()

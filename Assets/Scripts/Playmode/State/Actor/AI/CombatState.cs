@@ -20,27 +20,18 @@
             {
                 aiController.AIMoveTarget = AIController.MoveTarget.Opponent;
                 actor.ActorController.Move(actor);
-                //faudrait modifier la reached selon weapon range
+                
                 if (aiController.HasReachedOpponentTargetDestination(actor))
                 {
                     aiController.OpponentTargetDestinationIsKnown = false;
                 }
             }
-            //shot icitt et revérifie line of sight ou pas
-            //reload ammunition 
-            //change weapon
-            switch (actor.Brain.CurrentOpponentType)
+            if (actor.Brain.ExistShootableOpponent())
             {
-                case AIBrain.OpponentType.None:
-                    break;
-                case AIBrain.OpponentType.AI:
-                    break;
-                case AIBrain.OpponentType.Player:
-                    break;
-                default:
-                    break;
+                aiController.Shoot(actor.Brain.CurrentOpponentType);
             }
-
+            //faut un call en quelque part pour weapon knoledge update
+            //avant décision possiblement dans brain et apres shooting
             AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Combat);
             if (nextState != AIBrain.AIState.Combat)
             {

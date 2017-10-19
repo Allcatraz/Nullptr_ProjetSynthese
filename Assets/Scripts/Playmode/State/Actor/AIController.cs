@@ -100,9 +100,7 @@ namespace ProjetSynthese
 
         public bool HasReachedOpponentTargetDestination(ActorAI actor)
         {
-
-            float distance = Vector3.Distance(OpponentTargetDestination, actor.transform.position);
-            if (distance < ErrorPositionTolerance)
+            if (actor.Brain.IsOpponentInWeaponRange())
             {
                 return true;
             }
@@ -119,9 +117,24 @@ namespace ProjetSynthese
             return false;
         }
 
-        public void Shoot()
+        public void Shoot(AIBrain.OpponentType opponentType)
         {
+            switch (opponentType)
+            {
+                case AIBrain.OpponentType.None:
+                    break;
+                case AIBrain.OpponentType.AI:
 
+                    break;
+                case AIBrain.OpponentType.Player:
+                    Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
+                    weapon.transform.position = Actor.transform.position;
+                    weapon.transform.rotation = Actor.transform.rotation;
+                    weapon.Use();
+                    break;
+                default:
+                    break;
+            }
         }
 
         public override void Move(ActorAI actor)
@@ -196,12 +209,12 @@ namespace ProjetSynthese
 
         public void FindTargetOpponnentMapDestination(ActorAI actor)
         {
-            //check player
-            //check ai
-            //attention e^tre pret à réassigner à cause meme cible a bougé
-            PlayerController opponentPlayer = null;// actor.Sensor.NeareastNonEquippedItem(actor.transform.position);
+            
+            PlayerController opponentPlayer = null;
             ActorAI opponentAI = null;
-            //actor.Brain.UpdateItemOnMapKnowledge(item);
+            opponentPlayer = actor.Sensor.NeareastGameObject<PlayerController>(actor.transform.position, AIRadar.LayerType.Player);
+            opponentAI = actor.Sensor.NeareastNonAllyAI(actor);
+            actor.Brain.UpdateOpponentOnMapKnowledge(opponentPlayer,opponentAI);
             Vector3 newDestination = Vector3.zero;
             newDestination.y = FloorYOffset;
             if (opponentPlayer != null)
@@ -211,6 +224,7 @@ namespace ProjetSynthese
                 newDestination.z = opponentPlayer.transform.position.z;
                 OpponentTargetDestination = newDestination;
                 OpponentTargetDestinationIsKnown = true;
+                actor.Brain.CurrentOpponentType = AIBrain.OpponentType.Player;
             }
             else if (opponentAI != null)
             {
@@ -218,6 +232,7 @@ namespace ProjetSynthese
                 newDestination.z = opponentAI.transform.position.z;
                 OpponentTargetDestination = newDestination;
                 OpponentTargetDestinationIsKnown = true;
+                actor.Brain.CurrentOpponentType = AIBrain.OpponentType.AI;
             }
             else
             {

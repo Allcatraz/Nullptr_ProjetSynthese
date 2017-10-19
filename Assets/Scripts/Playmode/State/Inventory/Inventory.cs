@@ -9,6 +9,8 @@ namespace ProjetSynthese
 
     public delegate void OnInventoryChange();
 
+    public delegate void OnSpawnDroppedItem(Cell itemToSpawn);
+
     public class Inventory : GameScript
     {
         [SerializeField] private InventoryOf inventoryOf;
@@ -28,6 +30,8 @@ namespace ProjetSynthese
         private float currentWeight;
 
         public event OnInventoryChange InventoryChange;
+
+        public event OnSpawnDroppedItem SpawnItem;
 
         public GameObject parent { get; set; }
 
@@ -85,8 +89,6 @@ namespace ProjetSynthese
 
         }
 
-        
-
         public void ResetInventory()
         {
             primaryWeapon = null;
@@ -137,6 +139,11 @@ namespace ProjetSynthese
         public void NotifyInventoryChange()
         {
             if (InventoryChange != null) InventoryChange();
+        }
+
+        public void NotifySpawnDroppedItem(Cell itemToSpawn)
+        {
+            if (SpawnItem != null) SpawnItem(itemToSpawn);
         }
 
         public void EquipHelmet(Cell itemToEquip)
@@ -226,6 +233,20 @@ namespace ProjetSynthese
                 CheckMultiplePresenceAndRemove(temp);
             }
 
+        }
+
+        public void Drop(Cell itemToDrop)
+        {
+            while (itemToDrop.GetCompteur() > 1)
+            {
+                RemoveWeight(itemToDrop.GetItem().GetWeight());
+                itemToDrop.RemoveOneFromCompteur();
+                NotifySpawnDroppedItem(itemToDrop);
+            }
+            RemoveWeight(itemToDrop.GetItem().GetWeight());
+            listInventory.Remove(itemToDrop);
+            NotifySpawnDroppedItem(itemToDrop);
+            NotifyInventoryChange();
         }
 
         private void Start()

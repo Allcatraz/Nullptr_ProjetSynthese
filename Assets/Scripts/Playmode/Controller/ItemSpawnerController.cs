@@ -1,33 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 
 namespace ProjetSynthese
 {
-    public class ItemSpawnerController : MonoBehaviour
+    public class ItemSpawnerController : GameScript
     {
-  
         private List<Item> items;
 
         public List<Item> Items { get; private set; }
 
         public const int MaxNumberOfItemsToSpawn = 4;
-       
+
         /// <summary>
         /// Spawn les items
         /// </summary>
-        void Start()
+        public void CreateItems(Vector3 position)
         {
             items = new List<Item>();
             System.Random rnd = new System.Random();
             int numberOfItemsToSpawn = rnd.Next(3, MaxNumberOfItemsToSpawn + 1);
             for (int i = 0; i < numberOfItemsToSpawn; i++)
             {
-                ItemFactory.CreateItem(items, gameObject, rnd);
+                ItemFactory.CreateItem(items, position, rnd);
             }
         }
-
 
         /// <summary>
         /// Chercher un item dans la liste qui a le type passé en paramètre

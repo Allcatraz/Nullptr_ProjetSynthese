@@ -75,7 +75,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonType: 2
-  key: 306
+  keyWeaponSlot: 306
+  keyDroppingItem: 308
 --- !u!114 &114423272680720190
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -25,7 +25,7 @@ namespace ProjetSynthese
 
         private Cell bag;
 
-        private float maxWeight = 100;
+        [SerializeField] private float maxWeight = 100;
 
         private float currentWeight;
 
@@ -91,6 +91,7 @@ namespace ProjetSynthese
 
         public void ResetInventory()
         {
+            currentWeight = 0;
             primaryWeapon = null;
             secondaryWeapon = null;
             helmet = null;
@@ -212,6 +213,13 @@ namespace ProjetSynthese
             AddPlayerCellToInventory(game);
         }
 
+        public void Add(GameObject game, GameObject player)
+        {
+            CreateListeIsNotExist();
+            AddItemCellToInventory(game, player);
+            AddPlayerCellToInventory(game);
+        }
+
         public void Add(Item item)
         {
             CreateListeIsNotExist();
@@ -237,15 +245,17 @@ namespace ProjetSynthese
 
         public void Drop(Cell itemToDrop)
         {
+            itemToDrop.GetItem().Player = parent;
             while (itemToDrop.GetCompteur() > 1)
             {
                 RemoveWeight(itemToDrop.GetItem().GetWeight());
                 itemToDrop.RemoveOneFromCompteur();
                 NotifySpawnDroppedItem(itemToDrop);
+                NotifyInventoryChange();
             }
             RemoveWeight(itemToDrop.GetItem().GetWeight());
             listInventory.Remove(itemToDrop);
-            NotifySpawnDroppedItem(itemToDrop);
+            NotifySpawnDroppedItem(itemToDrop);     
             NotifyInventoryChange();
         }
 
@@ -278,7 +288,7 @@ namespace ProjetSynthese
             bool itemIsPresentInInventory = false;
             foreach (Cell item in listInventory)
             {
-                if (item == cell)
+                if (item == cell && item.GetItem().Level == cell.GetItem().Level)
                 {
                     item.AddCompteur();
                     itemIsPresentInInventory = true;
@@ -297,7 +307,7 @@ namespace ProjetSynthese
             return cell;
         }
 
-        private void AddItemCellToInventory(GameObject game)
+        private void AddItemCellToInventory(GameObject game, GameObject player = null)
         {
             if (inventoryOf == InventoryOf.Item)
             {
@@ -305,6 +315,7 @@ namespace ProjetSynthese
                 if (AddWeight(cell.GetItem().GetWeight()))
                 {
                     if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                    cell.GetItem().Player = player;
                 }
                 NotifyInventoryChange();
             }

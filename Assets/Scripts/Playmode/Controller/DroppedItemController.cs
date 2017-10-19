@@ -17,7 +17,10 @@ namespace ProjetSynthese
 
         private void SpawnItemDropEventChannel_OnEventPublished(SpawnItemDropEvent newEvent)
         {
-            SpawnItem(newEvent.ItemToSpawn.GetItem().gameObject, newEvent.ItemToSpawn.GetItem().Player.transform);
+            if (newEvent.ItemToSpawn.GetItem() != null && newEvent.ItemToSpawn.GetItem().Player != null)
+            {
+                SpawnItem(newEvent.ItemToSpawn.GetItem().gameObject, newEvent.ItemToSpawn.GetItem().Player.transform);
+            }  
         }
 
         private void InjectEventSensor([EventChannelScope] SpawnItemDropEventChannel spawnItemDropEventChannel)
@@ -27,9 +30,12 @@ namespace ProjetSynthese
 
         private void SpawnItem(GameObject itemToSpawn, Transform player)
         {
-            itemToSpawn.SetActive(true);
-            itemToSpawn.transform.SetParent(spawnLocation.transform, false);
-            itemToSpawn.transform.position = player.position;
+            GameObject newItem = Instantiate(itemToSpawn);
+            newItem.GetComponent<Item>().Level = itemToSpawn.GetComponent<Item>().Level;
+            newItem.transform.SetParent(spawnLocation.transform, true);
+            newItem.layer = LayerMask.NameToLayer(R.S.Layer.Item);
+            newItem.transform.position = player.position;
+            newItem.SetActive(true);
         }
     }
 }

@@ -191,7 +191,7 @@ namespace ProjetSynthese
 
             if ((object)item != null)
             {
-                inventory.Add(item);
+                inventory.Add(item, gameObject);
 
                 if (item.GetComponent<Item>() is Weapon)
                 {
@@ -201,7 +201,6 @@ namespace ProjetSynthese
                 {
                     item.transform.SetParent(inventoryTransform);
                 }
-
                 item.SetActive(false);
             }
         }

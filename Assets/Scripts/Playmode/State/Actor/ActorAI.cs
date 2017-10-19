@@ -53,7 +53,7 @@ namespace ProjetSynthese
                     ActorController = new AIController(this);
                     ((AIController)ActorController).Init();
                     Brain = new AIBrain(this);
-                    break;
+                     break;
                 default:
                     break;
             }

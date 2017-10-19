@@ -105,9 +105,12 @@ namespace ProjetSynthese
                         {
                             nextState = AIState.Flee;
                         }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
                     }
-                    nextState = AIState.Hunt;
-                }
+                 }
                 else if (FoundItemInPerceptionRange())
                 {
                     nextState = AIState.Loot;
@@ -143,8 +146,12 @@ namespace ProjetSynthese
                         {
                             nextState = AIState.Flee;
                         }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
                     }
-                    nextState = AIState.Hunt;
+                    
                 }
                 else
                 {
@@ -186,8 +193,11 @@ namespace ProjetSynthese
                         {
                             nextState = AIState.Flee;
                         }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
                     }
-                    nextState = AIState.Hunt;
                 }
                 else if (FoundItemInPerceptionRange())
                 {
@@ -204,7 +214,7 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromFleeState()
         {
-            AIState nextState = AIState.Explore;
+            AIState nextState = AIState.Loot;
 
             return nextState;
         }
@@ -288,7 +298,7 @@ namespace ProjetSynthese
                 sqrtTargetDistance = directionVector.sqrMagnitude;
             }
 
-            if (sqrtTargetDistance > 0.0f)
+            if (sqrtTargetDistance > 0.0f && hasPrimaryWeaponEquipped)
             {
                 Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (equippedPrimaryWeapon != null)
@@ -383,7 +393,13 @@ namespace ProjetSynthese
 
         public void UpdateWeaponKnowledge()
         {
-            Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
+            Cell cell = Actor.AIInventory.GetPrimaryWeapon();
+            Weapon equippedPrimaryWeapon = null;
+            if (cell != null)
+            {
+                equippedPrimaryWeapon = (Weapon)cell.GetItem();
+            }
+            
             if (equippedPrimaryWeapon != null)
             {
                 hasPrimaryWeaponEquipped = true;

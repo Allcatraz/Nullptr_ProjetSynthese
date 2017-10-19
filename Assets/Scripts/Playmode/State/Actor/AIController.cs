@@ -64,7 +64,7 @@ namespace ProjetSynthese
 
         private float currentSpeedLevel;
 
-        private const float RandomRadiusMoveRange = 200.0f;
+        private const float RandomRadiusMoveRange = 15.0f;
 
         private const float ErrorPositionTolerance = 0.001f;
 

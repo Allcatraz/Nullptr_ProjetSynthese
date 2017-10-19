@@ -288,7 +288,16 @@ namespace ProjetSynthese
             bool itemIsPresentInInventory = false;
             foreach (Cell item in listInventory)
             {
-                if (item == cell && item.GetItem().Level == cell.GetItem().Level)
+                if ((item.GetItem() as AmmoPack) && (cell.GetItem() as AmmoPack))
+                {
+                    if ((cell.GetItem() as AmmoPack).AmmoType == (item.GetItem() as AmmoPack).AmmoType)
+                    {
+                        item.AddCompteur();
+                        itemIsPresentInInventory = true;
+                        NotifyInventoryChange();
+                    }
+                }
+                else if (item == cell && item.GetItem().Level == cell.GetItem().Level)
                 {
                     item.AddCompteur();
                     itemIsPresentInInventory = true;

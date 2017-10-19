@@ -32,6 +32,10 @@ namespace ProjetSynthese
         public void InstantiateFromCell(Cell cell)
         {   
             string name = cell.GetItem().Type.ToString();
+            if (cell.GetItem().Type == ItemType.AmmoPack)
+            {
+                name = (cell.GetItem() as AmmoPack).AmmoType.ToString();
+            }
             IsItem = cell;
             int compteur = cell.GetCompteur();
             if (cell.GetItem().Level != 0)

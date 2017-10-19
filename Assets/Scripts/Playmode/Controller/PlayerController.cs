@@ -11,6 +11,7 @@ namespace ProjetSynthese
         [SerializeField] private Menu mapMenu;
         [SerializeField] private Transform weaponHolderTransform;
         [SerializeField] private Transform inventoryTransform;
+        [SerializeField] private Camera firstPersonCamera;
 
         private ActivityStack activityStack;
         private Health health;
@@ -23,8 +24,10 @@ namespace ProjetSynthese
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
 
+        private Vector2 rotation;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
+        private bool isFirstPerson = false;
 
         public Transform GetWeaponHolderTransform()
         {
@@ -87,6 +90,7 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon += OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap += OnToggleMap;
             keyboardInputSensor.Keyboards.OnReload += OnReload;
+            keyboardInputSensor.Keyboards.OnChangeViewMode += OnChangeViewMode;
 
             mouseInputSensor.Mouses.OnFire += OnFire;
 
@@ -96,6 +100,7 @@ namespace ProjetSynthese
 
             transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
+            rotation = new Vector2();
 
             inventory.NotifyInventoryChange();
         }
@@ -117,6 +122,7 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon -= OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap -= OnToggleMap;
             keyboardInputSensor.Keyboards.OnReload -= OnReload;
+            keyboardInputSensor.Keyboards.OnChangeViewMode -= OnChangeViewMode;
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
 
@@ -125,14 +131,38 @@ namespace ProjetSynthese
 
         private void FixedUpdate()
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
-            Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y, mousePos.z - transform.position.z);
-            float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
+            if (!isFirstPerson)
+            {
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
+                Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y,
+                    mousePos.z - transform.position.z);
+                float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
+                Vector3 vec3Angle = new Vector3(0, angle, 0);
+                playerMover.Rotate(vec3Angle);
+                distance.y = transform.position.y;
+                soldierAnimatorUpdater.ViewDirection = distance;
+                soldierAnimatorUpdater.UpdateAnimator();
+            }
+            else
+            {
+                rotation.x += -Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
+                rotation.y += Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
+                rotation.x = ClampAngle(rotation.x, -60, 60);
 
-            playerMover.Rotate(angle);
-            distance.y = transform.position.y;
-            soldierAnimatorUpdater.ViewDirection = distance;
-            soldierAnimatorUpdater.UpdateAnimator();
+                Quaternion localRotation = Quaternion.Euler(rotation.x, rotation.y, 0.0f);
+                firstPersonCamera.transform.rotation = localRotation;
+                transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+
+            }
+        }
+
+        public static float ClampAngle(float angle, float min, float max)
+        {
+            if (angle <= -360F)
+            angle += 360F;
+            if (angle >= 360F)
+            angle -= 360F;
+            return Mathf.Clamp(angle, min, max);
         }
 
         private void OnSwitchPrimaryWeapon()
@@ -180,10 +210,29 @@ namespace ProjetSynthese
             playerMover.SwitchSprintOff();
         }
 
-        private void OnMoveToward(Vector3 direction)
+        private void OnMoveToward(KeyCode key)
         {
+            Matrix4x4 transformMatrix = transform.localToWorldMatrix;
+            Vector3 direction = Vector3.zero;
+
+            if (key == KeyCode.W)
+            {
+                direction = transformMatrix.GetColumn(2);
+            }
+            else if (key == KeyCode.S)
+            {
+                direction = -transformMatrix.GetColumn(2);
+            }
+            else if (key == KeyCode.A)
+            {
+                direction = -transformMatrix.GetColumn(0);
+            }
+            else if (key == KeyCode.D)
+            {
+                direction = transformMatrix.GetColumn(0);
+            }
+            direction.Normalize();
             playerMover.Move(direction);
-            soldierAnimatorUpdater.MouvementDirection = direction;
         }
 
         private void OnFire()
@@ -203,7 +252,7 @@ namespace ProjetSynthese
         {
             if (isLocalPlayer)
             {
-                if ((object) item != null)
+                if ((object)item != null)
                 {
                     item.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
                     inventory.Add(item);
@@ -266,6 +315,12 @@ namespace ProjetSynthese
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
         {
             health.Hit(deathCircleHurtEvent.HurtPoints);
+        }
+
+        private void OnChangeViewMode()
+        {
+            isFirstPerson = !isFirstPerson;
+            firstPersonCamera.gameObject.SetActive(isFirstPerson);
         }
     }
 }

@@ -528,12 +528,12 @@ GameObject:
   - component: {fileID: 81580336282396766}
   - component: {fileID: 114179616142548278}
   m_Layer: 0
-  m_Name: MainCamera
+  m_Name: FirstPersonCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1573541721515638
 GameObject:
   m_ObjectHideFlags: 1
@@ -1529,6 +1529,7 @@ MonoBehaviour:
   mapMenu: {fileID: 11400000, guid: a90bf0f1f67a57e41b2286896d6bda89, type: 2}
   weaponHolderTransform: {fileID: 4236748107255540}
   inventoryTransform: {fileID: 4132227477362130}
+  firstPersonCamera: {fileID: 20009433431343892}
 --- !u!114 &114107453897673614
 MonoBehaviour:
   m_ObjectHideFlags: 1

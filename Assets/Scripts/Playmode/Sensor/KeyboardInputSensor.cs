@@ -109,26 +109,30 @@ namespace ProjetSynthese
                 if(keyboard.GetKeyDown(KeyCode.R))
                 {
                     NotifyReload();
-                }                 
+                }
+                if (keyboard.GetKeyDown(KeyCode.F9))
+                {
+                    NotifyChangeViewMode();
+                }
             }
 
             private void HandleDirectionInput()
             {
                 if (keyboard.GetKey(KeyCode.W))
                 {
-                    NotifyMove(Vector3.forward);
+                    NotifyMove(KeyCode.W);
                 }
                 if (keyboard.GetKey(KeyCode.A))
                 {
-                    NotifyMove(Vector3.left);
+                    NotifyMove(KeyCode.A);
                 }
                 if (keyboard.GetKey(KeyCode.S))
                 {
-                    NotifyMove(Vector3.back);
+                    NotifyMove(KeyCode.S);
                 }
                 if (keyboard.GetKey(KeyCode.D))
                 {
-                    NotifyMove(Vector3.right);
+                    NotifyMove(KeyCode.D);
                 }
             }
         }

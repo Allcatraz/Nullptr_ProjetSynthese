@@ -28,6 +28,8 @@ namespace ProjetSynthese
 
             public event ReloadEventHandler OnReload;
 
+            public event ChangeViewModeHangler OnChangeViewMode;
+
             public abstract IInputDevice this[int deviceIndex] { get; }
 
             protected virtual void NotifyUp()
@@ -60,9 +62,9 @@ namespace ProjetSynthese
                 if (OnTogglePause != null) OnTogglePause();
             }
 
-            protected virtual void NotifyMove(Vector3 direction)
+            protected virtual void NotifyMove(KeyCode key)
             {
-                if (OnMoveToward != null) OnMoveToward(direction);
+                if (OnMoveToward != null) OnMoveToward(key);
             }
 
             protected virtual void NotifySwitchSprintOn()
@@ -104,6 +106,11 @@ namespace ProjetSynthese
             {
                 if (OnReload != null) OnReload();
             }
+
+            protected virtual void NotifyChangeViewMode()
+            {
+                if(OnChangeViewMode != null) OnChangeViewMode();
+            }
         }
 
         protected abstract class TriggerOncePerFrameInputDevice : InputDevice
@@ -130,6 +137,8 @@ namespace ProjetSynthese
 
             private bool reloadTriggerd;
 
+            private bool changeViewModeTriggerd;
+
             public abstract override IInputDevice this[int deviceIndex] { get; }
 
             public virtual void Reset()
@@ -155,6 +164,8 @@ namespace ProjetSynthese
                 pickupTriggerd = false;
 
                 reloadTriggerd = false;
+
+                changeViewModeTriggerd = false;
             }
 
             protected override void NotifyUp()
@@ -211,11 +222,11 @@ namespace ProjetSynthese
                 }
             }
 
-            protected override void NotifyMove(Vector3 direction)
+            protected override void NotifyMove(KeyCode key)
             {
                 if (!moveTriggerd)
                 {
-                    base.NotifyMove(direction);
+                    base.NotifyMove(key);
                     moveTriggerd = true;
                 }
             }
@@ -289,6 +300,15 @@ namespace ProjetSynthese
                 {
                     base.NotifyReload();
                     reloadTriggerd = true;
+                }
+            }
+
+            protected override void NotifyChangeViewMode()
+            {
+                if (!changeViewModeTriggerd)
+                {
+                    base.NotifyChangeViewMode();
+                    changeViewModeTriggerd = true;
                 }
             }
         }

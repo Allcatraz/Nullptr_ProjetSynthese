@@ -12,7 +12,7 @@ namespace ProjetSynthese
     public delegate void ToggleInventoryEventHandler();
     public delegate void ToggleMapEventHandler();
 
-    public delegate void MoveTowardEventHandler(Vector3 direction);
+    public delegate void MoveTowardEventHandler(KeyCode key);
     public delegate void SwitchSprintOnEventHandler();
     public delegate void SwitchSprintOffEventHandler();
 
@@ -25,6 +25,8 @@ namespace ProjetSynthese
     public delegate void PickupEventHandler();
 
     public delegate void ReloadEventHandler();
+
+    public delegate void ChangeViewModeHangler();
 
     public interface IInputDevice
     {
@@ -51,6 +53,8 @@ namespace ProjetSynthese
         event PickupEventHandler OnPickup;
 
         event ReloadEventHandler OnReload;
+
+        event ChangeViewModeHangler OnChangeViewMode;
 
         IInputDevice this[int deviceIndex] { get; }
     }

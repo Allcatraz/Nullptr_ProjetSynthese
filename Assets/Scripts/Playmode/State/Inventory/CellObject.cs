@@ -12,8 +12,10 @@ namespace ProjetSynthese
     public class CellObject : GameScript
     {
         [SerializeField] private ButtonType buttonType;
-        [SerializeField] private KeyCode key;
+        [SerializeField] private KeyCode keyWeaponSlot;
+        [SerializeField] private KeyCode keyDroppingItem;
         private Button button;
+        private bool droppingItemInventory = false;
         public EquipWeaponAt equipAt { get; set; }
 
 
@@ -32,6 +34,10 @@ namespace ProjetSynthese
             string name = cell.GetItem().Type.ToString();
             IsItem = cell;
             int compteur = cell.GetCompteur();
+            if (cell.GetItem().Level != 0)
+            {
+                name += " " + cell.GetItem().Level;
+            }
             SetTextName(name);
             if (buttonType != ButtonType.Weapon)
             {
@@ -54,24 +60,28 @@ namespace ProjetSynthese
         {
             if (buttonType == ButtonType.Inventory)
             {
-                if (IsItem.GetItem() as Weapon)
+                if (droppingItemInventory)
+                {
+                    inventory.Drop(IsItem);
+                }
+                else if (IsItem.GetItem() as Weapon)
                 {
                     inventory.EquipWeaponAt(equipAt, IsItem);
                 }
-                if (IsItem.GetItem() as Helmet)
+                else if (IsItem.GetItem() as Helmet)
                 {
                     inventory.EquipHelmet(IsItem);
                 }
-                if (IsItem.GetItem() as Vest)
+                else if (IsItem.GetItem() as Vest)
                 {
                     inventory.EquipVest(IsItem);
                 }
-                if (IsItem.GetItem() as Heal || IsItem.GetItem() as Boost)
+                else if (IsItem.GetItem() as Heal || IsItem.GetItem() as Boost)
                 {
                     IsItem.GetItem().Use();
                     inventory.CheckMultiplePresenceAndRemove(IsItem);
                 }
-                if (IsItem.GetItem() as Bag)
+                else if (IsItem.GetItem() as Bag)
                 {
                     inventory.EquipBag(IsItem);
                 }
@@ -89,11 +99,11 @@ namespace ProjetSynthese
                 {
                     inventory.UnequipHelmet();
                 }
-                if (IsItem.GetItem() as Vest)
+                else if (IsItem.GetItem() as Vest)
                 {
                     inventory.UnequipVest();
                 }
-                if (IsItem.GetItem() as Bag)
+                else if (IsItem.GetItem() as Bag)
                 {
                     inventory.UnequipBag();
                 }
@@ -102,7 +112,6 @@ namespace ProjetSynthese
             {
                 PickUpFromGroundInventoryClick();
             }
-
         }
 
         private void PickUpFromGroundInventoryClick()
@@ -113,7 +122,7 @@ namespace ProjetSynthese
             Inventory playerInventory = player.GetComponent<PlayerController>().GetInventory();
             if ((object)IsItem.GetItem() != null)
             {
-                playerInventory.Add(toAdd);
+                playerInventory.Add(toAdd, player.gameObject);
                 if (toAdd.GetComponent<Item>() is Weapon)
                 {
                     toAdd.transform.SetParent(player.GetWeaponHolderTransform());
@@ -125,6 +134,8 @@ namespace ProjetSynthese
 
                 toAdd.SetActive(false);
             }
+            IsItem.RemoveOneFromCompteur();
+            control.CreateCellsForNearbyItem();
         }
 
         private void Awake()
@@ -135,22 +146,41 @@ namespace ProjetSynthese
         private void Update()
         {
             ChangeWeaponSlotFromKeyPressed();
+            ChangeDropItemInInventory();
         }
 
         private void ChangeWeaponSlotFromKeyPressed()
         {
-            if (Input.GetKeyDown(key))
+            if (Input.GetKeyDown(keyWeaponSlot))
             {
                 if (equipAt != EquipWeaponAt.Secondary)
                 {
                     equipAt = EquipWeaponAt.Secondary;
                 }
             }
-            if (Input.GetKeyUp(key))
+            if (Input.GetKeyUp(keyWeaponSlot))
             {
                 if (equipAt != EquipWeaponAt.Primary)
                 {
                     equipAt = EquipWeaponAt.Primary;
+                }
+            }
+        }
+
+        private void ChangeDropItemInInventory()
+        {
+            if (Input.GetKeyDown(keyDroppingItem))
+            {
+                if (!droppingItemInventory)
+                {
+                    droppingItemInventory = true;
+                }
+            }
+            if (Input.GetKeyUp(keyDroppingItem))
+            {
+                if (droppingItemInventory)
+                {
+                    droppingItemInventory = false;
                 }
             }
         }

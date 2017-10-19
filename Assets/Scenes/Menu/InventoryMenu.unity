@@ -220,6 +220,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1199693001329074, guid: ae316242800a9a14989fcd21c916094c,
         type: 2}
+    - target: {fileID: 114254665351435942, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: maxWeight
+      value: 50000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9e02e043af9d73644befd80e3b7b6277, type: 2}
   m_IsPrefabParent: 0

@@ -9,6 +9,8 @@ namespace ProjetSynthese
 
     public delegate void OnInventoryChange();
 
+    public delegate void OnSpawnDroppedItem(Cell itemToSpawn);
+
     public class Inventory : GameScript
     {
         [SerializeField] private InventoryOf inventoryOf;
@@ -23,11 +25,13 @@ namespace ProjetSynthese
 
         private Cell bag;
 
-        private float maxWeight = 100;
+        [SerializeField] private float maxWeight = 100;
 
         private float currentWeight;
 
         public event OnInventoryChange InventoryChange;
+
+        public event OnSpawnDroppedItem SpawnItem;
 
         public GameObject parent { get; set; }
 
@@ -85,10 +89,9 @@ namespace ProjetSynthese
 
         }
 
-        
-
         public void ResetInventory()
         {
+            currentWeight = 0;
             primaryWeapon = null;
             secondaryWeapon = null;
             helmet = null;
@@ -137,6 +140,11 @@ namespace ProjetSynthese
         public void NotifyInventoryChange()
         {
             if (InventoryChange != null) InventoryChange();
+        }
+
+        public void NotifySpawnDroppedItem(Cell itemToSpawn)
+        {
+            if (SpawnItem != null) SpawnItem(itemToSpawn);
         }
 
         public void EquipHelmet(Cell itemToEquip)
@@ -205,6 +213,13 @@ namespace ProjetSynthese
             AddPlayerCellToInventory(game);
         }
 
+        public void Add(GameObject game, GameObject player)
+        {
+            CreateListeIsNotExist();
+            AddItemCellToInventory(game, player);
+            AddPlayerCellToInventory(game);
+        }
+
         public void Add(Item item)
         {
             CreateListeIsNotExist();
@@ -226,6 +241,22 @@ namespace ProjetSynthese
                 CheckMultiplePresenceAndRemove(temp);
             }
 
+        }
+
+        public void Drop(Cell itemToDrop)
+        {
+            itemToDrop.GetItem().Player = parent;
+            while (itemToDrop.GetCompteur() > 1)
+            {
+                RemoveWeight(itemToDrop.GetItem().GetWeight());
+                itemToDrop.RemoveOneFromCompteur();
+                NotifySpawnDroppedItem(itemToDrop);
+                NotifyInventoryChange();
+            }
+            RemoveWeight(itemToDrop.GetItem().GetWeight());
+            listInventory.Remove(itemToDrop);
+            NotifySpawnDroppedItem(itemToDrop);     
+            NotifyInventoryChange();
         }
 
         private void Start()
@@ -257,7 +288,7 @@ namespace ProjetSynthese
             bool itemIsPresentInInventory = false;
             foreach (Cell item in listInventory)
             {
-                if (item == cell)
+                if (item == cell && item.GetItem().Level == cell.GetItem().Level)
                 {
                     item.AddCompteur();
                     itemIsPresentInInventory = true;
@@ -276,7 +307,7 @@ namespace ProjetSynthese
             return cell;
         }
 
-        private void AddItemCellToInventory(GameObject game)
+        private void AddItemCellToInventory(GameObject game, GameObject player = null)
         {
             if (inventoryOf == InventoryOf.Item)
             {
@@ -284,6 +315,7 @@ namespace ProjetSynthese
                 if (AddWeight(cell.GetItem().GetWeight()))
                 {
                     if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                    cell.GetItem().Player = player;
                 }
                 NotifyInventoryChange();
             }

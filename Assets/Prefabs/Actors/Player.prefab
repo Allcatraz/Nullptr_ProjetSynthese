@@ -457,8 +457,9 @@ GameObject:
   - component: {fileID: 114093056321587282}
   - component: {fileID: 114638758293720702}
   - component: {fileID: 114301871804280328}
-  - component: {fileID: 114884844836443650}
   - component: {fileID: 54390617244429252}
+  - component: {fileID: 114884844836443650}
+  - component: {fileID: 114400971222466238}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -1488,6 +1489,24 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114400971222466238
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509576154526796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bac391182891da44a16460b1bd54ab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSpawnerPositions:
+  - {x: 1, y: 0, z: -3}
+  - {x: 19, y: 0, z: -16}
+  - {x: 35, y: 0, z: -17}
+  - {x: 20, y: 0, z: -36}
+  itemSpawnerPrefab: {fileID: 1369578581811908, guid: 656661b308b4abf40b09bcac342f3c85,
+    type: 2}
 --- !u!114 &114405339645637836
 MonoBehaviour:
   m_ObjectHideFlags: 1

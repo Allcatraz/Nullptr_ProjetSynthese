@@ -1,6 +1,8 @@
-﻿using Harmony;
+﻿using Castle.Core.Internal;
+using Harmony;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
@@ -20,6 +22,7 @@ namespace ProjetSynthese
         private Inventory inventory;
         private ItemSensor itemSensor;
         private Weapon currentWeapon;
+        private NetworkIdentity networkIdentity;
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
 
         private bool isInventoryOpen = false;
@@ -52,6 +55,7 @@ namespace ProjetSynthese
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
                                             [EntityScope] ItemSensor itemSensor,
+                                            [GameObjectScope] NetworkIdentity networkIdentity,
                                             [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel)
         {
             this.keyboardInputSensor = keyboardInputSensor;
@@ -61,18 +65,18 @@ namespace ProjetSynthese
             this.health = health;
             this.inventory = inventory;
             this.itemSensor = itemSensor;
+            this.networkIdentity = networkIdentity;
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
         }
 
         private void Start()
         {
+            InjectDependencies("InjectPlayerController");
+
             if (!isLocalPlayer)
             {
-                Destroy(this);
                 return;
             }
-
-            InjectDependencies("InjectPlayerController");
 
             keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
@@ -122,6 +126,11 @@ namespace ProjetSynthese
 
         private void FixedUpdate()
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
+
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
             Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y, mousePos.z - transform.position.z);
             float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
@@ -188,30 +197,35 @@ namespace ProjetSynthese
         private void OnPickup()
         {
             GameObject item = itemSensor.GetItemNearest();
-            RpcSetItemHolder(item);
+            CmdTakeItem(item);
+        }
+
+        [Command]
+        private void CmdTakeItem(GameObject item)
+        {           
+            networkIdentity.AssignClientAuthority(connectionToClient);
+            RpcTakeItem(item);
+            networkIdentity.RemoveClientAuthority(connectionToClient);
         }
 
         [ClientRpc]
-        private void RpcSetItemHolder(GameObject item)
+        private void RpcTakeItem(GameObject item)
         {
-            if (isLocalPlayer)
+            if ((object)item != null)
             {
-                if ((object) item != null)
+                item.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+                inventory.Add(item);
+
+                if (item.GetComponent<Item>() is Weapon)
                 {
-                    item.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
-                    inventory.Add(item);
-
-                    if (item.GetComponent<Item>() is Weapon)
-                    {
-                        item.transform.SetParent(weaponHolderTransform);
-                    }
-                    else
-                    {
-                        item.transform.SetParent(inventoryTransform);
-                    }
-
-                    item.SetActive(false);
+                    item.transform.SetParent(weaponHolderTransform);
                 }
+                else
+                {
+                    item.transform.SetParent(inventoryTransform);
+                }
+
+                item.SetActive(false);
             }
         }
 

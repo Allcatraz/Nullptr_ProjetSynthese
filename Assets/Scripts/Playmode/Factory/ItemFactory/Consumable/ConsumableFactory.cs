@@ -13,7 +13,7 @@ namespace ProjetSynthese
         private static Vector2 range2 = new Vector2(range1.y, range1.y + PercentChanceBoost);
 
 
-        public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
         {
             int item = rnd.Next(0, 101);
 

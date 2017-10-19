@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 114245204468606200}
   - component: {fileID: 54500242382704842}
   - component: {fileID: 114093425546002342}
+  - component: {fileID: 114243304952232188}
   m_Layer: 11
   m_Name: AI
   m_TagString: Untagged
@@ -283,6 +284,27 @@ MonoBehaviour:
   m_Script: {fileID: -1050975500, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114243304952232188
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1893845116203462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114245204468606200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -339,8 +361,8 @@ MonoBehaviour:
     i13: 127
     i14: 136
     i15: 63
-  m_ServerOnly: 1
-  m_LocalPlayerAuthority: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114856437695024692
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -16,7 +16,7 @@ namespace ProjetSynthese
         private static Vector2 range3 = new Vector2(range2.y, range2.y + percentChanceSpawnSAIGA12);
         private static Vector2 range4 = new Vector2(range3.y, range3.y + percentChanceSpawnM1911);
 
-        public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
         {
             int item = rnd.Next(0, 101);
 
@@ -32,7 +32,7 @@ namespace ProjetSynthese
             {
                 SAIGA12Factory.CreateItem(itemList, spawnPoint, rnd);
             }
-            else if (item >= range4.x && item < range4.y)
+            else if (item >= range4.x && item <= range4.y)
             {
                 M1911Factory.CreateItem(itemList, spawnPoint, rnd);
             }

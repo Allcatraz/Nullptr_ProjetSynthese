@@ -16,7 +16,7 @@ namespace ProjetSynthese
 
         public static GameObject AmmoPackPrefab { get; set; }
 
-        public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd, AmmoType ammoType)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd, AmmoType ammoType)
         {
             GameObject _object = CmdSpawnObject(spawnPoint, AmmoPackPrefab);
 

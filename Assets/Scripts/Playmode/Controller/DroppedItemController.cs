@@ -1,5 +1,6 @@
 ﻿using Harmony;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
@@ -36,6 +37,7 @@ namespace ProjetSynthese
             newItem.layer = LayerMask.NameToLayer(R.S.Layer.Item);
             newItem.transform.position = player.position;
             newItem.SetActive(true);
+            NetworkServer.Spawn(newItem);
         }
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - Scene Dependencies
   - Event Channels
   - AI
+  - Map
   layers:
   - Default
   - TransparentFX
@@ -24,24 +25,24 @@ TagManager:
   - AI
   - Building
   - EquippedItem
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - ItemSensor
-  - HitSensor
+  - Map
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0

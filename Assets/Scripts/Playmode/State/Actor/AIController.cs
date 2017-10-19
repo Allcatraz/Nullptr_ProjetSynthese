@@ -70,7 +70,7 @@ namespace ProjetSynthese
 
         private const float FloorYOffset = 1.0f;
 
-        public enum ControllerMode { None, Explore, Loot,Combat }
+        public enum ControllerMode { None, Explore, Loot, Combat, Flee }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -124,8 +124,6 @@ namespace ProjetSynthese
                 case AIBrain.OpponentType.None:
                     break;
                 case AIBrain.OpponentType.AI:
-
-                    break;
                 case AIBrain.OpponentType.Player:
                     Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                     weapon.transform.position = Actor.transform.position;
@@ -204,22 +202,22 @@ namespace ProjetSynthese
             {
                 ItemTargetDestinationIsKnown = false;
             }
-           
+
         }
 
         public void FindTargetOpponnentMapDestination(ActorAI actor)
         {
-            
+
             PlayerController opponentPlayer = null;
             ActorAI opponentAI = null;
             opponentPlayer = actor.Sensor.NeareastGameObject<PlayerController>(actor.transform.position, AIRadar.LayerType.Player);
             opponentAI = actor.Sensor.NeareastNonAllyAI(actor);
-            actor.Brain.UpdateOpponentOnMapKnowledge(opponentPlayer,opponentAI);
+            actor.Brain.UpdateOpponentOnMapKnowledge(opponentPlayer, opponentAI);
             Vector3 newDestination = Vector3.zero;
             newDestination.y = FloorYOffset;
             if (opponentPlayer != null)
             {
-              
+
                 newDestination.x = opponentPlayer.transform.position.x;
                 newDestination.z = opponentPlayer.transform.position.z;
                 OpponentTargetDestination = newDestination;
@@ -238,6 +236,32 @@ namespace ProjetSynthese
             {
                 OpponentTargetDestinationIsKnown = false;
             }
+        }
+
+        public void SetFleeDestination(ActorAI actor)
+        {
+
+            if (FoundFleeDestination(actor))
+            {
+                MapDestinationIsKnown = true;
+            }
+            else
+            {
+                MapDestinationIsKnown = false;
+            }
+
+        }
+
+        private bool FoundFleeDestination(ActorAI actor)
+        {
+           // if (true)
+            {
+
+                return true;
+            }
+            //code si coincé return false
+            //exemple mur, circle of death, out of map
+            return false;
         }
 
         public ControllerMode GetAIControllerMode()
@@ -265,6 +289,10 @@ namespace ProjetSynthese
                 case ControllerMode.Combat:
                     AISpeed = AIController.SpeedLevel.Jogging;
                     Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    break;
+                case ControllerMode.Flee:
+                    AISpeed = AIController.SpeedLevel.Running;
+                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.Medium;
                     break;
                 default:
                     break;

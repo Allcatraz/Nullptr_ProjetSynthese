@@ -30,8 +30,7 @@
             {
                 aiController.Shoot(actor.Brain.CurrentOpponentType);
             }
-            //faut un call en quelque part pour weapon knoledge update
-            //avant décision possiblement dans brain et apres shooting
+            
             AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Combat);
             if (nextState != AIBrain.AIState.Combat)
             {

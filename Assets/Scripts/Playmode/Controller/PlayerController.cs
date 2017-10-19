@@ -196,19 +196,22 @@ namespace ProjetSynthese
         {
             if (isLocalPlayer)
             {
-                item.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
-                inventory.Add(item);
-
-                if (item.GetComponent<Item>() is Weapon)
+                if ((object) item != null)
                 {
-                    item.transform.SetParent(weaponHolderTransform);
-                }
-                else
-                {
-                    item.transform.SetParent(inventoryTransform);
-                }
+                    item.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+                    inventory.Add(item);
 
-                item.SetActive(false);
+                    if (item.GetComponent<Item>() is Weapon)
+                    {
+                        item.transform.SetParent(weaponHolderTransform);
+                    }
+                    else
+                    {
+                        item.transform.SetParent(inventoryTransform);
+                    }
+
+                    item.SetActive(false);
+                }
             }
         }
 

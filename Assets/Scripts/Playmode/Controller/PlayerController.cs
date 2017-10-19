@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using System.Runtime.CompilerServices;
+using Harmony;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -28,6 +29,7 @@ namespace ProjetSynthese
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
+        private bool canCameraMove = true;
 
         public Transform GetWeaponHolderTransform()
         {
@@ -131,37 +133,39 @@ namespace ProjetSynthese
 
         private void FixedUpdate()
         {
-            if (!isFirstPerson)
+            if (canCameraMove)
             {
-                Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
-                Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y,
-                    mousePos.z - transform.position.z);
-                float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
-                Vector3 vec3Angle = new Vector3(0, angle, 0);
-                playerMover.Rotate(vec3Angle);
-                distance.y = transform.position.y;
-                soldierAnimatorUpdater.ViewDirection = distance;
-                soldierAnimatorUpdater.UpdateAnimator();
-            }
-            else
-            {
-                rotation.x += -Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
-                rotation.y += Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
-                rotation.x = ClampAngle(rotation.x, -60, 60);
+                if (!isFirstPerson)
+                {
+                    Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
+                    Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y,
+                        mousePos.z - transform.position.z);
+                    float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
+                    Vector3 vec3Angle = new Vector3(0, angle, 0);
+                    playerMover.Rotate(vec3Angle);
+                    distance.y = transform.position.y;
+                    soldierAnimatorUpdater.ViewDirection = distance;
+                    soldierAnimatorUpdater.UpdateAnimator();
+                }
+                else
+                {
+                    rotation.x += -Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
+                    rotation.y += Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
+                    rotation.x = ClampAngle(rotation.x, -60, 60);
 
-                Quaternion localRotation = Quaternion.Euler(rotation.x, rotation.y, 0.0f);
-                firstPersonCamera.transform.rotation = localRotation;
-                transform.rotation = Quaternion.Euler(0, rotation.y, 0);
-
+                    Quaternion localRotation = Quaternion.Euler(rotation.x, rotation.y, 0.0f);
+                    firstPersonCamera.transform.rotation = localRotation;
+                    transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+                }
             }
         }
 
-        public static float ClampAngle(float angle, float min, float max)
+        private float ClampAngle(float angle, float min, float max)
         {
             if (angle <= -360F)
-            angle += 360F;
+                angle += 360F;
             if (angle >= 360F)
-            angle -= 360F;
+                angle -= 360F;
             return Mathf.Clamp(angle, min, max);
         }
 
@@ -215,22 +219,22 @@ namespace ProjetSynthese
             Matrix4x4 transformMatrix = transform.localToWorldMatrix;
             Vector3 direction = Vector3.zero;
 
-            if (key == KeyCode.W)
+            switch (key)
             {
-                direction = transformMatrix.GetColumn(2);
+                case KeyCode.W:
+                    direction = transformMatrix.GetColumn(2);
+                    break;
+                case KeyCode.S:
+                    direction = -transformMatrix.GetColumn(2);
+                    break;
+                case KeyCode.A:
+                    direction = -transformMatrix.GetColumn(0);
+                    break;
+                case KeyCode.D:
+                    direction = transformMatrix.GetColumn(0);
+                    break;
             }
-            else if (key == KeyCode.S)
-            {
-                direction = -transformMatrix.GetColumn(2);
-            }
-            else if (key == KeyCode.A)
-            {
-                direction = -transformMatrix.GetColumn(0);
-            }
-            else if (key == KeyCode.D)
-            {
-                direction = transformMatrix.GetColumn(0);
-            }
+
             direction.Normalize();
             playerMover.Move(direction);
         }
@@ -273,29 +277,39 @@ namespace ProjetSynthese
 
         private void OnToggleInventory()
         {
-            if (!isInventoryOpen)
+            if (isInventoryOpen)
             {
-                activityStack.StartMenu(inventoryMenu);
-                isInventoryOpen = true;
+                activityStack.StopCurrentMenu();
             }
             else
             {
-                activityStack.StopCurrentMenu();
-                isInventoryOpen = false;
+                activityStack.StartMenu(inventoryMenu);
+            }          
+            isInventoryOpen = !isInventoryOpen;
+
+            canCameraMove = !isInventoryOpen;
+            if (isFirstPerson)
+            {
+                SetCursor(isInventoryOpen, !isInventoryOpen);
             }
         }
 
         private void OnToggleMap()
         {
-            if (!isMapOpen)
+            if (isMapOpen)
             {
-                activityStack.StartMenu(mapMenu);
-                isMapOpen = true;
+                activityStack.StopCurrentMenu();
             }
             else
             {
-                activityStack.StopCurrentMenu();
-                isMapOpen = false;
+                activityStack.StartMenu(mapMenu);
+            }
+            isMapOpen = !isMapOpen;
+
+            canCameraMove = !isMapOpen;
+            if (isFirstPerson)
+            {
+                SetCursor(isMapOpen, !isMapOpen);
             }
         }
 
@@ -321,6 +335,13 @@ namespace ProjetSynthese
         {
             isFirstPerson = !isFirstPerson;
             firstPersonCamera.gameObject.SetActive(isFirstPerson);
+            SetCursor(isFirstPerson, isFirstPerson);
+        }
+
+        private void SetCursor(bool isVisible, bool isLock)
+        {
+            Cursor.visible = isVisible;
+            Cursor.lockState = isLock ? CursorLockMode.Locked : CursorLockMode.None;
         }
     }
 }

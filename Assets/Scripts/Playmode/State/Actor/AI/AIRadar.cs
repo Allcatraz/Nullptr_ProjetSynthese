@@ -9,11 +9,11 @@ namespace ProjetSynthese
         private const float NoRangePerception = 0.0f;
 
         [SerializeField]
-        private const float LowRangePerception = 50.0f;
+        private const float LowRangePerception = 5.0f;
         [SerializeField]
-        private const float MediumRangePerception = 100.0f;
+        private const float MediumRangePerception = 10.0f;
         [SerializeField]
-        private const float HighRangePerception = 150.0f;
+        private const float HighRangePerception = 15.0f;
 
         private float currentPerceptionRange = LowRangePerception;
         private float circleCastDistance = 0.0f;

@@ -52,11 +52,11 @@ namespace ProjetSynthese
             }
         }
         [SerializeField]
-        private const float WalkingSpeed = 1.0f;
+        private const float WalkingSpeed = 4.0f;
         [SerializeField]
-        private const float JoggingSpeed = 1.5f;
+        private const float JoggingSpeed = 5.5f;
         [SerializeField]
-        private const float RunningSpeed = 3.0f;
+        private const float RunningSpeed = 7.0f;
         [SerializeField]
         private const float SwimmingSpeed = 0.5f;
 
@@ -64,11 +64,11 @@ namespace ProjetSynthese
 
         private float currentSpeedLevel;
 
-        private const float RandomRadiusMoveRange = 15.0f;
+        private const float RandomRadiusMoveRange = 5.0f;
 
         private const float ErrorPositionTolerance = 0.001f;
 
-        private const float FloorYOffset = 10.0f;
+        private const float FloorYOffset = 1.0f;
 
         public enum ControllerMode { None, Explore, Loot,Combat }
         private ControllerMode aiControllerMode;

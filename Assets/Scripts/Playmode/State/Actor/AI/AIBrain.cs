@@ -214,7 +214,7 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromFleeState()
         {
-            AIState nextState = AIState.Loot;
+            AIState nextState = AIState.Explore;
 
             return nextState;
         }
@@ -315,23 +315,23 @@ namespace ProjetSynthese
 
         private bool ExistVisibleOpponent()
         {
-            if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
-            {
-                if (playerInPerceptionRange != null)
-                {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, playerInPerceptionRange))
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
-                    {
-                        return true;
-                    }
-                }
-            }
+            //if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
+            //{
+            //    if (playerInPerceptionRange != null)
+            //    {
+            //        if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, playerInPerceptionRange))
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //}
 
             return false;
         }

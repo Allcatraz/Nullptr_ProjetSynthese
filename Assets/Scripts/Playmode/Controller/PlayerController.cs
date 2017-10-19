@@ -194,19 +194,22 @@ namespace ProjetSynthese
         [ClientRpc]
         private void RpcSetItemHolder(GameObject item)
         {
-            item.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
-            inventory.Add(item);
-
-            if (item.GetComponent<Item>() is Weapon)
+            if (isLocalPlayer)
             {
-                item.transform.SetParent(weaponHolderTransform);
-            }
-            else
-            {
-                item.transform.SetParent(inventoryTransform);
-            }
+                item.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+                inventory.Add(item);
 
-            item.SetActive(false);
+                if (item.GetComponent<Item>() is Weapon)
+                {
+                    item.transform.SetParent(weaponHolderTransform);
+                }
+                else
+                {
+                    item.transform.SetParent(inventoryTransform);
+                }
+
+                item.SetActive(false);
+            }
         }
 
         private void OnToggleInventory()

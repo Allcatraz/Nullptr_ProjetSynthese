@@ -150,7 +150,7 @@ namespace ProjetSynthese
         private void SetCurrentWeaponActive(bool isActive)
         {
             if ((object)currentWeapon != null)
-            { 
+            {
                 currentWeapon.gameObject.SetActive(isActive);
                 currentWeapon.transform.position = weaponHolderTransform.position;
                 currentWeapon.transform.rotation = weaponHolderTransform.rotation;
@@ -184,27 +184,29 @@ namespace ProjetSynthese
             if ((object)currentWeapon != null)
                 currentWeapon.Use();
         }
-      
+
         private void OnPickup()
         {
             GameObject item = itemSensor.GetItemNearest();
+            RpcSetItemHolder(item);
+        }
+
+        [ClientRpc]
+        private void RpcSetItemHolder(GameObject item)
+        {
             item.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+            inventory.Add(item);
 
-            if ((object)item != null)
+            if (item.GetComponent<Item>() is Weapon)
             {
-                inventory.Add(item);
-
-                if (item.GetComponent<Item>() is Weapon)
-                {
-                    item.transform.SetParent(weaponHolderTransform);
-                }
-                else
-                {
-                    item.transform.SetParent(inventoryTransform);
-                }
-
-                item.SetActive(false);
+                item.transform.SetParent(weaponHolderTransform);
             }
+            else
+            {
+                item.transform.SetParent(inventoryTransform);
+            }
+
+            item.SetActive(false);
         }
 
         private void OnToggleInventory()
@@ -237,7 +239,7 @@ namespace ProjetSynthese
 
         private void OnReload()
         {
-            if((object)currentWeapon != null)
+            if ((object)currentWeapon != null)
             {
                 currentWeapon.Reload();
             }

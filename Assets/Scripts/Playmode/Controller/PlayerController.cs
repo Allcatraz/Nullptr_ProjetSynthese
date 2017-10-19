@@ -1,5 +1,6 @@
 ﻿using Harmony;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
@@ -183,7 +184,7 @@ namespace ProjetSynthese
             if ((object)currentWeapon != null)
                 currentWeapon.Use();
         }
-
+      
         private void OnPickup()
         {
             GameObject item = itemSensor.GetItemNearest();

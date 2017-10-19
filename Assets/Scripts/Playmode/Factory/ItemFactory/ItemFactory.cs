@@ -27,11 +27,10 @@ namespace ProjetSynthese
             {
                 EquipementFactory.CreateItem(itemList, spawnPoint, rnd);
             }
-            else if (item >= range3.x && item < range3.y)
+            else if (item >= range3.x && item <= range3.y)
             {
                 WeaponFactory.CreateItem(itemList, spawnPoint, rnd);
             }
-
         }
 
     }

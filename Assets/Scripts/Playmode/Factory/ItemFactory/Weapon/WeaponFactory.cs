@@ -32,7 +32,7 @@ namespace ProjetSynthese
             {
                 SAIGA12Factory.CreateItem(itemList, spawnPoint, rnd);
             }
-            else if (item >= range4.x && item < range4.y)
+            else if (item >= range4.x && item <= range4.y)
             {
                 M1911Factory.CreateItem(itemList, spawnPoint, rnd);
             }

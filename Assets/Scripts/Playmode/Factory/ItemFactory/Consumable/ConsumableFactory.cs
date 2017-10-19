@@ -21,7 +21,7 @@ namespace ProjetSynthese
             {
                 HealFactory.CreateItem(itemList, spawnPoint, rnd);
             }
-            else if (item >= range2.x && item < range2.y)
+            else if (item >= range2.x && item <= range2.y)
             {
                 BoostFactory.CreateItem(itemList, spawnPoint, rnd);
             }

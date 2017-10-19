@@ -32,7 +32,7 @@ namespace ProjetSynthese
             {
                 boost.Level = 2;
             }
-            else if (item >= range3.x && item < range3.y)
+            else if (item >= range3.x && item <= range3.y)
             {
                 boost.Level = 3;
             }

@@ -9,6 +9,7 @@ namespace ProjetSynthese
 
         public GameObject Player { get; set; }
 
+        public int Level { get; set; }
 
         public ItemType Type
         {

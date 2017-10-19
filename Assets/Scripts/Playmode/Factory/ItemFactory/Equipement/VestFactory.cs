@@ -16,7 +16,7 @@ namespace ProjetSynthese
 
         public static GameObject VestPrefab { get; set; }
 
-        public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
         {
             GameObject _object = CmdSpawnObject(spawnPoint, VestPrefab);
 
@@ -32,7 +32,7 @@ namespace ProjetSynthese
             {
                 vest.Level = 2;
             }
-            else if (item >= range3.x && item < range3.y)
+            else if (item >= range3.x && item <= range3.y)
             {
                 vest.Level = 3;
             }

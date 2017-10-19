@@ -6,8 +6,6 @@ namespace ProjetSynthese
 {
     public class Heal : Item
     {
-        public int Level { get; set; }
-
         public int Efficacity
         {
             get

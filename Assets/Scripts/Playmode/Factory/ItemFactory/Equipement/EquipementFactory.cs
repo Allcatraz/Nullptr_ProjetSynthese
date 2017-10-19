@@ -14,7 +14,7 @@ namespace ProjetSynthese
         private static Vector2 range2 = new Vector2(range1.y, range1.y + percentChanceSpawnHelmet);
         private static Vector2 range3 = new Vector2(range2.y, range2.y + percentChanceSpawnBag);
 
-        public static void CreateItem(List<Item> itemList, GameObject spawnPoint, System.Random rnd)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
         {
             int item = rnd.Next(0, 101);
 
@@ -26,7 +26,7 @@ namespace ProjetSynthese
             {
                 HelmentFactory.CreateItem(itemList, spawnPoint, rnd);
             }
-            else if (item >= range3.x && item < range3.y)
+            else if (item >= range3.x && item <= range3.y)
             {
                 BagFactory.CreateItem(itemList, spawnPoint, rnd);
             }

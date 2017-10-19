@@ -6,8 +6,6 @@ namespace ProjetSynthese
 {
     public class Vest : Item
     {
-        public int Level { get; set; }
-
         public int ProtectionValue
         {
             get

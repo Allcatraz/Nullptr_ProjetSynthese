@@ -50,7 +50,7 @@ namespace ProjetSynthese
 
         event FireEventHandler OnFire;
        
-        event PickupEventHandler OnPickup;
+        event PickupEventHandler OnInteract;
 
         event ReloadEventHandler OnReload;
 

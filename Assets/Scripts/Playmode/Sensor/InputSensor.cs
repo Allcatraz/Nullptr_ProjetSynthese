@@ -24,7 +24,7 @@ namespace ProjetSynthese
 
             public event FireEventHandler OnFire;
 
-            public event PickupEventHandler OnPickup;
+            public event PickupEventHandler OnInteract;
 
             public event ReloadEventHandler OnReload;
 
@@ -97,9 +97,9 @@ namespace ProjetSynthese
                 if (OnFire != null) OnFire();
             }
 
-            protected virtual void NotifyPickup()
+            protected virtual void NotifyInteract()
             {
-                if (OnPickup != null) OnPickup();
+                if (OnInteract != null) OnInteract();
             }
             
             protected virtual void NotifyReload()
@@ -133,7 +133,7 @@ namespace ProjetSynthese
 
             private bool fireTriggerd;
 
-            private bool pickupTriggerd;
+            private bool interactTriggerd;
 
             private bool reloadTriggerd;
 
@@ -161,7 +161,7 @@ namespace ProjetSynthese
 
                 fireTriggerd = false;
 
-                pickupTriggerd = false;
+                interactTriggerd = false;
 
                 reloadTriggerd = false;
 
@@ -285,12 +285,12 @@ namespace ProjetSynthese
                 }
             }
 
-            protected override void NotifyPickup()
+            protected override void NotifyInteract()
             {
-                if (!pickupTriggerd)
+                if (!interactTriggerd)
                 {
-                    base.NotifyPickup();
-                    pickupTriggerd = true;
+                    base.NotifyInteract();
+                    interactTriggerd = true;
                 }
             }
 

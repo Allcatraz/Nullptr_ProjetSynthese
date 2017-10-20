@@ -10,6 +10,7 @@ namespace ProjetSynthese
 
         private BoostStats boostStats;
         private PlayerBoostEventChannel playerBoostEventChannel;
+
         private float fillAmount;
 
         private void InjectBoostBarController([EventChannelScope] PlayerBoostEventChannel playerBoostEventChannel)
@@ -30,6 +31,7 @@ namespace ProjetSynthese
 
         private void OnBoostChanged(PlayerBoostEvent playerBoostEvent)
         {
+            boostStats = playerBoostEvent.PlayerBoost;
             fillAmount = boostStats.BoostPoints / boostStats.MaxBoostPoints;
             image.fillAmount = fillAmount;
         }

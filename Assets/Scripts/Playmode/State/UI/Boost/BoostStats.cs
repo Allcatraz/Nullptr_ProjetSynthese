@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ProjetSynthese
 {
@@ -38,12 +36,12 @@ namespace ProjetSynthese
             boostPoints = initialBoostPoints;
         }
 
-        public void Hit(int hitPoints)
+        public void Hit(float hitPoints)
         {
             BoostPoints -= hitPoints;
         }
 
-        public void Heal(int healPoints)
+        public void Heal(float healPoints)
         {
             BoostPoints += healPoints;
         }

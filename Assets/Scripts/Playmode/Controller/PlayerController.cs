@@ -32,7 +32,7 @@ namespace ProjetSynthese
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
 
-        private Vector2 rotation;
+        private Vector2 rotation = Vector2.zero;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
@@ -95,7 +95,7 @@ namespace ProjetSynthese
 
             keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
-            keyboardInputSensor.Keyboards.OnPickup += OnPickup;
+            keyboardInputSensor.Keyboards.OnInteract += OnInteract;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn += OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff += OnSwitchSprintOff;
             keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon += OnSwitchPrimaryWeapon;
@@ -113,7 +113,6 @@ namespace ProjetSynthese
 
             transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
-            rotation = new Vector2();
 
             inventory.NotifyInventoryChange();
         }
@@ -127,7 +126,7 @@ namespace ProjetSynthese
 
             keyboardInputSensor.Keyboards.OnMoveToward -= OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory -= OnToggleInventory;
-            keyboardInputSensor.Keyboards.OnPickup -= OnPickup;
+            keyboardInputSensor.Keyboards.OnInteract -= OnInteract;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn -= OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff -= OnSwitchSprintOff;
             keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon -= OnSwitchPrimaryWeapon;
@@ -266,8 +265,7 @@ namespace ProjetSynthese
                 currentWeapon.Use();
         }
 
-        //Todo: A changer pour un use overall
-        private void OnPickup()
+        private void OnInteract()
         {
             GameObject item = itemSensor.GetItemNearest();
             CmdTakeItem(item);

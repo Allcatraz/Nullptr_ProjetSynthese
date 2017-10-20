@@ -29,7 +29,8 @@ namespace ProjetSynthese
 
         public override void Use()
         {
-            //throw new System.NotImplementedException();
+            Player.GetComponentInChildren<BoostStats>().Heal(Efficacity);
+            //Todo: Enlever un boost dans l'inventaire
         }
 
         public override int GetWeight()

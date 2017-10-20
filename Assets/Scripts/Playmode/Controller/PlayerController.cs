@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
+    public delegate void UseEventHandler(bool isDoingSomething);
+
     [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : NetworkGameScript
     {
@@ -33,6 +35,9 @@ namespace ProjetSynthese
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
+        private bool isDoingSomething = false;
+
+        public UseEventHandler OnUse;
 
         public Transform GetWeaponHolderTransform()
         {
@@ -255,10 +260,22 @@ namespace ProjetSynthese
                 currentWeapon.Use();
         }
 
+        //Todo: A changer pour un use overall
         private void OnPickup()
         {
             GameObject item = itemSensor.GetItemNearest();
             CmdTakeItem(item);
+
+            if (item == null)
+            {
+                isDoingSomething = false;
+            }
+            else
+            {
+                isDoingSomething = true;
+            }
+
+            if (OnUse != null) OnUse(isDoingSomething);
         }
 
         [Command]

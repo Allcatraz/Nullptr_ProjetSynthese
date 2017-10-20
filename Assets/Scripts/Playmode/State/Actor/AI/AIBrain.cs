@@ -230,7 +230,34 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromFleeState()
         {
-            AIState nextState = AIState.Explore;
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
+            {
+                if (ExistVisibleOpponent())
+                {
+                    if (!hasPrimaryWeaponEquipped)
+                    {
+                        if (!FoundItemInPerceptionRange())
+                        {
+                            nextState = AIState.Flee;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                    }
+                }
+                else if (FoundItemInPerceptionRange())
+                {
+                    nextState = AIState.Loot;
+                }
+            }
+
+            if (nextState == AIState.None)
+            {
+                nextState = AIState.Explore;
+            }
 
             return nextState;
         }

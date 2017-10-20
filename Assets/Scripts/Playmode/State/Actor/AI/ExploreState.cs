@@ -6,7 +6,7 @@ namespace ProjetSynthese
     {
         public override void Execute(ActorAI actor)
         {
-          
+           
             AIController aiController = (AIController)actor.ActorController;
 
             if (aiController.GetAIControllerMode() != AIController.ControllerMode.Explore)

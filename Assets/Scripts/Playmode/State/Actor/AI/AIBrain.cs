@@ -33,6 +33,22 @@ namespace ProjetSynthese
         private PlayerController playerInPerceptionRange = null;
         private Item itemInPerceptionRange = null;
 
+        public ActorAI AiInPerceptionRange
+        {
+            get
+            { return aiInPerceptionRange; }
+            private set
+            { aiInPerceptionRange = value; }
+        }
+
+        public PlayerController PlayerInPerceptionRange
+        {
+            get
+            { return playerInPerceptionRange; }
+            private set
+            { playerInPerceptionRange = value; }
+        }
+
         public Item ItemInPerceptionRange
         {
             get

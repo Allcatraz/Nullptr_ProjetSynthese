@@ -4,6 +4,8 @@ namespace ProjetSynthese
 {
     public class AIController : ActorController
     {
+        private const float FleeRange = 2.0f;
+
         public bool IsInBuilding { get; set; }
 
         public Vector3 MapDestination { get; set; }
@@ -254,14 +256,55 @@ namespace ProjetSynthese
 
         private bool FoundFleeDestination(ActorAI actor)
         {
-           // if (true)
-            {
+            Vector3 fleeDirection = Vector3.zero;
+            Vector3 aiCurrentPosition = actor.transform.position;
+            Vector3 fleeDestination = aiCurrentPosition;
 
+            if (actor.Brain.AiInPerceptionRange != null)
+            {
+                fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
+                fleeDirection.Normalize();
+                fleeDirection *= FleeRange;
+                fleeDestination.x += fleeDirection.x;
+                fleeDestination.z += fleeDirection.z;
+            }
+            else if (actor.Brain.PlayerInPerceptionRange != null)
+            {
+                fleeDirection = -(actor.Brain.PlayerInPerceptionRange.transform.position - aiCurrentPosition);
+                fleeDirection.Normalize();
+                fleeDirection *= FleeRange;
+                fleeDestination.x += fleeDirection.x;
+                fleeDestination.z += fleeDirection.z;
+            }
+            else
+            {
+                
+                Vector3 unitZ = actor.transform.forward;
+                Quaternion rotation = actor.transform.rotation;
+                Quaternion rot180 = Quaternion.AngleAxis(180, actor.transform.forward);
+                fleeDirection = rot180 * (rotation * unitZ);
+                fleeDirection.Normalize();
+                fleeDirection *= FleeRange;
+                fleeDestination.x += fleeDirection.x;
+                fleeDestination.z += fleeDirection.z;
+
+            }
+            fleeDestination.y += FloorYOffset;
+            if (ValidateMapDestination(fleeDestination))
+            {
+                MapDestination = fleeDestination;
                 return true;
             }
+            return false;
+
             //code si coincé return false
             //exemple mur, circle of death, out of map
-            return false;
+
+        }
+
+        private bool ValidateMapDestination(Vector3 mapDestination)
+        {
+            return true;
         }
 
         public ControllerMode GetAIControllerMode()

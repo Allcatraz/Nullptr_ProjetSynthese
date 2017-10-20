@@ -156,8 +156,10 @@ namespace ProjetSynthese
                     Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y,
                         mousePos.z - transform.position.z);
                     float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
+
                     Vector3 vec3Angle = new Vector3(0, angle, 0);
                     playerMover.Rotate(vec3Angle);
+
                     distance.y = transform.position.y;
                     soldierAnimatorUpdater.ViewDirection = distance;
                     soldierAnimatorUpdater.UpdateAnimator();
@@ -252,6 +254,8 @@ namespace ProjetSynthese
 
             direction.Normalize();
             playerMover.Move(direction);
+
+            soldierAnimatorUpdater.MouvementDirection = direction;
         }
 
         private void OnFire()
@@ -296,6 +300,10 @@ namespace ProjetSynthese
 
             if ((object)item != null)
             {
+                item.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+                var allItems = item.gameObject.GetAllChildrens();
+                allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem));
+
                 inventory.Add(item, gameObject);
 
                 if (item.GetComponent<Item>() is Weapon)

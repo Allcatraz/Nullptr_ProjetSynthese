@@ -12,6 +12,7 @@ namespace ProjetSynthese
 
         private PlayerUseEventChannel playerUseEventChannel;
 
+        private float startAngle = 0;
         private bool isPlayerInRange = false;
         private bool isDoorOpen = false;
         private bool isCoroutineRunning = false;
@@ -25,6 +26,7 @@ namespace ProjetSynthese
         {
             InjectDependencies("InjectOpenDoor");
             playerUseEventChannel.OnEventPublished += OnPlayerUse;
+            startAngle = visualTransform.localEulerAngles.y;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -60,7 +62,7 @@ namespace ProjetSynthese
             float currentangle = visualTransform.localEulerAngles.y; 
             if (isDoorOpen)
             {
-                float angleToDo = Mathf.Clamp(Mathf.Abs(openedAngle - (360 - currentangle)), closedAngle, openedAngle);
+                float angleToDo = Mathf.Clamp(Mathf.Abs(openedAngle - (startAngle - currentangle)), closedAngle, openedAngle);
                 for (float i = 0; i <= angleToDo; i+=2f)
                 {
                     visualTransform.localEulerAngles = new Vector3(visualTransform.transform.localEulerAngles.x, currentangle - i, visualTransform.transform.localEulerAngles.z);
@@ -71,7 +73,7 @@ namespace ProjetSynthese
             }
             else
             {
-                float angleToDo = Mathf.Clamp(360 - currentangle, closedAngle, openedAngle);
+                float angleToDo = Mathf.Clamp(startAngle - currentangle, closedAngle, openedAngle);
                 for (float i = 0; i <= angleToDo; i+=2f)
                 {
                     visualTransform.localEulerAngles = new Vector3(visualTransform.transform.localEulerAngles.x, currentangle + i, visualTransform.transform.localEulerAngles.z);

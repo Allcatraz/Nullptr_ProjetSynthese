@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Castle.Core.Internal;
 using Harmony;
 using UnityEngine;
@@ -301,7 +303,7 @@ namespace ProjetSynthese
             if ((object)item != null)
             {
                 item.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
-                var allItems = item.gameObject.GetAllChildrens();
+                List<GameObject> allItems = item.gameObject.GetAllChildrens().ToList();
                 allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem));
 
                 inventory.Add(item, gameObject);

@@ -29,7 +29,7 @@ namespace ProjetSynthese
 
         public override void Use()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         public override int GetWeight()

@@ -4,30 +4,30 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public delegate void BoostChangedEventHandler(int oldBoostPoints, int newBoostPoints);
+    public delegate void BoostChangedEventHandler(float oldBoostPoints, float newBoostPoints);
 
     public class BoostStats : GameScript
     {
-        [SerializeField] private int initialBoostPoints;
-        [SerializeField] private int maxBoostPoints;
+        [SerializeField] private float initialBoostPoints;
+        [SerializeField] private float maxBoostPoints;
 
         public event BoostChangedEventHandler OnBoostChanged;
 
-        private int boostPoints;
+        private float boostPoints;
 
-        public int BoostPoints
+        public float BoostPoints
         {
             get { return boostPoints; }
             private set
             {
-                int oldBoostPoints = boostPoints;
+                float oldBoostPoints = boostPoints;
                 boostPoints = value < 0 ? 0 : (value > maxBoostPoints ? maxBoostPoints : value);
 
                 if (OnBoostChanged != null) OnBoostChanged(oldBoostPoints, boostPoints);
             }
         }
 
-        public int MaxBoostPoints
+        public float MaxBoostPoints
         {
             get { return maxBoostPoints; }
             set { maxBoostPoints = value; }

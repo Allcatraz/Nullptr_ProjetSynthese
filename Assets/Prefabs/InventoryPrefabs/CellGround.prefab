@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114470504241705540}
   - component: {fileID: 114889759624933646}
   - component: {fileID: 114423272680720190}
-  - component: {fileID: 114325020507642470}
+  - component: {fileID: 114238933133656498}
   m_Layer: 5
   m_Name: CellGround
   m_TagString: Untagged
@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d26f66803e744e43a26ab91009d9324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemToDrag: {fileID: 1199693001329074}
 --- !u!114 &114097311097667214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -90,7 +91,7 @@ MonoBehaviour:
   buttonType: 3
   keyWeaponSlot: 0
   keyDroppingItem: 0
---- !u!114 &114325020507642470
+--- !u!114 &114238933133656498
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,8 +107,45 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114075698879232500}
+        - m_Target: {fileID: 114276110604363744, guid: c2f1c327cf27e3f4f919307e485a3023,
+            type: 2}
           m_MethodName: Drag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 13
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114276110604363744, guid: c2f1c327cf27e3f4f919307e485a3023,
+            type: 2}
+          m_MethodName: OnBeginDrag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 14
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114276110604363744, guid: c2f1c327cf27e3f4f919307e485a3023,
+            type: 2}
+          m_MethodName: OnEndDrag
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

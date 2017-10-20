@@ -6,31 +6,39 @@ namespace ProjetSynthese
 {
     public class DragHandler : GameScript
     {
-        private static GameObject itemToDrag;
+        [SerializeField] private GameObject itemToDrag;
+        private GameObject canvasMenu;
         private Vector3 startPosition;
         private GameObject oldParent;
 
-        public void OnBeginDrag(PointerEventData eventData)
+        private void Awake()
         {
-            itemToDrag = transform.parent.gameObject;
+            InjectDependencies("InjectController");
+        }
+
+        private void InjectController([SceneScope] InventoryController inventoryController)
+        {
+            canvasMenu = inventoryController.gameObject;
+        }
+
+        public void OnBeginDrag()
+        {
             oldParent = itemToDrag.transform.parent.gameObject;
-            startPosition = transform.parent.position;
+            startPosition = itemToDrag.transform.position;
+            itemToDrag.transform.parent = canvasMenu.transform;
         }
 
-        public void OnDrag(PointerEventData eventData)
-        {
-            transform.parent.position = Input.mousePosition;
-        }
-
-        public void OnEndDrag(PointerEventData eventData)
+        public void OnEndDrag()
         {
             itemToDrag = null;
-            transform.parent.position = startPosition;
+            itemToDrag.transform.position = startPosition;
         }
 
         public void Drag()
         {
-            transform.parent.position = Input.mousePosition;
+
+            itemToDrag.transform.position = Input.mousePosition;
+
         }
     }
 }

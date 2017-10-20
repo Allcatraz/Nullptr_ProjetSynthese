@@ -126,7 +126,7 @@ namespace ProjetSynthese
                             nextState = AIState.Hunt;
                         }
                     }
-                 }
+                }
                 else if (FoundItemInPerceptionRange())
                 {
                     nextState = AIState.Loot;
@@ -167,7 +167,7 @@ namespace ProjetSynthese
                             nextState = AIState.Hunt;
                         }
                     }
-                    
+
                 }
                 else
                 {
@@ -358,23 +358,24 @@ namespace ProjetSynthese
 
         private bool ExistVisibleOpponent()
         {
-            //if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
-            //{
-            //    if (playerInPerceptionRange != null)
-            //    {
-            //        if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, playerInPerceptionRange))
-            //        {
-            //            return true;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
-            //        {
-            //            return true;
-            //        }
-            //    }
-            //}
+            if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
+            //    if (FoundAIInPerceptionRange())
+            {
+                if (playerInPerceptionRange != null)
+                {
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, playerInPerceptionRange))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
+                    {
+                        return true;
+                    }
+                }
+            }
 
             return false;
         }
@@ -442,7 +443,7 @@ namespace ProjetSynthese
             {
                 equippedPrimaryWeapon = (Weapon)cell.GetItem();
             }
-            
+
             if (equippedPrimaryWeapon != null)
             {
                 hasPrimaryWeaponEquipped = true;

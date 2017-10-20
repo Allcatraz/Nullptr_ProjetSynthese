@@ -21,7 +21,7 @@ namespace ProjetSynthese
         {
             Vector3[] position = new Vector3[2];
             position[0] = new Vector3(15, 1.0f, -15);
-            position[1] = new Vector3(15, 1.0f, -15);
+            position[1] = new Vector3(20, 1.0f, -20);
             
             for (int i = 0; i < AINumber; i++)
             {

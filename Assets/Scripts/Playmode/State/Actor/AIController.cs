@@ -289,7 +289,6 @@ namespace ProjetSynthese
                 fleeDestination.z += fleeDirection.z;
 
             }
-            fleeDestination.y += FloorYOffset;
             if (ValidateMapDestination(fleeDestination))
             {
                 MapDestination = fleeDestination;

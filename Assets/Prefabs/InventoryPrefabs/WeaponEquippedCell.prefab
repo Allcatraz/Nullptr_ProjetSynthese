@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114158440488461898}
   - component: {fileID: 114550682693880886}
   - component: {fileID: 114103569421025412}
+  - component: {fileID: 114854438656312902}
   m_Layer: 5
   m_Name: WeaponEquippedCell
   m_TagString: Untagged
@@ -39,6 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224607370931524036}
   - component: {fileID: 114201518833981198}
+  - component: {fileID: 114926207471508538}
   m_Layer: 5
   m_Name: CellController
   m_TagString: Untagged
@@ -121,7 +123,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonType: 0
-  key: 306
+  keyWeaponSlot: 0
+  keyDroppingItem: 0
 --- !u!114 &114550682693880886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -163,6 +166,36 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114854438656312902
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1445196662450070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 5
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114926207471508538}
+          m_MethodName: Drag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!114 &114876413784018602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -196,6 +229,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
+--- !u!114 &114926207471508538
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1470560086347972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d26f66803e744e43a26ab91009d9324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &222035138423027764
 CanvasRenderer:
   m_ObjectHideFlags: 1

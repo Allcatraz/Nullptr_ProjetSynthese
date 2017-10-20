@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ProjetSynthese
 {
     public enum InventoryOf { Player, Item }
-    public enum EquipWeaponAt { Primary, Secondary}
+    public enum EquipWeaponAt { Primary, Secondary }
 
     public delegate void OnInventoryChange();
 
@@ -120,7 +120,7 @@ namespace ProjetSynthese
                 CheckMultiplePresenceAndRemove(itemToEquip);
             }
         }
-        
+
         public void UnequipWeaponAt(EquipWeaponAt selection)
         {
             if (selection == ProjetSynthese.EquipWeaponAt.Primary && primaryWeapon != null)
@@ -255,7 +255,7 @@ namespace ProjetSynthese
             }
             RemoveWeight(itemToDrop.GetItem().GetWeight());
             listInventory.Remove(itemToDrop);
-            NotifySpawnDroppedItem(itemToDrop);     
+            NotifySpawnDroppedItem(itemToDrop);
             NotifyInventoryChange();
         }
 
@@ -362,7 +362,7 @@ namespace ProjetSynthese
             if ((object)one == null || (object)two == null)
             {
                 return false;
-            } 
+            }
             bool aRetourner = false;
             if (one.listInventory == two.listInventory && one.helmet == two.helmet && one.vest == two.vest && one.primaryWeapon == two.primaryWeapon && one.secondaryWeapon == two.secondaryWeapon)
             {
@@ -371,7 +371,7 @@ namespace ProjetSynthese
             return aRetourner;
         }
 
-        public static bool operator !=(Inventory one,   Inventory two)
+        public static bool operator !=(Inventory one, Inventory two)
         {
             return !(one == two);
         }

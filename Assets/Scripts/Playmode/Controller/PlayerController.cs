@@ -133,15 +133,20 @@ namespace ProjetSynthese
             mouseInputSensor.Mouses.OnFire -= OnFire;
 
             health.OnDeath -= OnDeath;
+
+            deathCircleHurtEventChannel.OnEventPublished -= OnPlayerOutDeathCircle;
         }
 
         private void FixedUpdate()
         {
-
             if (!isLocalPlayer)
             {
                 return;
             }
+            if (canCameraMove)
+            {
+                if (!isFirstPerson)
+                {
                     Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
                     Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y,
                         mousePos.z - transform.position.z);
@@ -258,7 +263,7 @@ namespace ProjetSynthese
 
         [Command]
         private void CmdTakeItem(GameObject item)
-        {           
+        {
             networkIdentity.AssignClientAuthority(connectionToClient);
             RpcTakeItem(item);
             networkIdentity.RemoveClientAuthority(connectionToClient);
@@ -267,9 +272,13 @@ namespace ProjetSynthese
         [ClientRpc]
         private void RpcTakeItem(GameObject item)
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
+
             if ((object)item != null)
             {
-
                 inventory.Add(item, gameObject);
 
                 if (item.GetComponent<Item>() is Weapon)
@@ -293,7 +302,7 @@ namespace ProjetSynthese
             else
             {
                 activityStack.StartMenu(inventoryMenu);
-            }          
+            }
             isInventoryOpen = !isInventoryOpen;
 
             canCameraMove = !isInventoryOpen;

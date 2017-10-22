@@ -108,8 +108,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114276110604363744, guid: c2f1c327cf27e3f4f919307e485a3023,
-            type: 2}
+        - m_Target: {fileID: 114969219805507980}
           m_MethodName: Drag
           m_Mode: 1
           m_Arguments:
@@ -126,8 +125,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114276110604363744, guid: c2f1c327cf27e3f4f919307e485a3023,
-            type: 2}
+        - m_Target: {fileID: 114969219805507980}
           m_MethodName: OnBeginDrag
           m_Mode: 1
           m_Arguments:
@@ -144,8 +142,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114276110604363744, guid: c2f1c327cf27e3f4f919307e485a3023,
-            type: 2}
+        - m_Target: {fileID: 114969219805507980}
           m_MethodName: OnEndDrag
           m_Mode: 1
           m_Arguments:
@@ -211,7 +208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d26f66803e744e43a26ab91009d9324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemToDrag: {fileID: 1782649055674634}
 --- !u!114 &114526658910768234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -280,6 +276,7 @@ MonoBehaviour:
   buttonType: 1
   keyWeaponSlot: 0
   keyDroppingItem: 0
+  control: {fileID: 0}
 --- !u!222 &222770788889713112
 CanvasRenderer:
   m_ObjectHideFlags: 1

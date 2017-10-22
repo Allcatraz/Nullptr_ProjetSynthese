@@ -23,6 +23,58 @@ namespace ProjetSynthese
 
         public GameObject Player { get; set; }
 
+        public Transform GridInventoryPlayer
+        {
+            get
+            {
+                return gridInventoryPlayer;
+            }
+
+            set
+            {
+                gridInventoryPlayer = value;
+            }
+        }
+
+        public Transform GridEquippedByPlayer
+        {
+            get
+            {
+                return gridEquippedByPlayer;
+            }
+
+            set
+            {
+                gridEquippedByPlayer = value;
+            }
+        }
+
+        public Transform GridProtectionPlayer
+        {
+            get
+            {
+                return gridProtectionPlayer;
+            }
+
+            set
+            {
+                gridProtectionPlayer = value;
+            }
+        }
+
+        public Transform GridNerbyItem
+        {
+            get
+            {
+                return gridNerbyItem;
+            }
+
+            set
+            {
+                gridNerbyItem = value;
+            }
+        }
+
         public void CreateCellsForInventoryPlayer()
         {
             ClearGrid(gridInventoryPlayer);
@@ -31,6 +83,7 @@ namespace ProjetSynthese
                 GameObject cellObject = Instantiate(cellObjectPrefab);
                 cellObject.transform.SetParent(gridInventoryPlayer, false);
                 cellObject.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellObject.GetComponentInChildren<CellObject>().control = this;
                 cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
             }
         }
@@ -43,6 +96,7 @@ namespace ProjetSynthese
                 GameObject cellWeaponTemp1 = Instantiate(cellEquippedWeaponPrefabs);
                 cellWeaponTemp1.transform.SetParent(gridEquippedByPlayer, false);
                 cellWeaponTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellWeaponTemp1.GetComponentInChildren<CellObject>().control = this;
                 cellWeaponTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetPrimaryWeapon());
                 cellWeaponTemp1.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Primary;
             }
@@ -51,6 +105,7 @@ namespace ProjetSynthese
                 GameObject cellWeaponTemp2 = Instantiate(cellEquippedWeaponPrefabs);
                 cellWeaponTemp2.transform.SetParent(gridEquippedByPlayer, false);
                 cellWeaponTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellWeaponTemp2.GetComponentInChildren<CellObject>().control = this;
                 cellWeaponTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetSecondaryWeapon());
                 cellWeaponTemp2.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Secondary;
             }
@@ -64,6 +119,7 @@ namespace ProjetSynthese
                 GameObject cellProtectionTemp1 = Instantiate(cellProtectionItemPrefabs);
                 cellProtectionTemp1.transform.SetParent(gridProtectionPlayer, false);
                 cellProtectionTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellProtectionTemp1.GetComponentInChildren<CellObject>().control = this;
                 cellProtectionTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetVest());
             }
 
@@ -72,6 +128,7 @@ namespace ProjetSynthese
                 GameObject cellProtectionTemp2 = Instantiate(cellProtectionItemPrefabs);
                 cellProtectionTemp2.transform.SetParent(gridProtectionPlayer, false);
                 cellProtectionTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellProtectionTemp2.GetComponentInChildren<CellObject>().control = this;
                 cellProtectionTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetHelmet());
             }
             if (inventory.GetBag() != null)
@@ -79,6 +136,7 @@ namespace ProjetSynthese
                 GameObject cellProtectionTemp3 = Instantiate(cellProtectionItemPrefabs);
                 cellProtectionTemp3.transform.SetParent(gridProtectionPlayer, false);
                 cellProtectionTemp3.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellProtectionTemp3.GetComponentInChildren<CellObject>().control = this;
                 cellProtectionTemp3.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetBag());
             }
         }
@@ -94,6 +152,7 @@ namespace ProjetSynthese
                     GameObject cellObject = Instantiate(cellObjectGround);
                     cellObject.transform.SetParent(gridNerbyItem, false);
                     cellObject.GetComponentInChildren<CellObject>().inventory = inventoryGround;
+                    cellObject.GetComponentInChildren<CellObject>().control = this;
                     cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
                 }
             }

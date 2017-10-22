@@ -16,6 +16,14 @@ namespace ProjetSynthese
         [SerializeField] private KeyCode keyDroppingItem;
         private Button button;
         private bool droppingItemInventory = false;
+        private GameObject itemToDrag;
+        private Vector3 startPosition;
+        private GameObject canvasMenu;
+        private GameObject oldParent;
+        private bool dropAtType;
+        public InventoryController control;
+        private PlayerController player;
+        private Inventory playerInventory;
         public EquipWeaponAt equipAt { get; set; }
 
 
@@ -30,7 +38,14 @@ namespace ProjetSynthese
         public Text TextNumber { get; private set; }
 
         public void InstantiateFromCell(Cell cell)
-        {   
+        {
+            player = control.Player.GetComponent<PlayerController>();
+            playerInventory = player.GetInventory();
+            itemToDrag = transform.parent.gameObject;
+            oldParent = GetTransformCorrectGrid(this.buttonType).gameObject;
+            startPosition = itemToDrag.transform.position;
+            canvasMenu = control.gameObject;
+
             string name = cell.GetItem().Type.ToString();
             if (cell.GetItem().Type == ItemType.AmmoPack)
             {
@@ -48,6 +63,49 @@ namespace ProjetSynthese
                 SetTextNumber(compteur);
             }
             SetImageBackground();
+        }
+
+        private Transform GetTransformCorrectGrid(ButtonType gridToFind)
+        {
+            if (gridToFind == ButtonType.Ground)
+            {
+                return control.GridNerbyItem;
+            }
+            else if (gridToFind == ButtonType.Inventory)
+            {
+                return control.GridInventoryPlayer;
+            }
+            else if (gridToFind == ButtonType.Protection)
+            {
+                return control.GridProtectionPlayer;
+            }
+            else if (gridToFind == ButtonType.Weapon)
+            {
+                return control.GridEquippedByPlayer;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void OnBeginDrag()
+        {
+            
+            itemToDrag.transform.SetParent(canvasMenu.transform);
+        }
+
+        public void OnEndDrag()
+        {
+            itemToDrag.transform.position = startPosition;
+            itemToDrag.transform.SetParent(oldParent.transform);
+        }
+
+        public void Drag()
+        {
+
+            itemToDrag.transform.position = Input.mousePosition;
+
         }
 
         private void InjectCellObject([EntityScope] Text textName,
@@ -82,6 +140,7 @@ namespace ProjetSynthese
                 }
                 else if (IsItem.GetItem() as Heal || IsItem.GetItem() as Boost)
                 {
+                    IsItem.GetItem().Player = player.gameObject;
                     IsItem.GetItem().Use();
                     inventory.CheckMultiplePresenceAndRemove(IsItem);
                 }
@@ -121,9 +180,6 @@ namespace ProjetSynthese
         private void PickUpFromGroundInventoryClick()
         {
             GameObject toAdd = IsItem.GetItem().gameObject;
-            InventoryController control = inventory.parent.GetComponent<InventoryController>();
-            PlayerController player = control.Player.GetComponent<PlayerController>();
-            Inventory playerInventory = player.GetComponent<PlayerController>().GetInventory();
             if ((object)IsItem.GetItem() != null)
             {
                 playerInventory.Add(toAdd, player.gameObject);
@@ -144,7 +200,7 @@ namespace ProjetSynthese
 
         private void Awake()
         {
-            InjectDependencies("InjectCellObject");
+            InjectDependencies("InjectCellObject");         
         }
 
         private void Update()

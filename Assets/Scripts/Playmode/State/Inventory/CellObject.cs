@@ -11,7 +11,7 @@ namespace ProjetSynthese
 
     public class CellObject : GameScript
     {
-        [SerializeField] private ButtonType buttonType;
+        [SerializeField] public ButtonType buttonType;
         [SerializeField] private KeyCode keyWeaponSlot;
         [SerializeField] private KeyCode keyDroppingItem;
         private Button button;
@@ -20,7 +20,8 @@ namespace ProjetSynthese
         private Vector3 startPosition;
         private GameObject canvasMenu;
         private GameObject oldParent;
-        private bool dropAtType;
+        private bool isDragging = false;
+        public ButtonType dropAtType { get; set; }
         public InventoryController control;
         private PlayerController player;
         private Inventory playerInventory;
@@ -91,14 +92,51 @@ namespace ProjetSynthese
 
         public void OnBeginDrag()
         {
-            
+            isDragging = true;
             itemToDrag.transform.SetParent(canvasMenu.transform);
         }
-
+       
         public void OnEndDrag()
         {
-            itemToDrag.transform.position = startPosition;
-            itemToDrag.transform.SetParent(oldParent.transform);
+            isDragging = false;
+            if (dropAtType == ButtonType.Ground && dropAtType != buttonType)
+            {
+                if (buttonType == ButtonType.Inventory && droppingItemInventory)
+                {
+                    ClickOnInventoryButton();
+                }
+            }
+            else if (dropAtType == ButtonType.Inventory && dropAtType != buttonType)
+            {
+                if (buttonType == ButtonType.Ground)
+                {
+                    ClickOnGroundButton();
+                }
+                if (buttonType == ButtonType.Protection)
+                {
+                    ClickOnProtectionButton();
+                }
+                if (buttonType == ButtonType.Weapon)
+                {
+                    ClickOnWeaponButton();
+                }
+            }
+            else if (dropAtType == ButtonType.Protection && dropAtType != buttonType)
+            {
+                if (buttonType == ButtonType.Inventory)
+                {
+                    ClickOnInventoryButton();
+                }
+            }
+            else if (dropAtType == ButtonType.Weapon && dropAtType != buttonType)
+            {
+                if (buttonType == ButtonType.Inventory)
+                {
+                    ClickOnInventoryButton();
+                }
+            }
+            Destroy(itemToDrag);
+            inventory.NotifyInventoryChange();            
         }
 
         public void Drag()
@@ -120,64 +158,83 @@ namespace ProjetSynthese
 
         private void TaskOnClick()
         {
-            if (buttonType == ButtonType.Inventory)
+            if (!isDragging)
             {
-                if (droppingItemInventory)
+                if (buttonType == ButtonType.Inventory)
                 {
-                    inventory.Drop(IsItem);
+                    ClickOnInventoryButton();
                 }
-                else if (IsItem.GetItem() as Weapon)
+                if (buttonType == ButtonType.Weapon)
                 {
-                    inventory.EquipWeaponAt(equipAt, IsItem);
+                    ClickOnWeaponButton();
                 }
-                else if (IsItem.GetItem() as Helmet)
+                if (buttonType == ButtonType.Protection)
                 {
-                    inventory.EquipHelmet(IsItem);
+                    ClickOnProtectionButton();
                 }
-                else if (IsItem.GetItem() as Vest)
+                if (buttonType == ButtonType.Ground)
                 {
-                    inventory.EquipVest(IsItem);
-                }
-                else if (IsItem.GetItem() as Heal || IsItem.GetItem() as Boost)
-                {
-                    IsItem.GetItem().Player = player.gameObject;
-                    IsItem.GetItem().Use();
-                    inventory.CheckMultiplePresenceAndRemove(IsItem);
-                }
-                else if (IsItem.GetItem() as Bag)
-                {
-                    inventory.EquipBag(IsItem);
+                    ClickOnGroundButton();
                 }
             }
-            if (buttonType == ButtonType.Weapon)
+           
+        }
+
+        private void ClickOnProtectionButton()
+        {
+            if (IsItem.GetItem() as Helmet)
             {
-                if (IsItem.GetItem() as Weapon)
-                {
-                    inventory.UnequipWeaponAt(equipAt);
-                }
+                inventory.UnequipHelmet();
             }
-            if (buttonType == ButtonType.Protection)
+            else if (IsItem.GetItem() as Vest)
             {
-                if (IsItem.GetItem() as Helmet)
-                {
-                    inventory.UnequipHelmet();
-                }
-                else if (IsItem.GetItem() as Vest)
-                {
-                    inventory.UnequipVest();
-                }
-                else if (IsItem.GetItem() as Bag)
-                {
-                    inventory.UnequipBag();
-                }
+                inventory.UnequipVest();
             }
-            if (buttonType == ButtonType.Ground)
+            else if (IsItem.GetItem() as Bag)
             {
-                PickUpFromGroundInventoryClick();
+                inventory.UnequipBag();
             }
         }
 
-        private void PickUpFromGroundInventoryClick()
+        private void ClickOnWeaponButton()
+        {
+            if (IsItem.GetItem() as Weapon)
+            {
+                inventory.UnequipWeaponAt(equipAt);
+            }
+        }
+
+        private void ClickOnInventoryButton()
+        {
+            if (droppingItemInventory)
+            {
+                inventory.Drop(IsItem);
+            }
+            else if (IsItem.GetItem() as Weapon)
+            {
+                inventory.EquipWeaponAt(equipAt, IsItem);
+            }
+            else if (IsItem.GetItem() as Helmet)
+            {
+                inventory.EquipHelmet(IsItem);
+            }
+            else if (IsItem.GetItem() as Vest)
+            {
+                inventory.EquipVest(IsItem);
+            }
+            else if (IsItem.GetItem() as Heal || IsItem.GetItem() as Boost)
+            {
+                IsItem.GetItem().Player = player.gameObject;
+                IsItem.GetItem().Use();
+                inventory.CheckMultiplePresenceAndRemove(IsItem);
+            }
+            else if (IsItem.GetItem() as Bag)
+            {
+                inventory.EquipBag(IsItem);
+            }
+        }
+
+        private void ClickOnGroundButton()
         {
             GameObject toAdd = IsItem.GetItem().gameObject;
             if ((object)IsItem.GetItem() != null)

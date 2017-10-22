@@ -126,12 +126,14 @@ namespace ProjetSynthese
             if (selection == ProjetSynthese.EquipWeaponAt.Primary && primaryWeapon != null)
             {
                 if (!IsItemPresentInInventory(primaryWeapon)) listInventory.Add(primaryWeapon);
+                AddWeight(primaryWeapon.GetItem().GetWeight());
                 primaryWeapon = null;
                 NotifyInventoryChange();
             }
             if (selection == ProjetSynthese.EquipWeaponAt.Secondary && secondaryWeapon != null)
             {
                 if (!IsItemPresentInInventory(secondaryWeapon)) listInventory.Add(secondaryWeapon);
+                AddWeight(secondaryWeapon.GetItem().GetWeight());
                 secondaryWeapon = null;
                 NotifyInventoryChange();
             }
@@ -160,6 +162,7 @@ namespace ProjetSynthese
         public void UnequipHelmet()
         {
             if (!IsItemPresentInInventory(helmet)) listInventory.Add(helmet);
+            AddWeight(helmet.GetItem().GetWeight());
             helmet = null;
             NotifyInventoryChange();
         }
@@ -177,6 +180,7 @@ namespace ProjetSynthese
         public void UnequipVest()
         {
             if (!IsItemPresentInInventory(vest)) listInventory.Add(vest);
+            AddWeight(vest.GetItem().GetWeight());
             vest = null;
             NotifyInventoryChange();
         }
@@ -405,4 +409,3 @@ namespace ProjetSynthese
         }
     }
 }
-

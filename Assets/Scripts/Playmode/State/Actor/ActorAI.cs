@@ -98,5 +98,6 @@ namespace ProjetSynthese
             CurrentState = newState;
 
         }
+       
     }
 }

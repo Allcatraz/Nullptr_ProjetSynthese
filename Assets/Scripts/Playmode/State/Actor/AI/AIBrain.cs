@@ -14,10 +14,30 @@ namespace ProjetSynthese
         private const float ErrorLifeTolerance = 0.001f;
 
         private bool hasPrimaryWeaponEquipped = false;
+        private bool hasHelmetEquipped = false;
+        private bool hasVestEquipped = false;
+
+        public bool HasHelmetEquipped
+        {
+            get { return hasHelmetEquipped; }
+            private set { hasHelmetEquipped = value; }
+        }
+        public bool HasVestEquipped
+        {
+            get { return hasVestEquipped; }
+            private set { hasVestEquipped = value; }
+        }
+        public bool HasPrimaryWeaponEquipped
+        {
+            get { return hasPrimaryWeaponEquipped; }
+            private set { hasPrimaryWeaponEquipped = value; }
+        }
+
 
         public enum AIState { None, Dead, Explore, Loot, Hunt, Combat, Flee }
 
         private readonly ActorAI Actor;
+        public readonly GoalEvaluator goalEvaluator;
 
         public enum OpponentType { None, AI, Player };
         private OpponentType currentOpponentType;
@@ -57,9 +77,12 @@ namespace ProjetSynthese
             { itemInPerceptionRange = value; }
         }
 
+
+
         public AIBrain(ActorAI actor)
         {
             this.Actor = actor;
+            this.goalEvaluator = new GoalEvaluator(this);
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
             ResetActualPerception();
@@ -72,6 +95,8 @@ namespace ProjetSynthese
         {
             AIState nextState = currentState;
             UpdateWeaponKnowledge();
+            UpdateProtectionKnowledge();
+            UpdateSupportKnowledge();
             switch (currentState)
             {
                 case AIState.Dead:
@@ -143,7 +168,38 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromHuntState()
         {
-            AIState nextState = AIState.Combat;
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
+            {
+                if (ExistVisibleOpponent())
+                {
+                    if (!hasPrimaryWeaponEquipped)
+                    {
+                        if (!FoundItemInPerceptionRange())
+                        {
+                            nextState = AIState.Flee;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                    }
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
+                }
+                else if (FoundItemInPerceptionRange())
+                {
+                    nextState = AIState.Loot;
+                }
+            }
+
+            if (nextState == AIState.None)
+            {
+                nextState = AIState.Explore;
+            }
 
             return nextState;
         }
@@ -359,7 +415,6 @@ namespace ProjetSynthese
         private bool ExistVisibleOpponent()
         {
             if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
-            //    if (FoundAIInPerceptionRange())
             {
                 if (playerInPerceptionRange != null)
                 {
@@ -419,7 +474,11 @@ namespace ProjetSynthese
             AIState nextState = AIState.None;
             if (HasBeenInjured())
             {
-                if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
+                if (Actor.AIHealth.HealthPoints < 0.0f)
+                {
+                    nextState = AIState.Dead;
+                }
+                else if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
                 {
                     nextState = AIState.Flee;
                 }
@@ -435,7 +494,7 @@ namespace ProjetSynthese
             return nextState;
         }
 
-        public void UpdateWeaponKnowledge()
+        private void UpdateWeaponKnowledge()
         {
             Cell cell = Actor.AIInventory.GetPrimaryWeapon();
             Weapon equippedPrimaryWeapon = null;
@@ -452,7 +511,9 @@ namespace ProjetSynthese
             {
                 hasPrimaryWeaponEquipped = false;
             }
-            //choix weapon (quand pas possible desequuiped)
+
+            SelectWeapon();
+
             //reload
             //ammunition
             //si pas de munition ou plus de munitions: unequipped weapon
@@ -460,5 +521,72 @@ namespace ProjetSynthese
             //essai equiper nouvelle weapon
         }
 
+        private void UpdateProtectionKnowledge()
+        {
+            Cell cellHelmet = Actor.AIInventory.GetHelmet();
+            Cell cellVest = Actor.AIInventory.GetVest();
+            Vest equippedVest = null;
+            Helmet equippedHelmet = null;
+            if (cellVest != null)
+            {
+                equippedVest = (Vest)cellVest.GetItem();
+            }
+
+            if (equippedVest != null)
+            {
+                hasVestEquipped = true;
+            }
+            else
+            {
+                hasVestEquipped = false;
+            }
+            if (cellHelmet != null)
+            {
+                equippedHelmet = (Helmet)cellHelmet.GetItem();
+            }
+
+            if (equippedHelmet != null)
+            {
+                hasHelmetEquipped = true;
+            }
+            else
+            {
+                hasHelmetEquipped = false;
+            }
+            //choix best vest et best helmet
+            //fonction niveau
+        }
+        private void UpdateSupportKnowledge()
+        {
+            //bag managment
+            //heal management
+
+        }
+
+        private void SelectWeapon()
+        {
+            if (!hasPrimaryWeaponEquipped)
+            {
+                foreach (Cell item in Actor.AIInventory.listInventory)
+                {
+                    //comment je parcours l'inventaire pour weapon
+                    //item.GetType() ???
+                    //EuipPrimaryWeapon
+                    //munitions
+                }
+            }
+        }
+
+        public bool IsInventoryEmpty()
+        {
+            if (Actor.AIInventory.listInventory.Count > 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

@@ -72,7 +72,7 @@ namespace ProjetSynthese
 
         private const float FloorYOffset = 1.0f;
 
-        public enum ControllerMode { None, Explore, Loot, Combat, Flee }
+        public enum ControllerMode { None, Explore, Loot, Combat, Flee,Hunt }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -296,7 +296,7 @@ namespace ProjetSynthese
             }
             return false;
 
-            //code si coincé return false
+            //code si coincé pas de possibilité de fuite return false
             //exemple mur, circle of death, out of map
 
         }
@@ -334,7 +334,11 @@ namespace ProjetSynthese
                     break;
                 case ControllerMode.Flee:
                     AISpeed = AIController.SpeedLevel.Running;
-                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.Medium;
+                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    break;
+                case ControllerMode.Hunt:
+                    AISpeed = AIController.SpeedLevel.Running;
+                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;
                 default:
                     break;

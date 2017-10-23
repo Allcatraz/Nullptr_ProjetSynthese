@@ -5,7 +5,7 @@ namespace ProjetSynthese
     public class PanelColliderHandler : GameScript
     {
 
-        [SerializeField] private ButtonType panelType;
+        [SerializeField] private CellObjectType panelType;
 
         void OnTriggerEnter2D(Collider2D col)
         {
@@ -21,7 +21,7 @@ namespace ProjetSynthese
             CellObject temp = col.gameObject.GetComponentInChildren<CellObject>();
             if (temp != null && temp.DropAtType == panelType)
             {
-                temp.DropAtType = temp.buttonType;
+                temp.DropAtType = temp.cellObjectType;
             }
         }
         

@@ -83,7 +83,7 @@ namespace ProjetSynthese
                 cellObject.transform.SetParent(gridInventoryPlayer, false);
                 cellObject.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellObject.GetComponentInChildren<CellObject>().control = this;
-                cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
+                cellObject.GetComponentInChildren<CellObject>().InstantiateCellObjectFromCell(item);
             }
         }
 
@@ -96,7 +96,7 @@ namespace ProjetSynthese
                 cellWeaponTemp1.transform.SetParent(gridEquippedByPlayer, false);
                 cellWeaponTemp1.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellWeaponTemp1.GetComponentInChildren<CellObject>().control = this;
-                cellWeaponTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetPrimaryWeapon());
+                cellWeaponTemp1.GetComponentInChildren<CellObject>().InstantiateCellObjectFromCell(inventory.GetPrimaryWeapon());
                 cellWeaponTemp1.GetComponentInChildren<CellObject>().EquipAt = EquipWeaponAt.Primary;
             }
             if (inventory.GetSecondaryWeapon() != null)
@@ -105,7 +105,7 @@ namespace ProjetSynthese
                 cellWeaponTemp2.transform.SetParent(gridEquippedByPlayer, false);
                 cellWeaponTemp2.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellWeaponTemp2.GetComponentInChildren<CellObject>().control = this;
-                cellWeaponTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetSecondaryWeapon());
+                cellWeaponTemp2.GetComponentInChildren<CellObject>().InstantiateCellObjectFromCell(inventory.GetSecondaryWeapon());
                 cellWeaponTemp2.GetComponentInChildren<CellObject>().EquipAt = EquipWeaponAt.Secondary;
             }
         }
@@ -119,7 +119,7 @@ namespace ProjetSynthese
                 cellProtectionTemp1.transform.SetParent(gridProtectionPlayer, false);
                 cellProtectionTemp1.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellProtectionTemp1.GetComponentInChildren<CellObject>().control = this;
-                cellProtectionTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetVest());
+                cellProtectionTemp1.GetComponentInChildren<CellObject>().InstantiateCellObjectFromCell(inventory.GetVest());
             }
 
             if (inventory.GetHelmet() != null)
@@ -128,7 +128,7 @@ namespace ProjetSynthese
                 cellProtectionTemp2.transform.SetParent(gridProtectionPlayer, false);
                 cellProtectionTemp2.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellProtectionTemp2.GetComponentInChildren<CellObject>().control = this;
-                cellProtectionTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetHelmet());
+                cellProtectionTemp2.GetComponentInChildren<CellObject>().InstantiateCellObjectFromCell(inventory.GetHelmet());
             }
             if (inventory.GetBag() != null)
             {
@@ -136,7 +136,7 @@ namespace ProjetSynthese
                 cellProtectionTemp3.transform.SetParent(gridProtectionPlayer, false);
                 cellProtectionTemp3.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellProtectionTemp3.GetComponentInChildren<CellObject>().control = this;
-                cellProtectionTemp3.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetBag());
+                cellProtectionTemp3.GetComponentInChildren<CellObject>().InstantiateCellObjectFromCell(inventory.GetBag());
             }
         }
 
@@ -152,7 +152,7 @@ namespace ProjetSynthese
                     cellObject.transform.SetParent(gridNerbyItem, false);
                     cellObject.GetComponentInChildren<CellObject>().Inventory = inventoryGround;
                     cellObject.GetComponentInChildren<CellObject>().control = this;
-                    cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
+                    cellObject.GetComponentInChildren<CellObject>().InstantiateCellObjectFromCell(item);
                 }
             }
         }

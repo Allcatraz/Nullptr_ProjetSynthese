@@ -567,12 +567,29 @@ namespace ProjetSynthese
         {
             if (!hasPrimaryWeaponEquipped)
             {
-                foreach (Cell item in Actor.AIInventory.listInventory)
+                Item item = null;
+                foreach (Cell cell in Actor.AIInventory.listInventory)
                 {
-                    //comment je parcours l'inventaire pour weapon
-                    //item.GetType() ???
-                    //EuipPrimaryWeapon
-                    //munitions
+                    item = cell.GetItem();
+                    if (item.Type == ItemType.AWM 
+                        || item.Type == ItemType.M16A4 
+                        || item.Type == ItemType.M1911
+                        || item.Type == ItemType.Saiga12
+                        || item.Type == ItemType.Grenade)
+                    {
+                        Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
+                        Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
+                        if (weapon.Reload())
+                        {
+                            hasPrimaryWeaponEquipped = true;
+                            break;
+                        }
+                        else
+                        {
+                            Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
+                        }
+                    } 
+                    
                 }
             }
         }

@@ -290,9 +290,9 @@ namespace ProjetSynthese
         [Command]
         private void CmdTakeItem(GameObject item)
         {
-            networkIdentity.AssignClientAuthority(connectionToClient);
+            //networkIdentity.AssignClientAuthority(connectionToClient);
             RpcTakeItem(item);
-            networkIdentity.RemoveClientAuthority(connectionToClient);
+            //networkIdentity.RemoveClientAuthority(connectionToClient);
         }
 
         [ClientRpc]

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/Event/BoostHealEventChannel")]
+    [AddComponentMenu("Game/Event/BoostHealEventPublisher")]
     public class BoostHealEventPublisher : GameScript
     {
         private BoostStats boostStats;

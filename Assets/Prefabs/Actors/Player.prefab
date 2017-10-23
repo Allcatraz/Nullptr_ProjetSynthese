@@ -422,6 +422,7 @@ GameObject:
   - component: {fileID: 4941390377610448}
   - component: {fileID: 114093056321587282}
   - component: {fileID: 114669710859018728}
+  - component: {fileID: 114095602013616882}
   - component: {fileID: 114638758293720702}
   - component: {fileID: 114301871804280328}
   - component: {fileID: 54390617244429252}
@@ -1312,6 +1313,17 @@ MonoBehaviour:
   weaponHolderTransform: {fileID: 4236748107255540}
   inventoryTransform: {fileID: 4132227477362130}
   firstPersonCamera: {fileID: 20009433431343892}
+--- !u!114 &114095602013616882
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509576154526796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e704380b47e15746b9244bc50e056f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114107453897673614
 MonoBehaviour:
   m_ObjectHideFlags: 1

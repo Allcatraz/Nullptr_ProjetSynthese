@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Castle.Core.Internal;
 using Harmony;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
     public delegate void UseEventHandler(bool isDoingSomething);
+
+    public delegate void ChangeModeEventHandler(bool isPlayerInFirstPerson);
 
     [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : NetworkGameScript
@@ -40,7 +39,8 @@ namespace ProjetSynthese
         private bool canCameraMove = true;
         private bool isDoingSomething = false;
 
-        public UseEventHandler OnUse;
+        public event UseEventHandler OnUse;
+        public event ChangeModeEventHandler OnChangeMode;
 
         public Transform GetWeaponHolderTransform()
         {
@@ -380,8 +380,9 @@ namespace ProjetSynthese
         }
 
         private void OnChangeViewMode()
-        {
+        {            
             isFirstPerson = !isFirstPerson;
+            if (OnChangeMode != null) OnChangeMode(isFirstPerson);
             firstPersonCamera.gameObject.SetActive(isFirstPerson);
             SetCursor(isFirstPerson, isFirstPerson);
         }

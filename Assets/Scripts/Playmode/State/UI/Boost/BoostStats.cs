@@ -1,15 +1,21 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace ProjetSynthese
 {
     public delegate void BoostChangedEventHandler(float oldBoostPoints, float newBoostPoints);
+
+    public delegate void BoostHealEventHandler(float health);
 
     public class BoostStats : GameScript
     {
         [SerializeField] private float initialBoostPoints;
         [SerializeField] private float maxBoostPoints;
 
+        private const float healthPointPerBoost = 0.5f;
+
         public event BoostChangedEventHandler OnBoostChanged;
+        public event BoostHealEventHandler OnBoostHeal;
 
         private float boostPoints;
 
@@ -31,9 +37,15 @@ namespace ProjetSynthese
             set { maxBoostPoints = value; }
         }
 
-        public void Awake()
+        private void Awake()
         {
             boostPoints = initialBoostPoints;
+            StartCoroutine("ComputeBoost");
+        }
+
+        private void OnDestroy()
+        {
+            StopCoroutine("ComputeBoost");
         }
 
         public void Hit(float hitPoints)
@@ -51,7 +63,17 @@ namespace ProjetSynthese
             BoostPoints = initialBoostPoints;
         }
 
+        private IEnumerator ComputeBoost()
+        {
+            for (;;)
+            {
+                if (boostPoints > 0)
+                {
+                   if (OnBoostHeal != null) OnBoostHeal(healthPointPerBoost); 
+                }
+                BoostPoints--;
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
     }
 }
-
-

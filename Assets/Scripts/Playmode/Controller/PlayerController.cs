@@ -30,6 +30,7 @@ namespace ProjetSynthese
         private Weapon currentWeapon;
         private NetworkIdentity networkIdentity;
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
+        private BoostHealEventChannel boostHealEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
 
         private Vector2 rotation = Vector2.zero;
@@ -68,9 +69,10 @@ namespace ProjetSynthese
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
                                             [EntityScope] ItemSensor itemSensor,
+                                            [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater,
                                             [GameObjectScope] NetworkIdentity networkIdentity,
                                             [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel,
-                                            [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater)
+                                            [EventChannelScope] BoostHealEventChannel boostHealEventChannel)
         {
             this.keyboardInputSensor = keyboardInputSensor;
             this.mouseInputSensor = mouseInputSensor;
@@ -81,6 +83,7 @@ namespace ProjetSynthese
             this.itemSensor = itemSensor;
             this.networkIdentity = networkIdentity;
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
+            this.boostHealEventChannel = boostHealEventChannel;
             this.soldierAnimatorUpdater = soldierAnimatorUpdater;
         }
 
@@ -110,6 +113,7 @@ namespace ProjetSynthese
             health.OnDeath += OnDeath;
 
             deathCircleHurtEventChannel.OnEventPublished += OnPlayerOutDeathCircle;
+            boostHealEventChannel.OnEventPublished += OnBoostHeal;
 
             transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
@@ -141,6 +145,7 @@ namespace ProjetSynthese
             health.OnDeath -= OnDeath;
 
             deathCircleHurtEventChannel.OnEventPublished -= OnPlayerOutDeathCircle;
+            boostHealEventChannel.OnEventPublished -= OnBoostHeal;
         }
 
         private void FixedUpdate()
@@ -385,6 +390,11 @@ namespace ProjetSynthese
         {
             Cursor.visible = isVisible;
             Cursor.lockState = isLock ? CursorLockMode.Locked : CursorLockMode.None;
+        }
+
+        private void OnBoostHeal(BoostHealEvent boostHealEvent)
+        {
+            health.Heal(boostHealEvent.HealthPoints);
         }
     }
 }

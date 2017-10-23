@@ -617,6 +617,7 @@ GameObject:
   - component: {fileID: 114107453897673614}
   - component: {fileID: 114571264583394874}
   - component: {fileID: 114956846738126240}
+  - component: {fileID: 114527490288276990}
   m_Layer: 8
   m_Name: ActorHealth
   m_TagString: Untagged
@@ -1389,6 +1390,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14991f33ef254d9d9cf628d7d4ee964f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114527490288276990
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1915978590610782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb09a427b74fc946b15c7e2e27dfa46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114535921600472296

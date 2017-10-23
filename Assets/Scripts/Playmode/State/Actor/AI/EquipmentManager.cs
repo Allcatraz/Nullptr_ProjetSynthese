@@ -6,7 +6,7 @@ namespace ProjetSynthese
     {
         private readonly ActorAI Actor;
 
-        public EquipmentManager(ActorAI actor)
+       public EquipmentManager(ActorAI actor)
         {
             this.Actor = actor;
         }

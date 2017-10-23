@@ -14,6 +14,7 @@ namespace ProjetSynthese
 
         public AIRadar Sensor { get; private set; }
         public AIBrain Brain { get; private set; }
+        public EquipmentManager EquipmentManager { get; private set; }
 
         private bool isDead;
 
@@ -53,12 +54,18 @@ namespace ProjetSynthese
                     ActorController = new AIController(this);
                     ((AIController)ActorController).Init();
                     Brain = new AIBrain(this);
-                     break;
+                    EquipmentManager = new EquipmentManager(this);
+                    health.OnDeath += OnDeath;
+                    break;
                 default:
                     break;
             }
         }
 
+        private void OnDestroy()
+        {
+            health.OnDeath -= OnDeath;
+        }
 
         private void Update()
         {
@@ -86,6 +93,11 @@ namespace ProjetSynthese
         public void SetDead()
         {
             isDead = true;
+        }
+
+        private void OnDeath()
+        {
+            Destroy(gameObject);
         }
 
         public void ChangeState(StateMachine newState)

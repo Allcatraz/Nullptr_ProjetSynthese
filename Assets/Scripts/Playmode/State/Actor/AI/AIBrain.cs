@@ -20,17 +20,17 @@ namespace ProjetSynthese
         public bool HasHelmetEquipped
         {
             get { return hasHelmetEquipped; }
-            private set { hasHelmetEquipped = value; }
+            set { hasHelmetEquipped = value; }
         }
         public bool HasVestEquipped
         {
             get { return hasVestEquipped; }
-            private set { hasVestEquipped = value; }
+            set { hasVestEquipped = value; }
         }
         public bool HasPrimaryWeaponEquipped
         {
             get { return hasPrimaryWeaponEquipped; }
-            private set { hasPrimaryWeaponEquipped = value; }
+            set { hasPrimaryWeaponEquipped = value; }
         }
 
 
@@ -82,7 +82,7 @@ namespace ProjetSynthese
         public AIBrain(ActorAI actor)
         {
             this.Actor = actor;
-            this.goalEvaluator = new GoalEvaluator(this);
+            this.goalEvaluator = new GoalEvaluator(actor);
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
             ResetActualPerception();
@@ -512,7 +512,7 @@ namespace ProjetSynthese
                 hasPrimaryWeaponEquipped = false;
             }
 
-            SelectWeapon();
+            Actor.EquipmentManager.SelectWeapon();
 
             //reload
             //ammunition
@@ -561,49 +561,6 @@ namespace ProjetSynthese
             //bag managment
             //heal management
 
-        }
-
-        private void SelectWeapon()
-        {
-            if (!hasPrimaryWeaponEquipped)
-            {
-                Item item = null;
-                foreach (Cell cell in Actor.AIInventory.listInventory)
-                {
-                    item = cell.GetItem();
-                    if (item.Type == ItemType.AWM 
-                        || item.Type == ItemType.M16A4 
-                        || item.Type == ItemType.M1911
-                        || item.Type == ItemType.Saiga12
-                        || item.Type == ItemType.Grenade)
-                    {
-                        Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
-                        Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
-                        if (weapon.Reload())
-                        {
-                            hasPrimaryWeaponEquipped = true;
-                            break;
-                        }
-                        else
-                        {
-                            Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
-                        }
-                    } 
-                    
-                }
-            }
-        }
-
-        public bool IsInventoryEmpty()
-        {
-            if (Actor.AIInventory.listInventory.Count > 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
         }
     }
 }

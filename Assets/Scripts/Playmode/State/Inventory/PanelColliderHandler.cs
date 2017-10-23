@@ -12,16 +12,16 @@ namespace ProjetSynthese
             CellObject temp = col.gameObject.GetComponentInChildren<CellObject>();
             if (temp != null)
             {
-                temp.dropAtType = panelType;
+                temp.DropAtType = panelType;
             }
         }
         
         private void OnTriggerExit2D(Collider2D col)
         {
             CellObject temp = col.gameObject.GetComponentInChildren<CellObject>();
-            if (temp != null && temp.dropAtType == panelType)
+            if (temp != null && temp.DropAtType == panelType)
             {
-                temp.dropAtType = temp.buttonType;
+                temp.DropAtType = temp.buttonType;
             }
         }
         

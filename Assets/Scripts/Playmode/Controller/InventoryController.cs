@@ -17,7 +17,6 @@ namespace ProjetSynthese
         [SerializeField] private Inventory inventoryGround;
         [SerializeField] private ItemSensor sensorItem;
         private PlayerMoveEventChannel playerMoveEventChannel;
-        private bool abonner = false;
         private Inventory inventory;
         private InventoryChangedEventChannel inventoryChangedEventChannel;
 
@@ -78,11 +77,11 @@ namespace ProjetSynthese
         public void CreateCellsForInventoryPlayer()
         {
             ClearGrid(gridInventoryPlayer);
-            foreach (Cell item in inventory.listInventory)
+            foreach (Cell item in inventory.ListInventory)
             {
                 GameObject cellObject = Instantiate(cellObjectPrefab);
                 cellObject.transform.SetParent(gridInventoryPlayer, false);
-                cellObject.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellObject.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellObject.GetComponentInChildren<CellObject>().control = this;
                 cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
             }
@@ -95,19 +94,19 @@ namespace ProjetSynthese
             {
                 GameObject cellWeaponTemp1 = Instantiate(cellEquippedWeaponPrefabs);
                 cellWeaponTemp1.transform.SetParent(gridEquippedByPlayer, false);
-                cellWeaponTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellWeaponTemp1.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellWeaponTemp1.GetComponentInChildren<CellObject>().control = this;
                 cellWeaponTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetPrimaryWeapon());
-                cellWeaponTemp1.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Primary;
+                cellWeaponTemp1.GetComponentInChildren<CellObject>().EquipAt = EquipWeaponAt.Primary;
             }
             if (inventory.GetSecondaryWeapon() != null)
             {
                 GameObject cellWeaponTemp2 = Instantiate(cellEquippedWeaponPrefabs);
                 cellWeaponTemp2.transform.SetParent(gridEquippedByPlayer, false);
-                cellWeaponTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellWeaponTemp2.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellWeaponTemp2.GetComponentInChildren<CellObject>().control = this;
                 cellWeaponTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetSecondaryWeapon());
-                cellWeaponTemp2.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Secondary;
+                cellWeaponTemp2.GetComponentInChildren<CellObject>().EquipAt = EquipWeaponAt.Secondary;
             }
         }
 
@@ -118,7 +117,7 @@ namespace ProjetSynthese
             {
                 GameObject cellProtectionTemp1 = Instantiate(cellProtectionItemPrefabs);
                 cellProtectionTemp1.transform.SetParent(gridProtectionPlayer, false);
-                cellProtectionTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellProtectionTemp1.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellProtectionTemp1.GetComponentInChildren<CellObject>().control = this;
                 cellProtectionTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetVest());
             }
@@ -127,7 +126,7 @@ namespace ProjetSynthese
             {
                 GameObject cellProtectionTemp2 = Instantiate(cellProtectionItemPrefabs);
                 cellProtectionTemp2.transform.SetParent(gridProtectionPlayer, false);
-                cellProtectionTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellProtectionTemp2.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellProtectionTemp2.GetComponentInChildren<CellObject>().control = this;
                 cellProtectionTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetHelmet());
             }
@@ -135,7 +134,7 @@ namespace ProjetSynthese
             {
                 GameObject cellProtectionTemp3 = Instantiate(cellProtectionItemPrefabs);
                 cellProtectionTemp3.transform.SetParent(gridProtectionPlayer, false);
-                cellProtectionTemp3.GetComponentInChildren<CellObject>().inventory = this.inventory;
+                cellProtectionTemp3.GetComponentInChildren<CellObject>().Inventory = this.inventory;
                 cellProtectionTemp3.GetComponentInChildren<CellObject>().control = this;
                 cellProtectionTemp3.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetBag());
             }
@@ -145,31 +144,23 @@ namespace ProjetSynthese
         {
             ClearGrid(gridNerbyItem);
             CreateInventoryGround();
-            if (inventoryGround.listInventory != null)
+            if (inventoryGround.ListInventory != null)
             {
-                foreach (Cell item in inventoryGround.listInventory)
+                foreach (Cell item in inventoryGround.ListInventory)
                 {
                     GameObject cellObject = Instantiate(cellObjectGround);
                     cellObject.transform.SetParent(gridNerbyItem, false);
-                    cellObject.GetComponentInChildren<CellObject>().inventory = inventoryGround;
+                    cellObject.GetComponentInChildren<CellObject>().Inventory = inventoryGround;
                     cellObject.GetComponentInChildren<CellObject>().control = this;
                     cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
                 }
             }
         }
 
-        private void Awake()
-        {
-            InjectDependencies("InjectEventSensor");
-            playerMoveEventChannel.OnEventPublished += PlayerMoveEventChannel_OnEventPublished;
-            inventoryChangedEventChannel.OnEventPublished += InventoryChangedEventChannel_OnEventPublished;
-
-        }
-
         private void InventoryChangedEventChannel_OnEventPublished(InventoryChangeEvent newEvent)
         {
             inventory = newEvent.Inventory;
-            Player = inventory.parent;
+            Player = inventory.Parent;
             CreateCellsForInventoryPlayer();
             CreateCellsForWeaponByPlayer();
             CreateCellsForProtectionPlayer();
@@ -207,6 +198,20 @@ namespace ProjetSynthese
             {
                 Destroy(child.gameObject);
             }
+        }
+
+        private void Awake()
+        {
+            InjectDependencies("InjectEventSensor");
+            playerMoveEventChannel.OnEventPublished += PlayerMoveEventChannel_OnEventPublished;
+            inventoryChangedEventChannel.OnEventPublished += InventoryChangedEventChannel_OnEventPublished;
+
+        }
+
+        private void OnDestroy()
+        {
+            playerMoveEventChannel.OnEventPublished -= PlayerMoveEventChannel_OnEventPublished;
+            inventoryChangedEventChannel.OnEventPublished -= InventoryChangedEventChannel_OnEventPublished;
         }
     }
 }

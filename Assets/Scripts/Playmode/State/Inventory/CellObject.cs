@@ -21,31 +21,22 @@ namespace ProjetSynthese
         private GameObject canvasMenu;
         private GameObject oldParent;
         private bool isDragging = false;
-        public ButtonType dropAtType { get; set; }
-        public InventoryController control;
         private PlayerController player;
         private Inventory playerInventory;
-        public EquipWeaponAt equipAt { get; set; }
 
-
-        public Inventory inventory { get; set; }
-
+        public EquipWeaponAt EquipAt { get; set; }
+        public ButtonType DropAtType { get; set; }
+        public InventoryController control;
+        public Inventory Inventory { get; set; }
         public Cell IsItem { get; set; }
-
         public Image ImageBackground { get; private set; }
-
         public Text TextName { get; private set; }
-
         public Text TextNumber { get; private set; }
+
 
         public void InstantiateFromCell(Cell cell)
         {
-            player = control.Player.GetComponent<PlayerController>();
-            playerInventory = player.GetInventory();
-            itemToDrag = transform.parent.gameObject;
-            oldParent = GetTransformCorrectGrid(this.buttonType).gameObject;
-            startPosition = itemToDrag.transform.position;
-            canvasMenu = control.gameObject;
+            InstantiateVariable();
 
             string name = cell.GetItem().Type.ToString();
             if (cell.GetItem().Type == ItemType.AmmoPack)
@@ -64,6 +55,103 @@ namespace ProjetSynthese
                 SetTextNumber(compteur);
             }
             SetImageBackground();
+        }
+
+        public void OnBeginDrag()
+        {
+            isDragging = true;
+            itemToDrag.transform.SetParent(canvasMenu.transform);
+        }
+       
+        public void OnEndDrag()
+        {
+            isDragging = false;
+            if (DropAtType == ButtonType.Ground && DropAtType != buttonType)
+            {
+                if (buttonType == ButtonType.Inventory && droppingItemInventory)
+                {
+                    ClickOnInventoryButton();
+                }
+            }
+            else if (DropAtType == ButtonType.Inventory && DropAtType != buttonType)
+            {
+                if (buttonType == ButtonType.Ground)
+                {
+                    ClickOnGroundButton();
+                }
+                if (buttonType == ButtonType.Protection)
+                {
+                    ClickOnProtectionButton();
+                }
+                if (buttonType == ButtonType.Weapon)
+                {
+                    ClickOnWeaponButton();
+                }
+            }
+            else if (DropAtType == ButtonType.Protection && DropAtType != buttonType)
+            {
+                if (buttonType == ButtonType.Inventory)
+                {
+                    ClickOnInventoryButton();
+                }
+            }
+            else if (DropAtType == ButtonType.Weapon && DropAtType != buttonType)
+            {
+                if (buttonType == ButtonType.Inventory)
+                {
+                    ClickOnInventoryButton();
+                }
+            }
+            Destroy(itemToDrag);
+            Inventory.NotifyInventoryChange();            
+        }
+
+        public void Drag()
+        {
+            itemToDrag.transform.position = Input.mousePosition;
+        }
+
+        private void InstantiateVariable()
+        {
+            player = control.Player.GetComponent<PlayerController>();
+            playerInventory = player.GetInventory();
+            itemToDrag = transform.parent.gameObject;
+            oldParent = GetTransformCorrectGrid(this.buttonType).gameObject;
+            startPosition = itemToDrag.transform.position;
+            canvasMenu = control.gameObject;
+        }
+
+        private void InjectCellObject([EntityScope] Text textName,
+                                    [EntityScope] Button button)
+        {
+            this.button = button;
+            this.TextName = textName;
+            button.onClick.AddListener(TaskOnClick);
+            EquipAt = EquipWeaponAt.Primary;
+            //this.ImageBackground = imageBackground;
+        }
+        private void TaskOnClick()
+        {
+            if (!isDragging)
+            {
+                if (buttonType == ButtonType.Inventory)
+                {
+                    ClickOnInventoryButton();
+                }
+                if (buttonType == ButtonType.Weapon)
+                {
+                    ClickOnWeaponButton();
+                }
+                if (buttonType == ButtonType.Protection)
+                {
+                    ClickOnProtectionButton();
+                }
+                if (buttonType == ButtonType.Ground)
+                {
+                    ClickOnGroundButton();
+                }
+            }
+           
         }
 
         private Transform GetTransformCorrectGrid(ButtonType gridToFind)
@@ -90,109 +178,19 @@ namespace ProjetSynthese
             }
         }
 
-        public void OnBeginDrag()
-        {
-            isDragging = true;
-            itemToDrag.transform.SetParent(canvasMenu.transform);
-        }
-       
-        public void OnEndDrag()
-        {
-            isDragging = false;
-            if (dropAtType == ButtonType.Ground && dropAtType != buttonType)
-            {
-                if (buttonType == ButtonType.Inventory && droppingItemInventory)
-                {
-                    ClickOnInventoryButton();
-                }
-            }
-            else if (dropAtType == ButtonType.Inventory && dropAtType != buttonType)
-            {
-                if (buttonType == ButtonType.Ground)
-                {
-                    ClickOnGroundButton();
-                }
-                if (buttonType == ButtonType.Protection)
-                {
-                    ClickOnProtectionButton();
-                }
-                if (buttonType == ButtonType.Weapon)
-                {
-                    ClickOnWeaponButton();
-                }
-            }
-            else if (dropAtType == ButtonType.Protection && dropAtType != buttonType)
-            {
-                if (buttonType == ButtonType.Inventory)
-                {
-                    ClickOnInventoryButton();
-                }
-            }
-            else if (dropAtType == ButtonType.Weapon && dropAtType != buttonType)
-            {
-                if (buttonType == ButtonType.Inventory)
-                {
-                    ClickOnInventoryButton();
-                }
-            }
-            Destroy(itemToDrag);
-            inventory.NotifyInventoryChange();            
-        }
-
-        public void Drag()
-        {
-
-            itemToDrag.transform.position = Input.mousePosition;
-
-        }
-
-        private void InjectCellObject([EntityScope] Text textName,
-                                    [EntityScope] Button button)
-        {
-            this.button = button;
-            this.TextName = textName;
-            button.onClick.AddListener(TaskOnClick);
-            equipAt = EquipWeaponAt.Primary;
-            //this.ImageBackground = imageBackground;
-        }
-
-        private void TaskOnClick()
-        {
-            if (!isDragging)
-            {
-                if (buttonType == ButtonType.Inventory)
-                {
-                    ClickOnInventoryButton();
-                }
-                if (buttonType == ButtonType.Weapon)
-                {
-                    ClickOnWeaponButton();
-                }
-                if (buttonType == ButtonType.Protection)
-                {
-                    ClickOnProtectionButton();
-                }
-                if (buttonType == ButtonType.Ground)
-                {
-                    ClickOnGroundButton();
-                }
-            }
-           
-        }
-
         private void ClickOnProtectionButton()
         {
             if (IsItem.GetItem() as Helmet)
             {
-                inventory.UnequipHelmet();
+                Inventory.UnequipHelmet();
             }
             else if (IsItem.GetItem() as Vest)
             {
-                inventory.UnequipVest();
+                Inventory.UnequipVest();
             }
             else if (IsItem.GetItem() as Bag)
             {
-                inventory.UnequipBag();
+                Inventory.UnequipBag();
             }
         }
 
@@ -200,7 +198,7 @@ namespace ProjetSynthese
         {
             if (IsItem.GetItem() as Weapon)
             {
-                inventory.UnequipWeaponAt(equipAt);
+                Inventory.UnequipWeaponAt(EquipAt);
             }
         }
 
@@ -208,29 +206,31 @@ namespace ProjetSynthese
         {
             if (droppingItemInventory)
             {
-                inventory.Drop(IsItem);
+                Inventory.Drop(IsItem);
             }
             else if (IsItem.GetItem() as Weapon)
             {
-                inventory.EquipWeaponAt(equipAt, IsItem);
+                Inventory.EquipWeaponAt(EquipAt, IsItem);
             }
             else if (IsItem.GetItem() as Helmet)
             {
-                inventory.EquipHelmet(IsItem);
+                Inventory.EquipHelmet(IsItem);
             }
             else if (IsItem.GetItem() as Vest)
             {
-                inventory.EquipVest(IsItem);
+                Inventory.EquipVest(IsItem);
             }
             else if (IsItem.GetItem() as Heal || IsItem.GetItem() as Boost)
             {
+                //Bug fix temporaire
                 IsItem.GetItem().Player = player.gameObject;
-                IsItem.GetItem().Use();
-                inventory.CheckMultiplePresenceAndRemove(IsItem);
+                //Fin bug fix temporaire
+                IsItem.GetItem().Use(); 
+                Inventory.CheckMultiplePresenceAndRemove(IsItem);
             }
             else if (IsItem.GetItem() as Bag)
             {
-                inventory.EquipBag(IsItem);
+                Inventory.EquipBag(IsItem);
             }
         }
 
@@ -255,31 +255,20 @@ namespace ProjetSynthese
             control.CreateCellsForNearbyItem();
         }
 
-        private void Awake()
-        {
-            InjectDependencies("InjectCellObject");         
-        }
-
-        private void Update()
-        {
-            ChangeWeaponSlotFromKeyPressed();
-            ChangeDropItemInInventory();
-        }
-
         private void ChangeWeaponSlotFromKeyPressed()
         {
             if (Input.GetKeyDown(keyWeaponSlot))
             {
-                if (equipAt != EquipWeaponAt.Secondary)
+                if (EquipAt != EquipWeaponAt.Secondary)
                 {
-                    equipAt = EquipWeaponAt.Secondary;
+                    EquipAt = EquipWeaponAt.Secondary;
                 }
             }
             if (Input.GetKeyUp(keyWeaponSlot))
             {
-                if (equipAt != EquipWeaponAt.Primary)
+                if (EquipAt != EquipWeaponAt.Primary)
                 {
-                    equipAt = EquipWeaponAt.Primary;
+                    EquipAt = EquipWeaponAt.Primary;
                 }
             }
         }
@@ -315,6 +304,22 @@ namespace ProjetSynthese
         private void SetTextNumber(int compteur)
         {
             TextName.text += " " + compteur;
+        }
+
+        private void Awake()
+        {
+            InjectDependencies("InjectCellObject");
+        }
+
+        private void Update()
+        {
+            ChangeWeaponSlotFromKeyPressed();
+            ChangeDropItemInInventory();
+        }
+
+        private void OnDestroy()
+        {
+            button.onClick.RemoveAllListeners();
         }
     }
 }

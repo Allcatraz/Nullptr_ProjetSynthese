@@ -14,28 +14,19 @@ namespace ProjetSynthese
     public class Inventory : GameScript
     {
         [SerializeField] private InventoryOf inventoryOf;
-
-        private Cell primaryWeapon;
-
-        private Cell secondaryWeapon;
-
-        private Cell helmet;
-
-        private Cell vest;
-
-        private Cell bag;
-
         [SerializeField] private float maxWeight = 100;
-
+        private Cell primaryWeapon;
+        private Cell secondaryWeapon;
+        private Cell helmet;
+        private Cell vest;
+        private Cell bag;
         private float currentWeight;
 
         public event OnInventoryChange InventoryChange;
-
         public event OnSpawnDroppedItem SpawnItem;
 
-        public GameObject parent { get; set; }
-
-        public List<Cell> listInventory { get; private set; }
+        public GameObject Parent { get; set; }
+        public List<Cell> ListInventory { get; private set; }
 
         private void ChangeMaxWeight(float newWeightToAdd, bool addOrRemove = true)
         {
@@ -81,7 +72,7 @@ namespace ProjetSynthese
 
         public void UnequipBag()
         {
-            if (!IsItemPresentInInventory(bag)) listInventory.Add(bag);
+            if (!IsItemPresentInInventory(bag)) ListInventory.Add(bag);
             ChangeMaxWeight((bag.GetItem() as Bag).Capacity, false);
             AddWeight(bag.GetItem().GetWeight());
             bag = null;
@@ -96,7 +87,7 @@ namespace ProjetSynthese
             secondaryWeapon = null;
             helmet = null;
             vest = null;
-            listInventory = null;
+            ListInventory = null;
         }
 
         public void EquipWeaponAt(EquipWeaponAt selection, Cell itemToEquip)
@@ -125,14 +116,14 @@ namespace ProjetSynthese
         {
             if (selection == ProjetSynthese.EquipWeaponAt.Primary && primaryWeapon != null)
             {
-                if (!IsItemPresentInInventory(primaryWeapon)) listInventory.Add(primaryWeapon);
+                if (!IsItemPresentInInventory(primaryWeapon)) ListInventory.Add(primaryWeapon);
                 AddWeight(primaryWeapon.GetItem().GetWeight());
                 primaryWeapon = null;
                 NotifyInventoryChange();
             }
             if (selection == ProjetSynthese.EquipWeaponAt.Secondary && secondaryWeapon != null)
             {
-                if (!IsItemPresentInInventory(secondaryWeapon)) listInventory.Add(secondaryWeapon);
+                if (!IsItemPresentInInventory(secondaryWeapon)) ListInventory.Add(secondaryWeapon);
                 AddWeight(secondaryWeapon.GetItem().GetWeight());
                 secondaryWeapon = null;
                 NotifyInventoryChange();
@@ -161,7 +152,7 @@ namespace ProjetSynthese
 
         public void UnequipHelmet()
         {
-            if (!IsItemPresentInInventory(helmet)) listInventory.Add(helmet);
+            if (!IsItemPresentInInventory(helmet)) ListInventory.Add(helmet);
             AddWeight(helmet.GetItem().GetWeight());
             helmet = null;
             NotifyInventoryChange();
@@ -179,7 +170,7 @@ namespace ProjetSynthese
 
         public void UnequipVest()
         {
-            if (!IsItemPresentInInventory(vest)) listInventory.Add(vest);
+            if (!IsItemPresentInInventory(vest)) ListInventory.Add(vest);
             AddWeight(vest.GetItem().GetWeight());
             vest = null;
             NotifyInventoryChange();
@@ -228,7 +219,7 @@ namespace ProjetSynthese
         {
             CreateListeIsNotExist();
             Cell cell = new CellItem(item);
-            if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+            if (!IsItemPresentInInventory(cell)) ListInventory.Add(cell);
             NotifyInventoryChange();
         }
 
@@ -249,7 +240,7 @@ namespace ProjetSynthese
 
         public void Drop(Cell itemToDrop)
         {
-            itemToDrop.GetItem().Player = parent;
+            itemToDrop.GetItem().Player = Parent;
             while (itemToDrop.GetCompteur() > 1)
             {
                 RemoveWeight(itemToDrop.GetItem().GetWeight());
@@ -258,22 +249,16 @@ namespace ProjetSynthese
                 NotifyInventoryChange();
             }
             RemoveWeight(itemToDrop.GetItem().GetWeight());
-            listInventory.Remove(itemToDrop);
+            ListInventory.Remove(itemToDrop);
             NotifySpawnDroppedItem(itemToDrop);
             NotifyInventoryChange();
         }
 
-        private void Start()
-        {
-            parent = this.gameObject.transform.parent.gameObject;
-            CreateListeIsNotExist();
-        }
-
         private void CreateListeIsNotExist()
         {
-            if (listInventory == null)
+            if (ListInventory == null)
             {
-                listInventory = new List<Cell>();
+                ListInventory = new List<Cell>();
             }
         }
 
@@ -282,7 +267,7 @@ namespace ProjetSynthese
             if (inventoryOf == InventoryOf.Player)
             {
                 Cell cell = CreatePlayerCell(game);
-                if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                if (!IsItemPresentInInventory(cell)) ListInventory.Add(cell);
                 NotifyInventoryChange();
             }
         }
@@ -290,7 +275,7 @@ namespace ProjetSynthese
         private bool IsItemPresentInInventory(Cell cell)
         {
             bool itemIsPresentInInventory = false;
-            foreach (Cell item in listInventory)
+            foreach (Cell item in ListInventory)
             {
                 if ((item.GetItem() as AmmoPack) && (cell.GetItem() as AmmoPack))
                 {
@@ -327,7 +312,7 @@ namespace ProjetSynthese
                 Cell cell = CreateItemCell(game);
                 if (AddWeight(cell.GetItem().GetWeight()))
                 {
-                    if (!IsItemPresentInInventory(cell)) listInventory.Add(cell);
+                    if (!IsItemPresentInInventory(cell)) ListInventory.Add(cell);
                     cell.GetItem().Player = player;
                 }
                 NotifyInventoryChange();
@@ -351,7 +336,7 @@ namespace ProjetSynthese
             }
             else
             {
-                listInventory.Remove(temp);
+                ListInventory.Remove(temp);
                 NotifyInventoryChange();
             }
             RemoveWeight(temp.GetItem().GetWeight());
@@ -368,7 +353,7 @@ namespace ProjetSynthese
                 return false;
             }
             bool aRetourner = false;
-            if (one.listInventory == two.listInventory && one.helmet == two.helmet && one.vest == two.vest && one.primaryWeapon == two.primaryWeapon && one.secondaryWeapon == two.secondaryWeapon)
+            if (one.ListInventory == two.ListInventory && one.helmet == two.helmet && one.vest == two.vest && one.primaryWeapon == two.primaryWeapon && one.secondaryWeapon == two.secondaryWeapon)
             {
                 aRetourner = true;
             }
@@ -390,8 +375,8 @@ namespace ProjetSynthese
                    EqualityComparer<Cell>.Default.Equals(secondaryWeapon, inventory.secondaryWeapon) &&
                    EqualityComparer<Cell>.Default.Equals(helmet, inventory.helmet) &&
                    EqualityComparer<Cell>.Default.Equals(vest, inventory.vest) &&
-                   EqualityComparer<GameObject>.Default.Equals(parent, inventory.parent) &&
-                   EqualityComparer<List<Cell>>.Default.Equals(listInventory, inventory.listInventory);
+                   EqualityComparer<GameObject>.Default.Equals(Parent, inventory.Parent) &&
+                   EqualityComparer<List<Cell>>.Default.Equals(ListInventory, inventory.ListInventory);
         }
 
         public override int GetHashCode()
@@ -403,9 +388,14 @@ namespace ProjetSynthese
             hashCode = hashCode * -1521134295 + EqualityComparer<Cell>.Default.GetHashCode(secondaryWeapon);
             hashCode = hashCode * -1521134295 + EqualityComparer<Cell>.Default.GetHashCode(helmet);
             hashCode = hashCode * -1521134295 + EqualityComparer<Cell>.Default.GetHashCode(vest);
-            hashCode = hashCode * -1521134295 + EqualityComparer<GameObject>.Default.GetHashCode(parent);
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cell>>.Default.GetHashCode(listInventory);
+            hashCode = hashCode * -1521134295 + EqualityComparer<GameObject>.Default.GetHashCode(Parent);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cell>>.Default.GetHashCode(ListInventory);
             return hashCode;
+        }
+
+        private void Start()
+        {
+            Parent = gameObject.transform.parent.gameObject;
         }
     }
 }

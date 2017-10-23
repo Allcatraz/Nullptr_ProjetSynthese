@@ -7,7 +7,6 @@ namespace ProjetSynthese
 {
     public class CellItem : Cell
     {
-
         private Item item;
 
         public CellItem()
@@ -29,6 +28,5 @@ namespace ProjetSynthese
         {
             return item;
         }
-
     }
 }

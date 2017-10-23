@@ -229,6 +229,36 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114550592297630022, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550592297630022, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114172733213886844, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_ShowMaskGraphic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114818335368439056, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_ShowMaskGraphic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114129982670050838, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_ShowMaskGraphic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114624275088904626, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_ShowMaskGraphic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9e02e043af9d73644befd80e3b7b6277, type: 2}
   m_IsPrefabParent: 0

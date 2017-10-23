@@ -38,7 +38,7 @@ namespace ProjetSynthese
         {
             textSlot.text = typeSlot.ToString();
             string name = "";
-            Weapon equipped = inventory.parent.GetComponent<PlayerController>().GetCurrentWeapon();
+            Weapon equipped = inventory.Parent.GetComponent<PlayerController>().GetCurrentWeapon();
             if (equipped != null)
             {
                 name = equipped.Type.ToString();

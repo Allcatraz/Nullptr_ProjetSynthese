@@ -104,7 +104,7 @@ namespace ProjetSynthese
                 }
                 if (keyboard.GetKeyDown(KeyCode.F))
                 {
-                    NotifyPickup();
+                    NotifyInteract();
                 }
                 if(keyboard.GetKeyDown(KeyCode.R))
                 {

@@ -29,8 +29,8 @@ namespace ProjetSynthese
 
         public override void Use()
         {
-            Player.GetComponent<Health>().Heal(Efficacity);
-            // TODO : destroy l'objet
+            Player.GetComponentInChildren<Health>().Heal(Efficacity);
+            // TODO : Enlever un health dans l'inventaire
         }
 
         public override int GetWeight()

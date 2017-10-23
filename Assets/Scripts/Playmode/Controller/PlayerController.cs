@@ -1,12 +1,15 @@
-﻿using System.Runtime.CompilerServices;
-using Castle.Core.Internal;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Harmony;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
+    public delegate void UseEventHandler(bool isDoingSomething);
+
+    public delegate void ChangeModeEventHandler(bool isPlayerInFirstPerson);
+
     [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : NetworkGameScript
     {
@@ -26,13 +29,18 @@ namespace ProjetSynthese
         private Weapon currentWeapon;
         private NetworkIdentity networkIdentity;
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
+        private BoostHealEventChannel boostHealEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
 
-        private Vector2 rotation;
+        private Vector2 rotation = Vector2.zero;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
+        private bool isDoingSomething = false;
+
+        public event UseEventHandler OnUse;
+        public event ChangeModeEventHandler OnChangeMode;
 
         public Transform GetWeaponHolderTransform()
         {
@@ -61,9 +69,10 @@ namespace ProjetSynthese
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
                                             [EntityScope] ItemSensor itemSensor,
+                                            [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater,
                                             [GameObjectScope] NetworkIdentity networkIdentity,
                                             [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel,
-                                            [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater)
+                                            [EventChannelScope] BoostHealEventChannel boostHealEventChannel)
         {
             this.keyboardInputSensor = keyboardInputSensor;
             this.mouseInputSensor = mouseInputSensor;
@@ -74,6 +83,7 @@ namespace ProjetSynthese
             this.itemSensor = itemSensor;
             this.networkIdentity = networkIdentity;
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
+            this.boostHealEventChannel = boostHealEventChannel;
             this.soldierAnimatorUpdater = soldierAnimatorUpdater;
         }
 
@@ -88,7 +98,7 @@ namespace ProjetSynthese
 
             keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
-            keyboardInputSensor.Keyboards.OnPickup += OnPickup;
+            keyboardInputSensor.Keyboards.OnInteract += OnInteract;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn += OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff += OnSwitchSprintOff;
             keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon += OnSwitchPrimaryWeapon;
@@ -103,10 +113,10 @@ namespace ProjetSynthese
             health.OnDeath += OnDeath;
 
             deathCircleHurtEventChannel.OnEventPublished += OnPlayerOutDeathCircle;
+            boostHealEventChannel.OnEventPublished += OnBoostHeal;
 
             transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
-            rotation = new Vector2();
 
             inventory.NotifyInventoryChange();
         }
@@ -120,7 +130,7 @@ namespace ProjetSynthese
 
             keyboardInputSensor.Keyboards.OnMoveToward -= OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory -= OnToggleInventory;
-            keyboardInputSensor.Keyboards.OnPickup -= OnPickup;
+            keyboardInputSensor.Keyboards.OnInteract -= OnInteract;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn -= OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff -= OnSwitchSprintOff;
             keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon -= OnSwitchPrimaryWeapon;
@@ -135,6 +145,7 @@ namespace ProjetSynthese
             health.OnDeath -= OnDeath;
 
             deathCircleHurtEventChannel.OnEventPublished -= OnPlayerOutDeathCircle;
+            boostHealEventChannel.OnEventPublished -= OnBoostHeal;
         }
 
         private void FixedUpdate()
@@ -259,10 +270,21 @@ namespace ProjetSynthese
                 currentWeapon.Use();
         }
 
-        private void OnPickup()
+        private void OnInteract()
         {
             GameObject item = itemSensor.GetItemNearest();
             CmdTakeItem(item);
+
+            if (item == null)
+            {
+                isDoingSomething = false;
+            }
+            else
+            {
+                isDoingSomething = true;
+            }
+
+            if (OnUse != null) OnUse(isDoingSomething);
         }
 
         [Command]
@@ -284,7 +306,7 @@ namespace ProjetSynthese
             if ((object)item != null)
             {
                 item.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
-                var allItems = item.gameObject.GetAllChildrens();
+                List<GameObject> allItems = item.gameObject.GetAllChildrens().ToList();
                 allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem));
 
                 inventory.Add(item, gameObject);
@@ -358,8 +380,9 @@ namespace ProjetSynthese
         }
 
         private void OnChangeViewMode()
-        {
+        {            
             isFirstPerson = !isFirstPerson;
+            if (OnChangeMode != null) OnChangeMode(isFirstPerson);
             firstPersonCamera.gameObject.SetActive(isFirstPerson);
             SetCursor(isFirstPerson, isFirstPerson);
         }
@@ -368,6 +391,11 @@ namespace ProjetSynthese
         {
             Cursor.visible = isVisible;
             Cursor.lockState = isLock ? CursorLockMode.Locked : CursorLockMode.None;
+        }
+
+        private void OnBoostHeal(BoostHealEvent boostHealEvent)
+        {
+            health.Heal(boostHealEvent.HealthPoints);
         }
     }
 }

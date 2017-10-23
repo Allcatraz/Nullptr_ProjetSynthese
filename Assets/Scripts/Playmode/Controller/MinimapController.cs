@@ -29,6 +29,11 @@ namespace ProjetSynthese
             playerMoveEventChannel.OnEventPublished += OnPlayerMove;
         }
 
+        private void OnDestroy()
+        {
+            playerMoveEventChannel.OnEventPublished -= OnPlayerMove;
+        }
+
         private void Start()
         {
             RenderTexture texture = new RenderTexture(minimapWidth, minimapHeight, 24);

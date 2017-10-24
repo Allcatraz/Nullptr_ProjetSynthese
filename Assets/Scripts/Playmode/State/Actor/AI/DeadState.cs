@@ -6,7 +6,7 @@ namespace ProjetSynthese
     {
         public override void Execute(ActorAI actor)
         {
-            
+            currentAIState = AIState.Dead;
         }
     }
 }

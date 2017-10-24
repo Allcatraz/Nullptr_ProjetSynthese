@@ -7,7 +7,7 @@ namespace ProjetSynthese
         
         public override void Execute(ActorAI actor)
         {
-            
+            currentAIState = AIState.Hunt;
             AIController aiController = actor.ActorController;
 
             if (aiController.GetAIControllerMode() != AIController.ControllerMode.Hunt)
@@ -53,12 +53,6 @@ namespace ProjetSynthese
                         aiController.OpponentTargetDestinationIsKnown = false;
                     }
                 }
-            }
-
-            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Hunt);
-            if (nextState != AIBrain.AIState.Hunt)
-            {
-                SwitchState(actor, nextState);
             }
         }
     }

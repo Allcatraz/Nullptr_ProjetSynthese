@@ -7,6 +7,7 @@ namespace ProjetSynthese
 
         public override void Execute(ActorAI actor)
         {
+            currentAIState = AIState.Loot;
             AIController aiController = actor.ActorController;
 
             if (aiController.GetAIControllerMode() != AIController.ControllerMode.Loot)
@@ -34,13 +35,6 @@ namespace ProjetSynthese
                     }
                  }
             }
-
-            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Loot);
-            if (nextState != AIBrain.AIState.Loot)
-            {
-                SwitchState(actor, nextState);
-            }
-            
          }
     }
 }

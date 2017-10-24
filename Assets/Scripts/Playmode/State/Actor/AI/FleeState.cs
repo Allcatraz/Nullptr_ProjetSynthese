@@ -4,6 +4,7 @@
     {
         public override void Execute(ActorAI actor)
         {
+            currentAIState = AIState.Flee;
             AIController aiController = actor.ActorController;
 
             if (aiController.GetAIControllerMode() != AIController.ControllerMode.Flee)
@@ -16,12 +17,6 @@
             {
                 aiController.AIMoveTarget = AIController.MoveTarget.Map;
                 actor.ActorController.Move(actor);
-            }
-   
-            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Flee);
-            if (nextState != AIBrain.AIState.Flee)
-            {
-                SwitchState(actor, nextState);
             }
         }
     }

@@ -57,6 +57,12 @@ namespace ProjetSynthese
             {
                 CurrentState.Execute(this);
             }
+            
+            AIState nextState = Brain.WhatIsMyNextState(CurrentState.currentAIState);
+            if (nextState != CurrentState.currentAIState)
+            {
+                CurrentState.SwitchState(this, nextState);
+            }
         }
         private void OnDeath()
         {

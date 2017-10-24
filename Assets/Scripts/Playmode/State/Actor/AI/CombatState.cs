@@ -4,7 +4,9 @@
     {
         public override void Execute(ActorAI actor)
         {
-            AIController aiController = (AIController)actor.ActorController;
+            currentAIState = AIState.Combat;
+
+            AIController aiController = actor.ActorController;
 
             if (aiController.GetAIControllerMode() != AIController.ControllerMode.Combat)
             {
@@ -29,12 +31,6 @@
             if (actor.Brain.ExistShootableOpponent())
             {
                 aiController.Shoot(actor.Brain.CurrentOpponentType);
-            }
-            
-            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Combat);
-            if (nextState != AIBrain.AIState.Combat)
-            {
-                SwitchState(actor, nextState);
             }
         }
     }

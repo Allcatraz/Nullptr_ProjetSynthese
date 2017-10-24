@@ -34,8 +34,6 @@ namespace ProjetSynthese
         }
 
 
-        public enum AIState { None, Dead, Explore, Loot, Hunt, Combat, Flee }
-
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
 

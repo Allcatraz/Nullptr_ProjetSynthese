@@ -18,7 +18,7 @@ namespace ProjetSynthese
 
         public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
         {
-            GameObject _object = CmdSpawnObject(spawnPoint, VestPrefab);
+            GameObject _object = SpawnObject(spawnPoint, VestPrefab);
 
             Vest vest = _object.GetComponent<Vest>();
 
@@ -36,6 +36,8 @@ namespace ProjetSynthese
             {
                 vest.Level = 3;
             }
+
+            CmdSpawnObject(_object);
         }
     }
 

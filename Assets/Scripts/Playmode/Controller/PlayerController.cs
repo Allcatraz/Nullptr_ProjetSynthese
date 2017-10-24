@@ -16,7 +16,7 @@ namespace ProjetSynthese
         [SerializeField] private Menu inventoryMenu;
         [SerializeField] private Menu mapMenu;
         [SerializeField] private Transform weaponHolderTransform;
-        [SerializeField] private Transform inventoryTransform;
+        [SerializeField] private Transform inventoryHolderTransform;
         [SerializeField] private Camera firstPersonCamera;
 
         private ActivityStack activityStack;
@@ -49,7 +49,7 @@ namespace ProjetSynthese
 
         public Transform GetInventoryTransform()
         {
-            return inventoryTransform;
+            return inventoryHolderTransform;
         }
 
         public Inventory GetInventory()
@@ -273,7 +273,8 @@ namespace ProjetSynthese
         private void OnInteract()
         {
             GameObject item = itemSensor.GetItemNearest();
-            CmdTakeItem(item);
+            TakeItem(item);
+            //CmdTakeItem(item);
 
             if (item == null)
             {
@@ -290,19 +291,23 @@ namespace ProjetSynthese
         [Command]
         private void CmdTakeItem(GameObject item)
         {
-            //networkIdentity.AssignClientAuthority(connectionToClient);
             RpcTakeItem(item);
-            //networkIdentity.RemoveClientAuthority(connectionToClient);
         }
 
         [ClientRpc]
         private void RpcTakeItem(GameObject item)
         {
-            if (!isLocalPlayer)
+            if ((object)item != null)
             {
-                return;
+                item.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+                List<GameObject> allItems = item.gameObject.GetAllChildrens().ToList();
+                allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem));
+                item.SetActive(false);
             }
+        }
 
+        private void TakeItem(GameObject item)
+        {
             if ((object)item != null)
             {
                 item.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
@@ -317,7 +322,7 @@ namespace ProjetSynthese
                 }
                 else
                 {
-                    item.transform.SetParent(inventoryTransform);
+                    item.transform.SetParent(inventoryHolderTransform);
                 }
                 item.SetActive(false);
             }

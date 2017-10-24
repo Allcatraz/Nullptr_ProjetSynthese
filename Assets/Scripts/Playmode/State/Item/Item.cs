@@ -14,7 +14,6 @@ namespace ProjetSynthese
             set
             {
                 player = value;
-                int a = 0;
             }
         }
 

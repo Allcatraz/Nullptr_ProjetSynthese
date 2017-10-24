@@ -3,12 +3,8 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-     public class ActorAI : NetworkGameScript
+    public class ActorAI : NetworkGameScript
     {
-        public enum ActorType { None, AI };
-        [SerializeField]
-        private ActorType actorType = ActorType.None;
-
         public StateMachine CurrentState { get; private set; }
         public ActorController ActorController { get; private set; }
 
@@ -16,7 +12,7 @@ namespace ProjetSynthese
         public AIBrain Brain { get; private set; }
         public EquipmentManager EquipmentManager { get; private set; }
 
-       
+
         [SerializeField]
         private Inventory inventory;
 
@@ -40,30 +36,21 @@ namespace ProjetSynthese
         }
         private void Start()
         {
-           
-            switch (actorType)
-            {
-                case ActorType.None:
-                    break;
-                case ActorType.AI:
-                    //Ordre d'initialisation important
-                    CurrentState = new ExploreState();
-                    Sensor = new AIRadar();
-                    Sensor.Init();
-                    ActorController = new AIController(this);
-                    ((AIController)ActorController).Init();
-                    Brain = new AIBrain(this);
-                    EquipmentManager = new EquipmentManager(this);
-                    health.OnDeath += OnDeath;
-                    break;
-                default:
-                    break;
-            }
+            //Ordre d'initialisation important
+            CurrentState = new ExploreState();
+            Sensor = new AIRadar();
+            Sensor.Init();
+            ActorController = new AIController(this);
+            ((AIController)ActorController).Init();
+            Brain = new AIBrain(this);
+            EquipmentManager = new EquipmentManager(this);
+            health.OnDeath += OnDeath;
         }
 
         private void OnDestroy()
         {
             health.OnDeath -= OnDeath;
+            //drop item
         }
 
         private void Update()
@@ -71,16 +58,6 @@ namespace ProjetSynthese
             if (CurrentState != null)
             {
                 CurrentState.Execute(this);
-            }
-
-            switch (actorType)
-            {
-                case ActorType.None:
-                    break;
-                case ActorType.AI:
-                    break;
-                default:
-                    break;
             }
         }
         private void OnDeath()
@@ -98,6 +75,6 @@ namespace ProjetSynthese
             CurrentState = newState;
 
         }
-       
+
     }
 }

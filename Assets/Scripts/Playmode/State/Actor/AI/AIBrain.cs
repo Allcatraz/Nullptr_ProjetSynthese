@@ -127,7 +127,6 @@ namespace ProjetSynthese
         private AIState ChooseANewStateFromDeadState()
         {
             AIState nextState = AIState.Dead;
-            //droper items premire passe
             return nextState;
         }
 

@@ -246,7 +246,7 @@ namespace Tiled2Unity
                 return;
 
 #if UNITY_5_6_OR_NEWER
-            // Add a component that will control our instanced shader properties
+            // Add a component that will Control our instanced shader properties
             Tiled2Unity.GPUInstancing instancing = gameObject.GetOrAddComponent<Tiled2Unity.GPUInstancing>();
             instancing.Opacity = opacity;
 #endif

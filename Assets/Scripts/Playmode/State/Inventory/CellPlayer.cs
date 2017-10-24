@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class CellPlayer : Cell
+    public class CellPlayer : ObjectContainedInventory
     {
         private Item item;
 

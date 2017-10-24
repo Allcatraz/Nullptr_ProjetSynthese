@@ -4,9 +4,9 @@ namespace ProjetSynthese
 {
     public class SpawnItemDropEvent : IEvent
     {
-        public Cell ItemToSpawn { get; private set; }
+        public ObjectContainedInventory ItemToSpawn { get; private set; }
 
-        public SpawnItemDropEvent(Cell itemToSpawn)
+        public SpawnItemDropEvent(ObjectContainedInventory itemToSpawn)
         {
             ItemToSpawn = itemToSpawn;
         }

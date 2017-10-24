@@ -6,53 +6,141 @@ namespace ProjetSynthese
 {
     public class InventoryController : GameScript
     {
+        [Tooltip("La location de la grille d'affichage de l'inventaire du joueur")]
         [SerializeField] private Transform gridInventoryPlayer;
-        [SerializeField] private Transform gridEquippedByPlayer;
+        [Tooltip("La location de la grille d'affichage des armes du joueur")]
+        [SerializeField] private Transform gridWeaponEquippedByPlayer;
+        [Tooltip("La location de la grille d'affichage des objets de protection du joueur")]
         [SerializeField] private Transform gridProtectionPlayer;
-        [SerializeField] private Transform gridNerbyItem;
+        [Tooltip("La location de la grille d'affichage de l'inventaire du sol")]
+        [SerializeField] private Transform gridGroundInventory;
+
+        [Tooltip("Le prefab utilisé pour la création des boutons utilisé par les armes du joueur")]
         [SerializeField] private GameObject cellEquippedWeaponPrefabs;
+        [Tooltip("Le prefab utilisé pour la création des boutons utilisé par les objets de protection du joueur")]
         [SerializeField] private GameObject cellProtectionItemPrefabs;
-        [SerializeField] private GameObject cellObjectPrefab;
-        [SerializeField] private GameObject cellObjectGround;
+        [Tooltip("Le prefab utilisé pour la création des boutons utilisé par les objets de l'inventaire du joueur")]
+        [SerializeField] private GameObject cellInventoryPrefab;
+        [Tooltip("Le prefab utilisé pour la création des boutons utilisé par les objets de l'inventaire du sol")]
+        [SerializeField] private GameObject cellGroundPrefab;
+
+        [Tooltip("Contien l'inventaire du sol")]
         [SerializeField] private Inventory inventoryGround;
+        [Tooltip("Contien le sensor a utilisé pour detecter les objets proches")]
         [SerializeField] private ItemSensor sensorItem;
-        private PlayerMoveEventChannel playerMoveEventChannel;
-        private bool abonner = false;
-        private Inventory inventory;
+
+        private PlayerMoveEventChannel playerMoveEventChannel;       
         private InventoryChangedEventChannel inventoryChangedEventChannel;
 
+        private Inventory inventory;
         public GameObject Player { get; set; }
+
+        public Transform GridInventoryPlayer
+        {
+            get
+            {
+                return gridInventoryPlayer;
+            }
+
+            private set
+            {
+                gridInventoryPlayer = value;
+            }
+        }
+        public Transform GridEquippedByPlayer
+        {
+            get
+            {
+                return gridWeaponEquippedByPlayer;
+            }
+
+            private set
+            {
+                gridWeaponEquippedByPlayer = value;
+            }
+        }
+        public Transform GridProtectionPlayer
+        {
+            get
+            {
+                return gridProtectionPlayer;
+            }
+
+            private set
+            {
+                gridProtectionPlayer = value;
+            }
+        }
+        public Transform GridNerbyItem
+        {
+            get
+            {
+                return gridGroundInventory;
+            }
+
+            private set
+            {
+                gridGroundInventory = value;
+            }
+        }
+
+        private void InjectEventSensor([EventChannelScope] PlayerMoveEventChannel playerMoveEventChannel,
+                                        [EventChannelScope] InventoryChangedEventChannel inventoryChangedEventChannel)
+        {
+            this.playerMoveEventChannel = playerMoveEventChannel;
+            this.inventoryChangedEventChannel = inventoryChangedEventChannel;
+        }
+
+        private void Awake()
+        {
+            InjectDependencies("InjectEventSensor");
+            playerMoveEventChannel.OnEventPublished += OnPlayerMoved;
+            inventoryChangedEventChannel.OnEventPublished += OnInventoryChanged;
+
+        }
+
+        private void OnDestroy()
+        {
+            playerMoveEventChannel.OnEventPublished -= OnPlayerMoved;
+            inventoryChangedEventChannel.OnEventPublished -= OnInventoryChanged;
+        }
 
         public void CreateCellsForInventoryPlayer()
         {
             ClearGrid(gridInventoryPlayer);
-            foreach (Cell item in inventory.listInventory)
+            foreach (ObjectContainedInventory item in inventory.ListInventory)
             {
-                GameObject cellObject = Instantiate(cellObjectPrefab);
-                cellObject.transform.SetParent(gridInventoryPlayer, false);
-                cellObject.GetComponentInChildren<CellObject>().inventory = this.inventory;
-                cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
+                GameObject gameCellObject = Instantiate(cellInventoryPrefab);
+                gameCellObject.transform.SetParent(gridInventoryPlayer, false);
+                CellObject cellObject = gameCellObject.GetComponentInChildren<CellObject>();
+                cellObject.Inventory = inventory;
+                cellObject.Control = this;
+                cellObject.InstantiateCellObjectFromCell(item);
             }
         }
 
         public void CreateCellsForWeaponByPlayer()
         {
-            ClearGrid(gridEquippedByPlayer);
+            ClearGrid(gridWeaponEquippedByPlayer);
             if (inventory.GetPrimaryWeapon() != null)
             {
                 GameObject cellWeaponTemp1 = Instantiate(cellEquippedWeaponPrefabs);
-                cellWeaponTemp1.transform.SetParent(gridEquippedByPlayer, false);
-                cellWeaponTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
-                cellWeaponTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetPrimaryWeapon());
-                cellWeaponTemp1.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Primary;
+                cellWeaponTemp1.transform.SetParent(gridWeaponEquippedByPlayer, false);
+                CellObject cellObject = cellWeaponTemp1.GetComponentInChildren<CellObject>();
+                cellObject.Inventory = inventory;
+                cellObject.Control = this;
+                cellObject.InstantiateCellObjectFromCell(inventory.GetPrimaryWeapon());
+                cellObject.EquipAt = EquipWeaponAt.Primary;
             }
             if (inventory.GetSecondaryWeapon() != null)
             {
                 GameObject cellWeaponTemp2 = Instantiate(cellEquippedWeaponPrefabs);
-                cellWeaponTemp2.transform.SetParent(gridEquippedByPlayer, false);
-                cellWeaponTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
-                cellWeaponTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetSecondaryWeapon());
-                cellWeaponTemp2.GetComponentInChildren<CellObject>().equipAt = EquipWeaponAt.Secondary;
+                cellWeaponTemp2.transform.SetParent(gridWeaponEquippedByPlayer, false);
+                CellObject cellObject = cellWeaponTemp2.GetComponentInChildren<CellObject>();
+                cellObject.Inventory = inventory;
+                cellObject.Control = this;
+                cellObject.InstantiateCellObjectFromCell(inventory.GetSecondaryWeapon());
+                cellObject.EquipAt = EquipWeaponAt.Secondary;
             }
         }
 
@@ -63,70 +151,63 @@ namespace ProjetSynthese
             {
                 GameObject cellProtectionTemp1 = Instantiate(cellProtectionItemPrefabs);
                 cellProtectionTemp1.transform.SetParent(gridProtectionPlayer, false);
-                cellProtectionTemp1.GetComponentInChildren<CellObject>().inventory = this.inventory;
-                cellProtectionTemp1.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetVest());
+                CellObject cellObject = cellProtectionTemp1.GetComponentInChildren<CellObject>();
+                cellObject.Inventory = inventory;
+                cellObject.Control = this;
+                cellObject.InstantiateCellObjectFromCell(inventory.GetVest());
             }
 
             if (inventory.GetHelmet() != null)
             {
                 GameObject cellProtectionTemp2 = Instantiate(cellProtectionItemPrefabs);
                 cellProtectionTemp2.transform.SetParent(gridProtectionPlayer, false);
-                cellProtectionTemp2.GetComponentInChildren<CellObject>().inventory = this.inventory;
-                cellProtectionTemp2.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetHelmet());
+                CellObject cellObject = cellProtectionTemp2.GetComponentInChildren<CellObject>();
+                cellObject.Inventory = inventory;
+                cellObject.Control = this;
+                cellObject.InstantiateCellObjectFromCell(inventory.GetHelmet());
             }
             if (inventory.GetBag() != null)
             {
                 GameObject cellProtectionTemp3 = Instantiate(cellProtectionItemPrefabs);
                 cellProtectionTemp3.transform.SetParent(gridProtectionPlayer, false);
-                cellProtectionTemp3.GetComponentInChildren<CellObject>().inventory = this.inventory;
-                cellProtectionTemp3.GetComponentInChildren<CellObject>().InstantiateFromCell(inventory.GetBag());
+                CellObject cellObject = cellProtectionTemp3.GetComponentInChildren<CellObject>();
+                cellObject.Inventory = inventory;
+                cellObject.Control = this;
+                cellObject.InstantiateCellObjectFromCell(inventory.GetBag());
             }
         }
 
         public void CreateCellsForNearbyItem()
         {
-            ClearGrid(gridNerbyItem);
+            ClearGrid(gridGroundInventory);
             CreateInventoryGround();
-            if (inventoryGround.listInventory != null)
+            if (inventoryGround.ListInventory != null)
             {
-                foreach (Cell item in inventoryGround.listInventory)
+                foreach (ObjectContainedInventory item in inventoryGround.ListInventory)
                 {
-                    GameObject cellObject = Instantiate(cellObjectGround);
-                    cellObject.transform.SetParent(gridNerbyItem, false);
-                    cellObject.GetComponentInChildren<CellObject>().inventory = inventoryGround;
-                    cellObject.GetComponentInChildren<CellObject>().InstantiateFromCell(item);
+                    GameObject gameCellObject = Instantiate(cellGroundPrefab);
+                    gameCellObject.transform.SetParent(gridGroundInventory, false);
+                    CellObject cellObject = gameCellObject.GetComponentInChildren<CellObject>();
+                    cellObject.Inventory = inventoryGround;
+                    cellObject.Control = this;
+                    cellObject.InstantiateCellObjectFromCell(item);
                 }
             }
         }
 
-        private void Awake()
-        {
-            InjectDependencies("InjectEventSensor");
-            playerMoveEventChannel.OnEventPublished += PlayerMoveEventChannel_OnEventPublished;
-            inventoryChangedEventChannel.OnEventPublished += InventoryChangedEventChannel_OnEventPublished;
-
-        }
-
-        private void InventoryChangedEventChannel_OnEventPublished(InventoryChangeEvent newEvent)
+        private void OnInventoryChanged(InventoryChangeEvent newEvent)
         {
             inventory = newEvent.Inventory;
-            Player = inventory.parent;
+            Player = inventory.Parent;
             CreateCellsForInventoryPlayer();
             CreateCellsForWeaponByPlayer();
             CreateCellsForProtectionPlayer();
             CreateCellsForNearbyItem();
         }
 
-        private void PlayerMoveEventChannel_OnEventPublished(PlayerMoveEvent newEvent)
+        private void OnPlayerMoved(PlayerMoveEvent newEvent)
         {
             CreateCellsForNearbyItem();
-        }
-
-        private void InjectEventSensor([EventChannelScope] PlayerMoveEventChannel playerMoveEventChannel,
-                                        [EventChannelScope] InventoryChangedEventChannel inventoryChangedEventChannel)
-        {
-            this.playerMoveEventChannel = playerMoveEventChannel;
-            this.inventoryChangedEventChannel = inventoryChangedEventChannel;
         }
 
         private void CreateInventoryGround()

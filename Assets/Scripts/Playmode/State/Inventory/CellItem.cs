@@ -1,21 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class CellItem : Cell
+    public class ItemContainedInventory : ObjectContainedInventory
     {
-
         private Item item;
 
-        public CellItem()
+        public ItemContainedInventory()
         {
 
         }
 
-        public CellItem(Item item)
+        public ItemContainedInventory(Item item)
         {
             this.item = item;
         }
@@ -29,6 +25,5 @@ namespace ProjetSynthese
         {
             return item;
         }
-
     }
 }

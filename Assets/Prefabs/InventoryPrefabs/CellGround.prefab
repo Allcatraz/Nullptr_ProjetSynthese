@@ -122,10 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f59261f06a6364f8c53a79d552bd56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonType: 3
+  cellObjectType: 3
   keyWeaponSlot: 0
   keyDroppingItem: 0
-  control: {fileID: 0}
 --- !u!114 &114238933133656498
 MonoBehaviour:
   m_ObjectHideFlags: 1

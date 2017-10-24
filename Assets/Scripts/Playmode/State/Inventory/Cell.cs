@@ -1,21 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class Cell
+    public class ObjectContainedInventory
     {
         private int compteur;
 
-        public Cell()
+        public ObjectContainedInventory()
         {
             compteur = 1;
-        }
-
-        public Cell(int compteur)
-        {
-            this.compteur = compteur;
         }
 
         public void AddCompteur()
@@ -47,7 +40,7 @@ namespace ProjetSynthese
 
         }
 
-        public static bool operator ==(Cell one, Cell two)
+        public static bool operator ==(ObjectContainedInventory one, ObjectContainedInventory two)
         {
             if ((object)one == null && (object)two == null)
             {
@@ -58,14 +51,14 @@ namespace ProjetSynthese
             return one.GetItem() == two.GetItem();
         }
 
-        public static bool operator != (Cell one, Cell two)
+        public static bool operator != (ObjectContainedInventory one, ObjectContainedInventory two)
         {
             return !(one == two);
         }
 
         public override bool Equals(object obj)
         {
-            var cell = obj as Cell;
+            var cell = obj as ObjectContainedInventory;
             return cell != null &&
                    compteur == cell.compteur;
         }

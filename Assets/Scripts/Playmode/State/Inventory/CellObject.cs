@@ -1,9 +1,6 @@
 ﻿using Harmony;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 namespace ProjetSynthese
 {
@@ -11,24 +8,28 @@ namespace ProjetSynthese
 
     public class CellObject : GameScript
     {
+        [Tooltip("Le type de bouton que l'objet représente")]
         [SerializeField] public CellObjectType cellObjectType;
+        [Tooltip("La touche utilisé pour modifier quel slot d'arme est actif.")]
         [SerializeField] private KeyCode keyWeaponSlot;
+        [Tooltip("La touche utilisé pour déterminer si on doit drop l'item")]
         [SerializeField] private KeyCode keyDroppingItem;
+
         private Button button;
         private bool willDropItem = false;
+        private bool isDragging = false;
         private GameObject itemToDrag;
         private Vector3 startPosition;
         private GameObject canvasMenu;
-        private GameObject oldParent;
-        private bool isDragging = false;
+        private GameObject oldParent;  
         private PlayerController player;
         private Inventory playerInventory;
 
         public EquipWeaponAt EquipAt { get; set; }
         public CellObjectType DropAtType { get; set; }
-        public InventoryController control;
+        public InventoryController Control { get; set; }
         public Inventory Inventory { get; set; }
-        public Cell CellContained { get; set; }
+        public ObjectContainedInventory CellContained { get; set; }
         public Image ImageBackground { get; private set; }
         public Text TextName { get; private set; }
         public Text TextNumber { get; private set; }
@@ -60,7 +61,7 @@ namespace ProjetSynthese
             //this.ImageBackground = imageBackground;
         }
 
-        public void InstantiateCellObjectFromCell(Cell cell)
+        public void InstantiateCellObjectFromCell(ObjectContainedInventory cell)
         {
             InstantiateCellObjectVariables();
             CellContained = cell;
@@ -149,17 +150,17 @@ namespace ProjetSynthese
 
         private bool WasDroppedAt(CellObjectType cellObjectType)
         {
-            return DropAtType == cellObjectType && DropAtType != cellObjectType;
+            return DropAtType == cellObjectType && DropAtType != this.cellObjectType;
         }
 
         private void InstantiateCellObjectVariables()
         {
-            player = control.Player.GetComponent<PlayerController>();
+            player = Control.Player.GetComponent<PlayerController>();
             playerInventory = player.GetInventory();
             itemToDrag = transform.parent.gameObject;
             oldParent = GetTransformCorrectGrid(this.cellObjectType).gameObject;
             startPosition = itemToDrag.transform.position;
-            canvasMenu = control.gameObject;
+            canvasMenu = Control.gameObject;
         }
       
         private void OnClickButton()
@@ -190,19 +191,19 @@ namespace ProjetSynthese
         {
             if (gridToFind == CellObjectType.Ground)
             {
-                return control.GridNerbyItem;
+                return Control.GridNerbyItem;
             }
             else if (gridToFind == CellObjectType.Inventory)
             {
-                return control.GridInventoryPlayer;
+                return Control.GridInventoryPlayer;
             }
             else if (gridToFind == CellObjectType.Protection)
             {
-                return control.GridProtectionPlayer;
+                return Control.GridProtectionPlayer;
             }
             else if (gridToFind == CellObjectType.Weapon)
             {
-                return control.GridEquippedByPlayer;
+                return Control.GridEquippedByPlayer;
             }
             else
             {
@@ -284,7 +285,7 @@ namespace ProjetSynthese
                 toAdd.SetActive(false);
             }
             CellContained.RemoveOneFromCompteur();
-            control.CreateCellsForNearbyItem();
+            Control.CreateCellsForNearbyItem();
         }
 
         private void ChangeWeaponSlotFromKeyPressed()

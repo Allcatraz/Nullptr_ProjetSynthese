@@ -141,7 +141,7 @@ namespace ProjetSynthese
         private void OnSwitchPrimaryWeapon()
         {
             SetCurrentWeaponActive(false);
-            Cell weapon = inventory.GetPrimaryWeapon();
+            ObjectContainedInventory weapon = inventory.GetPrimaryWeapon();
             currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();
@@ -150,7 +150,7 @@ namespace ProjetSynthese
         private void OnSwitchSecondaryWeapon()
         {
             SetCurrentWeaponActive(false);
-            Cell weapon = inventory.GetSecondaryWeapon();
+            ObjectContainedInventory weapon = inventory.GetSecondaryWeapon();
             currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();

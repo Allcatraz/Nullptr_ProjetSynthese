@@ -309,7 +309,7 @@ namespace ProjetSynthese
             if (inventoryOf == InventoryOf.Item)
             {
                 ObjectContainedInventory cell = CreateItemCell(game);
-                if (AddWeight(cell.GetItem().GetWeight()))
+                if (cell.GetItem() != null && AddWeight(cell.GetItem().GetWeight()))
                 {
                     if (!IsItemPresentInInventory(cell)) ListInventory.Add(cell);
                     cell.GetItem().Player = player;

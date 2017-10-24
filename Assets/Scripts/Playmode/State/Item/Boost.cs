@@ -4,28 +4,27 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class Boost : Item
+    public class Boost : Usable
     {
+        public const int Level1Efficacity = 5;
+        public const int Level2Efficacity = 15;
+        public const int Level3Efficacity = 35;
+
+        private static readonly int[] Efficacities = { Level1Efficacity, Level2Efficacity, Level3Efficacity };
+
+        private const int Level1Weight = 1;
+        private const int Level2Weight = 10;
+        private const int Level3Weight = 15;
+
+        private static readonly int[] Weights = { Level1Weight, Level2Weight, Level3Weight };
+
         public int Efficacity
         {
             get
             {
-                return efficacities[Level - 1];
+                return Efficacities[Level - 1];
             }
-            private set { }
         }
-
-        public static int level1Efficacity = 5;
-        public static int level2Efficacity = 15;
-        public static int level3Efficacity = 35;
-
-        private static int[] efficacities = { level1Efficacity, level2Efficacity, level3Efficacity };
-
-        private static int level1Weight = 1;
-        private static int level2Weight = 10;
-        private static int level3Weight = 15;
-
-        private static int[] weights = { level1Weight, level2Weight, level3Weight };
 
         public override void Use()
         {
@@ -35,7 +34,7 @@ namespace ProjetSynthese
 
         public override int GetWeight()
         {
-            return weights[Level - 1];
+            return Weights[Level - 1];
         }
     }
 }

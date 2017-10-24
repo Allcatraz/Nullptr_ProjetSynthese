@@ -84,7 +84,8 @@ namespace ProjetSynthese
                 {
                     PlayerController player = inventory.parent.GetComponent<PlayerController>();
                     IsItem.GetItem().Player = player.gameObject;
-                    IsItem.GetItem().Use();
+                    Usable usable = IsItem.GetItem() as Usable;
+                    usable.Use();
                     inventory.CheckMultiplePresenceAndRemove(IsItem);
                 }
                 else if (IsItem.GetItem() as Bag)

@@ -7,12 +7,8 @@ namespace ProjetSynthese
         
         public override void Execute(ActorAI actor)
         {
-            //combat pas si pas tiree dessus
-            //si vois pas recherche
-            //si pas shootable se rapproche
-            //pick item selon interet versus interet poursuite
-            //interet switch to combat
-            AIController aiController = (AIController)actor.ActorController;
+            
+            AIController aiController = actor.ActorController;
 
             if (aiController.GetAIControllerMode() != AIController.ControllerMode.Hunt)
             {

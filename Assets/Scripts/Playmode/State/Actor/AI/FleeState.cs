@@ -4,7 +4,7 @@
     {
         public override void Execute(ActorAI actor)
         {
-            AIController aiController = (AIController)actor.ActorController;
+            AIController aiController = actor.ActorController;
 
             if (aiController.GetAIControllerMode() != AIController.ControllerMode.Flee)
             {

@@ -6,15 +6,7 @@ namespace ProjetSynthese
 {
     public class Heal : Item
     {
-        public int Efficacity
-        {
-            get
-            {
-                return efficacities[Level - 1];
-            }
-            private set { }
-        }
-
+        
         private static int level1Efficacity = 5;
         private static int level2Efficacity = 75;
         private static int level3Efficacity = 100;
@@ -27,10 +19,19 @@ namespace ProjetSynthese
 
         private static int[] weights = { level1Weight, level2Weight, level3Weight };
 
+        public int Efficacity
+        {
+            get
+            {
+                return efficacities[Level - 1];
+            }
+            private set { }
+        }
+
         public override void Use()
         {
-            Player.GetComponent<Health>().Heal(Efficacity);
-            // TODO : destroy l'objet
+            Player.GetComponentInChildren<Health>().Heal(Efficacity);
+            // TODO : Enlever un health dans l'inventaire
         }
 
         public override int GetWeight()

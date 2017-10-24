@@ -82,6 +82,8 @@ namespace ProjetSynthese
                 }
                 else if (IsItem.GetItem() as Heal || IsItem.GetItem() as Boost)
                 {
+                    PlayerController player = inventory.parent.GetComponent<PlayerController>();
+                    IsItem.GetItem().Player = player.gameObject;
                     IsItem.GetItem().Use();
                     inventory.CheckMultiplePresenceAndRemove(IsItem);
                 }

@@ -6,7 +6,7 @@ namespace ProjetSynthese
 
     public class AIBrain
     {
-        [SerializeField]
+       
         private const float LifeFleeThresholdFactor = 0.20f;
 
         private readonly float LifeFleeThreshold;

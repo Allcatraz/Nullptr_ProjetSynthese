@@ -12,7 +12,7 @@ namespace ProjetSynthese
         public AIBrain Brain { get; private set; }
         public EquipmentManager EquipmentManager { get; private set; }
 
-
+        [Tooltip("Objet représentant l'inventaire de l'AI")]
         [SerializeField]
         private Inventory inventory;
 
@@ -23,7 +23,7 @@ namespace ProjetSynthese
                 return inventory;
             }
         }
-
+        [Tooltip("Objet représentant la vie de l'AI")]
         [SerializeField]
         private Health health;
 

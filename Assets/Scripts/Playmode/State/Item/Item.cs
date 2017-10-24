@@ -7,7 +7,15 @@ namespace ProjetSynthese
         [SerializeField]
         private ItemType type;
 
-        public GameObject Player { get; set; }
+        private GameObject player;
+        public GameObject Player
+        {
+            get { return player; }
+            set
+            {
+                player = value;
+            }
+        }
 
         public int Level { get; set; }
 

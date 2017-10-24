@@ -24,9 +24,11 @@ namespace ProjetSynthese
 
             public event FireEventHandler OnFire;
 
-            public event PickupEventHandler OnPickup;
+            public event PickupEventHandler OnInteract;
 
             public event ReloadEventHandler OnReload;
+
+            public event ChangeViewModeHangler OnChangeViewMode;
 
             public abstract IInputDevice this[int deviceIndex] { get; }
 
@@ -60,9 +62,9 @@ namespace ProjetSynthese
                 if (OnTogglePause != null) OnTogglePause();
             }
 
-            protected virtual void NotifyMove(Vector3 direction)
+            protected virtual void NotifyMove(KeyCode key)
             {
-                if (OnMoveToward != null) OnMoveToward(direction);
+                if (OnMoveToward != null) OnMoveToward(key);
             }
 
             protected virtual void NotifySwitchSprintOn()
@@ -95,14 +97,19 @@ namespace ProjetSynthese
                 if (OnFire != null) OnFire();
             }
 
-            protected virtual void NotifyPickup()
+            protected virtual void NotifyInteract()
             {
-                if (OnPickup != null) OnPickup();
+                if (OnInteract != null) OnInteract();
             }
             
             protected virtual void NotifyReload()
             {
                 if (OnReload != null) OnReload();
+            }
+
+            protected virtual void NotifyChangeViewMode()
+            {
+                if(OnChangeViewMode != null) OnChangeViewMode();
             }
         }
 
@@ -126,9 +133,11 @@ namespace ProjetSynthese
 
             private bool fireTriggerd;
 
-            private bool pickupTriggerd;
+            private bool interactTriggerd;
 
             private bool reloadTriggerd;
+
+            private bool changeViewModeTriggerd;
 
             public abstract override IInputDevice this[int deviceIndex] { get; }
 
@@ -152,9 +161,11 @@ namespace ProjetSynthese
 
                 fireTriggerd = false;
 
-                pickupTriggerd = false;
+                interactTriggerd = false;
 
                 reloadTriggerd = false;
+
+                changeViewModeTriggerd = false;
             }
 
             protected override void NotifyUp()
@@ -211,11 +222,11 @@ namespace ProjetSynthese
                 }
             }
 
-            protected override void NotifyMove(Vector3 direction)
+            protected override void NotifyMove(KeyCode key)
             {
                 if (!moveTriggerd)
                 {
-                    base.NotifyMove(direction);
+                    base.NotifyMove(key);
                     moveTriggerd = true;
                 }
             }
@@ -274,12 +285,12 @@ namespace ProjetSynthese
                 }
             }
 
-            protected override void NotifyPickup()
+            protected override void NotifyInteract()
             {
-                if (!pickupTriggerd)
+                if (!interactTriggerd)
                 {
-                    base.NotifyPickup();
-                    pickupTriggerd = true;
+                    base.NotifyInteract();
+                    interactTriggerd = true;
                 }
             }
 
@@ -289,6 +300,15 @@ namespace ProjetSynthese
                 {
                     base.NotifyReload();
                     reloadTriggerd = true;
+                }
+            }
+
+            protected override void NotifyChangeViewMode()
+            {
+                if (!changeViewModeTriggerd)
+                {
+                    base.NotifyChangeViewMode();
+                    changeViewModeTriggerd = true;
                 }
             }
         }

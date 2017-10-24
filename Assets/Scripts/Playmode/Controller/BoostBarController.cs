@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Harmony;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,41 +6,34 @@ namespace ProjetSynthese
 {
     public class BoostBarController : GameScript
     {
-        [SerializeField]
-        private Image image;
+        [SerializeField] private Image image;
+
         private BoostStats boostStats;
+        private PlayerBoostEventChannel playerBoostEventChannel;
+
         private float fillAmount;
 
-        private void Start()
+        private void InjectBoostBarController([EventChannelScope] PlayerBoostEventChannel playerBoostEventChannel)
         {
-            boostStats = StaticBoostPass.boostStats;
+            this.playerBoostEventChannel = playerBoostEventChannel;
         }
 
-        private void Update()
+        private void Awake()
         {
-            UpdateBoost();
-            SetFillAmountFromBoost();
-            UpdateBar();
+            InjectDependencies("InjectBoostBarController");
+            playerBoostEventChannel.OnEventPublished += OnBoostChanged;
         }
 
-        private void UpdateBoost()
+        private void OnDestroy()
         {
-            this.boostStats = StaticBoostPass.boostStats;
+            playerBoostEventChannel.OnEventPublished -= OnBoostChanged;
         }
 
-        private void SetFillAmountFromBoost()
+        private void OnBoostChanged(PlayerBoostEvent playerBoostEvent)
         {
-            if (boostStats != null)
-            {
-                fillAmount = boostStats.BoostPoints / boostStats.MaxBoostPoints;
-            }
-        }
-
-        private void UpdateBar()
-        {
+            boostStats = playerBoostEvent.PlayerBoost;
+            fillAmount = boostStats.BoostPoints / boostStats.MaxBoostPoints;
             image.fillAmount = fillAmount;
         }
     }
 }
-
-

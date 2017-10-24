@@ -1,11 +1,15 @@
-﻿using Castle.Core.Internal;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Harmony;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
+    public delegate void UseEventHandler(bool isDoingSomething);
+
+    public delegate void ChangeModeEventHandler(bool isPlayerInFirstPerson);
+
     [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : NetworkGameScript
     {
@@ -13,6 +17,7 @@ namespace ProjetSynthese
         [SerializeField] private Menu mapMenu;
         [SerializeField] private Transform weaponHolderTransform;
         [SerializeField] private Transform inventoryTransform;
+        [SerializeField] private Camera firstPersonCamera;
 
         private ActivityStack activityStack;
         private Health health;
@@ -24,9 +29,18 @@ namespace ProjetSynthese
         private Weapon currentWeapon;
         private NetworkIdentity networkIdentity;
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
+        private BoostHealEventChannel boostHealEventChannel;
+        private SoldierAnimatorUpdater soldierAnimatorUpdater;
 
+        private Vector2 rotation = Vector2.zero;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
+        private bool isFirstPerson = false;
+        private bool canCameraMove = true;
+        private bool isDoingSomething = false;
+
+        public event UseEventHandler OnUse;
+        public event ChangeModeEventHandler OnChangeMode;
 
         public Transform GetWeaponHolderTransform()
         {
@@ -55,8 +69,10 @@ namespace ProjetSynthese
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
                                             [EntityScope] ItemSensor itemSensor,
+                                            [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater,
                                             [GameObjectScope] NetworkIdentity networkIdentity,
-                                            [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel)
+                                            [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel,
+                                            [EventChannelScope] BoostHealEventChannel boostHealEventChannel)
         {
             this.keyboardInputSensor = keyboardInputSensor;
             this.mouseInputSensor = mouseInputSensor;
@@ -67,6 +83,8 @@ namespace ProjetSynthese
             this.itemSensor = itemSensor;
             this.networkIdentity = networkIdentity;
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
+            this.boostHealEventChannel = boostHealEventChannel;
+            this.soldierAnimatorUpdater = soldierAnimatorUpdater;
         }
 
         private void Start()
@@ -80,7 +98,7 @@ namespace ProjetSynthese
 
             keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
-            keyboardInputSensor.Keyboards.OnPickup += OnPickup;
+            keyboardInputSensor.Keyboards.OnInteract += OnInteract;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn += OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff += OnSwitchSprintOff;
             keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon += OnSwitchPrimaryWeapon;
@@ -88,12 +106,14 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon += OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap += OnToggleMap;
             keyboardInputSensor.Keyboards.OnReload += OnReload;
+            keyboardInputSensor.Keyboards.OnChangeViewMode += OnChangeViewMode;
 
             mouseInputSensor.Mouses.OnFire += OnFire;
 
             health.OnDeath += OnDeath;
 
             deathCircleHurtEventChannel.OnEventPublished += OnPlayerOutDeathCircle;
+            boostHealEventChannel.OnEventPublished += OnBoostHeal;
 
             transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
@@ -110,7 +130,7 @@ namespace ProjetSynthese
 
             keyboardInputSensor.Keyboards.OnMoveToward -= OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory -= OnToggleInventory;
-            keyboardInputSensor.Keyboards.OnPickup -= OnPickup;
+            keyboardInputSensor.Keyboards.OnInteract -= OnInteract;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn -= OnSwitchSprintOn;
             keyboardInputSensor.Keyboards.OnSwitchSprintOff -= OnSwitchSprintOff;
             keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon -= OnSwitchPrimaryWeapon;
@@ -118,10 +138,14 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon -= OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap -= OnToggleMap;
             keyboardInputSensor.Keyboards.OnReload -= OnReload;
+            keyboardInputSensor.Keyboards.OnChangeViewMode -= OnChangeViewMode;
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
 
             health.OnDeath -= OnDeath;
+
+            deathCircleHurtEventChannel.OnEventPublished -= OnPlayerOutDeathCircle;
+            boostHealEventChannel.OnEventPublished -= OnBoostHeal;
         }
 
         private void FixedUpdate()
@@ -130,12 +154,42 @@ namespace ProjetSynthese
             {
                 return;
             }
+            if (canCameraMove)
+            {
+                if (!isFirstPerson)
+                {
+                    Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
+                    Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y,
+                        mousePos.z - transform.position.z);
+                    float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
 
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
-            Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y, mousePos.z - transform.position.z);
-            float angle = (Mathf.Atan2(distance.x, distance.z) * 180 / Mathf.PI);
+                    Vector3 vec3Angle = new Vector3(0, angle, 0);
+                    playerMover.Rotate(vec3Angle);
 
-            playerMover.Rotate(angle);
+                    distance.y = transform.position.y;
+                    soldierAnimatorUpdater.ViewDirection = distance;
+                    soldierAnimatorUpdater.UpdateAnimator();
+                }
+                else
+                {
+                    rotation.x += -Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
+                    rotation.y += Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
+                    rotation.x = ClampAngle(rotation.x, -60, 60);
+
+                    Quaternion localRotation = Quaternion.Euler(rotation.x, rotation.y, 0.0f);
+                    firstPersonCamera.transform.rotation = localRotation;
+                    transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+                }
+            }
+        }
+
+        private float ClampAngle(float angle, float min, float max)
+        {
+            if (angle <= -360F)
+                angle += 360F;
+            if (angle >= 360F)
+                angle -= 360F;
+            return Mathf.Clamp(angle, min, max);
         }
 
         private void OnSwitchPrimaryWeapon()
@@ -183,9 +237,31 @@ namespace ProjetSynthese
             playerMover.SwitchSprintOff();
         }
 
-        private void OnMoveToward(Vector3 direction)
+        private void OnMoveToward(KeyCode key)
         {
+            Matrix4x4 transformMatrix = transform.localToWorldMatrix;
+            Vector3 direction = Vector3.zero;
+
+            switch (key)
+            {
+                case KeyCode.W:
+                    direction = transformMatrix.GetColumn(2);
+                    break;
+                case KeyCode.S:
+                    direction = -transformMatrix.GetColumn(2);
+                    break;
+                case KeyCode.A:
+                    direction = -transformMatrix.GetColumn(0);
+                    break;
+                case KeyCode.D:
+                    direction = transformMatrix.GetColumn(0);
+                    break;
+            }
+
+            direction.Normalize();
             playerMover.Move(direction);
+
+            soldierAnimatorUpdater.MouvementDirection = direction;
         }
 
         private void OnFire()
@@ -194,25 +270,45 @@ namespace ProjetSynthese
                 currentWeapon.Use();
         }
 
-        private void OnPickup()
+        private void OnInteract()
         {
             GameObject item = itemSensor.GetItemNearest();
             CmdTakeItem(item);
+
+            if (item == null)
+            {
+                isDoingSomething = false;
+            }
+            else
+            {
+                isDoingSomething = true;
+            }
+
+            if (OnUse != null) OnUse(isDoingSomething);
         }
 
         [Command]
         private void CmdTakeItem(GameObject item)
-        {           
-            networkIdentity.AssignClientAuthority(connectionToClient);
+        {
+            //networkIdentity.AssignClientAuthority(connectionToClient);
             RpcTakeItem(item);
-            networkIdentity.RemoveClientAuthority(connectionToClient);
+            //networkIdentity.RemoveClientAuthority(connectionToClient);
         }
 
         [ClientRpc]
         private void RpcTakeItem(GameObject item)
         {
+            if (!isLocalPlayer)
+            {
+                return;
+            }
+
             if ((object)item != null)
             {
+                item.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+                List<GameObject> allItems = item.gameObject.GetAllChildrens().ToList();
+                allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem));
+
                 inventory.Add(item, gameObject);
 
                 if (item.GetComponent<Item>() is Weapon)
@@ -229,29 +325,39 @@ namespace ProjetSynthese
 
         private void OnToggleInventory()
         {
-            if (!isInventoryOpen)
+            if (isInventoryOpen)
             {
-                activityStack.StartMenu(inventoryMenu);
-                isInventoryOpen = true;
+                activityStack.StopCurrentMenu();
             }
             else
             {
-                activityStack.StopCurrentMenu();
-                isInventoryOpen = false;
+                activityStack.StartMenu(inventoryMenu);
+            }
+            isInventoryOpen = !isInventoryOpen;
+
+            canCameraMove = !isInventoryOpen;
+            if (isFirstPerson)
+            {
+                SetCursor(isInventoryOpen, !isInventoryOpen);
             }
         }
 
         private void OnToggleMap()
         {
-            if (!isMapOpen)
+            if (isMapOpen)
             {
-                activityStack.StartMenu(mapMenu);
-                isMapOpen = true;
+                activityStack.StopCurrentMenu();
             }
             else
             {
-                activityStack.StopCurrentMenu();
-                isMapOpen = false;
+                activityStack.StartMenu(mapMenu);
+            }
+            isMapOpen = !isMapOpen;
+
+            canCameraMove = !isMapOpen;
+            if (isFirstPerson)
+            {
+                SetCursor(isMapOpen, !isMapOpen);
             }
         }
 
@@ -271,6 +377,25 @@ namespace ProjetSynthese
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
         {
             health.Hit(deathCircleHurtEvent.HurtPoints);
+        }
+
+        private void OnChangeViewMode()
+        {            
+            isFirstPerson = !isFirstPerson;
+            if (OnChangeMode != null) OnChangeMode(isFirstPerson);
+            firstPersonCamera.gameObject.SetActive(isFirstPerson);
+            SetCursor(isFirstPerson, isFirstPerson);
+        }
+
+        private void SetCursor(bool isVisible, bool isLock)
+        {
+            Cursor.visible = isVisible;
+            Cursor.lockState = isLock ? CursorLockMode.Locked : CursorLockMode.None;
+        }
+
+        private void OnBoostHeal(BoostHealEvent boostHealEvent)
+        {
+            health.Heal(boostHealEvent.HealthPoints);
         }
     }
 }

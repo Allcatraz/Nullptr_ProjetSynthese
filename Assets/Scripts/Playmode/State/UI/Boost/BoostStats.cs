@@ -1,49 +1,59 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public delegate void BoostChangedEventHandler(int oldBoostPoints, int newBoostPoints);
+    public delegate void BoostChangedEventHandler(float oldBoostPoints, float newBoostPoints);
+
+    public delegate void BoostHealEventHandler(float health);
 
     public class BoostStats : GameScript
     {
-        [SerializeField] private int initialBoostPoints;
-        [SerializeField] private int maxBoostPoints;
+        [SerializeField] private float initialBoostPoints;
+        [SerializeField] private float maxBoostPoints;
+
+        private const float healthPointPerBoost = 0.5f;
 
         public event BoostChangedEventHandler OnBoostChanged;
+        public event BoostHealEventHandler OnBoostHeal;
 
-        private int boostPoints;
+        private float boostPoints;
 
-        public int BoostPoints
+        public float BoostPoints
         {
             get { return boostPoints; }
             private set
             {
-                int oldBoostPoints = boostPoints;
+                float oldBoostPoints = boostPoints;
                 boostPoints = value < 0 ? 0 : (value > maxBoostPoints ? maxBoostPoints : value);
 
                 if (OnBoostChanged != null) OnBoostChanged(oldBoostPoints, boostPoints);
             }
         }
 
-        public int MaxBoostPoints
+        public float MaxBoostPoints
         {
             get { return maxBoostPoints; }
             set { maxBoostPoints = value; }
         }
 
-        public void Awake()
+        private void Awake()
         {
             boostPoints = initialBoostPoints;
+            StartCoroutine("ComputeBoost");
         }
 
-        public void Hit(int hitPoints)
+        private void OnDestroy()
+        {
+            StopCoroutine("ComputeBoost");
+        }
+
+        public void Hit(float hitPoints)
         {
             BoostPoints -= hitPoints;
         }
 
-        public void Heal(int healPoints)
+        public void Heal(float healPoints)
         {
             BoostPoints += healPoints;
         }
@@ -53,7 +63,17 @@ namespace ProjetSynthese
             BoostPoints = initialBoostPoints;
         }
 
+        private IEnumerator ComputeBoost()
+        {
+            for (;;)
+            {
+                if (boostPoints > 0)
+                {
+                   if (OnBoostHeal != null) OnBoostHeal(healthPointPerBoost); 
+                }
+                BoostPoints--;
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
     }
 }
-
-

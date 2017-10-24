@@ -45,9 +45,12 @@ namespace ProjetSynthese
             if (OnMove != null) OnMove();
         }
 
-        public void Rotate(float angle)
+        public void Rotate(Vector3 angle)
         {
-            topParentTransform.eulerAngles = new Vector3(0, angle, 0);
+            if (Input.GetKey(KeyCode.LeftControl) != true)
+            {
+                topParentTransform.eulerAngles = angle;
+            }
         }
     }
 }

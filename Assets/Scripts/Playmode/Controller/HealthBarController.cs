@@ -6,18 +6,11 @@ namespace ProjetSynthese
 {
     public class HealthBarController : GameScript
     {
-        [SerializeField]
-        private Image image;
+        [SerializeField] private Image image;
         private PlayerHealthEventChannel playerHealthEventChannel;
         private Health health;
 
         private float fillAmount;
-
-        private void Update()
-        {
-            SetFillAmountFromHealth();
-            UpdateBar();
-        }
 
         private void InjectHealthBarController([EventChannelScope] PlayerHealthEventChannel playerHealthEventChannel)
         {
@@ -27,26 +20,22 @@ namespace ProjetSynthese
         private void Awake()
         {
             InjectDependencies("InjectHealthBarController");
-            playerHealthEventChannel.OnEventPublished += PlayerHealthEventChannel_OnEventPublished;
+            playerHealthEventChannel.OnEventPublished += OnHealthChanged;
         }
 
-        private void PlayerHealthEventChannel_OnEventPublished(PlayerHealthEvent newEvent)
+        private void OnDestroy()
         {
-            this.health = newEvent.PlayerHealth;
+            playerHealthEventChannel.OnEventPublished -= OnHealthChanged;
         }
 
-        private void SetFillAmountFromHealth()
+        private void OnHealthChanged(PlayerHealthEvent newEvent)
         {
+            health = newEvent.PlayerHealth;
             if (health != null)
             {
-                fillAmount = (float)health.HealthPoints / health.MaxHealthPoints;
+                fillAmount = health.HealthPoints / health.MaxHealthPoints;
+                image.fillAmount = fillAmount;
             }
-        }
-
-        private void UpdateBar()
-        {
-            image.fillAmount = fillAmount;
         }
     }
 }
-

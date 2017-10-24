@@ -9,6 +9,8 @@ namespace ProjetSynthese
         [SerializeField]
         private GameObject bulletSpawnPoint;
         [SerializeField]
+        private GameObject chamber;
+        [SerializeField]
         private float bulletSpeed;
         [SerializeField]
         private float bulletLivingTime;
@@ -40,7 +42,7 @@ namespace ProjetSynthese
         {
             if (MagazineAmount > 0)
             {
-                BulletFactory.CmdCreateBullet(bulletSpawnPoint, bulletSpeed, bulletLivingTime);
+                BulletFactory.CmdCreateBullet(bulletSpawnPoint, chamber, bulletSpeed, bulletLivingTime);
                 MagazineAmount -= 1;
                 NotidyMunitionChanged(); 
             }

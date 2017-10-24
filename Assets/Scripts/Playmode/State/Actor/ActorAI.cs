@@ -6,7 +6,7 @@ namespace ProjetSynthese
     public class ActorAI : NetworkGameScript
     {
         public StateMachine CurrentState { get; private set; }
-        public ActorController ActorController { get; private set; }
+        public AIController ActorController { get; private set; }
 
         public AIRadar Sensor { get; private set; }
         public AIBrain Brain { get; private set; }
@@ -39,9 +39,7 @@ namespace ProjetSynthese
             //Ordre d'initialisation important
             CurrentState = new ExploreState();
             Sensor = new AIRadar();
-            Sensor.Init();
             ActorController = new AIController(this);
-            ((AIController)ActorController).Init();
             Brain = new AIBrain(this);
             EquipmentManager = new EquipmentManager(this);
             health.OnDeath += OnDeath;

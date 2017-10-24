@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -55,11 +54,10 @@ namespace ProjetSynthese
 
         public static readonly string[] LayerNames = { "None", "Default", "Item", "EquippedItem", "Player", "AI", "Building" };
 
-        public void Init()
+        public AIRadar()
         {
             AIPerceptionLevel = PerceptionLevel.Low;
             currentPerceptionRange = LowRangePerception;
-
         }
 
         public ObjectType NeareastGameObject<ObjectType>(Vector3 position, LayerType layerType)

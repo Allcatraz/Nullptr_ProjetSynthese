@@ -2,7 +2,7 @@
 
 namespace ProjetSynthese
 {
-    public class AIController : ActorController
+    public class AIController
     {
         private const float FleeRange = 2.0f;
 
@@ -79,10 +79,6 @@ namespace ProjetSynthese
         public AIController(ActorAI actor)
         {
             this.Actor = actor;
-        }
-
-        public void Init()
-        {
             MapDestinationIsKnown = false;
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
@@ -137,7 +133,7 @@ namespace ProjetSynthese
             }
         }
 
-        public override void Move(ActorAI actor)
+        public void Move(ActorAI actor)
         {
             MoveDestination(AIMoveTarget, actor);
         }

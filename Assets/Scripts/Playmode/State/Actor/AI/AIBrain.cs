@@ -6,17 +6,22 @@ namespace ProjetSynthese
 
     public class AIBrain
     {
-       
+        #region Parameters
         private const float LifeFleeThresholdFactor = 0.20f;
-
         private readonly float LifeFleeThreshold;
         private float lastLifePointLevel;
         private const float ErrorLifeTolerance = 0.001f;
 
+        private readonly ActorAI Actor;
+        public readonly GoalEvaluator goalEvaluator;
+
+        public enum OpponentType { None, AI, Player };
+        #endregion
+
+        #region Knowledge
         private bool hasPrimaryWeaponEquipped = false;
         private bool hasHelmetEquipped = false;
         private bool hasVestEquipped = false;
-
         public bool HasHelmetEquipped
         {
             get { return hasHelmetEquipped; }
@@ -33,11 +38,6 @@ namespace ProjetSynthese
             set { hasPrimaryWeaponEquipped = value; }
         }
 
-
-        private readonly ActorAI Actor;
-        public readonly GoalEvaluator goalEvaluator;
-
-        public enum OpponentType { None, AI, Player };
         private OpponentType currentOpponentType;
         public OpponentType CurrentOpponentType
         {
@@ -50,7 +50,6 @@ namespace ProjetSynthese
         private ActorAI aiInPerceptionRange = null;
         private PlayerController playerInPerceptionRange = null;
         private Item itemInPerceptionRange = null;
-
         public ActorAI AiInPerceptionRange
         {
             get
@@ -66,7 +65,6 @@ namespace ProjetSynthese
             private set
             { playerInPerceptionRange = value; }
         }
-
         public Item ItemInPerceptionRange
         {
             get
@@ -74,8 +72,7 @@ namespace ProjetSynthese
             private set
             { itemInPerceptionRange = value; }
         }
-
-
+        #endregion
 
         public AIBrain(ActorAI actor)
         {
@@ -86,8 +83,6 @@ namespace ProjetSynthese
             ResetActualPerception();
             currentOpponentType = OpponentType.None;
         }
-
-
 
         public AIState WhatIsMyNextState(AIState currentState)
         {
@@ -557,7 +552,6 @@ namespace ProjetSynthese
         {
             //bag managment
             //heal management
-
         }
     }
 }

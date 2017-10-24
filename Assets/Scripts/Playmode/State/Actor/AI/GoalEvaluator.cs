@@ -153,6 +153,9 @@ namespace ProjetSynthese
             //type weapon
             return weaponValueLevel;
         }
+        //fonction calcul health ratio
+        //fonction calcul weaponStrength
+        //fonctin calcul protection strenght
     }
 }
 

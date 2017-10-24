@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-     public class ActorAI : NetworkGameScript, IActorAI
+     public class ActorAI : NetworkGameScript
     {
         public enum ActorType { None, AI };
         [SerializeField]
@@ -16,8 +16,7 @@ namespace ProjetSynthese
         public AIBrain Brain { get; private set; }
         public EquipmentManager EquipmentManager { get; private set; }
 
-        private bool isDead;
-
+       
         [SerializeField]
         private Inventory inventory;
 
@@ -41,7 +40,7 @@ namespace ProjetSynthese
         }
         private void Start()
         {
-            isDead = false;
+           
             switch (actorType)
             {
                 case ActorType.None:
@@ -84,17 +83,6 @@ namespace ProjetSynthese
                     break;
             }
         }
-
-        public bool IsDead()
-        {
-            return isDead;
-        }
-
-        public void SetDead()
-        {
-            isDead = true;
-        }
-
         private void OnDeath()
         {
             Destroy(gameObject);

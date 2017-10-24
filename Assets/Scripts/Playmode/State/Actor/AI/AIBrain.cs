@@ -6,21 +6,65 @@ namespace ProjetSynthese
 
     public class AIBrain
     {
-        [SerializeField]
+        #region Parameters
         private const float LifeFleeThresholdFactor = 0.20f;
-
         private readonly float LifeFleeThreshold;
         private float lastLifePointLevel;
         private const float ErrorLifeTolerance = 0.001f;
 
-        public enum AIState { None, Dead, Explore, Loot, Hunt, Combat, Flee }
-
         private readonly ActorAI Actor;
+        public readonly GoalEvaluator goalEvaluator;
+
+        public enum OpponentType { None, AI, Player };
+        #endregion
+
+        #region Knowledge
+        private bool hasPrimaryWeaponEquipped = false;
+        private bool hasHelmetEquipped = false;
+        private bool hasVestEquipped = false;
+        public bool HasHelmetEquipped
+        {
+            get { return hasHelmetEquipped; }
+            set { hasHelmetEquipped = value; }
+        }
+        public bool HasVestEquipped
+        {
+            get { return hasVestEquipped; }
+            set { hasVestEquipped = value; }
+        }
+        public bool HasPrimaryWeaponEquipped
+        {
+            get { return hasPrimaryWeaponEquipped; }
+            set { hasPrimaryWeaponEquipped = value; }
+        }
+
+        private OpponentType currentOpponentType;
+        public OpponentType CurrentOpponentType
+        {
+            get
+            { return currentOpponentType; }
+            set
+            { currentOpponentType = value; }
+        }
 
         private ActorAI aiInPerceptionRange = null;
         private PlayerController playerInPerceptionRange = null;
         private Item itemInPerceptionRange = null;
+        public ActorAI AiInPerceptionRange
+        {
+            get
+            { return aiInPerceptionRange; }
+            private set
+            { aiInPerceptionRange = value; }
+        }
 
+        public PlayerController PlayerInPerceptionRange
+        {
+            get
+            { return playerInPerceptionRange; }
+            private set
+            { playerInPerceptionRange = value; }
+        }
         public Item ItemInPerceptionRange
         {
             get
@@ -28,21 +72,24 @@ namespace ProjetSynthese
             private set
             { itemInPerceptionRange = value; }
         }
+        #endregion
 
         public AIBrain(ActorAI actor)
         {
             this.Actor = actor;
+            this.goalEvaluator = new GoalEvaluator(actor);
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
             ResetActualPerception();
+            currentOpponentType = OpponentType.None;
         }
-
-
 
         public AIState WhatIsMyNextState(AIState currentState)
         {
             AIState nextState = currentState;
-
+            UpdateWeaponKnowledge();
+            UpdateProtectionKnowledge();
+            UpdateSupportKnowledge();
             switch (currentState)
             {
                 case AIState.Dead:
@@ -73,7 +120,6 @@ namespace ProjetSynthese
         private AIState ChooseANewStateFromDeadState()
         {
             AIState nextState = AIState.Dead;
-
             return nextState;
         }
 
@@ -86,7 +132,17 @@ namespace ProjetSynthese
             {
                 if (ExistVisibleOpponent())
                 {
-                    nextState = AIState.Hunt;
+                    if (!hasPrimaryWeaponEquipped)
+                    {
+                        if (!FoundItemInPerceptionRange())
+                        {
+                            nextState = AIState.Flee;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                    }
                 }
                 else if (FoundItemInPerceptionRange())
                 {
@@ -104,7 +160,38 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromHuntState()
         {
-            AIState nextState = AIState.Explore;
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
+            {
+                if (ExistVisibleOpponent())
+                {
+                    if (!hasPrimaryWeaponEquipped)
+                    {
+                        if (!FoundItemInPerceptionRange())
+                        {
+                            nextState = AIState.Flee;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                    }
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
+                }
+                else if (FoundItemInPerceptionRange())
+                {
+                    nextState = AIState.Loot;
+                }
+            }
+
+            if (nextState == AIState.None)
+            {
+                nextState = AIState.Explore;
+            }
 
             return nextState;
         }
@@ -117,7 +204,18 @@ namespace ProjetSynthese
             {
                 if (ExistVisibleOpponent())
                 {
-                    nextState = AIState.Hunt;
+                    if (!hasPrimaryWeaponEquipped)
+                    {
+                        if (!FoundItemInPerceptionRange())
+                        {
+                            nextState = AIState.Flee;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                    }
+
                 }
                 else
                 {
@@ -141,13 +239,73 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromCombatState()
         {
-            AIState nextState = AIState.Explore;
+            AIState nextState = AIState.None;
+
+            nextState = HasBeenInjuredRelatedStateCheck();
+
+            if (nextState == AIState.None)
+            {
+                if (ExistShootableOpponent())
+                {
+                    nextState = AIState.Combat;
+                }
+                else if (ExistVisibleOpponent())
+                {
+                    if (!hasPrimaryWeaponEquipped)
+                    {
+                        if (!FoundItemInPerceptionRange())
+                        {
+                            nextState = AIState.Flee;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                    }
+                }
+                else if (FoundItemInPerceptionRange())
+                {
+                    nextState = AIState.Loot;
+                }
+                else
+                {
+                    nextState = AIState.Explore;
+                }
+            }
+
             return nextState;
         }
 
         private AIState ChooseANewStateFromFleeState()
         {
-            AIState nextState = AIState.Explore;
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
+            {
+                if (ExistVisibleOpponent())
+                {
+                    if (!hasPrimaryWeaponEquipped)
+                    {
+                        if (!FoundItemInPerceptionRange())
+                        {
+                            nextState = AIState.Flee;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                    }
+                }
+                else if (FoundItemInPerceptionRange())
+                {
+                    nextState = AIState.Loot;
+                }
+            }
+
+            if (nextState == AIState.None)
+            {
+                nextState = AIState.Explore;
+            }
 
             return nextState;
         }
@@ -173,23 +331,23 @@ namespace ProjetSynthese
         public bool FoundAIInPerceptionRange()
         {
 
-            //ActorAI opponentAI = Actor.Sensor.NeareastGameObject<ActorAI>(Actor.transform.position, AIRadar.LayerType.AI);
-            //if (opponentAI != null)
-            //{
-            //    aiInPerceptionRange = opponentAI;
-            //    return true;
-            //}
+            ActorAI opponentAI = Actor.Sensor.NeareastNonAllyAI(Actor);
+            if (opponentAI != null)
+            {
+                aiInPerceptionRange = opponentAI;
+                return true;
+            }
             return false;
         }
 
         public bool FoundPlayerInPerceptionRange()
         {
-            //PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
-            //if (opponentPlayer != null)
-            //{
-            //    playerInPerceptionRange = opponentPlayer;
-            //    return true;
-            //}
+            PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
+            if (opponentPlayer != null)
+            {
+                playerInPerceptionRange = opponentPlayer;
+                return true;
+            }
 
             return false;
         }
@@ -205,7 +363,7 @@ namespace ProjetSynthese
             return false;
         }
 
-        private bool ExistShootableOpponent()
+        public bool ExistShootableOpponent()
         {
             if (ExistVisibleOpponent())
             {
@@ -216,7 +374,7 @@ namespace ProjetSynthese
             }
             return false;
         }
-        private bool IsOpponentInWeaponRange()
+        public bool IsOpponentInWeaponRange()
         {
             float sqrtTargetDistance = -1.0f;
             Vector3 directionVector;
@@ -231,7 +389,7 @@ namespace ProjetSynthese
                 sqrtTargetDistance = directionVector.sqrMagnitude;
             }
 
-            if (sqrtTargetDistance > 0.0f)
+            if (sqrtTargetDistance > 0.0f && hasPrimaryWeaponEquipped)
             {
                 Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (equippedPrimaryWeapon != null)
@@ -280,6 +438,12 @@ namespace ProjetSynthese
             itemInPerceptionRange = newTargetItem;
         }
 
+        public void UpdateOpponentOnMapKnowledge(PlayerController opponentPlayer, ActorAI opponnentAI)
+        {
+            playerInPerceptionRange = opponentPlayer;
+            aiInPerceptionRange = opponnentAI;
+        }
+
         private void UpdateItemLootKnowledge()
         {
             if (itemInPerceptionRange != null)
@@ -302,8 +466,11 @@ namespace ProjetSynthese
             AIState nextState = AIState.None;
             if (HasBeenInjured())
             {
-                Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
-                if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
+                if (Actor.AIHealth.HealthPoints < 0.0f)
+                {
+                    nextState = AIState.Dead;
+                }
+                else if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
                 {
                     nextState = AIState.Flee;
                 }
@@ -319,5 +486,72 @@ namespace ProjetSynthese
             return nextState;
         }
 
+        private void UpdateWeaponKnowledge()
+        {
+            Cell cell = Actor.AIInventory.GetPrimaryWeapon();
+            Weapon equippedPrimaryWeapon = null;
+            if (cell != null)
+            {
+                equippedPrimaryWeapon = (Weapon)cell.GetItem();
+            }
+
+            if (equippedPrimaryWeapon != null)
+            {
+                hasPrimaryWeaponEquipped = true;
+            }
+            else
+            {
+                hasPrimaryWeaponEquipped = false;
+            }
+
+            Actor.EquipmentManager.SelectWeapon();
+
+            //reload
+            //ammunition
+            //si pas de munition ou plus de munitions: unequipped weapon
+            //essai de reloader
+            //essai equiper nouvelle weapon
+        }
+
+        private void UpdateProtectionKnowledge()
+        {
+            Cell cellHelmet = Actor.AIInventory.GetHelmet();
+            Cell cellVest = Actor.AIInventory.GetVest();
+            Vest equippedVest = null;
+            Helmet equippedHelmet = null;
+            if (cellVest != null)
+            {
+                equippedVest = (Vest)cellVest.GetItem();
+            }
+
+            if (equippedVest != null)
+            {
+                hasVestEquipped = true;
+            }
+            else
+            {
+                hasVestEquipped = false;
+            }
+            if (cellHelmet != null)
+            {
+                equippedHelmet = (Helmet)cellHelmet.GetItem();
+            }
+
+            if (equippedHelmet != null)
+            {
+                hasHelmetEquipped = true;
+            }
+            else
+            {
+                hasHelmetEquipped = false;
+            }
+            //choix best vest et best helmet
+            //fonction niveau
+        }
+        private void UpdateSupportKnowledge()
+        {
+            //bag managment
+            //heal management
+        }
     }
 }

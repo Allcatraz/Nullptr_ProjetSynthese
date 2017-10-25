@@ -16,7 +16,7 @@ namespace ProjetSynthese
 
         public static GameObject AmmoPackPrefab { get; set; }
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd, AmmoType ammoType)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random, AmmoType ammoType)
         {
             GameObject gameObject = SpawnObject(spawnPoint, AmmoPackPrefab);
 
@@ -24,7 +24,7 @@ namespace ProjetSynthese
             ammoPack.AmmoType = ammoType;
             itemList.Add(ammoPack);
 
-            int item = rnd.Next(0, 101);
+            int item = random.Next(0, 101);
 
             if (item >= range1.x && item < range1.y)
             {

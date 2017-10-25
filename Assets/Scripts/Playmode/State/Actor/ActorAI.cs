@@ -3,16 +3,20 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class ActorAI : NetworkGameScript
+     public class ActorAI : NetworkGameScript, IActorAI
     {
+        public enum ActorType { None, AI };
+        [SerializeField]
+        private ActorType actorType = ActorType.None;
+
         public StateMachine CurrentState { get; private set; }
-        public AIController ActorController { get; private set; }
+        public ActorController ActorController { get; private set; }
 
         public AIRadar Sensor { get; private set; }
         public AIBrain Brain { get; private set; }
-        public EquipmentManager EquipmentManager { get; private set; }
 
-        [Tooltip("Objet représentant l'inventaire de l'AI")]
+        private bool isDead;
+
         [SerializeField]
         private Inventory inventory;
 
@@ -23,7 +27,7 @@ namespace ProjetSynthese
                 return inventory;
             }
         }
-        [Tooltip("Objet représentant la vie de l'AI")]
+
         [SerializeField]
         private Health health;
 
@@ -36,20 +40,25 @@ namespace ProjetSynthese
         }
         private void Start()
         {
-            //Ordre d'initialisation important
-            CurrentState = new ExploreState();
-            Sensor = new AIRadar();
-            ActorController = new AIController(this);
-            Brain = new AIBrain(this);
-            EquipmentManager = new EquipmentManager(this);
-            health.OnDeath += OnDeath;
+            isDead = false;
+            switch (actorType)
+            {
+                case ActorType.None:
+                    break;
+                case ActorType.AI:
+                    //Ordre d'initialisation important
+                    CurrentState = new ExploreState();
+                    Sensor = new AIRadar();
+                    Sensor.Init();
+                    ActorController = new AIController(this);
+                    ((AIController)ActorController).Init();
+                    Brain = new AIBrain(this);
+                    break;
+                default:
+                    break;
+            }
         }
 
-        private void OnDestroy()
-        {
-            health.OnDeath -= OnDeath;
-            //drop item
-        }
 
         private void Update()
         {
@@ -57,16 +66,26 @@ namespace ProjetSynthese
             {
                 CurrentState.Execute(this);
             }
-            
-            AIState nextState = Brain.WhatIsMyNextState(CurrentState.currentAIState);
-            if (nextState != CurrentState.currentAIState)
+
+            switch (actorType)
             {
-                CurrentState.SwitchState(this, nextState);
+                case ActorType.None:
+                    break;
+                case ActorType.AI:
+                    break;
+                default:
+                    break;
             }
         }
-        private void OnDeath()
+
+        public bool IsDead()
         {
-            Destroy(gameObject);
+            return isDead;
+        }
+
+        public void SetDead()
+        {
+            isDead = true;
         }
 
         public void ChangeState(StateMachine newState)
@@ -79,6 +98,5 @@ namespace ProjetSynthese
             CurrentState = newState;
 
         }
-
     }
 }

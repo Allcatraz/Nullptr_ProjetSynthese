@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -7,9 +8,12 @@ namespace ProjetSynthese
     {
         private const float NoRangePerception = 0.0f;
 
-        private const float LowRangePerception = 5.0f;
-        private const float MediumRangePerception = 10.0f;
-        private const float HighRangePerception = 15.0f;
+        [SerializeField]
+        private const float LowRangePerception = 50.0f;
+        [SerializeField]
+        private const float MediumRangePerception = 100.0f;
+        [SerializeField]
+        private const float HighRangePerception = 150.0f;
 
         private float currentPerceptionRange = LowRangePerception;
         private float circleCastDistance = 0.0f;
@@ -51,10 +55,11 @@ namespace ProjetSynthese
 
         public static readonly string[] LayerNames = { "None", "Default", "Item", "EquippedItem", "Player", "AI", "Building" };
 
-        public AIRadar()
+        public void Init()
         {
             AIPerceptionLevel = PerceptionLevel.Low;
             currentPerceptionRange = LowRangePerception;
+
         }
 
         public ObjectType NeareastGameObject<ObjectType>(Vector3 position, LayerType layerType)
@@ -86,38 +91,9 @@ namespace ProjetSynthese
             }
             if (neareastItemIndex != -1)
             {
-                nearestObject = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponentInParent<ObjectType>();
+                nearestObject = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponent<ObjectType>();
             }
             return nearestObject;
-        }
-
-        public ActorAI NeareastNonAllyAI(ActorAI selfAI)
-        {
-            Vector3 position = selfAI.transform.position;
-            ActorAI nearestNonAllyAI = default(ActorAI);
-            RaycastHit[] inRangeObjects;
-            LayerType layerType = LayerType.AI;
-            LayerMask layerMask = GetLayerMask(layerType);
-            inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
-           
-            int neareastItemIndex = -1;
-            float smallestDistance = float.MaxValue;
-            if (inRangeObjects != null)
-            {
-                for (int i = 0; i < inRangeObjects.Length; i++)
-                {
-                    if (inRangeObjects[i].distance < smallestDistance && !(Object.ReferenceEquals(selfAI, inRangeObjects[i].collider.gameObject.GetComponentInParent<ActorAI>())))
-                    {
-                        smallestDistance = inRangeObjects[i].distance;
-                        neareastItemIndex = i;
-                    }
-                }
-            }
-            if (neareastItemIndex != -1)
-            {
-                nearestNonAllyAI = inRangeObjects[neareastItemIndex].collider.gameObject.GetComponentInParent<ActorAI>();
-            }
-            return nearestNonAllyAI;
         }
 
         private RaycastHit[] AllNeareastGameObjects(Vector3 position, LayerType layerType)
@@ -172,20 +148,18 @@ namespace ProjetSynthese
 
         public bool IsGameObjectHasLineOfSight(Vector3 position, PlayerController target)
         {
-         
+            LayerMask layerMask = GetLayerMask(AIRadar.LayerType.Building);
             Vector3 direction = Vector3.zero;
             direction = target.transform.position - position;          
-            return Physics.Raycast(position, direction, currentPerceptionRange);
+            return Physics.Raycast(position, direction, currentPerceptionRange, layerMask);
         }
-        //Nécessaire pour disinguer AI opponent et AI ally research vs player
-        //plus rapide à cause du ou dans le if de décision ailleurs d'avaoir deux fonctions
-        //Évite aussi des vérification de type et casting lents
-        
+
         public bool IsGameObjectHasLineOfSight(Vector3 position, ActorAI target)
         {
+            LayerMask layerMask = GetLayerMask(AIRadar.LayerType.Building);
             Vector3 direction = Vector3.zero;
             direction = target.transform.position - position;
-            return Physics.Raycast(position, direction, currentPerceptionRange);
+            return Physics.Raycast(position, direction, currentPerceptionRange, layerMask);
         }
 
 

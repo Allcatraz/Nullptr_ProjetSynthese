@@ -48,16 +48,10 @@ namespace ProjetSynthese
             }
         }
 
-        public bool Reload()
+        public void Reload()
         {
             MagazineAmount = MagazineMax;
             NotidyMunitionChanged();
-            if (MagazineAmount > 0)
-            {
-                return true;
-            }
-            return false;
-
         }
 
         private void NotidyMunitionChanged()

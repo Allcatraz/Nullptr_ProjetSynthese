@@ -4,28 +4,27 @@ namespace ProjetSynthese
 {
     public abstract class StateMachine
     {
-        public AIState currentAIState { get; set; }
-        public abstract void Execute(ActorAI actor);
-        public void SwitchState(ActorAI actor,AIState newState)
+       public abstract void Execute(ActorAI actor);
+        public void SwitchState(ActorAI actor,AIBrain.AIState newState)
         {
             switch (newState)
             {
-                case AIState.Dead:
+                case AIBrain.AIState.Dead:
                     actor.ChangeState(new DeadState());
                     break;
-                case AIState.Explore:
+                case AIBrain.AIState.Explore:
                     actor.ChangeState(new ExploreState());
                     break;
-                case AIState.Loot:
+                case AIBrain.AIState.Loot:
                     actor.ChangeState(new LootState());
                     break;
-                case AIState.Hunt:
+                case AIBrain.AIState.Hunt:
                     actor.ChangeState(new HuntState());
                     break;
-                case AIState.Combat:
+                case AIBrain.AIState.Combat:
                     actor.ChangeState(new CombatState());
                     break;
-                case AIState.Flee:
+                case AIBrain.AIState.Flee:
                     actor.ChangeState(new FleeState());
                     break;
                 default:

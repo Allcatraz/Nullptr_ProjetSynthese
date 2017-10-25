@@ -7,8 +7,7 @@ namespace ProjetSynthese
 
         public override void Execute(ActorAI actor)
         {
-            currentAIState = AIState.Loot;
-            AIController aiController = actor.ActorController;
+            AIController aiController = (AIController)actor.ActorController;
 
             if (aiController.GetAIControllerMode() != AIController.ControllerMode.Loot)
             {
@@ -31,10 +30,16 @@ namespace ProjetSynthese
                     {
                         actor.Brain.ItemInPerceptionRange.gameObject.layer = LayerMask.NameToLayer(AIRadar.LayerNames[(int)AIRadar.LayerType.EquippedItem]);
                         actor.AIInventory.Add(actor.Brain.ItemInPerceptionRange.gameObject);
-                        actor.Brain.ItemInPerceptionRange.gameObject.SetActive(false);
                     }
                  }
             }
+
+            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Loot);
+            if (nextState != AIBrain.AIState.Loot)
+            {
+                SwitchState(actor, nextState);
+            }
+            
          }
     }
 }

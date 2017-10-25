@@ -37,12 +37,17 @@ namespace ProjetSynthese
             GameObject newItem = Instantiate(itemToSpawn);
             newItem.GetComponent<Item>().Level = itemToSpawn.GetComponent<Item>().Level;
             //newItem.transform.SetParent(spawnLocation.transform, true);
-            newItem.layer = LayerMask.NameToLayer(R.S.Layer.Item);
-            List<GameObject> allItems = newItem.gameObject.GetAllChildrens().ToList();
-            allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.Item));
+            ChangeLayerOfItemAndChildrenTo(newItem, R.S.Layer.Item);
             newItem.transform.position = player.position;
             newItem.SetActive(true);
             NetworkServer.Spawn(newItem);
+        }
+
+        private static void ChangeLayerOfItemAndChildrenTo(GameObject itemToChangeLayer, string layer)
+        {
+            itemToChangeLayer.layer = LayerMask.NameToLayer(layer);
+            List<GameObject> allItems = itemToChangeLayer.gameObject.GetAllChildrens().ToList();
+            allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(layer));
         }
     }
 }

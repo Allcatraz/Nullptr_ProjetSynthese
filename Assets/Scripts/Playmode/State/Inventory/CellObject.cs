@@ -58,6 +58,7 @@ namespace ProjetSynthese
             // Avec unity editor
             button.onClick.AddListener(OnClickButton);
             EquipAt = EquipWeaponAt.Primary;
+            //Lorsqu'on va avoir des images
             //this.ImageBackground = imageBackground;
         }
 
@@ -88,14 +89,14 @@ namespace ProjetSynthese
         public void OnEndDrag()
         {
             isDragging = false;
-            if (WasDroppedAt(CellObjectType.Ground))
+            if (WasDroppedAtAndObjectIsNot(CellObjectType.Ground))
             {
                 if (cellObjectType == CellObjectType.Inventory && willDropItem)
                 {
                     ClickOnInventoryButton();
                 }
             }
-            else if (WasDroppedAt(CellObjectType.Inventory))
+            else if (WasDroppedAtAndObjectIsNot(CellObjectType.Inventory))
             {
                 if (cellObjectType == CellObjectType.Ground)
                 {
@@ -110,14 +111,14 @@ namespace ProjetSynthese
                     ClickOnWeaponButton();
                 }
             }
-            else if (WasDroppedAt(CellObjectType.Protection))
+            else if (WasDroppedAtAndObjectIsNot(CellObjectType.Protection))
             {
                 if (cellObjectType == CellObjectType.Inventory)
                 {
                     ClickOnInventoryButton();
                 }
             }
-            else if (WasDroppedAt(CellObjectType.Weapon))
+            else if (WasDroppedAtAndObjectIsNot(CellObjectType.Weapon))
             {
                 if (cellObjectType == CellObjectType.Inventory)
                 {
@@ -148,7 +149,7 @@ namespace ProjetSynthese
             return name;
         }
 
-        private bool WasDroppedAt(CellObjectType cellObjectType)
+        private bool WasDroppedAtAndObjectIsNot(CellObjectType cellObjectType)
         {
             return DropAtType == cellObjectType && DropAtType != this.cellObjectType;
         }

@@ -30,9 +30,9 @@ namespace ProjetSynthese
         private void EvaluateInventoryValue()
         {
             Item item = null;
-            inventoryValues = new float[actor.AIInventory.listInventory.Count];
+            inventoryValues = new float[actor.AIInventory.ListInventory.Count];
             int i = 0;
-            foreach (Cell cell in actor.AIInventory.listInventory)
+            foreach (ObjectContainedInventory cell in actor.AIInventory.ListInventory)
             {
                 item = cell.GetItem();
                 inventoryValues[i] = 0.0f;

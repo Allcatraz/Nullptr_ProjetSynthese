@@ -6,7 +6,7 @@ namespace ProjetSynthese
     {
         private readonly ActorAI Actor;
 
-       public EquipmentManager(ActorAI actor)
+        public EquipmentManager(ActorAI actor)
         {
             this.Actor = actor;
         }
@@ -16,71 +16,77 @@ namespace ProjetSynthese
             if (!Actor.Brain.HasPrimaryWeaponEquipped)
             {
                 Item item = null;
-                foreach (Cell cell in Actor.AIInventory.listInventory)
+                if (Actor.AIInventory.ListInventory != null)
                 {
-                    item = cell.GetItem();
-                    if (item.Type == ItemType.AWM
+                    foreach (ObjectContainedInventory cell in Actor.AIInventory.ListInventory)
+                    {
+                        item = cell.GetItem();
+                        if (item.Type == ItemType.AWM
                         || item.Type == ItemType.M16A4
                         || item.Type == ItemType.M1911
                         || item.Type == ItemType.Saiga12
                         || item.Type == ItemType.Grenade)
-                    {
-                        Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
-                        Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
-                        if (weapon.Reload())
                         {
-                            Actor.Brain.HasPrimaryWeaponEquipped = true;
-                            break;
-                        }
-                        else
-                        {
-                            Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
+                            Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
+                            Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
+                            if (weapon.Reload())
+                            {
+                                Actor.Brain.HasPrimaryWeaponEquipped = true;
+                                break;
+                            }
+                            else
+                            {
+                                Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
+                            }
                         }
                     }
-
                 }
+
             }
         }
-
         public void SelectVest()
         {
             if (!Actor.Brain.HasVestEquipped)
             {
                 Item item = null;
-                foreach (Cell cell in Actor.AIInventory.listInventory)
+                if (Actor.AIInventory.ListInventory != null)
                 {
-                    item = cell.GetItem();
-                    if (item.Type == ItemType.Vest)
+                    foreach (ObjectContainedInventory cell in Actor.AIInventory.ListInventory)
                     {
-                        Actor.AIInventory.EquipVest(cell);
-                        Actor.Brain.HasVestEquipped = true;
-                        break;
+                        item = cell.GetItem();
+                        if (item.Type == ItemType.Vest)
+                        {
+                            Actor.AIInventory.EquipVest(cell);
+                            Actor.Brain.HasVestEquipped = true;
+                            break;
+                        }
                     }
                 }
             }
         }
-
         public void SelectHelmet()
         {
             if (!Actor.Brain.HasHelmetEquipped)
             {
                 Item item = null;
-                foreach (Cell cell in Actor.AIInventory.listInventory)
+                if (Actor.AIInventory.ListInventory != null)
                 {
-                    item = cell.GetItem();
-                    if (item.Type == ItemType.Helmet)
+                    foreach (ObjectContainedInventory cell in Actor.AIInventory.ListInventory)
                     {
-                        Actor.AIInventory.EquipHelmet(cell);
-                        Actor.Brain.HasHelmetEquipped = true;
-                        break;
+                        item = cell.GetItem();
+                        if (item.Type == ItemType.Helmet)
+                        {
+                            Actor.AIInventory.EquipHelmet(cell);
+                            Actor.Brain.HasHelmetEquipped = true;
+                            break;
+                        }
                     }
                 }
             }
         }
-
         public bool IsInventoryEmpty()
         {
-            if (Actor.AIInventory.listInventory.Count > 0)
+            if (Actor.AIInventory.ListInventory.Count > 0)
             {
                 return false;
             }

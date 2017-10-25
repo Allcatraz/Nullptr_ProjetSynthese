@@ -488,7 +488,7 @@ namespace ProjetSynthese
 
         private void UpdateWeaponKnowledge()
         {
-            Cell cell = Actor.AIInventory.GetPrimaryWeapon();
+            ObjectContainedInventory cell = Actor.AIInventory.GetPrimaryWeapon();
             Weapon equippedPrimaryWeapon = null;
             if (cell != null)
             {
@@ -515,8 +515,8 @@ namespace ProjetSynthese
 
         private void UpdateProtectionKnowledge()
         {
-            Cell cellHelmet = Actor.AIInventory.GetHelmet();
-            Cell cellVest = Actor.AIInventory.GetVest();
+            ObjectContainedInventory cellHelmet = Actor.AIInventory.GetHelmet();
+            ObjectContainedInventory cellVest = Actor.AIInventory.GetVest();
             Vest equippedVest = null;
             Helmet equippedHelmet = null;
             if (cellVest != null)

@@ -44,6 +44,10 @@ namespace ProjetSynthese
             {
                 return false;
             }
+            if ((item1 as AmmoPack) && item2 as AmmoPack)
+            {
+                return (item1 as AmmoPack).AmmoType == (item2 as AmmoPack).AmmoType;
+            }
             return item1.type == item2.type;
         }
 

@@ -66,6 +66,12 @@ namespace ProjetSynthese
             return currentWeapon;
         }
 
+        public void TakeItemFromInventory(GameObject item)
+        {
+            TakeItem(item);
+            CmdTakeItem(item, networkIdentity);
+        }
+
         private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                             [ApplicationScope] MouseInputSensor mouseInputSensor,
                                             [ApplicationScope] ActivityStack activityStack,

@@ -35,14 +35,32 @@ namespace ProjetSynthese
         private void SpawnItem(GameObject itemToSpawn, Transform player)
         {
             GameObject newItem = Instantiate(itemToSpawn);
+            SetAmmoTypeInNewObjectIfIsAmmoPack(itemToSpawn, newItem);
             newItem.GetComponent<Item>().Level = itemToSpawn.GetComponent<Item>().Level;
-            //newItem.transform.SetParent(spawnLocation.transform, true);
-            newItem.layer = LayerMask.NameToLayer(R.S.Layer.Item);
-            List<GameObject> allItems = newItem.gameObject.GetAllChildrens().ToList();
-            allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.Item));
+            ChangeLayerOfItemAndChildrenTo(newItem, R.S.Layer.Item);
             newItem.transform.position = player.position;
             newItem.SetActive(true);
             NetworkServer.Spawn(newItem);
+        }
+
+        private void SetAmmoTypeInNewObjectIfIsAmmoPack(GameObject itemToSpawn, GameObject newItem)
+        {
+            Item toSpawn = itemToSpawn.GetComponent<Item>();
+            Item spawner = newItem.GetComponent<Item>();
+            if (toSpawn != null && spawner != null)
+            {
+                if (toSpawn as AmmoPack && spawner as AmmoPack)
+                {
+                    (spawner as AmmoPack).AmmoType = (toSpawn as AmmoPack).AmmoType;
+                }
+            }
+        }
+
+        private void ChangeLayerOfItemAndChildrenTo(GameObject itemToChangeLayer, string layer)
+        {
+            itemToChangeLayer.layer = LayerMask.NameToLayer(layer);
+            List<GameObject> allItems = itemToChangeLayer.gameObject.GetAllChildrens().ToList();
+            allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(layer));
         }
     }
 }

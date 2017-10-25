@@ -35,8 +35,8 @@ namespace ProjetSynthese
 
         private void UpdateImage(Inventory inventory)
         {
-            Cell vestCell = inventory.GetVest();
-            Cell helmetCell = inventory.GetHelmet();
+            ObjectContainedInventory vestCell = inventory.GetVest();
+            ObjectContainedInventory helmetCell = inventory.GetHelmet();
             if (type == ItemType.Vest && vestCell != null)
             {
                 Item vest = vestCell.GetItem();

@@ -36,6 +36,8 @@ namespace ProjetSynthese
             {
                 bag.Level = 3;
             }
+
+            CmdSpawnObject(_object);
         }
     }
 

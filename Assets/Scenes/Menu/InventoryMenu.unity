@@ -108,7 +108,7 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &1470173518
+--- !u!1001 &411432719
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -209,22 +209,98 @@ Prefab:
       propertyPath: m_Name
       value: Inventory
       objectReference: {fileID: 0}
-    - target: {fileID: 224184344353387974, guid: 9e02e043af9d73644befd80e3b7b6277,
+    - target: {fileID: 224254296354885292, guid: 9e02e043af9d73644befd80e3b7b6277,
         type: 2}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114563751478213156, guid: 9e02e043af9d73644befd80e3b7b6277,
+    - target: {fileID: 224071796762923930, guid: 9e02e043af9d73644befd80e3b7b6277,
         type: 2}
-      propertyPath: cellObjectGround
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224601652645356192, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224016052423712016, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550592297630022, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550592297630022, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114172733213886844, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_ShowMaskGraphic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114818335368439056, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_ShowMaskGraphic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114129982670050838, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_ShowMaskGraphic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114624275088904626, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: m_ShowMaskGraphic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114674947568749070, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: gridGroundInventory
+      value: 
+      objectReference: {fileID: 411432720}
+    - target: {fileID: 114674947568749070, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: gridProtectionPlayer
+      value: 
+      objectReference: {fileID: 411432721}
+    - target: {fileID: 114674947568749070, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: gridWeaponEquippedByPlayer
+      value: 
+      objectReference: {fileID: 411432722}
+    - target: {fileID: 114674947568749070, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: cellInventoryPrefab
+      value: 
+      objectReference: {fileID: 1199693001329074, guid: c2f1c327cf27e3f4f919307e485a3023,
+        type: 2}
+    - target: {fileID: 114674947568749070, guid: 9e02e043af9d73644befd80e3b7b6277,
+        type: 2}
+      propertyPath: cellGroundPrefab
       value: 
       objectReference: {fileID: 1199693001329074, guid: ae316242800a9a14989fcd21c916094c,
         type: 2}
-    - target: {fileID: 114254665351435942, guid: 9e02e043af9d73644befd80e3b7b6277,
-        type: 2}
-      propertyPath: maxWeight
-      value: 50000
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9e02e043af9d73644befd80e3b7b6277, type: 2}
   m_IsPrefabParent: 0
+--- !u!224 &411432720 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224254296354885292, guid: 9e02e043af9d73644befd80e3b7b6277,
+    type: 2}
+  m_PrefabInternal: {fileID: 411432719}
+--- !u!224 &411432721 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224601652645356192, guid: 9e02e043af9d73644befd80e3b7b6277,
+    type: 2}
+  m_PrefabInternal: {fileID: 411432719}
+--- !u!224 &411432722 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224016052423712016, guid: 9e02e043af9d73644befd80e3b7b6277,
+    type: 2}
+  m_PrefabInternal: {fileID: 411432719}

@@ -36,6 +36,8 @@ namespace ProjetSynthese
             {
                 boost.Level = 3;
             }
+
+            CmdSpawnObject(_object);
         }
     }
 

@@ -36,6 +36,8 @@ namespace ProjetSynthese
             {
                 heal.Level = 3;
             }
+
+            CmdSpawnObject(_object);
         }
     }
 

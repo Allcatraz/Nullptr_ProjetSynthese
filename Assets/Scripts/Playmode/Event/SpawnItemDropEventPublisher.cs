@@ -26,7 +26,7 @@ namespace ProjetSynthese
             itemToSpawn.SpawnItem += ItemToSpawn_SpawnItem;
         }
 
-        private void ItemToSpawn_SpawnItem(Cell itemToSpawn)
+        private void ItemToSpawn_SpawnItem(ObjectContainedInventory itemToSpawn)
         {
             spawnItemDropEventChannel.Publish(new SpawnItemDropEvent(itemToSpawn));
         }

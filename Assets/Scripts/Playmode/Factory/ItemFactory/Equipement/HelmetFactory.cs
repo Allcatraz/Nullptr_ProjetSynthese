@@ -36,6 +36,8 @@ namespace ProjetSynthese
             {
                 helmet.Level = 3;
             }
+
+            CmdSpawnObject(_object);
         }
     }
 

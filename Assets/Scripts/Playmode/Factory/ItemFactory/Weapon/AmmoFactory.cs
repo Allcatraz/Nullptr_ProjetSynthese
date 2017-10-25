@@ -38,7 +38,7 @@ namespace ProjetSynthese
             {
                 ammoPack.NumberOfAmmo = 90;
             }
-
+            CmdSpawnObject(_object);
         }
     }
 }

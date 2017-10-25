@@ -6,8 +6,7 @@ namespace ProjetSynthese
 {
     public class ItemFactoryMaster
     {
-        [Command]
-        public static GameObject CmdSpawnObject(Vector3 spawnPoint, GameObject prefab)
+        public static GameObject SpawnObject(Vector3 spawnPoint, GameObject prefab)
         {
             GameObject gameObject = Object.Instantiate(prefab, spawnPoint, Quaternion.identity);
             gameObject.transform.position += new Vector3(Random.value, 0, Random.value);
@@ -15,6 +14,12 @@ namespace ProjetSynthese
             NetworkServer.Spawn(gameObject);
 
             return gameObject;
+        }
+
+        [Command]
+        public static void CmdSpawnObject(GameObject obj)
+        {
+            NetworkServer.Spawn(obj);
         }
     }
 }

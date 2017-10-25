@@ -36,6 +36,8 @@ namespace ProjetSynthese
             {
                 vest.Level = 3;
             }
+
+            CmdSpawnObject(_object);
         }
     }
 

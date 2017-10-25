@@ -12,6 +12,7 @@ namespace ProjetSynthese
             Weapon w = gameObject.GetComponent<Weapon>();
             itemList.Add(w);
             AmmoFactory.CreateItem(itemList, spawnPoint, rnd, ammoType);
+            CmdSpawnObject(_object);
         }
     }
 }

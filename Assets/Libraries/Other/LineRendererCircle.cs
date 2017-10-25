@@ -7,6 +7,7 @@ namespace ProjetSynthese
 {
     public class LineRendererCircle : GameScript
     {
+        [Tooltip("Les information du cercle.")]
         [SerializeField] private CircleInfo circleInfo;
 
         public float Radius { get; set; }

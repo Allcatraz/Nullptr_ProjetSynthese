@@ -9,7 +9,9 @@ namespace ProjetSynthese
 
     public class BoostStats : GameScript
     {
+        [Tooltip("Le nombre de points initial pour le boost.")]
         [SerializeField] private float initialBoostPoints;
+        [Tooltip("Le nombre de points maximum pour le boost.")]
         [SerializeField] private float maxBoostPoints;
 
         private const float healthPointPerBoost = 0.5f;

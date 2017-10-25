@@ -8,9 +8,11 @@ namespace ProjetSynthese
 {
     public class EquipProtection : GameScript
     {
+        [Tooltip("Le type de l'item.")]
         [SerializeField]
         private ItemType type;
 
+        [Tooltip("L'image représentant l'item.")]
         [SerializeField]
         private Image image;
 

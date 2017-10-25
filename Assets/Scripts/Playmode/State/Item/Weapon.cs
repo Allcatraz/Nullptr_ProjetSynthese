@@ -8,14 +8,19 @@ namespace ProjetSynthese
     {
         private const int Weight = 0;
 
+        [Tooltip("L'endroit ou doivent spawner les balles.")]
         [SerializeField]
         private GameObject bulletSpawnPoint;
+        [Tooltip("L'endroit ou la balle est charger pour calculer la direction que celle-ci va prendre.")]
         [SerializeField]
         private GameObject chamber;
+        [Tooltip("La vitesse que la balle va avoir lorsqu'elle sera tiré.")]
         [SerializeField]
         private float bulletSpeed;
+        [Tooltip("Le temps de vie que la balle a.")]
         [SerializeField]
         private float bulletLivingTime;
+        [Tooltip("Le nombre de balles maximale pour un chargeur.")]
         [SerializeField]
         private int magazineMaxAmount;
 
@@ -48,10 +53,15 @@ namespace ProjetSynthese
             }
         }
 
-        public void Reload()
+        public bool Reload()
         {
             MagazineAmount = MagazineMax;
             NotidyMunitionChanged();
+            if (MagazineAmount > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         private void NotidyMunitionChanged()

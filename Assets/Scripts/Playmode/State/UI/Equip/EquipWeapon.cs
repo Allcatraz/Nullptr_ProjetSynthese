@@ -6,12 +6,15 @@ namespace ProjetSynthese
 {
     public class EquipWeapon : GameScript
     {
+        [Tooltip("Type de slot utilisé.")]
         [SerializeField]
         private EquipWeaponAt typeSlot;
 
+        [Tooltip("Nom de l'object")]
         [SerializeField]
         private Text textName;
 
+        [Tooltip("Text du slot d'interface.")]
         [SerializeField]
         private Text textSlot;
 

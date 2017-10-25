@@ -6,6 +6,7 @@ namespace ProjetSynthese
 {
     public class HouseController : GameScript
     {
+        [Tooltip("Le matériel pour l'aspet du toit.")]
         [SerializeField] private Material roofMaterial;
 
         private PlayerChangeModeEventChannel playerChangeModeEventChannel;

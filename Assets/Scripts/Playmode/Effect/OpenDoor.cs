@@ -6,8 +6,11 @@ namespace ProjetSynthese
 {
     public class OpenDoor : GameScript
     {
+        [Tooltip("Le visuel de la porte.")]
         [SerializeField] private Transform visualTransform;
+        [Tooltip("Nombre de degrés pour ouvrir la porte.")]
         [SerializeField] private float openedAngle;
+        [Tooltip("Nombre de degrés pour fermer la porte.")]
         [SerializeField] private float closedAngle;
 
         private PlayerUseEventChannel playerUseEventChannel;

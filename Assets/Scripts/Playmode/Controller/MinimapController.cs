@@ -6,7 +6,9 @@ namespace ProjetSynthese
 {
     public class MinimapController : GameScript
     {
+        [Tooltip("La largeur de la minimap.")]
         [SerializeField] private int minimapWidth;
+        [Tooltip("La hauteur de la minimap.")]
         [SerializeField] private int minimapHeight;
 
         private RectTransform rectTransform;

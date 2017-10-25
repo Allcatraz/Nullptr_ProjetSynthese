@@ -10,7 +10,9 @@ namespace ProjetSynthese
 {
     public class CreateItemsSpawner : GameScript
     {
+        [Tooltip("Liste contenant toutes les positions des ItemsSpawner.")]
         [SerializeField] private List<Vector3> itemSpawnerPositions;
+        [Tooltip("Le Prefab de l'ItemSpawner.")]
         [SerializeField] private GameObject itemSpawnerPrefab;
 
         private ActivityStack activityStack;

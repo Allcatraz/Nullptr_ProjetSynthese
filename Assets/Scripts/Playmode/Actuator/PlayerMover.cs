@@ -9,7 +9,9 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/Actuator/PlayerMover")]
     public class PlayerMover : GameScript
     {
+        [Tooltip("La vitesse du joueur dans son déplacement normal.")]
         [SerializeField] private float moveSpeed;
+        [Tooltip("La vitesse du joueur dans son déplacement de sprint.")]
         [SerializeField] private float sprintSpeed;
 
         private Transform topParentTransform;

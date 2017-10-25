@@ -6,29 +6,29 @@ namespace ProjetSynthese
 {
     public class EquipementFactory
     {
-        private static int percentChanceSpawnVest = 30;
-        private static int percentChanceSpawnHelmet = 30;
-        private static int percentChanceSpawnBag = 40;
+        private const int PercentChanceSpawnVest = 30;
+        private const int PercentChanceSpawnHelmet = 30;
+        private const int PercentChanceSpawnBag = 40;
 
-        private static Vector2 range1 = new Vector2(0, percentChanceSpawnVest);
-        private static Vector2 range2 = new Vector2(range1.y, range1.y + percentChanceSpawnHelmet);
-        private static Vector2 range3 = new Vector2(range2.y, range2.y + percentChanceSpawnBag);
+        private static Vector2 Range1 = new Vector2(0, PercentChanceSpawnVest);
+        private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawnHelmet);
+        private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawnBag);
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
         {
-            int item = rnd.Next(0, 101);
+            int item = random.Next(0, 101);
 
-            if (item >= range1.x && item < range1.y)
+            if (item >= Range1.x && item < Range1.y)
             {
-                VestFactory.CreateItem(itemList, spawnPoint, rnd);
+                VestFactory.CreateItem(itemList, spawnPoint, random);
             }
-            else if (item >= range2.x && item < range2.y)
+            else if (item >= Range2.x && item < Range2.y)
             {
-                HelmentFactory.CreateItem(itemList, spawnPoint, rnd);
+                HelmentFactory.CreateItem(itemList, spawnPoint, random);
             }
-            else if (item >= range3.x && item <= range3.y)
+            else if (item >= Range3.x && item <= Range3.y)
             {
-                BagFactory.CreateItem(itemList, spawnPoint, rnd);
+                BagFactory.CreateItem(itemList, spawnPoint, random);
             }
         }
     }

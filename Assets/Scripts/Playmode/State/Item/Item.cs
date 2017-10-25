@@ -4,6 +4,7 @@ namespace ProjetSynthese
 {
     public abstract class Item : NetworkGameScript
     {
+        [Tooltip("Le type de l'item.")]
         [SerializeField]
         private ItemType type;
 

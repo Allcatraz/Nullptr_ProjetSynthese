@@ -6,7 +6,8 @@ namespace ProjetSynthese
 {
     public class BoostBarController : GameScript
     {
-        [SerializeField] private Image image;
+        [Tooltip("Visuel de la bar de boost.")]
+        [SerializeField] private Image barVisual;
 
         private BoostStats boostStats;
         private PlayerBoostEventChannel playerBoostEventChannel;
@@ -33,7 +34,7 @@ namespace ProjetSynthese
         {
             boostStats = playerBoostEvent.PlayerBoost;
             fillAmount = boostStats.BoostPoints / boostStats.MaxBoostPoints;
-            image.fillAmount = fillAmount;
+            barVisual.fillAmount = fillAmount;
         }
     }
 }

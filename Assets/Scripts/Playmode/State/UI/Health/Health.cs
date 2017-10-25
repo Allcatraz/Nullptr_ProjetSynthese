@@ -9,7 +9,9 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/State/Health")]
     public class Health : GameScript
     {
+        [Tooltip("Le nombre de points de vie initial.")]
         [SerializeField] private int initialHealthPoints;
+        [Tooltip("Le nombre de points de vie maximal.")]
         [SerializeField] private int maxHealthPoints;
 
         private float healthPoints;

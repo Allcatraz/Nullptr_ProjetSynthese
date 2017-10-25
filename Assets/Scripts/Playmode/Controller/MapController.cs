@@ -9,7 +9,9 @@ namespace ProjetSynthese
 {
     public class MapController : GameScript
     {
+        [Tooltip("Le transform de la map.")]
         [SerializeField] private RectTransform mapRectTransform;
+        [Tooltip("La caméra de la map.")]
         [SerializeField] private Camera mapCamera;
 
         public RectTransform MapRectTransform

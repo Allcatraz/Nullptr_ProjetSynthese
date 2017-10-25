@@ -7,10 +7,12 @@ namespace ProjetSynthese
     {
         [Header("Infos")]
         [LabelOverride("Angle")]
+        [Tooltip("L'angle entre chaques lignes pour le cercle.")]
         [SerializeField]
         private float angle;
 
         [LabelOverride("Segments")]
+        [Tooltip("Le nombre de segments pour former le cercle.")]
         [SerializeField]
         private int segments;
 

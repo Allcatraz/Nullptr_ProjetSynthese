@@ -7,18 +7,22 @@ namespace ProjetSynthese
     {
         [Header("Phase")]
         [LabelOverride("Wait(s)")]
+        [Tooltip("Le temps d'attente avant l'affichage du chrono.")]
         [SerializeField]
         private int[] waitTimeInSecond;
 
         [LabelOverride("Move(s)")]
+        [Tooltip("Le temps d'attente avant que le cercle bouge.")]
         [SerializeField]
         private int[] moveTimeInSecond;
 
         [LabelOverride("DPS")]
+        [Tooltip("Le dommage que prend les joueurs par secondes")]
         [SerializeField]
         private float[] domagePerSecond;
 
         [LabelOverride("Skrink")]
+        [Tooltip("Combien de fois plus petit sera le prochain cercle.")]
         [Range(0, 1)]
         [SerializeField]
         private float[] shrink;

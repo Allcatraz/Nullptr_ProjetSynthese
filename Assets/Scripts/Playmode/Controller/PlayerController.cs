@@ -13,10 +13,15 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : NetworkGameScript
     {
+        [Tooltip("Le menu de l'inventaire du joueur.")]
         [SerializeField] private Menu inventoryMenu;
+        [Tooltip("Le menu de la map du joueur.")]
         [SerializeField] private Menu mapMenu;
+        [Tooltip("Le transform contenant les armes du joueur.")]
         [SerializeField] private Transform weaponHolderTransform;
+        [Tooltip("Le transform contenant les items du joueur.")]
         [SerializeField] private Transform inventoryHolderTransform;
+        [Tooltip("La camera en première personne du joueur")]
         [SerializeField] private Camera firstPersonCamera;
 
         private ActivityStack activityStack;

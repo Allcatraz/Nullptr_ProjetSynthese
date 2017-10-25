@@ -9,6 +9,7 @@ namespace ProjetSynthese
 {
     public class ChangePlayerScene : GameScript
     {
+        [Tooltip("Le menu de la map du joueur pour pouvoir apparaître.")]
         [SerializeField] private Menu mapMenu;
 
         private ActivityStack activityStack;

@@ -12,6 +12,7 @@ namespace ProjetSynthese
     {
         enum Phases { Phase1, Phase2, Phase3, Phase4, Phase5, Phase6, Phase7, Phase8 }
 
+        [Tooltip("Les informations sur les états du DeathCircle.")]
         [SerializeField] private DeathCircle deathCircleValues;
 
         private const float InitialShrinkTime = 0.05f;

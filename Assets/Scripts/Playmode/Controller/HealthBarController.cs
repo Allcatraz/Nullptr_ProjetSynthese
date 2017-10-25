@@ -6,7 +6,8 @@ namespace ProjetSynthese
 {
     public class HealthBarController : GameScript
     {
-        [SerializeField] private Image image;
+        [Tooltip("Le visuel de la bar de health.")]
+        [SerializeField] private Image barVisual;
         private PlayerHealthEventChannel playerHealthEventChannel;
         private Health health;
 
@@ -34,7 +35,7 @@ namespace ProjetSynthese
             if (health != null)
             {
                 fillAmount = health.HealthPoints / health.MaxHealthPoints;
-                image.fillAmount = fillAmount;
+                barVisual.fillAmount = fillAmount;
             }
         }
     }

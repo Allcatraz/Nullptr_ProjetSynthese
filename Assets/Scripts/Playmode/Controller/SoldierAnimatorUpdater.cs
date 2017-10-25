@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoldierAnimatorUpdater : MonoBehaviour
 {
     [SerializeField]
+    [Tooltip("L'animator utilisé pour faire l'animation")]
     private Animator animator;
     public Vector3 MouvementDirection { get; set; }
     public Vector3 ViewDirection { get; set; }

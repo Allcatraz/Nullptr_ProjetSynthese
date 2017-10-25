@@ -6,11 +6,11 @@ namespace ProjetSynthese
 {
     public class SAIGA12Factory : WeaponFactoryMaster
     {
-        public static GameObject SAIGA12Prefab { get; set; }
+        public static GameObject Saiga12Prefab { get; set; }
 
         public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
         {
-            SpawnWeapon(itemList, spawnPoint, rnd, SAIGA12Prefab, AmmoType.AmmoCalibre12);
+            SpawnWeapon(itemList, spawnPoint, rnd, Saiga12Prefab, AmmoType.AmmoCalibre12);
         }
     }
 }

@@ -18,9 +18,9 @@ namespace ProjetSynthese
 
         public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd, AmmoType ammoType)
         {
-            GameObject _object = CmdSpawnObject(spawnPoint, AmmoPackPrefab);
+            GameObject gameObject = SpawnObject(spawnPoint, AmmoPackPrefab);
 
-            AmmoPack ammoPack = _object.GetComponent<AmmoPack>();
+            AmmoPack ammoPack = gameObject.GetComponent<AmmoPack>();
             ammoPack.AmmoType = ammoType;
             itemList.Add(ammoPack);
 
@@ -38,7 +38,7 @@ namespace ProjetSynthese
             {
                 ammoPack.NumberOfAmmo = 90;
             }
-
+            CmdSpawnObject(gameObject);
         }
     }
 }

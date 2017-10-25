@@ -5,32 +5,26 @@ using UnityEngine;
 namespace ProjetSynthese
 {
     public class Bag : Item
-    {
+    {      
+        private const int Level1Capacity = 100;
+        private const int Level2Capacity = 175;
+        private const int Level3Capacity = 300;
+
+        private static readonly int[] Capacities = { Level1Capacity , Level2Capacity , Level3Capacity };
+
+        private const int Weight = 0;
+
         public int Capacity
         {
             get
             {
-                return capacities[Level - 1];
+                return Capacities[Level - 1];
             }
-            private set {}
-        }
-        
-        private static int level1Capacity = 100;
-        private static int level2Capacity = 175;
-        private static int level3Capacity = 300;
-
-        private static int[] capacities = { level1Capacity , level2Capacity , level3Capacity };
-
-        private static int weight = 0;
-
-        public override void Use()
-        {
-            throw new System.NotImplementedException();
         }
 
         public override int GetWeight()
         {
-            return weight;
+            return Weight;
         }
     }
 }

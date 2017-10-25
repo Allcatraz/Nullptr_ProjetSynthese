@@ -4,8 +4,10 @@ namespace ProjetSynthese
 {
     public delegate void OnMunitionChanged();
 
-    public class Weapon : Item
+    public class Weapon : Usable
     {
+        private const int Weight = 0;
+
         [SerializeField]
         private GameObject bulletSpawnPoint;
         [SerializeField]
@@ -18,8 +20,6 @@ namespace ProjetSynthese
         private int magazineMaxAmount;
 
         public event OnMunitionChanged OnMunitionChanged;
-
-        private static int weight = 0;
 
         public int MagazineMax
         {
@@ -61,7 +61,7 @@ namespace ProjetSynthese
 
         public override int GetWeight()
         {
-            return weight;
+            return Weight;
         }
     }
 }

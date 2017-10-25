@@ -258,7 +258,7 @@ namespace ProjetSynthese
                 //Bug fix temporaire
                 CellContained.GetItem().Player = player.gameObject;
                 //Fin bug fix temporaire
-                CellContained.GetItem().Use(); 
+                (CellContained.GetItem() as Usable).Use(); 
                 Inventory.CheckMultiplePresenceAndRemove(CellContained);
             }
             else if (CellContained.GetItem() as Bag)
@@ -279,7 +279,7 @@ namespace ProjetSynthese
                 }
                 else
                 {
-                    toAdd.transform.SetParent(player.GetInventoryTransform());
+                    toAdd.transform.SetParent(player.GetInventoryHolderTransform());
                 }
 
                 toAdd.SetActive(false);

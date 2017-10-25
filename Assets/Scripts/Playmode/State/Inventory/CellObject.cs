@@ -135,7 +135,7 @@ namespace ProjetSynthese
                 }
                 else
                 {
-                    toAdd.transform.SetParent(player.GetInventoryTransform());
+                    toAdd.transform.SetParent(player.GetInventoryHolderTransform());
                 }
 
                 toAdd.SetActive(false);

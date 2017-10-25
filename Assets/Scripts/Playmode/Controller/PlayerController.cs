@@ -37,7 +37,6 @@ namespace ProjetSynthese
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
-        private bool isDoingSomething = false;
 
         public event UseEventHandler OnUse;
         public event ChangeModeEventHandler OnChangeMode;
@@ -47,7 +46,7 @@ namespace ProjetSynthese
             return weaponHolderTransform;
         }
 
-        public Transform GetInventoryTransform()
+        public Transform GetInventoryHolderTransform()
         {
             return inventoryHolderTransform;
         }
@@ -274,35 +273,36 @@ namespace ProjetSynthese
         {
             GameObject item = itemSensor.GetItemNearest();
             TakeItem(item);
-            //CmdTakeItem(item);
+            CmdTakeItem(item, networkIdentity);
 
-            if (item == null)
-            {
-                isDoingSomething = false;
-            }
-            else
-            {
-                isDoingSomething = true;
-            }
-
-            if (OnUse != null) OnUse(isDoingSomething);
+            if (OnUse != null) OnUse(false);
         }
 
         [Command]
-        private void CmdTakeItem(GameObject item)
+        private void CmdTakeItem(GameObject item, NetworkIdentity identity)
         {
-            RpcTakeItem(item);
+            RpcTakeItem(item, identity);
         }
 
         [ClientRpc]
-        private void RpcTakeItem(GameObject item)
+        private void RpcTakeItem(GameObject item, NetworkIdentity identity)
         {
             if ((object)item != null)
             {
                 item.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
                 List<GameObject> allItems = item.gameObject.GetAllChildrens().ToList();
                 allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem));
-                item.SetActive(false);
+
+                if (item.GetComponent<Item>() is Weapon)
+                {
+                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetWeaponHolderTransform());                    
+                }
+                else
+                {
+                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetInventoryHolderTransform());                    
+                }
+
+                item.SetActive(false);                
             }
         }
 
@@ -310,20 +310,24 @@ namespace ProjetSynthese
         {
             if ((object)item != null)
             {
-                item.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+                int layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
+                item.gameObject.layer = layer;
                 List<GameObject> allItems = item.gameObject.GetAllChildrens().ToList();
-                allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem));
+                allItems.ForEach(obj => obj.layer = layer);                
 
                 inventory.Add(item, gameObject);
 
                 if (item.GetComponent<Item>() is Weapon)
                 {
                     item.transform.SetParent(weaponHolderTransform);
+                    
                 }
                 else
                 {
                     item.transform.SetParent(inventoryHolderTransform);
+                    
                 }
+
                 item.SetActive(false);
             }
         }

@@ -59,8 +59,7 @@ namespace ProjetSynthese
         public override bool Equals(object obj)
         {
             var cell = obj as ObjectContainedInventory;
-            return cell == this &&
-                   compteur == cell.compteur;
+            return cell == this;
         }
 
         public override int GetHashCode()

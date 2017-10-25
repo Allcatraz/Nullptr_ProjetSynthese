@@ -32,9 +32,12 @@ namespace ProjetSynthese
 
         private void OnBoostChanged(PlayerBoostEvent playerBoostEvent)
         {
-            boostStats = playerBoostEvent.PlayerBoost;
-            fillAmount = boostStats.BoostPoints / boostStats.MaxBoostPoints;
-            barVisual.fillAmount = fillAmount;
+            if (barVisual != null)
+            {
+                boostStats = playerBoostEvent.PlayerBoost;
+                fillAmount = boostStats.BoostPoints / boostStats.MaxBoostPoints;
+                barVisual.fillAmount = fillAmount;
+            }   
         }
     }
 }

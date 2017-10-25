@@ -1,4 +1,6 @@
-﻿using Harmony;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Harmony;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -8,6 +10,7 @@ namespace ProjetSynthese
     {
         private SpawnItemDropEventChannel spawnItemDropEventChannel;
 
+        [Tooltip("La location de spawn de l'objet passé en paramètre")]
         [SerializeField] private GameObject spawnLocation;
 
         private void Awake()
@@ -33,8 +36,10 @@ namespace ProjetSynthese
         {
             GameObject newItem = Instantiate(itemToSpawn);
             newItem.GetComponent<Item>().Level = itemToSpawn.GetComponent<Item>().Level;
-            newItem.transform.SetParent(spawnLocation.transform, true);
+            //newItem.transform.SetParent(spawnLocation.transform, true);
             newItem.layer = LayerMask.NameToLayer(R.S.Layer.Item);
+            List<GameObject> allItems = newItem.gameObject.GetAllChildrens().ToList();
+            allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.Item));
             newItem.transform.position = player.position;
             newItem.SetActive(true);
             NetworkServer.Spawn(newItem);

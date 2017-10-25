@@ -258,6 +258,7 @@ namespace ProjetSynthese
                 //Bug fix temporaire
                 CellContained.GetItem().Player = player.gameObject;
                 //Fin bug fix temporaire
+
                 (CellContained.GetItem() as Usable).Use(); 
                 Inventory.CheckMultiplePresenceAndRemove(CellContained);
             }
@@ -270,20 +271,7 @@ namespace ProjetSynthese
         private void TransferToInentoryPlayerFromGround()
         {
             GameObject toAdd = CellContained.GetItem().gameObject;
-            if ((object)CellContained.GetItem() != null)
-            {
-                playerInventory.Add(toAdd, player.gameObject);
-                if (toAdd.GetComponent<Item>() is Weapon)
-                {
-                    toAdd.transform.SetParent(player.GetWeaponHolderTransform());
-                }
-                else
-                {
-                    toAdd.transform.SetParent(player.GetInventoryHolderTransform());
-                }
-
-                toAdd.SetActive(false);
-            }
+            player.TakeItemFromInventory(toAdd);
             CellContained.RemoveOneFromCompteur();
             Control.CreateCellsForNearbyItem();
         }

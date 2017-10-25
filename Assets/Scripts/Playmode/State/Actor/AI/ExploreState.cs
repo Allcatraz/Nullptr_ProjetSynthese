@@ -6,8 +6,8 @@ namespace ProjetSynthese
     {
         public override void Execute(ActorAI actor)
         {
-            currentAIState = AIState.Explore;
-            AIController aiController = actor.ActorController;
+          
+            AIController aiController = (AIController)actor.ActorController;
 
             if (aiController.GetAIControllerMode() != AIController.ControllerMode.Explore)
             {
@@ -17,6 +17,7 @@ namespace ProjetSynthese
             if (!aiController.MapDestinationIsKnown)
             {
                 aiController.GenerateRandomDestination(actor);
+                aiController.MapDestinationIsKnown = true;
             }
 
             aiController.AIMoveTarget = AIController.MoveTarget.Map;
@@ -25,6 +26,12 @@ namespace ProjetSynthese
             if (aiController.HasReachedMapDestination(actor))
             {
                 aiController.MapDestinationIsKnown = false;
+            }
+
+            AIBrain.AIState nextState = actor.Brain.WhatIsMyNextState(AIBrain.AIState.Explore);
+            if (nextState != AIBrain.AIState.Explore)
+            {
+                SwitchState(actor, nextState);
             }
         }
     }

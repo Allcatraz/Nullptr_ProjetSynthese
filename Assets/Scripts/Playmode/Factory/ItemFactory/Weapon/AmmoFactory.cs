@@ -6,13 +6,13 @@ namespace ProjetSynthese
 {
     public class AmmoFactory : ItemFactoryMaster
     {
-        private static int percentChanceSpawn30Ammo = 60;
-        private static int percentChanceSpawn60Ammo = 30;
-        private static int percentChanceSpawn90Ammo = 10;
+        private const int PercentChanceSpawn30Ammo = 60;
+        private const int PercentChanceSpawn60Ammo = 30;
+        private const int PercentChanceSpawn90Ammo = 10;
 
-        private static Vector2 range1 = new Vector2(0, percentChanceSpawn30Ammo);
-        private static Vector2 range2 = new Vector2(range1.y, range1.y + percentChanceSpawn60Ammo);
-        private static Vector2 range3 = new Vector2(range2.y, range2.y + percentChanceSpawn90Ammo);
+        private static Vector2 Range1 = new Vector2(0, PercentChanceSpawn30Ammo);
+        private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawn60Ammo);
+        private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawn90Ammo);
 
         public static GameObject AmmoPackPrefab { get; set; }
 
@@ -26,15 +26,15 @@ namespace ProjetSynthese
 
             int item = random.Next(0, 101);
 
-            if (item >= range1.x && item < range1.y)
+            if (item >= Range1.x && item < Range1.y)
             {
                 ammoPack.NumberOfAmmo = 30;
             }
-            else if (item >= range2.x && item < range2.y)
+            else if (item >= Range2.x && item < Range2.y)
             {
                 ammoPack.NumberOfAmmo = 60;
             }
-            else if (item >= range3.x && item < range3.y)
+            else if (item >= Range3.x && item < Range3.y)
             {
                 ammoPack.NumberOfAmmo = 90;
             }

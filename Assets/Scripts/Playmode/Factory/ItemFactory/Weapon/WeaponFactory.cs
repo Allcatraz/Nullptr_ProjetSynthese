@@ -6,33 +6,33 @@ namespace ProjetSynthese
 {
     public class WeaponFactory
     {
-        private static int percentChanceSpawnM16A4 = 40;
-        private static int percentChanceSpawnAWM = 10;
-        private static int percentChanceSpawnSAIGA12 = 20;
-        private static int percentChanceSpawnM1911 = 20;
+        private const int PercentChanceSpawnM16A4 = 40;
+        private const int PercentChanceSpawnAWM = 10;
+        private const int PercentChanceSpawnSAIGA12 = 20;
+        private const int PercentChanceSpawnM1911 = 20;
 
-        private static Vector2 range1 = new Vector2(0, percentChanceSpawnM16A4);
-        private static Vector2 range2 = new Vector2(range1.y, range1.y + percentChanceSpawnAWM);
-        private static Vector2 range3 = new Vector2(range2.y, range2.y + percentChanceSpawnSAIGA12);
-        private static Vector2 range4 = new Vector2(range3.y, range3.y + percentChanceSpawnM1911);
+        private static Vector2 Range1 = new Vector2(0, PercentChanceSpawnM16A4);
+        private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawnAWM);
+        private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawnSAIGA12);
+        private static Vector2 Range4 = new Vector2(Range3.y, Range3.y + PercentChanceSpawnM1911);
 
         public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
         {
             int item = random.Next(0, 101);
 
-            if (item >= range1.x && item < range1.y)
+            if (item >= Range1.x && item < Range1.y)
             {
                 M16A4Factory.CreateItem(itemList, spawnPoint, random);
             }
-            else if (item >= range2.x && item < range2.y)
+            else if (item >= Range2.x && item < Range2.y)
             {
                 AWMFactory.CreateItem(itemList, spawnPoint, random);
             }
-            else if (item >= range3.x && item < range3.y)
+            else if (item >= Range3.x && item < Range3.y)
             {
                 SAIGA12Factory.CreateItem(itemList, spawnPoint, random);
             }
-            else if (item >= range4.x && item <= range4.y)
+            else if (item >= Range4.x && item <= Range4.y)
             {
                 M1911Factory.CreateItem(itemList, spawnPoint, random);
             }

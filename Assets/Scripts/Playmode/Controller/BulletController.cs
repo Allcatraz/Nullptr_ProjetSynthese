@@ -15,7 +15,10 @@ namespace ProjetSynthese
             if (other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Player) || other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
             {
                 Health health = other.gameObject.GetComponentInChildren<Health>();
-                health.Hit(1);
+                if (health != null)
+                {
+                    health.Hit(1);
+                }
             }
             Destroy(gameObject);
         }

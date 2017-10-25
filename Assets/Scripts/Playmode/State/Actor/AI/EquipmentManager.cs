@@ -88,6 +88,7 @@ namespace ProjetSynthese
         {
             if (Actor.AIInventory.ListInventory != null && Actor.AIInventory.ListInventory.Count > 0)
             {
+                 
 
                 return false;
             }

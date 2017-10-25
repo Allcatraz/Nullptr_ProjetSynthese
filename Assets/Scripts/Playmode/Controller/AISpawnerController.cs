@@ -7,11 +7,21 @@ namespace ProjetSynthese
 {
     public class AISpawnerController : MonoBehaviour
     {
+        [Tooltip("AI prefab contenant les combatants AI")]
         [SerializeField]
         private GameObject AIprefab;
 
+        [Tooltip("Nombre de combatants AI")]
         [SerializeField]
         const int AINumber = 1;
+
+        const float XMapCornerCoordinate = 0.0f;
+        const float ZMapCornerCoordinate = 0.0f;
+        const float DefaultHeighPosition = 1.0f;
+
+        const float XOffset = 15.0f;
+        const float ZOffset = -15.0f;
+
         void Start()
         {
             SpawnAIs();
@@ -19,11 +29,15 @@ namespace ProjetSynthese
 
         private void SpawnAIs()
         {
-            Vector3 position = new Vector3(150,10.0f,-150);
-           
-            AIprefab.GetComponent<NetworkStartPosition>().transform.position = position;
+            Vector3[] position = new Vector3[AINumber];
             for (int i = 0; i < AINumber; i++)
             {
+                position[i] = new Vector3(XMapCornerCoordinate + XOffset, DefaultHeighPosition, ZMapCornerCoordinate + ZOffset);
+            }
+    
+            for (int i = 0; i < AINumber; i++)
+            {
+                AIprefab.GetComponent<NetworkStartPosition>().transform.position = position[i];
                 AIFactory.CmdSpawnAI(AIprefab);
             }
         }

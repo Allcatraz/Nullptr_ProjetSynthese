@@ -20,11 +20,10 @@ namespace ProjetSynthese
         public void CreateItems(Vector3 position)
         {
             items = new List<Item>();
-            System.Random rnd = new System.Random();
-            int numberOfItemsToSpawn = rnd.Next(3, MaxNumberOfItemsToSpawn + 1);
+            int numberOfItemsToSpawn = GlobalRandom.Next(3, MaxNumberOfItemsToSpawn + 1);
             for (int i = 0; i < numberOfItemsToSpawn; i++)
             {
-                ItemFactory.CreateItem(items, position, rnd);
+                ItemFactory.CreateItem(items, position, GlobalRandom.Random);
             }
         }
 

@@ -15,21 +15,21 @@ namespace ProjetSynthese
         private static Vector2 range2 = new Vector2(range1.y, range1.y + percentChanceSpawnEquipement);
         private static Vector2 range3 = new Vector2(range2.y, range2.y + percentChanceSpawnWeapon);
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
         {           
-            int item = rnd.Next(0, 101);
+            int item = random.Next(0, 101);
 
             if (item >= range1.x && item < range1.y)
             {
-                ConsumableFactory.CreateItem(itemList, spawnPoint, rnd);
+                ConsumableFactory.CreateItem(itemList, spawnPoint, random);
             }
             else if (item >= range2.x && item < range2.y)
             {
-                EquipementFactory.CreateItem(itemList, spawnPoint, rnd);
+                EquipementFactory.CreateItem(itemList, spawnPoint, random);
             }
             else if (item >= range3.x && item <= range3.y)
             {
-                WeaponFactory.CreateItem(itemList, spawnPoint, rnd);
+                WeaponFactory.CreateItem(itemList, spawnPoint, random);
             }
         }
 

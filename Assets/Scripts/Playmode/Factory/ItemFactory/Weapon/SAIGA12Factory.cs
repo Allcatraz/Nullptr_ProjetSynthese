@@ -8,9 +8,9 @@ namespace ProjetSynthese
     {
         public static GameObject Saiga12Prefab { get; set; }
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
         {
-            SpawnWeapon(itemList, spawnPoint, rnd, Saiga12Prefab, AmmoType.AmmoCalibre12);
+            SpawnWeapon(itemList, spawnPoint, random, Saiga12Prefab, AmmoType.AmmoCalibre12);
         }
     }
 }

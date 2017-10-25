@@ -16,13 +16,13 @@ namespace ProjetSynthese
 
         public static GameObject BagPrefab { get; set; }
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random rnd)
+        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
         {
             GameObject gameObject = SpawnObject(spawnPoint, BagPrefab);
 
             Bag bag = gameObject.GetComponent<Bag>();
 
-            int item = rnd.Next(0, 101);
+            int item = random.Next(0, 101);
 
             if (item >= range1.x && item < range1.y)
             {

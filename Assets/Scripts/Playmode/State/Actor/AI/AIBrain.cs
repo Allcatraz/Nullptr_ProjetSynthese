@@ -11,6 +11,7 @@ namespace ProjetSynthese
         private readonly float LifeFleeThreshold;
         private float lastLifePointLevel;
         private const float ErrorLifeTolerance = 0.001f;
+        private const float ProtectionMaximum = 100.0f;
 
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
@@ -20,7 +21,13 @@ namespace ProjetSynthese
 
         #region Knowledge
         private float healthRatio = 1.0f;
-        public float HealthRatio { get; private set; }
+        
+        private float protectionRatio = 0.0f;
+        
+        public float HealthRatio { get { return healthRatio; } private set { healthRatio = value; } }
+        public float ProtectionRatio { get { return protectionRatio; } private set { protectionRatio = value; } }
+       
+
         private bool hasPrimaryWeaponEquipped = false;
         private bool hasHelmetEquipped = false;
         private bool hasVestEquipped = false;
@@ -517,6 +524,7 @@ namespace ProjetSynthese
 
         private void UpdateProtectionKnowledge()
         {
+            protectionRatio = 0.0f;
             ObjectContainedInventory cellHelmet = Actor.AIInventory.GetHelmet();
             ObjectContainedInventory cellVest = Actor.AIInventory.GetVest();
             Vest equippedVest = null;
@@ -529,6 +537,7 @@ namespace ProjetSynthese
             if (equippedVest != null)
             {
                 hasVestEquipped = true;
+                protectionRatio += equippedVest.ProtectionValue;
             }
             else
             {
@@ -542,13 +551,16 @@ namespace ProjetSynthese
             if (equippedHelmet != null)
             {
                 hasHelmetEquipped = true;
+                protectionRatio +=equippedHelmet.ProtectionValue;
             }
             else
             {
                 hasHelmetEquipped = false;
             }
+
+            protectionRatio /= ProtectionMaximum;
             //choix best vest et best helmet
-            //fonction niveau
+            
         }
         private void UpdateSupportKnowledge()
         {

@@ -6,13 +6,13 @@ namespace ProjetSynthese
 {
     public class BagFactory : ItemFactoryMaster
     {
-        private static int percentChanceSpawnLevel1 = 40;
-        private static int percentChanceSpawnLevel2 = 40;
-        private static int percentChanceSpawnLevel3 = 20;
+        private const int PercentChanceSpawnLevel1 = 40;
+        private const int PercentChanceSpawnLevel2 = 40;
+        private const int PercentChanceSpawnLevel3 = 20;
 
-        private static Vector2 range1 = new Vector2(0, percentChanceSpawnLevel1);
-        private static Vector2 range2 = new Vector2(range1.y, range1.y + percentChanceSpawnLevel2);
-        private static Vector2 range3 = new Vector2(range2.y, range2.y + percentChanceSpawnLevel3);
+        private static Vector2 Range1 = new Vector2(0, PercentChanceSpawnLevel1);
+        private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawnLevel2);
+        private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawnLevel3);
 
         public static GameObject BagPrefab { get; set; }
 
@@ -24,15 +24,15 @@ namespace ProjetSynthese
 
             int item = random.Next(0, 101);
 
-            if (item >= range1.x && item < range1.y)
+            if (item >= Range1.x && item < Range1.y)
             {
                 bag.Level = 1;
             }
-            else if (item >= range2.x && item < range2.y)
+            else if (item >= Range2.x && item < Range2.y)
             {
                 bag.Level = 2;
             }
-            else if (item >= range3.x && item <= range3.y)
+            else if (item >= Range3.x && item <= Range3.y)
             {
                 bag.Level = 3;
             }

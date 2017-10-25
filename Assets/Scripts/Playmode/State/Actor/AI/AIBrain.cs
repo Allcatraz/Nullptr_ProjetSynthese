@@ -19,6 +19,8 @@ namespace ProjetSynthese
         #endregion
 
         #region Knowledge
+        private float healthRatio = 1.0f;
+        public float HealthRatio { get; private set; }
         private bool hasPrimaryWeaponEquipped = false;
         private bool hasHelmetEquipped = false;
         private bool hasVestEquipped = false;
@@ -552,6 +554,7 @@ namespace ProjetSynthese
         {
             //bag managment
             //heal management
+            healthRatio = Actor.AIHealth.HealthPoints/Actor.AIHealth.MaxHealthPoints;
         }
     }
 }

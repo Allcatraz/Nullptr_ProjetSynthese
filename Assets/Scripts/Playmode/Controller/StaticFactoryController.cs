@@ -7,34 +7,45 @@ namespace ProjetSynthese
     public class StaticFactoryController : GameScript
     {
         [SerializeField]
+        [Tooltip("Le prefab utilisé pour instancié les bullets")]
         GameObject bulletPrefab;
 
         // Consumable
         [SerializeField]
+        [Tooltip("Le prefab utilisé pour instancié les heals")]
         GameObject healPrefab;
         [SerializeField]
+        [Tooltip("Le prefab utilisé pour instancié les boosts")]
         GameObject boostPrefab;
 
         // Equipement
         [SerializeField]
+        [Tooltip("Le prefab utilisé pour instancié les vests")]
         GameObject vestPrefab;
         [SerializeField]
+        [Tooltip("Le prefab utilisé pour instancié les helmets")]
         GameObject helmentPrefab;
         [SerializeField]
+        [Tooltip("Le prefab utilisé pour instancié les bags")]
         GameObject bagPrefab;
 
         // Weapon
         [SerializeField]
-        GameObject M16A4Prefab;
+        [Tooltip("Le prefab utilisé pour instancié les M16A4")]
+        GameObject m16A4Prefab;
         [SerializeField]
-        GameObject AWMPrefab;
+        [Tooltip("Le prefab utilisé pour instancié les AWM")]
+        GameObject awmPrefab;
         [SerializeField]
-        GameObject SAIGA12Prefab;
+        [Tooltip("Le prefab utilisé pour instancié les Saiga12")]
+        GameObject saiga12Prefab;
         [SerializeField]
-        GameObject M1911Prefab;
+        [Tooltip("Le prefab utilisé pour instancié les M1911")]
+        GameObject m1911Prefab;
 
         // AmmoPack
         [SerializeField]
+        [Tooltip("Le prefab utilisé pour instancié les ammo packs")]
         GameObject ammoPackPrefab;
 
         private void Awake()
@@ -55,10 +66,10 @@ namespace ProjetSynthese
             BagFactory.BagPrefab = bagPrefab;
 
             //Weapon
-            M16A4Factory.M16A4Prefab = M16A4Prefab;
-            AWMFactory.AWMPrefab = AWMPrefab;
-            SAIGA12Factory.SAIGA12Prefab = SAIGA12Prefab;
-            M1911Factory.M1911Prefab = M1911Prefab;
+            M16A4Factory.M16A4Prefab = m16A4Prefab;
+            AWMFactory.AWMPrefab = awmPrefab;
+            SAIGA12Factory.Saiga12Prefab = saiga12Prefab;
+            M1911Factory.M1911Prefab = m1911Prefab;
 
             // AmmoPack
             AmmoFactory.AmmoPackPrefab = ammoPackPrefab;

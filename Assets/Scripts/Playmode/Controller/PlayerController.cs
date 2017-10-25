@@ -103,8 +103,8 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
             keyboardInputSensor.Keyboards.OnInteract += OnInteract;
-            keyboardInputSensor.Keyboards.OnSwitchSprintOn += OnSwitchSprintOn;
-            keyboardInputSensor.Keyboards.OnSwitchSprintOff += OnSwitchSprintOff;
+            keyboardInputSensor.Keyboards.OnSwitchSprintOn += playerMover.SwitchSprintOn;
+            keyboardInputSensor.Keyboards.OnSwitchSprintOff += playerMover.SwitchSprintOff;
             keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon += OnSwitchPrimaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon += OnSwitchSecondaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon += OnSwitchThirdWeapon;
@@ -135,8 +135,8 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnMoveToward -= OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory -= OnToggleInventory;
             keyboardInputSensor.Keyboards.OnInteract -= OnInteract;
-            keyboardInputSensor.Keyboards.OnSwitchSprintOn -= OnSwitchSprintOn;
-            keyboardInputSensor.Keyboards.OnSwitchSprintOff -= OnSwitchSprintOff;
+            keyboardInputSensor.Keyboards.OnSwitchSprintOn -= playerMover.SwitchSprintOn;
+            keyboardInputSensor.Keyboards.OnSwitchSprintOff -= playerMover.SwitchSprintOff;
             keyboardInputSensor.Keyboards.OnSwitchPrimaryWeapon -= OnSwitchPrimaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon -= OnSwitchSecondaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon -= OnSwitchThirdWeapon;
@@ -178,22 +178,13 @@ namespace ProjetSynthese
                 {
                     rotation.x += -Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
                     rotation.y += Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
-                    rotation.x = ClampAngle(rotation.x, -60, 60);
+                    rotation.x = Maths.ClampAngle(rotation.x, -60, 60);
 
                     Quaternion localRotation = Quaternion.Euler(rotation.x, rotation.y, 0.0f);
                     firstPersonCamera.transform.rotation = localRotation;
                     transform.rotation = Quaternion.Euler(0, rotation.y, 0);
                 }
             }
-        }
-
-        private float ClampAngle(float angle, float min, float max)
-        {
-            if (angle <= -360F)
-                angle += 360F;
-            if (angle >= 360F)
-                angle -= 360F;
-            return Mathf.Clamp(angle, min, max);
         }
 
         private void OnSwitchPrimaryWeapon()
@@ -227,18 +218,6 @@ namespace ProjetSynthese
 
         private void OnSwitchThirdWeapon()
         {
-            //Take the grenade
-            //currentWeapon = inventory.GetThirdWeapon().GetItem() as Weapon;
-        }
-
-        private void OnSwitchSprintOn()
-        {
-            playerMover.SwitchSprintOn();
-        }
-
-        private void OnSwitchSprintOff()
-        {
-            playerMover.SwitchSprintOff();
         }
 
         private void OnMoveToward(KeyCode key)
@@ -396,9 +375,10 @@ namespace ProjetSynthese
         private void OnChangeViewMode()
         {            
             isFirstPerson = !isFirstPerson;
+
             if (OnChangeMode != null) OnChangeMode(isFirstPerson);
             firstPersonCamera.gameObject.SetActive(isFirstPerson);
-            SetCursor(isFirstPerson, isFirstPerson);
+            SetCursor(!isFirstPerson, isFirstPerson);
         }
 
         private void SetCursor(bool isVisible, bool isLock)

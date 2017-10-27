@@ -5,7 +5,10 @@ using Time = UnityEngine.Time;
 namespace ProjetSynthese
 {
     public delegate void MoveEventHandler();
-
+    
+    //BEN_REVIEW : When your code is just the right size...
+    //             http://i0.kym-cdn.com/photos/images/facebook/001/070/061/d96.jpg
+    
     [AddComponentMenu("Game/Actuator/PlayerMover")]
     public class PlayerMover : GameScript
     {
@@ -47,6 +50,8 @@ namespace ProjetSynthese
             if (OnMove != null) OnMove();
         }
 
+        //BEN_REVIEW : Sugestion. Puisque la rotation est "instantanée", comparativement à "Move"
+        //             pourquoi pas appeler ça "RotateImmediate" ?
         public void Rotate(Vector3 angle)
         {
             if (Input.GetKey(KeyCode.LeftControl) != true)

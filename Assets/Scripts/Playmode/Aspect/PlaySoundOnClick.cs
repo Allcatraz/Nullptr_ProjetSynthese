@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
+    //BEN_REVIEW : Ne semble pas servir nulle part
+    
     [AddComponentMenu("Game/Aspect/PlaySoundOnClick")]
     public class PlaySoundOnClick : GameScript
     {

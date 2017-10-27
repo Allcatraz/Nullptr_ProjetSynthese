@@ -126,6 +126,9 @@ namespace ProjetSynthese
             boostHealEventChannel.OnEventPublished += OnBoostHeal;
 
             transform.position = new Vector3(0, 0, 0);
+            
+            //BEN_CORRECTION : CameraController devrait être reçu en injection.
+            //                 « TagScope(R.S.Tag.MainCamera) CameraController »
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
             inventory.NotifyInventoryChange();
@@ -168,6 +171,9 @@ namespace ProjetSynthese
             {
                 if (!isFirstPerson)
                 {
+                    //BEN_REVIEW : Autant j'aime généralement pas les commentaires qui ne disent rien au final,
+                    //                 autant je pense que cela aurait été nécessaire ici, surtout quand il est question
+                    //                 de calcul mathématiques.
                     Vector3 mousePos = Camera.main.ScreenToWorldPoint(mouseInputSensor.GetPosition());
                     Vector3 distance = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y,
                         mousePos.z - transform.position.z);
@@ -182,6 +188,8 @@ namespace ProjetSynthese
                 }
                 else
                 {
+                    //BEN_CORRECTION : Vous avez une classe pour les entrées de la souris. Pourquoi ne pas l'avoir
+                    //                 utilisé ?
                     rotation.x += -Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
                     rotation.y += Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
                     rotation.x = Maths.ClampAngle(rotation.x, -60, 60);

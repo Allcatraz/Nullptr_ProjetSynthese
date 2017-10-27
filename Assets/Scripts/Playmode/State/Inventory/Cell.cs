@@ -2,6 +2,8 @@
 
 namespace ProjetSynthese
 {
+    //BEN_REVIEW : Anglais ou français. Choisissez votre standard d'équipe s'il vous plait.
+    
     public class ObjectContainedInventory
     {
         private int compteur;

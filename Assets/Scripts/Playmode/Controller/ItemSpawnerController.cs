@@ -12,6 +12,8 @@ namespace ProjetSynthese
 
         public List<Item> Items { get; private set; }
 
+        //BEN_REVIEW : Placer les constantes en haut du fichier.
+        //BEN_CORRECTION : De toute façon, pourquoi c'est pas un "SerializedField" ?
         public const int MaxNumberOfItemsToSpawn = 4;
 
         /// <summary>

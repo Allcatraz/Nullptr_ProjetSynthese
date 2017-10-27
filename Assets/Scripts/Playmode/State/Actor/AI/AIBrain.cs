@@ -2,10 +2,57 @@
 
 namespace ProjetSynthese
 {
-
-
+    //BEN_CORRECTION : J'en ai parlé avec Frédérick. Il connait mes commentaires à ce sujet
+    //
+    //                 Mais pour les autres, voici ce dont nous avons conclus en inspectant l'architecture actuelle et comment
+    //                 l'améliorer pour le futur.
+    //
+    //                 Ce que nous avons ici ressemble énormément à une architecture de type "Blackboard". Dans une 
+    //                 telle architecture, il y a :
+    //
+    //                    1. Un "Blackboard", qui est en fait un dépot d'informations. Ici, c'est "AiBrain".
+    //                    2. Des "Knowlegdge Sources", qui mettent les informations dans le "BlackBoard" à jour.
+    //                       Ici, AiRadar en est un.
+    //                    3. Des "Control Components", qui prennent des décisions en fonction des informations dans le "Blackboard".
+    //                       Ici, ce sont les "States".
+    //
+    //                 Dans cette implémentation, "AiBrain" est un dépôt d'informations variées, telles que les ennemis visibles,
+    //                 les items rencontrés, le pourcentage de points de vie restant et ainsi de suite. Il est ensuite possible de
+    //                 questionner "AiBrain" sur ces informations, tel que "Quel est l'ennemi le plus proche ?" ou "Suis-je sur le
+    //                 point de mourir ?". "AiBrain" ne prends aucune décision : il ne fait que contenir l'information et la transformer
+    //                 en d'autres informations.
+    //                 
+    //                 Viennent ensuite les sources d'information. Il y aura une classe par type d'information, tel que les points de vie,
+    //                 la position des ennemis, la quantité de munitions restantes et ainsi de suite. Elles sont très finement découpées,
+    //                 de sortes à ce que l'ajout d'une source d'information ne consiste qu'en la création d'une nouvelle classe. Encore
+    //                 une fois, elles ne prennent aucune décision : elles ne font que mettre à jour les informations dans "AiBrain".
+    //
+    //                 Enfin vient les composants de contrôle. C'est ici que cela diffère le plus du pattern "Blackboard", car on vient
+    //                 y implanter les "States". Il y a, pour commencer, un "Maitre". Ce dernier sert à décider quel est le "State" actuel
+    //                 en fonction des informations dans "AiBrain". Pour l'instant, cela fait partie de "AiBrain", mais cela sera extrait
+    //                 dans une classe à part dans le futur (ActorAi peut-être...). C'est le premier niveau de prise de décision. 
+    //                 
+    //                 Il y a ensuite les "States". Les "States" aident à prendre des décisions de manière plus précise. Par exemple, si
+    //                 l'AI est dans l'état Attack, ce dernier devra prendre la décision sur l'arme à utiliser (toujours en fonction de
+    //                 l'information contenue dans "AiBrain", telle que le nombre de balles dans le chargeur actuel).
+    //
+    //                 Pour effectuer une action, les "States" parleront directement avec "AiController", qui lui, parlera directement
+    //                 avec le composant dédié à une tâche précise (tel que effectuer le déplacement). Par exemple, si l'AI est dans 
+    //                 l'état "Hunt", et que le "State" décide de se déplacer vers un Item, alors il demandera à "AiController" de se déplacer
+    //                 vers une position précise. "AiController" demandera ensuite à un composant "AiMover" d'effectuer le déplacement 
+    //                 vers ce point.
+    //
+    //                 Le but de cette architecture est double :
+    //                    1. Conserver le maximum possible de ce qui existe déjà.
+    //                    2. Créer quelque chose le plus près possible d'une architecture d'AI « Goal Driven ».
+    //
+    //                 Bref, comme c'est WIP, j'ai moins pénalisé, mais j'ai tout de même enlevé des points pour tout ce qui est vraiment
+    //                 innaceptable.
     public class AIBrain
     {
+        //BEN_CORRECTION : Il y a vraiment beaucoup de problèmes de formattage ici, entre autres un problème d'espacement vertical
+        //                 et de regroupement des éléments.
+        
         #region Parameters
         private const float LifeFleeThresholdFactor = 0.20f;
         private readonly float LifeFleeThreshold;
@@ -27,7 +74,8 @@ namespace ProjetSynthese
         public float HealthRatio { get { return healthRatio; } private set { healthRatio = value; } }
         public float ProtectionRatio { get { return protectionRatio; } private set { protectionRatio = value; } }
        
-
+        //BEN_CORRECTION : Utilise des propriétés automatiques quand c'est possible.
+        //                 https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/auto-implemented-properties
         private bool hasPrimaryWeaponEquipped = false;
         private bool hasHelmetEquipped = false;
         private bool hasVestEquipped = false;

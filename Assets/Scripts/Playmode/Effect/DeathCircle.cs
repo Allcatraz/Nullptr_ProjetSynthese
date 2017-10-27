@@ -2,6 +2,8 @@
 
 namespace ProjetSynthese
 {
+    //BEN_CORRECTION : Ceci n'est pas un Effect, mais il se trouve dans "Effect". Faites vous un dossier.
+    
     [CreateAssetMenu(fileName = "DeathCircle", menuName = "Game/Effect/DeathCircle")]
     public class DeathCircle : ScriptableObject
     {
@@ -19,13 +21,13 @@ namespace ProjetSynthese
         [LabelOverride("DPS")]
         [Tooltip("Le dommage que prend les joueurs par secondes")]
         [SerializeField]
-        private float[] domagePerSecond;
+        private float[] domagePerSecond; //BEN_REVIEW : dammage, pas dommage.
 
         [LabelOverride("Skrink")]
         [Tooltip("Combien de fois plus petit sera le prochain cercle.")]
         [Range(0, 1)]
         [SerializeField]
-        private float[] shrink;
+        private float[] shrink; //BEN_REVIEW : shrinkFactor ?
 
         public int[] WaitTimeInSecond
         {

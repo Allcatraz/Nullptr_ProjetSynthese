@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace ProjetSynthese
 {
+    //BEN_CORRECTION : J'arrête sur cette classe pour ce dossier. Mes commentaires précédents commencent à se répéter.
+    
     public class InventoryController : GameScript
     {
         [Tooltip("La location de la grille d'affichage de l'inventaire du joueur")]

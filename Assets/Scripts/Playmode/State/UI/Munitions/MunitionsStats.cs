@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
+    
+    
     public class MunitionsStats : GameScript
     {
         private Text text;

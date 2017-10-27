@@ -2,6 +2,13 @@
 using UnityEngine;
 namespace ProjetSynthese
 {
+    //BEN_REVIEW : Oh...ça pourrait être intéressant ça.
+    //
+    //             Je m'explique. Au lieu que les states prennent toutes les décisions, certaines décisions pourraient
+    //             être délégués à d'autres classes spécialisées.
+    //
+    //             Celle-ci sert à choisir l'équipement.
+    
     public class EquipmentManager
     {
         private readonly ActorAI Actor;

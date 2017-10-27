@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//BEN_CORRECTION : Namespace ?
+
 public class CameraController : MonoBehaviour
 {
     private GameObject playerToFollow;

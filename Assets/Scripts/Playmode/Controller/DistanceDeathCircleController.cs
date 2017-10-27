@@ -7,6 +7,11 @@ using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
+    //BEN_CORRECTION : Ça m'a pris un bon 2 minutes pour comprendre que c'est relié à l'interface utilisateur!
+    //                 Et ça s'appelle Controlleur....
+    //
+    //                 Pourquoi pas DistanceFromDeathCircleView ?
+    
     public class DistanceDeathCircleController : GameScript
     {
         private RectTransform rectTransform;

@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
+    //BEN_CORRECTION : Ceci n'est pas un Effect, mais il se trouve dans "Effect".
+    //
+    //                 Je pense que ceci est un Actuator (pour le mouvement de la porte) et aussi un aspect (pour
+    //                 déclancher le mouvement de la porte).
+    
     public class OpenDoor : GameScript
     {
         [Tooltip("Le visuel de la porte.")]

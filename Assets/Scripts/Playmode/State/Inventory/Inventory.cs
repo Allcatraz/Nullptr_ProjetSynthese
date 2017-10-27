@@ -25,8 +25,18 @@ namespace ProjetSynthese
         private float currentWeight;
 
         public event OnInventoryChange InventoryChange;
+        //BEN_CORRECTION : Nommage. OnSpawnItem ?
         public event OnSpawnDroppedItem SpawnItem;
 
+        //BEN_CORRECTION : Ceci ne devrait pas être exposé à l'extérieur de la classe.
+        //                 De ce que je constate, ce n'est utilisé que par :
+        //                    1. EquipWeapon, pour afficher quelle est l'arme actuelle 
+        //                    2. InventoryController, pour l'exposer à :
+        //                        2.1 CellObject, qui s'en sert pour obtenir PlayerController, qui s'en sert
+        //                            pour obtenir Inventory
+        //
+        //                 Pourquoi ne pas juste exposer ce dont a besoin ces classes au lieu d'exposer carrément
+        //                 le GameObject ? Exemple, pour "EquipWeapon", juste exposer l'arme actuelle.
         public GameObject Parent { get; set; }
         public List<ObjectContainedInventory> ListInventory { get; private set; }
 
@@ -271,6 +281,11 @@ namespace ProjetSynthese
             }
         }
 
+        //BEN_CORRECTION : Si je me fie au nom de la fonction, cela indique si un item est déjà dans l'inventaire.
+        //
+        //                 Et pourtant, cela fait plus que ce que cela dit. Si l'item est déjà dans l'inventaire,
+        //                 cela en incrémente le nombre.
+        
         private bool IsItemPresentInInventory(ObjectContainedInventory cell)
         {
             bool itemIsPresentInInventory = false;

@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
+    //BEN_REVIEW : Ne semble pas servir nulle part
+    
     [AddComponentMenu("Game/World/Object/Aspect/RandomizedInstanciateOnDeath")]
     public class RandomizedInstanciateOnDeath : GameScript
     {

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
+    [AddComponentMenu("Game/Aspect/ConnectOnClick")]
     public class ConnectOnClick : GameScript
     {
         [Tooltip("Button connect.")]

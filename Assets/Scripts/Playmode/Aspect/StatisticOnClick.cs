@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
+    [AddComponentMenu("Game/Aspect/StatisticOnClick")]
     public class StatisticOnClick : GameScript
     {
         [Tooltip("Bouton pour aller voir les statistiques.")]

@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    public class OptionsOnClick : MonoBehaviour
+    [AddComponentMenu("Game/Aspect/OptionsOnClick")]
+    public class OptionsOnClick : GameScript
     {
         [Tooltip("Button des options.")]
         [SerializeField] private Button button;
@@ -16,7 +17,7 @@ namespace ProjetSynthese
         
         private void OnDisable()
         {
-            button.Events().OnClick += OnClick;
+            button.Events().OnClick -= OnClick;
         }
 
         private void OnClick()

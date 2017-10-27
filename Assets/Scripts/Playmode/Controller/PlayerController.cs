@@ -371,6 +371,7 @@ namespace ProjetSynthese
         private void OnDeath()
         {
             Destroy(gameObject);
+            SetCursor(true, false);
         }
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)

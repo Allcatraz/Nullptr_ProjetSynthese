@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace ProjetSynthese
+﻿namespace ProjetSynthese
 {
     public enum AmmoType
     {

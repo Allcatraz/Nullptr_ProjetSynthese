@@ -16,10 +16,9 @@ namespace ProjetSynthese
             Vector3 direction = Vector3.Normalize(spawnPoint.transform.position - chamber.transform.position);
             Vector3 velocity = direction * bulletSpeed;
             bullet.GetComponent<Rigidbody>().velocity = velocity;
-
-            NetworkServer.Spawn(bullet);
-
             bullet.GetComponent<BulletController>().SetLivingTime(livingTime);
+
+            NetworkServer.Spawn(bullet);            
         }
     }
 }

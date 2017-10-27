@@ -33,7 +33,7 @@ namespace Prototype.NetworkLobby
             isDisplayed = visible;
             foreach (Transform t in transform)
             {
-                t.gameObject.SetActive(isDisplayed);
+                t.gameObject.SetActive(isDisplayed);         
             }
 
             if (panelImage != null)

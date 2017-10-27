@@ -15,8 +15,10 @@ namespace ProjetSynthese
             if (other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Player) || other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
             {
                 Health health = other.gameObject.GetComponentInChildren<Health>();
-                if (health != null)
+                PlayerController playerController = other.gameObject.GetComponentInChildren<PlayerController>();                
+                if (health != null && playerController.isLocalPlayer)
                 {
+                    Item[] protectionItems = playerController.GetInventoryProtection();
                     health.Hit(1);
                 }
             }

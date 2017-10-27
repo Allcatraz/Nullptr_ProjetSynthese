@@ -398,5 +398,10 @@ namespace ProjetSynthese
         {
             health.Heal(boostHealEvent.HealthPoints);
         }
+
+        public Item[] GetInventoryProtection()
+        {
+            return new[] { inventory.GetHelmet().GetItem(), inventory.GetVest().GetItem() };
+        }
     }
 }

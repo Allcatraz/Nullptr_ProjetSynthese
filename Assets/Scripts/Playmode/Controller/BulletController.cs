@@ -28,7 +28,7 @@ namespace ProjetSynthese
                     Item[] protectionItems = playerController.GetInventoryProtection();
                     float helmetProtection = protectionItems[0] == null ? 0 : ((Helmet) protectionItems[0]).ProtectionValue;
                     float vestProtection = protectionItems[1] == null ? 0 : ((Vest) protectionItems[1]).ProtectionValue;
-                    health.Hit(dommage - helmetProtection - vestProtection);
+                    health.Hit(dommage - (dommage * (helmetProtection + vestProtection) / 100));
                 }
             }
             Destroy(gameObject);

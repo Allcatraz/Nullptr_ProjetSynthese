@@ -3,8 +3,8 @@
     public class Helmet : Item
     {
         private const int ProtectionValueLevel1 = 15;
-        private const int ProtectionValueLevel2 = 30;
-        private const int ProtectionValueLevel3 = 50;
+        private const int ProtectionValueLevel2 = 20;
+        private const int ProtectionValueLevel3 = 27;
 
         private static readonly int[] ProtectionValues = { ProtectionValueLevel1, ProtectionValueLevel2, ProtectionValueLevel3 };
 

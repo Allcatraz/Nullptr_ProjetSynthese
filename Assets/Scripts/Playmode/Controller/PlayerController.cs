@@ -401,7 +401,9 @@ namespace ProjetSynthese
 
         public Item[] GetInventoryProtection()
         {
-            return new[] { inventory.GetHelmet().GetItem(), inventory.GetVest().GetItem() };
+            ObjectContainedInventory helmet = inventory.GetHelmet();
+            ObjectContainedInventory vest = inventory.GetVest();
+            return new[] { helmet == null ? null : vest.GetItem() , vest == null ? null : vest.GetItem() };
         }
     }
 }

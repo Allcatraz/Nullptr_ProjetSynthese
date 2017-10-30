@@ -15,6 +15,8 @@ namespace ProjetSynthese
         private const float VestGoalFactor = 1.0f;
         private const float HelmetGoalFactor = 1.0f;
         private const float HealGoalFactor = 1.0f;
+        private const float BoostGoalFactor = 1.0f;
+        private const float BagGoalFactor = 1.0f;
         private const float WeaponGoalFactor = 1.0f;
 
         private const float ErrorGoalTolerance = 0.0001f;
@@ -82,6 +84,11 @@ namespace ProjetSynthese
 
         }
 
+        public float EvaluateItemValue(Item item)
+        {
+            return 0.0f;
+        }
+
         public float EvaluateLootGoal()
         {
             //par type d'item possiblement
@@ -116,9 +123,21 @@ namespace ProjetSynthese
         {
 
             float bagValueLevel = 0.0f;
+           
+            Bag newBag = (Bag)item;
+            float nonEquippedBagValueLevel = newBag.Capacity;
+            nonEquippedBagValueLevel = nonEquippedBagValueLevel / actor.Brain.BagCapacityMaximum;
 
-            //bag = kh *(1-health)/disttobag ???espace restant inventaire
-            //si deja un bag ....
+            float equippedBagValueLevel = actor.Brain.BagCapacityRatio;
+            if (equippedBagValueLevel < nonEquippedBagValueLevel)
+            {
+                bagValueLevel = BagGoalFactor * nonEquippedBagValueLevel / distanceToItem;
+            }
+            else
+            {
+                bagValueLevel = BagGoalFactor * (1 - actor.Brain.BagCapacityRatio) * (nonEquippedBagValueLevel) / distanceToItem;
+            }
+ 
             return bagValueLevel;
         }
 
@@ -126,15 +145,18 @@ namespace ProjetSynthese
         {
 
             float healValueLevel = 0.0f;
-            healValueLevel = HealGoalFactor * (1 - actor.Brain.HealthRatio) * (1 - actor.Brain.HealNumberStorageRatio) / distanceToItem;
+            Heal heal = (Heal)item;
+            float healStrengthValueLevel = heal.Efficacity / actor.Brain.HealEfficiencyMaximum;
+            healValueLevel = HealGoalFactor * (1 - actor.Brain.HealthRatio) * (1 - actor.Brain.HealNumberStorageRatio) * healStrengthValueLevel / distanceToItem;
             return healValueLevel;
         }
         private float EvaluateBoostValue(float distanceToItem, Item item)
         {
 
             float boostValueLevel = 0.0f;
-
-            //??????boost = kh *(1-health)/disttoboost?????
+            Boost boost = (Boost)item;
+            float boostStrengthValueLevel = boost.Efficacity / actor.Brain.BoostEfficiencyMaximum;
+            boostValueLevel = BoostGoalFactor * (1 - actor.Brain.HealthRatio) * (1 - actor.Brain.BoostNumberStorageRatio) * boostStrengthValueLevel / distanceToItem;
             return boostValueLevel;
         }
         private float EvaluateVestValue(float distanceToItem, Item item)

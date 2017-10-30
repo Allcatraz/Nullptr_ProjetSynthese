@@ -272,9 +272,13 @@ namespace ProjetSynthese
                 NotifyInventoryChange();
             }
         }
+        //Pour AI seulement
+        //Calcul la quantité total d'un type objet
+        //ex: toutes les helmet peu importe leur force du helmet
         public int GetItemQuantityInInventory(ItemType itemType, AmmoType ammoType)
         {
             Item item = null;
+            int quantity = 0;
             if (ListInventory != null)
             {
                 foreach (ObjectContainedInventory cell in ListInventory)
@@ -286,22 +290,21 @@ namespace ProjetSynthese
                         {
                             if (itemType != ItemType.AmmoPack)
                             {
-                                return cell.GetCompteur();
+                                quantity += cell.GetCompteur();
                             }
                             else
                             {
                                 AmmoPack ammoPack = item as AmmoPack;
                                 if (ammoType == ammoPack.AmmoType)
                                 {
-                                    return cell.GetCompteur();
+                                    quantity += cell.GetCompteur();
                                 }
                             }
                         }
-                        
                     }
                 }
             }
-            return 0;
+            return quantity;
         }
 
         private bool IsItemPresentInInventory(ObjectContainedInventory cell)

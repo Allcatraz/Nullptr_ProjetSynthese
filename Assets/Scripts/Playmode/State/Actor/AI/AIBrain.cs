@@ -12,9 +12,13 @@ namespace ProjetSynthese
         private float lastLifePointLevel;
         private const float ErrorLifeTolerance = 0.001f;
         private const float MaxUsefulStoredHealItem = 5.0f;
+        private const float MaxUsefulStoredBoostItem = 5.0f;
+        public readonly float HealEfficiencyMaximum = 100.0f;
+        public readonly float BoostEfficiencyMaximum = 35.0f;
+        public readonly float BagCapacityMaximum = 300.0f;
         public readonly float HelmetProtectionMaximum = 50.0f;
         public readonly float VestProtectionMaximum = 50.0f;
-       
+        
 
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
@@ -25,11 +29,15 @@ namespace ProjetSynthese
         #region Knowledge
         private float healthRatio = 1.0f;
         private float healNumberStorageRatio = 0.0f;
+        private float boostNumberStorageRatio = 0.0f;
+        private float bagCapacityRatio = 0.0f;
         private float helmetProtectionRatio = 0.0f;
         private float vestProtectionRatio = 0.0f;
 
         public float HealthRatio { get { return healthRatio; } private set { healthRatio = value; } }
         public float HealNumberStorageRatio { get { return healNumberStorageRatio; } private set { healNumberStorageRatio = value; } }
+        public float BoostNumberStorageRatio { get { return boostNumberStorageRatio; } private set { boostNumberStorageRatio = value; } }
+        public float BagCapacityRatio { get { return bagCapacityRatio; } private set { bagCapacityRatio = value; } }
         public float HelmetProtectionRatio { get { return helmetProtectionRatio; } private set { helmetProtectionRatio = value; } }
         public float VestProtectionRatio { get { return vestProtectionRatio; } private set { vestProtectionRatio = value; } }
 
@@ -37,6 +45,7 @@ namespace ProjetSynthese
         private bool hasPrimaryWeaponEquipped = false;
         private bool hasHelmetEquipped = false;
         private bool hasVestEquipped = false;
+        private bool hasBagEquipped = false;
         public bool HasHelmetEquipped
         {
             get { return hasHelmetEquipped; }
@@ -51,6 +60,11 @@ namespace ProjetSynthese
         {
             get { return hasPrimaryWeaponEquipped; }
             set { hasPrimaryWeaponEquipped = value; }
+        }
+        public bool HasBagEquipped
+        {
+            get { return hasBagEquipped; }
+            set { hasBagEquipped = value; }
         }
 
         private OpponentType currentOpponentType;
@@ -573,9 +587,33 @@ namespace ProjetSynthese
          }
         private void UpdateSupportKnowledge()
         {
-            //bag managment
-            //boost managment
-            //heal management
+
+            //Bag
+            Actor.EquipmentManager.SelectBag();
+            bagCapacityRatio = 0.0f;
+            ObjectContainedInventory cellBag = Actor.AIInventory.GetBag();
+            Bag equippedBag = null;
+         
+            if (cellBag != null)
+            {
+                equippedBag = (Bag)cellBag.GetItem();
+            }
+
+            if (equippedBag != null)
+            {
+                hasBagEquipped = true;
+                bagCapacityRatio += equippedBag.Capacity;
+            }
+            else
+            {
+                hasBagEquipped = false;
+            }
+            bagCapacityRatio /= BagCapacityMaximum;
+
+            //Boost
+            boostNumberStorageRatio = (float)Actor.AIInventory.GetItemQuantityInInventory(ItemType.Boost, AmmoType.None) / MaxUsefulStoredBoostItem;
+            boostNumberStorageRatio = Mathf.Clamp(boostNumberStorageRatio, 0.0f, 1.0f);
+            //Heal
             healthRatio = Actor.AIHealth.HealthPoints/Actor.AIHealth.MaxHealthPoints;
             healNumberStorageRatio =(float) Actor.AIInventory.GetItemQuantityInInventory(ItemType.Heal,AmmoType.None)/MaxUsefulStoredHealItem;
             healNumberStorageRatio = Mathf.Clamp(healNumberStorageRatio, 0.0f, 1.0f);

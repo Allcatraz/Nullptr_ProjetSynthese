@@ -11,7 +11,10 @@ namespace ProjetSynthese
         private readonly float LifeFleeThreshold;
         private float lastLifePointLevel;
         private const float ErrorLifeTolerance = 0.001f;
-        private const float ProtectionMaximum = 100.0f;
+        private const float MaxUsefulStoredHealItem = 5.0f;
+        public readonly float HelmetProtectionMaximum = 50.0f;
+        public readonly float VestProtectionMaximum = 50.0f;
+       
 
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
@@ -21,12 +24,15 @@ namespace ProjetSynthese
 
         #region Knowledge
         private float healthRatio = 1.0f;
-        
-        private float protectionRatio = 0.0f;
-        
+        private float healNumberStorageRatio = 0.0f;
+        private float helmetProtectionRatio = 0.0f;
+        private float vestProtectionRatio = 0.0f;
+
         public float HealthRatio { get { return healthRatio; } private set { healthRatio = value; } }
-        public float ProtectionRatio { get { return protectionRatio; } private set { protectionRatio = value; } }
-       
+        public float HealNumberStorageRatio { get { return healNumberStorageRatio; } private set { healNumberStorageRatio = value; } }
+        public float HelmetProtectionRatio { get { return helmetProtectionRatio; } private set { helmetProtectionRatio = value; } }
+        public float VestProtectionRatio { get { return vestProtectionRatio; } private set { vestProtectionRatio = value; } }
+
 
         private bool hasPrimaryWeaponEquipped = false;
         private bool hasHelmetEquipped = false;
@@ -524,7 +530,12 @@ namespace ProjetSynthese
 
         private void UpdateProtectionKnowledge()
         {
-            protectionRatio = 0.0f;
+            Actor.EquipmentManager.SelectHelmet();
+            Actor.EquipmentManager.SelectVest();
+
+            vestProtectionRatio = 0.0f;
+            helmetProtectionRatio = 0.0f;
+
             ObjectContainedInventory cellHelmet = Actor.AIInventory.GetHelmet();
             ObjectContainedInventory cellVest = Actor.AIInventory.GetVest();
             Vest equippedVest = null;
@@ -537,7 +548,7 @@ namespace ProjetSynthese
             if (equippedVest != null)
             {
                 hasVestEquipped = true;
-                protectionRatio += equippedVest.ProtectionValue;
+                vestProtectionRatio += equippedVest.ProtectionValue;
             }
             else
             {
@@ -551,22 +562,23 @@ namespace ProjetSynthese
             if (equippedHelmet != null)
             {
                 hasHelmetEquipped = true;
-                protectionRatio +=equippedHelmet.ProtectionValue;
+                helmetProtectionRatio +=equippedHelmet.ProtectionValue;
             }
             else
             {
                 hasHelmetEquipped = false;
             }
-
-            protectionRatio /= ProtectionMaximum;
-            //choix best vest et best helmet
-            
-        }
+            helmetProtectionRatio /= HelmetProtectionMaximum;
+            vestProtectionRatio /= VestProtectionMaximum;
+         }
         private void UpdateSupportKnowledge()
         {
             //bag managment
+            //boost managment
             //heal management
             healthRatio = Actor.AIHealth.HealthPoints/Actor.AIHealth.MaxHealthPoints;
+            healNumberStorageRatio =(float) Actor.AIInventory.GetItemQuantityInInventory(ItemType.Heal,AmmoType.None)/MaxUsefulStoredHealItem;
+            healNumberStorageRatio = Mathf.Clamp(healNumberStorageRatio, 0.0f, 1.0f);
         }
     }
 }

@@ -13,9 +13,11 @@ namespace ProjetSynthese
     public class Inventory : GameScript
     {
         [Tooltip("Le type de contenue de l'inventaire.")]
-        [SerializeField] private InventoryOf inventoryOf;
+        [SerializeField]
+        private InventoryOf inventoryOf;
         [Tooltip("Le poid maximum allant être accepter pour l'inventaire.")]
-        [SerializeField] private float maxWeight = 100;
+        [SerializeField]
+        private float maxWeight = 100;
 
         private ObjectContainedInventory primaryWeapon;
         private ObjectContainedInventory secondaryWeapon;
@@ -269,6 +271,37 @@ namespace ProjetSynthese
                 if (!IsItemPresentInInventory(cell)) ListInventory.Add(cell);
                 NotifyInventoryChange();
             }
+        }
+        public int GetItemQuantityInInventory(ItemType itemType, AmmoType ammoType)
+        {
+            Item item = null;
+            if (ListInventory != null)
+            {
+                foreach (ObjectContainedInventory cell in ListInventory)
+                {
+                    if (cell != null)
+                    {
+                        item = cell.GetItem();
+                        if (item != null && item.Type == itemType)
+                        {
+                            if (itemType != ItemType.AmmoPack)
+                            {
+                                return cell.GetCompteur();
+                            }
+                            else
+                            {
+                                AmmoPack ammoPack = item as AmmoPack;
+                                if (ammoType == ammoPack.AmmoType)
+                                {
+                                    return cell.GetCompteur();
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            return 0;
         }
 
         private bool IsItemPresentInInventory(ObjectContainedInventory cell)

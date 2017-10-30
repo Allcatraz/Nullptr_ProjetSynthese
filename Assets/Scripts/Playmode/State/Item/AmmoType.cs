@@ -6,6 +6,7 @@ namespace ProjetSynthese
 {
     public enum AmmoType
     {
+        None,
         Ammo556,
         AmmoWinchester,
         AmmoCalibre12,

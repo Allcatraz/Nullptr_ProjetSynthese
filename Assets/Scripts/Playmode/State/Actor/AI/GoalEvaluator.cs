@@ -40,7 +40,6 @@ namespace ProjetSynthese
             {
                 foreach (ObjectContainedInventory cell in actor.AIInventory.ListInventory)
                 {
-                    //peut-être faut vérfier si cell pas null ici et item pas null
                     item = cell.GetItem();
                     inventoryValues[i] = 0.0f;
                     switch (item.Type)
@@ -89,7 +88,6 @@ namespace ProjetSynthese
                 float distanceToItem = 1.0f;
                 for (int i = 0; i < items.Length; i++)
                 {
-                    //peut-être faut vérfier si cell pas null ici et item pas null
                     item = items[i];
                     foundItemsValues[i] = 0.0f;
                     distanceToItem = Vector3.Distance(actor.transform.position, item.transform.position);
@@ -170,30 +168,64 @@ namespace ProjetSynthese
         }
         public float EvaluateLootGoal()
         {
-            //par type d'item possiblement
+            
             float lootGoalLevel = 0.0f;
-
-            //Loot factor average les evalue des items
-            //peu rajouter facteur de protection helemt et vest
-            //peu rajouter si inventaire plein, bag, boost
-            //effet pas de weapon ou protection base bonus
-
+  
             if (actor.EquipmentManager.IsInventoryEmpty())
             {
                 lootGoalLevel += EmptyInventoryLootGoalLevel;
             }
+            else
+            {
+                Item item= actor.Brain.ItemInPerceptionRange;
+                float distanceToItem = Vector3.Distance(actor.transform.position, item.transform.position);
+                if (actor.Brain.ItemInPerceptionRange != null)
+                {
+                    lootGoalLevel += EvaluateItemValue(item, distanceToItem);
+                }
+            }
 
             return lootGoalLevel;
+        }
+
+        public float EvaluateLootHeapGoal(Item[] items)
+        {
+
+            float lootHeapGoalLevel = 0.0f;
+
+            if (actor.EquipmentManager.IsInventoryEmpty())
+            {
+                lootHeapGoalLevel += EmptyInventoryLootGoalLevel;
+            }
+            else
+            {
+                if (items != null && foundItemsValues.Length > 0)
+                {
+                    EvaluateFoundItemsValues(items);
+                    for (int i = 0; i < foundItemsValues.Length; i++)
+                    {
+                        lootHeapGoalLevel += foundItemsValues[i];
+                    }
+                    lootHeapGoalLevel /= foundItemsValues.Length;
+                }
+            }
+
+            return lootHeapGoalLevel;
         }
         public float EvaluateTrackGoal()
         {
             float trackGoalLevel = 0.0f;
 
             //track = ka *health*weaponstrength(vestpower*helmetPower
-            //ajoute ammunition level
+            //ajoute ammunition level 
             if (!actor.Brain.HasPrimaryWeaponEquipped)
             {
                 trackGoalLevel += NoWeaponTrackGoalLevel;
+            }
+            else
+            {
+                //Faudra rajouter weapon strength
+                trackGoalLevel += 0.7f;
             }
             return trackGoalLevel;
         }

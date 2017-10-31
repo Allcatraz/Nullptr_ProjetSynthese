@@ -82,14 +82,92 @@ namespace ProjetSynthese
 
         private void EvaluateFoundItemsValues(Item[] items)
         {
-
+            if (items != null)
+            {
+                Item item = null;
+                foundItemsValues = new float[items.Length];
+                float distanceToItem = 1.0f;
+                for (int i = 0; i < items.Length; i++)
+                {
+                    //peut-être faut vérfier si cell pas null ici et item pas null
+                    item = items[i];
+                    foundItemsValues[i] = 0.0f;
+                    distanceToItem = Vector3.Distance(actor.transform.position, item.transform.position);
+                    switch (item.Type)
+                    {
+                        case ItemType.M16A4:
+                        case ItemType.AWM:
+                        case ItemType.Saiga12:
+                        case ItemType.M1911:
+                            foundItemsValues[i] = EvaluateWeaponValue(distanceToItem, item);
+                            break;
+                        case ItemType.Grenade:
+                            foundItemsValues[i] = EvaluateGrenadeValue(distanceToItem, item);
+                            break;
+                        case ItemType.Helmet:
+                            foundItemsValues[i] = EvaluateHelmetValue(distanceToItem, item);
+                            break;
+                        case ItemType.Vest:
+                            foundItemsValues[i] = EvaluateVestValue(distanceToItem, item);
+                            break;
+                        case ItemType.Bag:
+                            foundItemsValues[i] = EvaluateBagValue(distanceToItem, item);
+                            break;
+                        case ItemType.Heal:
+                            foundItemsValues[i] = EvaluateHealValue(distanceToItem, item);
+                            break;
+                        case ItemType.Boost:
+                            foundItemsValues[i] = EvaluateBoostValue(distanceToItem, item);
+                            break;
+                        case ItemType.AmmoPack:
+                            foundItemsValues[i] = EvaluateAmmoPackValue(distanceToItem, item);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
-
-        public float EvaluateItemValue(Item item)
+        public float EvaluateItemValue(Item item, float distanceToItem)
         {
-            return 0.0f;
+            float itemValue = 0.0f;
+            if (item != null && distanceToItem >= 0.0f)
+            {
+                switch (item.Type)
+                {
+                    case ItemType.M16A4:
+                    case ItemType.AWM:
+                    case ItemType.Saiga12:
+                    case ItemType.M1911:
+                        itemValue = EvaluateWeaponValue(distanceToItem, item);
+                        break;
+                    case ItemType.Grenade:
+                        itemValue = EvaluateGrenadeValue(distanceToItem, item);
+                        break;
+                    case ItemType.Helmet:
+                        itemValue = EvaluateHelmetValue(distanceToItem, item);
+                        break;
+                    case ItemType.Vest:
+                        itemValue = EvaluateVestValue(distanceToItem, item);
+                        break;
+                    case ItemType.Bag:
+                        itemValue = EvaluateBagValue(distanceToItem, item);
+                        break;
+                    case ItemType.Heal:
+                        itemValue = EvaluateHealValue(distanceToItem, item);
+                        break;
+                    case ItemType.Boost:
+                        itemValue = EvaluateBoostValue(distanceToItem, item);
+                        break;
+                    case ItemType.AmmoPack:
+                        itemValue = EvaluateAmmoPackValue(distanceToItem, item);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return itemValue;
         }
-
         public float EvaluateLootGoal()
         {
             //par type d'item possiblement
@@ -124,7 +202,7 @@ namespace ProjetSynthese
         {
 
             float bagValueLevel = 0.0f;
-           
+
             Bag newBag = (Bag)item;
             float nonEquippedBagValueLevel = newBag.Capacity;
             nonEquippedBagValueLevel = nonEquippedBagValueLevel / actor.Brain.BagCapacityMaximum;
@@ -138,7 +216,7 @@ namespace ProjetSynthese
             {
                 bagValueLevel = BagGoalFactor * (1 - actor.Brain.BagCapacityRatio) * (nonEquippedBagValueLevel) / distanceToItem;
             }
- 
+
             return bagValueLevel;
         }
 
@@ -185,25 +263,25 @@ namespace ProjetSynthese
         }
         private float EvaluateHelmetValue(float distanceToItem, Item item)
         {
-            
+
             float helmetValueLevel = 0.0f;
 
             Helmet newHelmet = (Helmet)item;
             float nonEquippedHelmetValueLevel = newHelmet.ProtectionValue;
-            nonEquippedHelmetValueLevel = nonEquippedHelmetValueLevel /actor.Brain.HelmetProtectionMaximum;
+            nonEquippedHelmetValueLevel = nonEquippedHelmetValueLevel / actor.Brain.HelmetProtectionMaximum;
 
             float equippedHelmetValueLevel = actor.Brain.HelmetProtectionRatio;
 
-            
+
             if (equippedHelmetValueLevel < nonEquippedHelmetValueLevel)
             {
                 helmetValueLevel = HelmetGoalFactor * nonEquippedHelmetValueLevel / distanceToItem;
             }
             else
             {
-                helmetValueLevel = HelmetGoalFactor * (1 - actor.Brain.HelmetProtectionRatio)*(nonEquippedHelmetValueLevel) / distanceToItem;
+                helmetValueLevel = HelmetGoalFactor * (1 - actor.Brain.HelmetProtectionRatio) * (nonEquippedHelmetValueLevel) / distanceToItem;
             }
-            
+
             return helmetValueLevel;
         }
         private float EvaluateGrenadeValue(float distanceToItem, Item item)
@@ -235,8 +313,6 @@ namespace ProjetSynthese
             //type weapon
             return weaponValueLevel;
         }
-        //fonction calcul weaponStrength
-        //TODO
     }
 }
 

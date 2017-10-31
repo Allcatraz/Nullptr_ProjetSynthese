@@ -19,17 +19,22 @@ namespace ProjetSynthese
             spawnItemDropEventChannel.OnEventPublished += SpawnItemDropEventChannel_OnEventPublished;
         }
 
-        private void SpawnItemDropEventChannel_OnEventPublished(SpawnItemDropEvent newEvent)
+        private void OnDestroy()
         {
-            if (newEvent.ItemToSpawn.GetItem() != null && newEvent.ItemToSpawn.GetItem().Player != null)
-            {
-                SpawnItem(newEvent.ItemToSpawn.GetItem().gameObject, newEvent.ItemToSpawn.GetItem().Player.transform);
-            }  
+            spawnItemDropEventChannel.OnEventPublished -= SpawnItemDropEventChannel_OnEventPublished;
         }
 
         private void InjectEventSensor([EventChannelScope] SpawnItemDropEventChannel spawnItemDropEventChannel)
         {
             this.spawnItemDropEventChannel = spawnItemDropEventChannel;
+        }
+
+        private void SpawnItemDropEventChannel_OnEventPublished(SpawnItemDropEvent newEvent)
+        {
+            if (newEvent.ItemToSpawn.GetItem() != null && newEvent.ItemToSpawn.GetItem().Player != null)
+            {
+                SpawnItem(newEvent.ItemToSpawn.GetItem().gameObject, newEvent.ItemToSpawn.GetItem().Player.transform);
+            }
         }
 
         private void SpawnItem(GameObject itemToSpawn, Transform player)

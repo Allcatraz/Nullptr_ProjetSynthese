@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
-
 
 namespace ProjetSynthese
 {
@@ -13,13 +11,5 @@ namespace ProjetSynthese
 
             return gameObject;
         }
-
-        [Command]
-        public static void CmdSpawnObject(GameObject obj)
-        {
-            NetworkServer.Spawn(obj);
-        }
     }
 }
-
-

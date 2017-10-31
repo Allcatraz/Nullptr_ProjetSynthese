@@ -14,8 +14,8 @@ namespace ProjetSynthese
         private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawnEquipement);
         private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawnWeapon);
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
-        {           
+        public static void CreateItem(List<GameObject> itemList, Vector3 spawnPoint, System.Random random)
+        {
             int item = random.Next(0, 101);
 
             if (item >= Range1.x && item < Range1.y)
@@ -31,7 +31,5 @@ namespace ProjetSynthese
                 WeaponFactory.CreateItem(itemList, spawnPoint, random);
             }
         }
-
     }
 }
-

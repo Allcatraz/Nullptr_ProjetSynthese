@@ -15,7 +15,7 @@ namespace ProjetSynthese
 
         public static GameObject HelmetPrefab { get; set; }
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
+        public static void CreateItem(List<GameObject> itemList, Vector3 spawnPoint, System.Random random)
         {
             GameObject gameObject = SpawnObject(spawnPoint, HelmetPrefab);
 
@@ -36,7 +36,7 @@ namespace ProjetSynthese
                 helmet.Level = 3;
             }
 
-            CmdSpawnObject(gameObject);
+            itemList.Add(gameObject);
         }
     }
 

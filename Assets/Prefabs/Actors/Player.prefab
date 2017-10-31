@@ -426,9 +426,11 @@ GameObject:
   - component: {fileID: 114638758293720702}
   - component: {fileID: 114301871804280328}
   - component: {fileID: 114981566213520182}
+  - component: {fileID: 114091543535803372}
   - component: {fileID: 54390617244429252}
   - component: {fileID: 114884844836443650}
   - component: {fileID: 114670875352537290}
+  - component: {fileID: 114007633270102854}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -1297,6 +1299,37 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114007633270102854
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509576154526796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14a8e240f085f04b86a5faa8d213b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AIprefab: {fileID: 1893845116203462, guid: 799316fe2eaadff4abc0701c3c7f883f, type: 2}
+--- !u!114 &114091543535803372
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509576154526796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1267208747, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Target: {fileID: 4236748107255540}
+  m_ChildIndex: 0
+  m_SendInterval: 0.033333335
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_MovementThreshold: 0.001
+  m_InterpolateRotation: 0.5
+  m_InterpolateMovement: 0.5
 --- !u!114 &114093056321587282
 MonoBehaviour:
   m_ObjectHideFlags: 1

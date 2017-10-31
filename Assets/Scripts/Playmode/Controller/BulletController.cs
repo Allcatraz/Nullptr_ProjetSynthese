@@ -3,7 +3,7 @@ using Harmony;
 
 namespace ProjetSynthese
 {
-    public class BulletController : NetworkGameScript
+    public class BulletController : GameScript
     {
         private float dommage = 0;
 
@@ -22,8 +22,11 @@ namespace ProjetSynthese
             if (other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Player) || other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
             {
                 Health health = other.gameObject.GetComponentInChildren<Health>();
-                PlayerController playerController = other.gameObject.GetComponentInChildren<PlayerController>();                
-                if (health != null && playerController.isLocalPlayer)
+                
+                //Check for AI
+                PlayerController playerController = other.gameObject.GetComponentInChildren<PlayerController>();
+
+                if (health != null)
                 {
                     Item[] protectionItems = playerController.GetInventoryProtection();
                     float helmetProtection = protectionItems[0] == null ? 0 : ((Helmet) protectionItems[0]).ProtectionValue;

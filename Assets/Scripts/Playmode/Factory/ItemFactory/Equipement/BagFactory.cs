@@ -15,7 +15,7 @@ namespace ProjetSynthese
 
         public static GameObject BagPrefab { get; set; }
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
+        public static void CreateItem(List<GameObject> itemList, Vector3 spawnPoint, System.Random random)
         {
             GameObject gameObject = SpawnObject(spawnPoint, BagPrefab);
 
@@ -36,8 +36,7 @@ namespace ProjetSynthese
                 bag.Level = 3;
             }
 
-            CmdSpawnObject(gameObject);
+            itemList.Add(gameObject);
         }
     }
-
 }

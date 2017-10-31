@@ -26,7 +26,6 @@
         public override void Use()
         {
             Player.GetComponentInChildren<Health>().Heal(Efficacity);
-            // TODO : Enlever un health dans l'inventaire
         }
 
         public override int GetWeight()

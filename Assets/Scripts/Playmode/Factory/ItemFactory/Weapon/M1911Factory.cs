@@ -7,7 +7,7 @@ namespace ProjetSynthese
     {
         public static GameObject M1911Prefab { get; set; }
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
+        public static void CreateItem(List<GameObject> itemList, Vector3 spawnPoint, System.Random random)
         {
             SpawnWeapon(itemList, spawnPoint, random, M1911Prefab, AmmoType.Ammo45acp);
         }

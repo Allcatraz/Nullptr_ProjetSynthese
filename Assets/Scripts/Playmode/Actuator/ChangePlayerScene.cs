@@ -3,6 +3,7 @@ using Harmony;
 using Tiled2Unity;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
@@ -64,7 +65,8 @@ namespace ProjetSynthese
                     activityStack.StopCurrentMenu();
                     transform.position = worldPos;
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    SceneManager.MoveGameObjectToScene(gameObject.GetRoot(), SceneManager.GetSceneByName(R.S.Scene.GameFragment));
+                    SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByName(R.S.Scene.GameFragment));
+
                     Destroy(this);
                 }
             }

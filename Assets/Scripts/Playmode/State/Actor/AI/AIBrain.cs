@@ -13,6 +13,8 @@ namespace ProjetSynthese
         private const float ErrorLifeTolerance = 0.001f;
         private const float MaxUsefulStoredHealItem = 5.0f;
         private const float MaxUsefulStoredBoostItem = 5.0f;
+        private const float MaxUsefulStoredAmmoPackItem = 5.0f;
+        private const int NumberOfAmmoPackType = 4;
         public readonly float HealEfficiencyMaximum = 100.0f;
         public readonly float BoostEfficiencyMaximum = 35.0f;
         public readonly float BagCapacityMaximum = 300.0f;
@@ -30,6 +32,7 @@ namespace ProjetSynthese
         private float healthRatio = 1.0f;
         private float healNumberStorageRatio = 0.0f;
         private float boostNumberStorageRatio = 0.0f;
+        private float[] ammoPackNumberStorageRatio = new float[NumberOfAmmoPackType];
         private float bagCapacityRatio = 0.0f;
         private float helmetProtectionRatio = 0.0f;
         private float vestProtectionRatio = 0.0f;
@@ -617,6 +620,22 @@ namespace ProjetSynthese
             healthRatio = Actor.AIHealth.HealthPoints/Actor.AIHealth.MaxHealthPoints;
             healNumberStorageRatio =(float) Actor.AIInventory.GetItemQuantityInInventory(ItemType.Heal,AmmoType.None)/MaxUsefulStoredHealItem;
             healNumberStorageRatio = Mathf.Clamp(healNumberStorageRatio, 0.0f, 1.0f);
+
+            //Ammopack
+            for (int i = 0; i < NumberOfAmmoPackType; i++)
+            {
+                ammoPackNumberStorageRatio[i] =  (float)Actor.AIInventory.GetItemQuantityInInventory(ItemType.AmmoPack, (AmmoType)i) / MaxUsefulStoredAmmoPackItem;
+                ammoPackNumberStorageRatio[i] =   Mathf.Clamp(ammoPackNumberStorageRatio[i], 0.0f, 1.0f);
+            }
+        }
+
+        public float GetAmmoPackStorageRatio(AmmoType ammoType)
+        {
+            return ammoPackNumberStorageRatio[(int)ammoType];
+        }
+        public void SetAmmoPackStorageRatio(AmmoType ammoType,float ammoPackStorageRatio)
+        {
+            ammoPackNumberStorageRatio[(int)ammoType] = ammoPackStorageRatio;
         }
     }
 }

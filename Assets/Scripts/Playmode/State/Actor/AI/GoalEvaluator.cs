@@ -18,6 +18,7 @@ namespace ProjetSynthese
         private const float BoostGoalFactor = 1.0f;
         private const float BagGoalFactor = 1.0f;
         private const float WeaponGoalFactor = 1.0f;
+        private const float AmmoPackGoalFactor = 1.0f;
 
         private const float ErrorGoalTolerance = 0.0001f;
 
@@ -218,8 +219,9 @@ namespace ProjetSynthese
         {
 
             float ammoPackValueLevel = 0.0f;
-
-            //Ammo = kt ammo number deja la???*(1-weponstrengthassociépower)*(1-health)*(1-vestpower)/disttoammopack
+            //si on a la weapon augmente value selon force weapon???
+            AmmoPack ammoPack = (AmmoPack)item;
+            ammoPackValueLevel = AmmoPackGoalFactor * (1 - actor.Brain.GetAmmoPackStorageRatio(ammoPack.AmmoType)) / distanceToItem;
             return ammoPackValueLevel;
         }
 

@@ -51,15 +51,14 @@ namespace ProjetSynthese
         }
 
         private void InjectCellObject([EntityScope] Text textName,
-                                    [EntityScope] Button button)
+                                    [EntityScope] Button button,
+                                    [EntityScope] Image image)
         {
             this.button = button;
             TextName = textName;
-            // Avec unity editor
-            button.onClick.AddListener(OnClickButton);
+            ImageBackground = image;
             EquipAt = EquipWeaponAt.Primary;
-            //Lorsqu'on va avoir des images
-            //this.ImageBackground = imageBackground;
+            button.onClick.AddListener(OnClickButton);
         }
 
         public void InstantiateCellObjectFromCell(ObjectContainedInventory cell)
@@ -315,7 +314,18 @@ namespace ProjetSynthese
 
         private void SetImageBackground()
         {
-            
+            ItemSpriteSelector itemSpriteSelector = Control.GetComponent<ItemSpriteSelector>();
+            ItemType type = CellContained.GetItem().Type;
+            Sprite newSprite = null;
+            if (type == ItemType.AmmoPack)
+            {
+                newSprite = itemSpriteSelector.GetSpriteForType(type, 0,(CellContained.GetItem() as AmmoPack).AmmoType, true);
+            }
+            else
+            {
+                newSprite = itemSpriteSelector.GetSpriteForType(type, CellContained.GetItem().Level);
+            }
+            ImageBackground.sprite = newSprite;
         }
 
         private void SetTextName(string name)

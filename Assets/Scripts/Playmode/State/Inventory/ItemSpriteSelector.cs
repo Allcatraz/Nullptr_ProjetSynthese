@@ -55,7 +55,7 @@ namespace ProjetSynthese
         [Tooltip("Le sprite représentant le type d'item Grenade.")]
         [SerializeField] private Sprite grenade;
 
-        public Sprite GetSpriteForType(ItemType itemType, AmmoType ammoType = AmmoType.Ammo45acp, bool isAmmo = false, int level = 0)
+        public Sprite GetSpriteForType(ItemType itemType, int level = 0, AmmoType ammoType = AmmoType.Ammo45acp, bool isAmmo = false)
         {
             if (isAmmo)
             {

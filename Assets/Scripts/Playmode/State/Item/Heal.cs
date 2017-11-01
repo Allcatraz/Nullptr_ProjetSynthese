@@ -2,7 +2,6 @@
 {
     public class Heal : Usable
     {
-
         private const int Level1Efficacity = 5;
         private const int Level2Efficacity = 75;
         private const int Level3Efficacity = 100;
@@ -34,4 +33,3 @@
         }
     }
 }
-

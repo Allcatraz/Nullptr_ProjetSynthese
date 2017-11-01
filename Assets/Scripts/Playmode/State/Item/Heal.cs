@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace ProjetSynthese
+﻿namespace ProjetSynthese
 {
     public class Heal : Usable
     {
-
         private const int Level1Efficacity = 5;
         private const int Level2Efficacity = 75;
         private const int Level3Efficacity = 100;
@@ -30,7 +25,6 @@ namespace ProjetSynthese
         public override void Use()
         {
             Player.GetComponentInChildren<Health>().Heal(Efficacity);
-            // TODO : Enlever un health dans l'inventaire
         }
 
         public override int GetWeight()
@@ -39,4 +33,3 @@ namespace ProjetSynthese
         }
     }
 }
-

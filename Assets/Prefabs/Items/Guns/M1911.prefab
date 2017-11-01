@@ -555,3 +555,4 @@ MonoBehaviour:
   bulletSpeed: 50
   bulletLivingTime: 2
   magazineMaxAmount: 7
+  dommage: 35

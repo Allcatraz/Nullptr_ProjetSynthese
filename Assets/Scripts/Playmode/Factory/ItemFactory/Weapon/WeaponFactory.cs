@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -16,7 +15,7 @@ namespace ProjetSynthese
         private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawnSAIGA12);
         private static Vector2 Range4 = new Vector2(Range3.y, Range3.y + PercentChanceSpawnM1911);
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random)
+        public static void CreateItem(List<GameObject> itemList, Vector3 spawnPoint, System.Random random)
         {
             int item = random.Next(0, 101);
 
@@ -39,5 +38,3 @@ namespace ProjetSynthese
         }
     }
 }
-
-

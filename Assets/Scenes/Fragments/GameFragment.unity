@@ -400,7 +400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 333994200}
   m_Layer: 12
-  m_Name: Doors02
+  m_Name: Door02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -503,7 +503,7 @@ GameObject:
   m_Component:
   - component: {fileID: 541244860}
   m_Layer: 12
-  m_Name: Doors03
+  m_Name: Door03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -917,8 +917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualTransform: {fileID: 1111921893}
-  openedAngle: 100
-  closedAngle: -100
+  angle: 100
 --- !u!1 &888161433
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,8 +1033,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualTransform: {fileID: 1948570230}
-  openedAngle: 100
-  closedAngle: -100
+  angle: 100
 --- !u!65 &916443507
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1574,8 +1572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualTransform: {fileID: 628424661}
-  openedAngle: 100
-  closedAngle: -100
+  angle: 100
 --- !u!65 &1292110510
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1790,8 +1787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualTransform: {fileID: 748901026}
-  openedAngle: 100
-  closedAngle: -100
+  angle: 100
 --- !u!65 &1393343011
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1976,7 +1972,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1511930871}
   m_LocalRotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -1.0046767, y: -0.0000078082085, z: -8.0338}
+  m_LocalPosition: {x: -0.98, y: -0.0000078082085, z: -8.03}
   m_LocalScale: {x: -100, y: -100, z: -100}
   m_Children: []
   m_Father: {fileID: 289128224}

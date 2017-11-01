@@ -1,20 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProjetSynthese
 {
     public class WeaponFactoryMaster : ItemFactoryMaster
     {
-        protected static void SpawnWeapon(List<Item> itemList, Vector3 spawnPoint, System.Random random, GameObject weaponPrefab, AmmoType ammoType)
+        protected static void SpawnWeapon(List<GameObject> itemList, Vector3 spawnPoint, System.Random random, GameObject weaponPrefab, AmmoType ammoType)
         {
             GameObject gameObject = SpawnObject(spawnPoint, weaponPrefab);
-            Weapon w = gameObject.GetComponent<Weapon>();
-            itemList.Add(w);
+            itemList.Add(gameObject);
             AmmoFactory.CreateItem(itemList, spawnPoint, random, ammoType);
-            CmdSpawnObject(gameObject);
         }
     }
 }
-
-

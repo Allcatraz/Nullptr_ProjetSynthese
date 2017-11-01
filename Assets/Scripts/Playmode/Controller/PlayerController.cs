@@ -14,15 +14,24 @@ namespace ProjetSynthese
     public class PlayerController : NetworkGameScript
     {
         [Tooltip("Le menu de l'inventaire du joueur.")]
-        [SerializeField] private Menu inventoryMenu;
+        [SerializeField]
+        private Menu inventoryMenu;
+
         [Tooltip("Le menu de la map du joueur.")]
-        [SerializeField] private Menu mapMenu;
+        [SerializeField]
+        private Menu mapMenu;
+
         [Tooltip("Le transform contenant les armes du joueur.")]
-        [SerializeField] private Transform weaponHolderTransform;
+        [SerializeField]
+        private Transform weaponHolderTransform;
+
         [Tooltip("Le transform contenant les items du joueur.")]
-        [SerializeField] private Transform inventoryHolderTransform;
+        [SerializeField]
+        private Transform inventoryHolderTransform;
+
         [Tooltip("La camera en première personne du joueur")]
-        [SerializeField] private Camera firstPersonCamera;
+        [SerializeField]
+        private Camera firstPersonCamera;
 
         private ActivityStack activityStack;
         private Health health;
@@ -36,6 +45,7 @@ namespace ProjetSynthese
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
         private BoostHealEventChannel boostHealEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
+        private NetworkTransformChild networkTransformChild;
 
         private Vector2 rotation = Vector2.zero;
         private bool isInventoryOpen = false;
@@ -81,6 +91,7 @@ namespace ProjetSynthese
                                             [EntityScope] ItemSensor itemSensor,
                                             [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater,
                                             [GameObjectScope] NetworkIdentity networkIdentity,
+                                            [GameObjectScope] NetworkTransformChild networkTransformChild,
                                             [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel,
                                             [EventChannelScope] BoostHealEventChannel boostHealEventChannel)
         {
@@ -95,16 +106,17 @@ namespace ProjetSynthese
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
             this.boostHealEventChannel = boostHealEventChannel;
             this.soldierAnimatorUpdater = soldierAnimatorUpdater;
+            this.networkTransformChild = networkTransformChild;
         }
 
         private void Start()
         {
-            InjectDependencies("InjectPlayerController");
-
             if (!isLocalPlayer)
             {
                 return;
             }
+
+            InjectDependencies("InjectPlayerController");
 
             keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
@@ -125,7 +137,7 @@ namespace ProjetSynthese
             deathCircleHurtEventChannel.OnEventPublished += OnPlayerOutDeathCircle;
             boostHealEventChannel.OnEventPublished += OnBoostHeal;
 
-            transform.position = new Vector3(0, 0, 0);
+            transform.position = Vector3.zero;
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
             inventory.NotifyInventoryChange();
@@ -164,6 +176,7 @@ namespace ProjetSynthese
             {
                 return;
             }
+
             if (canCameraMove)
             {
                 if (!isFirstPerson)
@@ -215,10 +228,15 @@ namespace ProjetSynthese
         {
             if ((object)currentWeapon != null)
             {
+                networkTransformChild.target = currentWeapon.transform;
+
                 currentWeapon.gameObject.SetActive(isActive);
+                CmdSetActive(currentWeapon.gameObject, isActive);
+
                 currentWeapon.transform.position = weaponHolderTransform.position;
                 currentWeapon.transform.rotation = weaponHolderTransform.rotation;
                 currentWeapon.transform.Rotate(90, 0, 0);
+                CmdSetTransform(currentWeapon.GameObject, weaponHolderTransform.position, weaponHolderTransform.rotation, currentWeapon.transform.localScale);
             }
         }
 
@@ -371,6 +389,7 @@ namespace ProjetSynthese
         private void OnDeath()
         {
             Destroy(gameObject);
+            SetCursor(true, false);
         }
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
@@ -396,6 +415,13 @@ namespace ProjetSynthese
         private void OnBoostHeal(BoostHealEvent boostHealEvent)
         {
             health.Heal(boostHealEvent.HealthPoints);
+        }
+
+        public Item[] GetInventoryProtection()
+        {
+            ObjectContainedInventory helmet = inventory.GetHelmet();
+            ObjectContainedInventory vest = inventory.GetVest();
+            return new[] { helmet == null ? null : vest.GetItem() , vest == null ? null : vest.GetItem() };
         }
     }
 }

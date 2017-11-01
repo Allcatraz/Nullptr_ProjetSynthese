@@ -523,6 +523,7 @@ MonoBehaviour:
   bulletSpeed: 50
   bulletLivingTime: 2
   magazineMaxAmount: 5
+  dommage: 22
 --- !u!114 &114237370751285876
 MonoBehaviour:
   m_ObjectHideFlags: 1

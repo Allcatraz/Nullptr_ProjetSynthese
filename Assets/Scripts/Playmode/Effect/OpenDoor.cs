@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Harmony;
 using UnityEngine;
 
@@ -9,9 +10,7 @@ namespace ProjetSynthese
         [Tooltip("Le visuel de la porte.")]
         [SerializeField] private Transform visualTransform;
         [Tooltip("Nombre de degrés pour ouvrir la porte.")]
-        [SerializeField] private float openedAngle;
-        [Tooltip("Nombre de degrés pour fermer la porte.")]
-        [SerializeField] private float closedAngle;
+        [SerializeField] private float angle;
 
         private PlayerUseEventChannel playerUseEventChannel;
 
@@ -30,6 +29,10 @@ namespace ProjetSynthese
             InjectDependencies("InjectOpenDoor");
             playerUseEventChannel.OnEventPublished += OnPlayerUse;
             startAngle = visualTransform.localEulerAngles.y;
+            if (startAngle == 0)
+            {
+                startAngle = 360;
+            }
         }
 
         private void OnTriggerEnter(Collider other)
@@ -45,13 +48,13 @@ namespace ProjetSynthese
         private void OnPlayerUse(PlayerUseEvent playerUseEvent)
         {
             if (isPlayerInRange)
-            {  
-                isDoorOpen = !isDoorOpen;
+            {                  
                 if (isCoroutineRunning)
                 {
                     StopCoroutine("ComputeOpenDoor");
                 }
                 StartCoroutine("ComputeOpenDoor");
+                isDoorOpen = !isDoorOpen;
             }
         }
 
@@ -62,10 +65,14 @@ namespace ProjetSynthese
                 isCoroutineRunning = !isCoroutineRunning;
             }
 
-            float currentangle = visualTransform.localEulerAngles.y; 
-            if (isDoorOpen)
+            float currentangle = visualTransform.localEulerAngles.y;
+            if (Math.Abs(currentangle) < 0.1f)
             {
-                float angleToDo = Mathf.Clamp(Mathf.Abs(openedAngle - (startAngle - currentangle)), closedAngle, openedAngle);
+                currentangle = 360;
+            }
+            if (!isDoorOpen)
+            {
+                float angleToDo = Mathf.Clamp(angle - (startAngle - currentangle), 0, angle);
                 for (float i = 0; i <= angleToDo; i+=2f)
                 {
                     visualTransform.localEulerAngles = new Vector3(visualTransform.transform.localEulerAngles.x, currentangle - i, visualTransform.transform.localEulerAngles.z);
@@ -76,7 +83,7 @@ namespace ProjetSynthese
             }
             else
             {
-                float angleToDo = Mathf.Clamp(startAngle - currentangle, closedAngle, openedAngle);
+                float angleToDo = Mathf.Clamp(startAngle - currentangle, 0, angle);
                 for (float i = 0; i <= angleToDo; i+=2f)
                 {
                     visualTransform.localEulerAngles = new Vector3(visualTransform.transform.localEulerAngles.x, currentangle + i, visualTransform.transform.localEulerAngles.z);

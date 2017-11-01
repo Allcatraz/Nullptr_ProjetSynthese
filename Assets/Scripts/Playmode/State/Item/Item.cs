@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
@@ -8,6 +9,7 @@ namespace ProjetSynthese
         [SerializeField]
         private ItemType type;
 
+        [SyncVar]
         private GameObject player;
         public GameObject Player
         {
@@ -18,7 +20,9 @@ namespace ProjetSynthese
             }
         }
 
-        public int Level { get; set; }
+        [SyncVar]
+        private int level;
+        public int Level { get { return level; } set { level = value; } }
 
         public ItemType Type
         {
@@ -31,6 +35,7 @@ namespace ProjetSynthese
                 type = value;
             }
         }
+
         public abstract int GetWeight();
 
         public static bool operator ==(Item item1, Item item2)
@@ -46,7 +51,7 @@ namespace ProjetSynthese
             }
             if ((item1 as AmmoPack) && item2 as AmmoPack)
             {
-                return (item1 as AmmoPack).AmmoType == (item2 as AmmoPack).AmmoType;
+                return ((AmmoPack)item1).AmmoType == ((AmmoPack)item2).AmmoType;
             }
             return item1.type == item2.type;
         }

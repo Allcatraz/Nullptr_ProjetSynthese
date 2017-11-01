@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -16,14 +15,13 @@ namespace ProjetSynthese
 
         public static GameObject AmmoPackPrefab { get; set; }
 
-        public static void CreateItem(List<Item> itemList, Vector3 spawnPoint, System.Random random, AmmoType ammoType)
+        public static void CreateItem(List<GameObject> itemList, Vector3 spawnPoint, System.Random random, AmmoType ammoType)
         {
             GameObject gameObject = SpawnObject(spawnPoint, AmmoPackPrefab);
 
             AmmoPack ammoPack = gameObject.GetComponent<AmmoPack>();
             ammoPack.AmmoType = ammoType;
-            itemList.Add(ammoPack);
-
+            
             int item = random.Next(0, 101);
 
             if (item >= Range1.x && item < Range1.y)
@@ -38,9 +36,8 @@ namespace ProjetSynthese
             {
                 ammoPack.NumberOfAmmo = 90;
             }
-            CmdSpawnObject(gameObject);
+           
+            itemList.Add(gameObject);
         }
     }
 }
-
-

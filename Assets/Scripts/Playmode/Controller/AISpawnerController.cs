@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
-    public class AISpawnerController : MonoBehaviour
+    public class AISpawnerController : NetworkGameScript
     {
         [Tooltip("AI prefab contenant les combatants AI")]
         [SerializeField]
@@ -38,8 +36,10 @@ namespace ProjetSynthese
             for (int i = 0; i < AINumber; i++)
             {
                 AIprefab.GetComponent<NetworkStartPosition>().transform.position = position[i];
-                AIFactory.CmdSpawnAI(AIprefab);
+                CmdSpawnObject(AIFactory.CmdSpawnAI(AIprefab));
             }
+
+            Destroy(this);
         }
     }
 }

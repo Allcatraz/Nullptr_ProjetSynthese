@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 namespace ProjetSynthese
 {
-    [AddComponentMenu("Game/Aspect/QuitOnClick")]
-    public class QuitOnClick : GameScript
+    [AddComponentMenu("Game/Aspect/QuitApplicationOnClick")]
+    public class QuitApplicationOnClick : GameScript
     {
         [Tooltip("Boutton pour quitter l'application.")]
         [SerializeField] private Button button;

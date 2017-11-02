@@ -100,6 +100,30 @@
                 }
             }
         }
+        public void UseBoost()
+        {
+            if (Actor.Brain.InventoryBestBoost != null)
+            {
+                Actor.Brain.InventoryBestBoost.GetItem().Player = Actor.gameObject;
+
+                (Actor.Brain.InventoryBestBoost.GetItem() as Usable).Use();
+                Actor.AIInventory.CheckMultiplePresenceAndRemove(Actor.Brain.InventoryBestBoost);
+                Actor.Brain.InventoryBestBoost = null;
+            }
+            
+        }
+        public void UseHeal()
+        {
+            if (Actor.Brain.InventoryBestHeal != null)
+            {
+                Actor.Brain.InventoryBestHeal.GetItem().Player = Actor.gameObject;
+
+                (Actor.Brain.InventoryBestHeal.GetItem() as Usable).Use();
+                Actor.AIInventory.CheckMultiplePresenceAndRemove(Actor.Brain.InventoryBestHeal);
+                Actor.Brain.InventoryBestHeal = null;
+            }
+            
+        }
         public bool IsInventoryEmpty()
         {
             if (Actor.AIInventory.ListInventory != null && Actor.AIInventory.ListInventory.Count > 0)

@@ -44,8 +44,8 @@ namespace ProjetSynthese
         private ObjectContainedInventory inventoryBestVest = null;
 
         public ObjectContainedInventory InventoryBestBag { get { return inventoryBestBag; } private set { inventoryBestBag = value; } }
-        public ObjectContainedInventory InventoryBestHeal { get { return inventoryBestHeal; } private set { inventoryBestHeal = value; } }
-        public ObjectContainedInventory InventoryBestBoost { get { return inventoryBestBoost; } private set { inventoryBestBoost = value; } }
+        public ObjectContainedInventory InventoryBestHeal { get { return inventoryBestHeal; } set { inventoryBestHeal = value; } }
+        public ObjectContainedInventory InventoryBestBoost { get { return inventoryBestBoost; } set { inventoryBestBoost = value; } }
         public ObjectContainedInventory InventoryBestHelmet { get { return inventoryBestHelmet; } private set { inventoryBestHelmet = value; } }
         public ObjectContainedInventory InventoryBestVest { get { return inventoryBestVest; } private set { inventoryBestVest = value; } }
 

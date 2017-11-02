@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 114169419075714274}
   - component: {fileID: 114535921600472296}
   - component: {fileID: 114571937182770680}
+  - component: {fileID: 114796744405591290}
   m_Layer: 8
   m_Name: InventoryObject
   m_TagString: Untagged
@@ -1569,6 +1570,19 @@ MonoBehaviour:
   - {x: 18, y: 0, z: -39}
   - {x: 42, y: 0, z: -42}
   itemSpawnerPrefab: {fileID: 1369578581811908, guid: 656661b308b4abf40b09bcac342f3c85,
+    type: 2}
+--- !u!114 &114796744405591290
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1437739655389598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 555202a3b7b84f07908f8a30b7fdcf25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cratePrefab: {fileID: 1206018250619120, guid: 60e3e041c5d1f414ba42b2963b20cb1d,
     type: 2}
 --- !u!114 &114829462464532168
 MonoBehaviour:

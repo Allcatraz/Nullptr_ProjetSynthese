@@ -1,22 +1,24 @@
 ﻿using UnityEngine;
 using Harmony;
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
     [AddComponentMenu("Game/Aspect/InstanciateOnDeath")]
     public class InstanciateOnDeath : GameScript
     {
+        [Tooltip("Prefab de l'objet représentant l'inventaire dans le monde")]
         [SerializeField]
-        private GameObject prefab;
+        private GameObject cratePrefab;
 
-        private Transform topParentTranform;
-        private Health health;
+        private PlayerDeathEventChannel playerDeathEventChannel;
+        private Inventory inventory;
 
-        private void InjectInstanciateOnDeath([TopParentScope] Transform topParentTranform,
-                                            [EntityScope] Health health)
+        private void InjectInstanciateOnDeath([EventChannelScope] PlayerDeathEventChannel playerDeathEventChannel,
+                                            [EntityScope] Inventory inventory)
         {
-            this.topParentTranform = topParentTranform;
-            this.health = health;
+            this.playerDeathEventChannel = playerDeathEventChannel;
+            this.inventory = inventory;
         }
 
         private void Awake()
@@ -26,17 +28,20 @@ namespace ProjetSynthese
 
         private void OnEnable()
         {
-            health.OnDeath += OnDeath;
+            playerDeathEventChannel.OnEventPublished += OnPlayerDeath;
         }
 
         private void OnDisable()
         {
-            health.OnDeath -= OnDeath;
+            playerDeathEventChannel.OnEventPublished -= OnPlayerDeath;
         }
 
-        private void OnDeath()
+        private void OnPlayerDeath(PlayerDeathEvent newEvent)
         {
-            Instantiate(prefab, topParentTranform.position, Quaternion.Euler(Vector3.zero));
+            inventory.DropAll();
+            GameObject crate = Instantiate(cratePrefab);
+            crate.transform.position = inventory.Parent.transform.position;
+            NetworkServer.Spawn(crate);
         }
     }
 }

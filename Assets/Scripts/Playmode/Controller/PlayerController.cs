@@ -53,7 +53,28 @@ namespace ProjetSynthese
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
 
-        public bool IsSwimming { get; set; }
+        private bool isSwimming = false;
+
+        public bool IsSwimming
+        {
+            get
+            {
+                return isSwimming;
+            }
+
+            set
+            {
+                isSwimming = value;
+                if (isSwimming)
+                {
+                    playerMover.SwitchSwimOn();
+                }
+                else
+                {
+                    playerMover.SwitchSwimOff();
+                }
+            }
+        }
 
         public event UseEventHandler OnUse;
         public event ChangeModeEventHandler OnChangeMode;

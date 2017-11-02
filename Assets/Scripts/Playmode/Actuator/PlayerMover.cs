@@ -13,6 +13,8 @@ namespace ProjetSynthese
         [SerializeField] private float moveSpeed;
         [Tooltip("La vitesse du joueur dans son déplacement de sprint.")]
         [SerializeField] private float sprintSpeed;
+        [Tooltip("La vitesse du joueur lors de son déplcament à la nage normal.")]
+        [SerializeField] private float swimSpeed;
 
         private Transform topParentTransform;
         private float speed = 0;
@@ -37,6 +39,16 @@ namespace ProjetSynthese
         }
 
         public void SwitchSprintOff()
+        {
+            speed = moveSpeed;
+        }
+
+        public void SwitchSwimOn()
+        {
+            speed = swimSpeed;
+        }
+
+        public void SwitchSwimOff()
         {
             speed = moveSpeed;
         }

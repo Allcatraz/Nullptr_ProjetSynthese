@@ -20,7 +20,7 @@ namespace ProjetSynthese
         public readonly float BagCapacityMaximum = 300.0f;
         public readonly float HelmetProtectionMaximum = 50.0f;
         public readonly float VestProtectionMaximum = 50.0f;
-        
+
 
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
@@ -36,6 +36,20 @@ namespace ProjetSynthese
         private float bagCapacityRatio = 0.0f;
         private float helmetProtectionRatio = 0.0f;
         private float vestProtectionRatio = 0.0f;
+
+        private ObjectContainedInventory inventoryBestBag = null;
+        private ObjectContainedInventory inventoryBestHeal = null;
+        private ObjectContainedInventory inventoryBestBoost = null;
+        private ObjectContainedInventory inventoryBestHelmet = null;
+        private ObjectContainedInventory inventoryBestVest = null;
+
+        public ObjectContainedInventory InventoryBestBag { get { return inventoryBestBag; } private set { inventoryBestBag = value; } }
+        public ObjectContainedInventory InventoryBestHeal { get { return inventoryBestHeal; } set { inventoryBestHeal = value; } }
+        public ObjectContainedInventory InventoryBestBoost { get { return inventoryBestBoost; } set { inventoryBestBoost = value; } }
+        public ObjectContainedInventory InventoryBestHelmet { get { return inventoryBestHelmet; } private set { inventoryBestHelmet = value; } }
+        public ObjectContainedInventory InventoryBestVest { get { return inventoryBestVest; } private set { inventoryBestVest = value; } }
+
+
 
         public float HealthRatio { get { return healthRatio; } private set { healthRatio = value; } }
         public float HealNumberStorageRatio { get { return healNumberStorageRatio; } private set { healNumberStorageRatio = value; } }
@@ -119,6 +133,7 @@ namespace ProjetSynthese
         public AIState WhatIsMyNextState(AIState currentState)
         {
             AIState nextState = currentState;
+            UpdateInventoryKnowledge();
             UpdateWeaponKnowledge();
             UpdateProtectionKnowledge();
             UpdateSupportKnowledge();
@@ -579,7 +594,7 @@ namespace ProjetSynthese
             if (equippedHelmet != null)
             {
                 hasHelmetEquipped = true;
-                helmetProtectionRatio +=equippedHelmet.ProtectionValue;
+                helmetProtectionRatio += equippedHelmet.ProtectionValue;
             }
             else
             {
@@ -587,7 +602,7 @@ namespace ProjetSynthese
             }
             helmetProtectionRatio /= HelmetProtectionMaximum;
             vestProtectionRatio /= VestProtectionMaximum;
-         }
+        }
         private void UpdateSupportKnowledge()
         {
 
@@ -596,7 +611,7 @@ namespace ProjetSynthese
             bagCapacityRatio = 0.0f;
             ObjectContainedInventory cellBag = Actor.AIInventory.GetBag();
             Bag equippedBag = null;
-         
+
             if (cellBag != null)
             {
                 equippedBag = (Bag)cellBag.GetItem();
@@ -617,15 +632,15 @@ namespace ProjetSynthese
             boostNumberStorageRatio = (float)Actor.AIInventory.GetItemQuantityInInventory(ItemType.Boost, AmmoType.None) / MaxUsefulStoredBoostItem;
             boostNumberStorageRatio = Mathf.Clamp(boostNumberStorageRatio, 0.0f, 1.0f);
             //Heal
-            healthRatio = Actor.AIHealth.HealthPoints/Actor.AIHealth.MaxHealthPoints;
-            healNumberStorageRatio =(float) Actor.AIInventory.GetItemQuantityInInventory(ItemType.Heal,AmmoType.None)/MaxUsefulStoredHealItem;
+            healthRatio = Actor.AIHealth.HealthPoints / Actor.AIHealth.MaxHealthPoints;
+            healNumberStorageRatio = (float)Actor.AIInventory.GetItemQuantityInInventory(ItemType.Heal, AmmoType.None) / MaxUsefulStoredHealItem;
             healNumberStorageRatio = Mathf.Clamp(healNumberStorageRatio, 0.0f, 1.0f);
 
             //Ammopack
             for (int i = 0; i < NumberOfAmmoPackType; i++)
             {
-                ammoPackNumberStorageRatio[i] =  (float)Actor.AIInventory.GetItemQuantityInInventory(ItemType.AmmoPack, (AmmoType)i) / MaxUsefulStoredAmmoPackItem;
-                ammoPackNumberStorageRatio[i] =   Mathf.Clamp(ammoPackNumberStorageRatio[i], 0.0f, 1.0f);
+                ammoPackNumberStorageRatio[i] = (float)Actor.AIInventory.GetItemQuantityInInventory(ItemType.AmmoPack, (AmmoType)i) / MaxUsefulStoredAmmoPackItem;
+                ammoPackNumberStorageRatio[i] = Mathf.Clamp(ammoPackNumberStorageRatio[i], 0.0f, 1.0f);
             }
         }
 
@@ -633,9 +648,98 @@ namespace ProjetSynthese
         {
             return ammoPackNumberStorageRatio[(int)ammoType];
         }
-        public void SetAmmoPackStorageRatio(AmmoType ammoType,float ammoPackStorageRatio)
+        public void SetAmmoPackStorageRatio(AmmoType ammoType, float ammoPackStorageRatio)
         {
             ammoPackNumberStorageRatio[(int)ammoType] = ammoPackStorageRatio;
+        }
+
+        private void UpdateInventoryKnowledge()
+        {
+            //garder meilleur bag, helmet,vest,boost,heal dans l'inventaire
+            if (Actor.AIInventory.ListInventory != null)
+            {
+                Item item = null;
+                foreach (ObjectContainedInventory cell in Actor.AIInventory.ListInventory)
+                {
+                    item = cell.GetItem();
+                    
+                    switch (item.Type)
+                    {
+                        case ItemType.Helmet:
+                            if (inventoryBestHelmet == null)
+                            {
+                                InventoryBestHelmet = cell;
+                            }
+                            else 
+                            {
+                                Helmet helmet = (Helmet)item;
+                                if (((Helmet)inventoryBestHelmet.GetItem()).ProtectionValue < helmet.ProtectionValue)
+                                {
+                                    InventoryBestHelmet = cell;
+                                } 
+                            }
+                            break;
+                        case ItemType.Vest:
+                            if (inventoryBestVest == null)
+                            {
+                                InventoryBestVest = cell;
+                            }
+                            else
+                            {
+                                Vest vest = (Vest)item;
+                                if (((Vest)inventoryBestVest.GetItem()).ProtectionValue < vest.ProtectionValue)
+                                {
+                                    InventoryBestVest = cell;
+                                }
+                            }
+                            break;
+                        case ItemType.Bag:
+                            if (inventoryBestBag == null)
+                            {
+                                InventoryBestBag = cell;
+                            }
+                            else
+                            {
+                                Bag bag = (Bag)item;
+                                if (((Bag)inventoryBestBag.GetItem()).Capacity < bag.Capacity)
+                                {
+                                    InventoryBestBag = cell;
+                                }
+                            }
+                            break;
+                        case ItemType.Heal:
+                            if (inventoryBestHeal == null)
+                            {
+                                InventoryBestHeal = cell;
+                            }
+                            else
+                            {
+                                Heal heal = (Heal)item;
+                                if (((Heal)inventoryBestHeal.GetItem()).Efficacity < heal.Efficacity)
+                                {
+                                    InventoryBestHeal = cell;
+                                }
+                            }
+                            break;
+                        case ItemType.Boost:
+                            if (inventoryBestBoost == null)
+                            {
+                                InventoryBestBoost = cell;
+                            }
+                            else
+                            {
+                                Boost boost = (Boost)item;
+                                if (((Boost)inventoryBestBoost.GetItem()).Efficacity < boost.Efficacity)
+                                {
+                                    InventoryBestBoost = cell;
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
     }
 }

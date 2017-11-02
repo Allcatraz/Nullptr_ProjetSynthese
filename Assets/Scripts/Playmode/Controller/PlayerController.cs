@@ -14,15 +14,20 @@ namespace ProjetSynthese
     public class PlayerController : NetworkGameScript
     {
         [Tooltip("Le menu de l'inventaire du joueur.")]
-        [SerializeField] private Menu inventoryMenu;
+        [SerializeField]
+        private Menu inventoryMenu;
         [Tooltip("Le menu de la map du joueur.")]
-        [SerializeField] private Menu mapMenu;
+        [SerializeField]
+        private Menu mapMenu;
         [Tooltip("Le transform contenant les armes du joueur.")]
-        [SerializeField] private Transform weaponHolderTransform;
+        [SerializeField]
+        private Transform weaponHolderTransform;
         [Tooltip("Le transform contenant les items du joueur.")]
-        [SerializeField] private Transform inventoryHolderTransform;
+        [SerializeField]
+        private Transform inventoryHolderTransform;
         [Tooltip("La camera en première personne du joueur")]
-        [SerializeField] private Camera firstPersonCamera;
+        [SerializeField]
+        private Camera firstPersonCamera;
 
         private ActivityStack activityStack;
         private Health health;
@@ -178,7 +183,7 @@ namespace ProjetSynthese
 
                     distance.y = transform.position.y;
                     soldierAnimatorUpdater.ViewDirection = distance;
-                    soldierAnimatorUpdater.UpdateAnimator();
+
                 }
                 else
                 {
@@ -189,8 +194,12 @@ namespace ProjetSynthese
                     Quaternion localRotation = Quaternion.Euler(rotation.x, rotation.y, 0.0f);
                     firstPersonCamera.transform.rotation = localRotation;
                     transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+
+                    soldierAnimatorUpdater.ViewDirection = transform.localToWorldMatrix.GetColumn(2);
                 }
+
             }
+            soldierAnimatorUpdater.UpdateAnimator();
         }
 
         private void OnSwitchPrimaryWeapon()
@@ -256,7 +265,10 @@ namespace ProjetSynthese
         private void OnFire()
         {
             if ((object)currentWeapon != null)
+            {
                 currentWeapon.Use();
+                soldierAnimatorUpdater.Shoot();
+            }
         }
 
         private void OnInteract()
@@ -285,14 +297,14 @@ namespace ProjetSynthese
 
                 if (item.GetComponent<Item>() is Weapon)
                 {
-                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetWeaponHolderTransform());                    
+                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetWeaponHolderTransform());
                 }
                 else
                 {
-                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetInventoryHolderTransform());                    
+                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetInventoryHolderTransform());
                 }
 
-                item.SetActive(false);                
+                item.SetActive(false);
             }
         }
 
@@ -303,19 +315,19 @@ namespace ProjetSynthese
                 int layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
                 item.gameObject.layer = layer;
                 List<GameObject> allItems = item.gameObject.GetAllChildrens().ToList();
-                allItems.ForEach(obj => obj.layer = layer);                
+                allItems.ForEach(obj => obj.layer = layer);
 
                 inventory.Add(item, gameObject);
 
                 if (item.GetComponent<Item>() is Weapon)
                 {
                     item.transform.SetParent(weaponHolderTransform);
-                    
+
                 }
                 else
                 {
                     item.transform.SetParent(inventoryHolderTransform);
-                    
+
                 }
 
                 item.SetActive(false);
@@ -379,7 +391,7 @@ namespace ProjetSynthese
         }
 
         private void OnChangeViewMode()
-        {            
+        {
             isFirstPerson = !isFirstPerson;
 
             if (OnChangeMode != null) OnChangeMode(isFirstPerson);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SoldierAnimatorUpdater : MonoBehaviour
 {
@@ -10,31 +11,67 @@ public class SoldierAnimatorUpdater : MonoBehaviour
     public Vector3 MouvementDirection { get; set; }
     public Vector3 ViewDirection { get; set; }
     private int leftHandLayer;
+    private bool isShooting;
+    private float iterpolatingDirectionBegin;
+    private float interpolatingDirectionEnd;
+    private float actualDirection;
+    private float interpolant;
+    private bool isInterpoling;
+
+    private float lastFrameDirection;
 
     public void UpdateAnimator()
     {
-        float angle = 0;
-        float direction = Vector3.Dot(Vector3.Normalize(MouvementDirection), Vector3.Normalize(ViewDirection));
+        float viewMagn = ViewDirection.magnitude;
+        float mouvMagn = MouvementDirection.magnitude;
+        if (viewMagn != 0 && mouvMagn != 0)
+        {
+            double cosTheta = Vector3.Dot(MouvementDirection, ViewDirection) / (mouvMagn * viewMagn);
 
-        if (direction > 0)
-        {
-            direction = 1;
-            angle = Vector3.SignedAngle(MouvementDirection, ViewDirection, Vector3.up);
-            //animator.SetLayerWeight(animator.GetLayerIndex("LeftHand"), 0);
-        }
-        else if (direction < 0)
-        {
-            direction = -1;
-            angle = Vector3.SignedAngle(MouvementDirection * -1, ViewDirection, Vector3.up);
-            //animator.SetLayerWeight(animator.GetLayerIndex("LeftHand"), 1);
+            double angle = Math.Acos(cosTheta);
+            float angleDegree = Mathf.Rad2Deg * (float)angle;
+
+            float presentFrameDirection = Vector3.Dot(new Vector3(MouvementDirection.z * -1, 0, MouvementDirection.x).normalized, ViewDirection.normalized);
+
+            if (Mathf.Abs(lastFrameDirection - presentFrameDirection) > 0.5f)
+            {
+                isInterpoling = true;
+                iterpolatingDirectionBegin = actualDirection;
+                interpolatingDirectionEnd = presentFrameDirection;
+                interpolant = 0;
+            }
+
+
+            if (isInterpoling == true)
+            {
+                actualDirection = Mathf.Lerp(iterpolatingDirectionBegin, interpolatingDirectionEnd, interpolant);
+                animator.SetFloat("DirectionFactor", actualDirection);
+                interpolant += 0.02f;
+                if (interpolant > 1)
+                {
+                    isInterpoling = false;
+                }
+            }
+
+            animator.SetFloat("Angle", angleDegree);
+
+
+            lastFrameDirection = presentFrameDirection;
         }
         else
         {
-            direction = 0;
-        }
-        angle /= 90;
-        animator.SetInteger("Direction", (int)direction);
-        animator.SetFloat("DirectionFactor", angle);
 
+        }
+
+        animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 0);
+        animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 1);
+
+    }
+
+    public void Shoot()
+    {
+        animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 1);
+        animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 0);
+        isShooting = true;
     }
 }

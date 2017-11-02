@@ -1,7 +1,4 @@
-﻿
-using UnityEngine;
-
-namespace ProjetSynthese
+﻿namespace ProjetSynthese
 {
     public class GoalEvaluator
     {
@@ -15,12 +12,15 @@ namespace ProjetSynthese
         private const float VestGoalFactor = 1.0f;
         private const float HelmetGoalFactor = 1.0f;
         private const float HealGoalFactor = 1.0f;
+        private const float BoostGoalFactor = 1.0f;
+        private const float BagGoalFactor = 1.0f;
         private const float WeaponGoalFactor = 1.0f;
+        private const float AmmoPackGoalFactor = 1.0f;
+
+        private const float ErrorGoalTolerance = 0.0001f;
 
         float[] inventoryValues = null;
         float[] foundItemsValues = null;
-
-        public enum ItemOwningStatus { Ground, Inventory }
 
         public GoalEvaluator(ActorAI actor)
         {
@@ -31,131 +31,317 @@ namespace ProjetSynthese
         {
             Item item = null;
             inventoryValues = new float[actor.AIInventory.ListInventory.Count];
+            float distanceToItem = 1.0f;
             int i = 0;
-            foreach (ObjectContainedInventory cell in actor.AIInventory.ListInventory)
+            if (actor.AIInventory.ListInventory != null)
             {
-                item = cell.GetItem();
-                inventoryValues[i] = 0.0f;
+                foreach (ObjectContainedInventory cell in actor.AIInventory.ListInventory)
+                {
+                    item = cell.GetItem();
+                    inventoryValues[i] = 0.0f;
+                    switch (item.Type)
+                    {
+                        case ItemType.M16A4:
+                        case ItemType.AWM:
+                        case ItemType.Saiga12:
+                        case ItemType.M1911:
+                            inventoryValues[i] = EvaluateWeaponValue(distanceToItem, item);
+                            break;
+                        case ItemType.Grenade:
+                            inventoryValues[i] = EvaluateGrenadeValue(distanceToItem, item);
+                            break;
+                        case ItemType.Helmet:
+                            inventoryValues[i] = EvaluateHelmetValue(distanceToItem, item);
+                            break;
+                        case ItemType.Vest:
+                            inventoryValues[i] = EvaluateVestValue(distanceToItem, item);
+                            break;
+                        case ItemType.Bag:
+                            inventoryValues[i] = EvaluateBagValue(distanceToItem, item);
+                            break;
+                        case ItemType.Heal:
+                            inventoryValues[i] = EvaluateHealValue(distanceToItem, item);
+                            break;
+                        case ItemType.Boost:
+                            inventoryValues[i] = EvaluateBoostValue(distanceToItem, item);
+                            break;
+                        case ItemType.AmmoPack:
+                            inventoryValues[i] = EvaluateAmmoPackValue(distanceToItem, item);
+                            break;
+                        default:
+                            break;
+                    }
+                    i++;
+                }
+            }
+        }
+
+        private void EvaluateFoundItemsValues(Item[] items)
+        {
+            if (items != null)
+            {
+                Item item = null;
+                foundItemsValues = new float[items.Length];
+                float distanceToItem = 1.0f;
+                for (int i = 0; i < items.Length; i++)
+                {
+                    item = items[i];
+                    foundItemsValues[i] = 0.0f;
+                    distanceToItem = Vector3.Distance(actor.transform.position, item.transform.position);
+                    switch (item.Type)
+                    {
+                        case ItemType.M16A4:
+                        case ItemType.AWM:
+                        case ItemType.Saiga12:
+                        case ItemType.M1911:
+                            foundItemsValues[i] = EvaluateWeaponValue(distanceToItem, item);
+                            break;
+                        case ItemType.Grenade:
+                            foundItemsValues[i] = EvaluateGrenadeValue(distanceToItem, item);
+                            break;
+                        case ItemType.Helmet:
+                            foundItemsValues[i] = EvaluateHelmetValue(distanceToItem, item);
+                            break;
+                        case ItemType.Vest:
+                            foundItemsValues[i] = EvaluateVestValue(distanceToItem, item);
+                            break;
+                        case ItemType.Bag:
+                            foundItemsValues[i] = EvaluateBagValue(distanceToItem, item);
+                            break;
+                        case ItemType.Heal:
+                            foundItemsValues[i] = EvaluateHealValue(distanceToItem, item);
+                            break;
+                        case ItemType.Boost:
+                            foundItemsValues[i] = EvaluateBoostValue(distanceToItem, item);
+                            break;
+                        case ItemType.AmmoPack:
+                            foundItemsValues[i] = EvaluateAmmoPackValue(distanceToItem, item);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        public float EvaluateItemValue(Item item, float distanceToItem)
+        {
+            float itemValue = 0.0f;
+            if (item != null && distanceToItem >= 0.0f)
+            {
                 switch (item.Type)
                 {
                     case ItemType.M16A4:
                     case ItemType.AWM:
                     case ItemType.Saiga12:
                     case ItemType.M1911:
-                        inventoryValues[i] = EvaluateWeaponValue(ItemOwningStatus.Inventory);
+                        itemValue = EvaluateWeaponValue(distanceToItem, item);
                         break;
                     case ItemType.Grenade:
+                        itemValue = EvaluateGrenadeValue(distanceToItem, item);
                         break;
                     case ItemType.Helmet:
-                        inventoryValues[i] = EvaluateHelmetValue(ItemOwningStatus.Inventory);
+                        itemValue = EvaluateHelmetValue(distanceToItem, item);
                         break;
                     case ItemType.Vest:
-                        inventoryValues[i] = EvaluateVestValue(ItemOwningStatus.Inventory);
+                        itemValue = EvaluateVestValue(distanceToItem, item);
                         break;
                     case ItemType.Bag:
+                        itemValue = EvaluateBagValue(distanceToItem, item);
                         break;
                     case ItemType.Heal:
-                        inventoryValues[i] = EvaluateHealValue(ItemOwningStatus.Inventory);
+                        itemValue = EvaluateHealValue(distanceToItem, item);
                         break;
                     case ItemType.Boost:
+                        itemValue = EvaluateBoostValue(distanceToItem, item);
                         break;
                     case ItemType.AmmoPack:
+                        itemValue = EvaluateAmmoPackValue(distanceToItem, item);
                         break;
                     default:
                         break;
                 }
-                i++;
             }
+            return itemValue;
         }
-
-        private void EvaluateFoundItemsValues(Item[] items)
-        {
-
-        }
-
         public float EvaluateLootGoal()
         {
-            //par type d'item possiblement
+            
             float lootGoalLevel = 0.0f;
-
-            //Loot factor average les evalue des items
-            //peu rajouter facteur de protection helemt et vest
-            //peu rajouter si inventaire plein, bag, boost
-            //effet pas de weapon ou protection base bonus
-
+  
             if (actor.EquipmentManager.IsInventoryEmpty())
             {
                 lootGoalLevel += EmptyInventoryLootGoalLevel;
             }
+            else
+            {
+                Item item= actor.Brain.ItemInPerceptionRange;
+                float distanceToItem = Vector3.Distance(actor.transform.position, item.transform.position);
+                if (actor.Brain.ItemInPerceptionRange != null)
+                {
+                    lootGoalLevel += EvaluateItemValue(item, distanceToItem);
+                }
+            }
 
             return lootGoalLevel;
+        }
+
+        public float EvaluateLootHeapGoal(Item[] items)
+        {
+
+            float lootHeapGoalLevel = 0.0f;
+
+            if (actor.EquipmentManager.IsInventoryEmpty())
+            {
+                lootHeapGoalLevel += EmptyInventoryLootGoalLevel;
+            }
+            else
+            {
+                if (items != null && foundItemsValues.Length > 0)
+                {
+                    EvaluateFoundItemsValues(items);
+                    for (int i = 0; i < foundItemsValues.Length; i++)
+                    {
+                        lootHeapGoalLevel += foundItemsValues[i];
+                    }
+                    lootHeapGoalLevel /= foundItemsValues.Length;
+                }
+            }
+
+            return lootHeapGoalLevel;
         }
         public float EvaluateTrackGoal()
         {
             float trackGoalLevel = 0.0f;
 
             //track = ka *health*weaponstrength(vestpower*helmetPower
-            //ajoute ammunition level
+            //ajoute ammunition level 
             if (!actor.Brain.HasPrimaryWeaponEquipped)
             {
                 trackGoalLevel += NoWeaponTrackGoalLevel;
             }
+            else
+            {
+                //Faudra rajouter weapon strength
+                trackGoalLevel += 0.7f;
+            }
             return trackGoalLevel;
         }
 
-        private float EvaluateHealValue(ItemOwningStatus itemOwningStatus)
+        private float EvaluateBagValue(float distanceToItem, Item item)
+        {
+
+            float bagValueLevel = 0.0f;
+
+            Bag newBag = (Bag)item;
+            float nonEquippedBagValueLevel = newBag.Capacity;
+            nonEquippedBagValueLevel = nonEquippedBagValueLevel / actor.Brain.BagCapacityMaximum;
+
+            float equippedBagValueLevel = actor.Brain.BagCapacityRatio;
+            if (equippedBagValueLevel < nonEquippedBagValueLevel)
+            {
+                bagValueLevel = BagGoalFactor * nonEquippedBagValueLevel / distanceToItem;
+            }
+            else
+            {
+                bagValueLevel = BagGoalFactor * (1 - actor.Brain.BagCapacityRatio) * (nonEquippedBagValueLevel) / distanceToItem;
+            }
+
+            return bagValueLevel;
+        }
+
+        private float EvaluateHealValue(float distanceToItem, Item item)
         {
 
             float healValueLevel = 0.0f;
-            float distanceToItem = 0.0f;
-            if (itemOwningStatus == ItemOwningStatus.Inventory)
-            {
-                distanceToItem = 1.0f;
-            }
-            //heal = kh *(1-health)/disttohealth
+            Heal heal = (Heal)item;
+            float healStrengthValueLevel = heal.Efficacity / actor.Brain.HealEfficiencyMaximum;
+            healValueLevel = HealGoalFactor * (1 - actor.Brain.HealthRatio) * (1 - actor.Brain.HealNumberStorageRatio) * healStrengthValueLevel / distanceToItem;
             return healValueLevel;
         }
+        private float EvaluateBoostValue(float distanceToItem, Item item)
+        {
 
-        private float EvaluateVestValue(ItemOwningStatus itemOwningStatus)
+            float boostValueLevel = 0.0f;
+            Boost boost = (Boost)item;
+            float boostStrengthValueLevel = boost.Efficacity / actor.Brain.BoostEfficiencyMaximum;
+            boostValueLevel = BoostGoalFactor * (1 - actor.Brain.HealthRatio) * (1 - actor.Brain.BoostNumberStorageRatio) * boostStrengthValueLevel / distanceToItem;
+            return boostValueLevel;
+        }
+        private float EvaluateVestValue(float distanceToItem, Item item)
         {
 
             float vestValueLevel = 0.0f;
-            float distanceToItem = 0.0f;
-            if (itemOwningStatus == ItemOwningStatus.Inventory)
+
+            Vest newVest = (Vest)item;
+            float nonEquippedVestValueLevel = newVest.ProtectionValue;
+            nonEquippedVestValueLevel = nonEquippedVestValueLevel / actor.Brain.VestProtectionMaximum;
+
+            float equippedVestValueLevel = actor.Brain.VestProtectionRatio;
+
+
+            if (equippedVestValueLevel < nonEquippedVestValueLevel)
             {
-                distanceToItem = 1.0f;
+                vestValueLevel = VestGoalFactor * nonEquippedVestValueLevel / distanceToItem;
             }
-            //vest = kv *(1-vestpower)*(1-health)*(1-helemetpower)/disttovest
+            else
+            {
+                vestValueLevel = VestGoalFactor * (1 - actor.Brain.VestProtectionRatio) * (nonEquippedVestValueLevel) / distanceToItem;
+            }
+
             return vestValueLevel;
         }
-        private float EvaluateHelmetValue(ItemOwningStatus itemOwningStatus)
+        private float EvaluateHelmetValue(float distanceToItem, Item item)
         {
 
             float helmetValueLevel = 0.0f;
-            float distanceToItem = 0.0f;
-            if (itemOwningStatus == ItemOwningStatus.Inventory)
+
+            Helmet newHelmet = (Helmet)item;
+            float nonEquippedHelmetValueLevel = newHelmet.ProtectionValue;
+            nonEquippedHelmetValueLevel = nonEquippedHelmetValueLevel / actor.Brain.HelmetProtectionMaximum;
+
+            float equippedHelmetValueLevel = actor.Brain.HelmetProtectionRatio;
+
+
+            if (equippedHelmetValueLevel < nonEquippedHelmetValueLevel)
             {
-                distanceToItem = 1.0f;
+                helmetValueLevel = HelmetGoalFactor * nonEquippedHelmetValueLevel / distanceToItem;
             }
-            //helemt = kt *(1-helemetpower)*(1-health)*(1-vestpower)/disttohelemy
+            else
+            {
+                helmetValueLevel = HelmetGoalFactor * (1 - actor.Brain.HelmetProtectionRatio) * (nonEquippedHelmetValueLevel) / distanceToItem;
+            }
+
             return helmetValueLevel;
         }
-        private float EvaluateWeaponValue(ItemOwningStatus itemOwningStatus)
+        private float EvaluateGrenadeValue(float distanceToItem, Item item)
+        {
+
+            float grenadeValueLevel = 0.0f;
+
+            //grenade = kt grenade number deja la???*(1-helemetpower)*(1-health)*(1-vestpower)/disttogrenade
+            return grenadeValueLevel;
+        }
+
+        private float EvaluateAmmoPackValue(float distanceToItem, Item item)
+        {
+
+            float ammoPackValueLevel = 0.0f;
+            //si on a la weapon augmente value selon force weapon???
+            AmmoPack ammoPack = (AmmoPack)item;
+            ammoPackValueLevel = AmmoPackGoalFactor * (1 - actor.Brain.GetAmmoPackStorageRatio(ammoPack.AmmoType)) / distanceToItem;
+            return ammoPackValueLevel;
+        }
+
+        private float EvaluateWeaponValue(float distanceToItem, Item item)
         {
             float weaponValueLevel = 0.0f;
-            float distanceToItem = 0.0f;
-            if (itemOwningStatus == ItemOwningStatus.Inventory)
-            {
-                distanceToItem = 1.0f;
-            }
+
+            //si si a weapon ou pas
             //weapon = kw * (health*(1-weaponStrength))/DistToWeapon
             //level ammo
             //type weapon
             return weaponValueLevel;
         }
-        //fonction calcul health ratio
-        //fonction calcul weaponStrength
-        //fonctin calcul protection strenght
     }
 }
 

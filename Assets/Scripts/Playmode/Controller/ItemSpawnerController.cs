@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 
 namespace ProjetSynthese
 {
-    public class ItemSpawnerController : GameScript
+    public class ItemSpawnerController : NetworkGameScript
     {
-        private List<Item> items;
+        private List<GameObject> items;
 
-        public List<Item> Items { get; private set; }
+        public List<GameObject> Items { get; private set; }
 
         public const int MaxNumberOfItemsToSpawn = 4;
 
@@ -19,11 +17,16 @@ namespace ProjetSynthese
         /// </summary>
         public void CreateItems(Vector3 position)
         {
-            items = new List<Item>();
+            items = new List<GameObject>();
             int numberOfItemsToSpawn = GlobalRandom.Next(3, MaxNumberOfItemsToSpawn + 1);
             for (int i = 0; i < numberOfItemsToSpawn; i++)
             {
                 ItemFactory.CreateItem(items, position, GlobalRandom.Random);
+            }
+
+            foreach (GameObject item in items)
+            {
+                CmdSpawnObject(item);
             }
         }
 
@@ -36,7 +39,7 @@ namespace ProjetSynthese
         {
             for (int i = 0; i < items.Count; i++)
             {
-                if (items[i].Type == type)
+                if (items[i].GetComponent<Item>().Type == type)
                 {
                     return i;
                 }
@@ -56,7 +59,7 @@ namespace ProjetSynthese
             {
                 return null;
             }
-            Item item = items[index];
+            Item item = items[index].GetComponent<Item>();
             items.RemoveAt(index);
             return item;          
         }
@@ -72,9 +75,5 @@ namespace ProjetSynthese
             int index = FindItemIndex(itemType);
             return GetItem(index);
         }
-
-
     }
 }
-
-

@@ -1,6 +1,4 @@
-﻿
-using UnityEngine;
-namespace ProjetSynthese
+﻿namespace ProjetSynthese
 {
     public class EquipmentManager
     {
@@ -78,6 +76,27 @@ namespace ProjetSynthese
                         {
                             Actor.AIInventory.EquipHelmet(cell);
                             Actor.Brain.HasHelmetEquipped = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SelectBag()
+        {
+            if (!Actor.Brain.HasBagEquipped)
+            {
+                Item item = null;
+                if (Actor.AIInventory.ListInventory != null)
+                {
+                    foreach (ObjectContainedInventory cell in Actor.AIInventory.ListInventory)
+                    {
+                        item = cell.GetItem();
+                        if (item.Type == ItemType.Bag)
+                        {
+                            Actor.AIInventory.EquipBag(cell);
+                            Actor.Brain.HasBagEquipped = true;
                             break;
                         }
                     }

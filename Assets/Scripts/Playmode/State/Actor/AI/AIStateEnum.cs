@@ -1,6 +1,4 @@
-﻿
-using UnityEngine;
-namespace ProjetSynthese
+﻿namespace ProjetSynthese
 {
     public enum AIState { None,Dead,Loot,Combat,Hunt,Flee,Explore}
 }

@@ -53,6 +53,8 @@ namespace ProjetSynthese
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
 
+        public bool IsSwimming { get; set; }
+
         public event UseEventHandler OnUse;
         public event ChangeModeEventHandler OnChangeMode;
 

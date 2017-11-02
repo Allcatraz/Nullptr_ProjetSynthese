@@ -7,20 +7,19 @@ namespace ProjetSynthese
     {
         [Tooltip("AI prefab contenant les combatants AI")]
         [SerializeField]
-        private GameObject AIprefab;
+        private GameObject aiPrefab;
 
-        [Tooltip("Nombre de combatants AI")]
-        [SerializeField]
-        const int AINumber = 1;
+       
+        private const int AINumber = 1;
 
-        const float XMapCornerCoordinate = 0.0f;
-        const float ZMapCornerCoordinate = 0.0f;
-        const float DefaultHeighPosition = 1.0f;
+        private const float XMapCornerCoordinate = 0.0f;
+        private const float ZMapCornerCoordinate = 0.0f;
+        private const float DefaultHeighPosition = 1.0f;
 
-        const float XOffset = 15.0f;
-        const float ZOffset = -15.0f;
+        private const float XOffset = 15.0f;
+        private const float ZOffset = -15.0f;
 
-        void Start()
+        private void Start()
         {
             SpawnAIs();
         }
@@ -35,8 +34,8 @@ namespace ProjetSynthese
     
             for (int i = 0; i < AINumber; i++)
             {
-                AIprefab.GetComponent<NetworkStartPosition>().transform.position = position[i];
-                CmdSpawnObject(AIFactory.CmdSpawnAI(AIprefab));
+                aiPrefab.GetComponent<NetworkStartPosition>().transform.position = position[i];
+                CmdSpawnObject(AIFactory.CmdSpawnAI(aiPrefab));
             }
 
             Destroy(this);

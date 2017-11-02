@@ -37,17 +37,17 @@ namespace ProjetSynthese
         private float helmetProtectionRatio = 0.0f;
         private float vestProtectionRatio = 0.0f;
 
-        private Bag inventoryBestBag = null;
-        private Heal inventoryBestHeal = null;
-        private Boost inventoryBestBoost = null;
-        private Helmet inventoryBestHelmet = null;
-        private Vest inventoryBestVest = null;
+        private ObjectContainedInventory inventoryBestBag = null;
+        private ObjectContainedInventory inventoryBestHeal = null;
+        private ObjectContainedInventory inventoryBestBoost = null;
+        private ObjectContainedInventory inventoryBestHelmet = null;
+        private ObjectContainedInventory inventoryBestVest = null;
 
-        public Bag InventoryBestBag { get { return inventoryBestBag; } private set { inventoryBestBag = value; } }
-        public Heal InventoryBestHeal { get { return inventoryBestHeal; } private set { inventoryBestHeal = value; } }
-        public Boost InventoryBestBoost { get { return inventoryBestBoost; } private set { inventoryBestBoost = value; } }
-        public Helmet InventoryBestHelmet { get { return inventoryBestHelmet; } private set { inventoryBestHelmet = value; } }
-        public Vest InventoryBestVest { get { return inventoryBestVest; } private set { inventoryBestVest = value; } }
+        public ObjectContainedInventory InventoryBestBag { get { return inventoryBestBag; } private set { inventoryBestBag = value; } }
+        public ObjectContainedInventory InventoryBestHeal { get { return inventoryBestHeal; } private set { inventoryBestHeal = value; } }
+        public ObjectContainedInventory InventoryBestBoost { get { return inventoryBestBoost; } private set { inventoryBestBoost = value; } }
+        public ObjectContainedInventory InventoryBestHelmet { get { return inventoryBestHelmet; } private set { inventoryBestHelmet = value; } }
+        public ObjectContainedInventory InventoryBestVest { get { return inventoryBestVest; } private set { inventoryBestVest = value; } }
 
 
 
@@ -668,70 +668,70 @@ namespace ProjetSynthese
                         case ItemType.Helmet:
                             if (inventoryBestHelmet == null)
                             {
-                                InventoryBestHelmet = (Helmet)item;
+                                InventoryBestHelmet = cell;
                             }
                             else 
                             {
                                 Helmet helmet = (Helmet)item;
-                                if (inventoryBestHelmet.ProtectionValue < helmet.ProtectionValue)
+                                if (((Helmet)inventoryBestHelmet.GetItem()).ProtectionValue < helmet.ProtectionValue)
                                 {
-                                    InventoryBestHelmet = helmet;
+                                    InventoryBestHelmet = cell;
                                 } 
                             }
                             break;
                         case ItemType.Vest:
                             if (inventoryBestVest == null)
                             {
-                                InventoryBestVest = (Vest)item;
+                                InventoryBestVest = cell;
                             }
                             else
                             {
                                 Vest vest = (Vest)item;
-                                if (inventoryBestVest.ProtectionValue < vest.ProtectionValue)
+                                if (((Vest)inventoryBestVest.GetItem()).ProtectionValue < vest.ProtectionValue)
                                 {
-                                    InventoryBestVest = vest;
+                                    InventoryBestVest = cell;
                                 }
                             }
                             break;
                         case ItemType.Bag:
                             if (inventoryBestBag == null)
                             {
-                                InventoryBestBag = (Bag)item;
+                                InventoryBestBag = cell;
                             }
                             else
                             {
                                 Bag bag = (Bag)item;
-                                if (inventoryBestBag.Capacity < bag.Capacity)
+                                if (((Bag)inventoryBestBag.GetItem()).Capacity < bag.Capacity)
                                 {
-                                    InventoryBestBag = bag;
+                                    InventoryBestBag = cell;
                                 }
                             }
                             break;
                         case ItemType.Heal:
                             if (inventoryBestHeal == null)
                             {
-                                InventoryBestHeal = (Heal)item;
+                                InventoryBestHeal = cell;
                             }
                             else
                             {
                                 Heal heal = (Heal)item;
-                                if (inventoryBestHeal.Efficacity < heal.Efficacity)
+                                if (((Heal)inventoryBestHeal.GetItem()).Efficacity < heal.Efficacity)
                                 {
-                                    InventoryBestHeal = heal;
+                                    InventoryBestHeal = cell;
                                 }
                             }
                             break;
                         case ItemType.Boost:
                             if (inventoryBestBoost == null)
                             {
-                                InventoryBestBoost = (Boost)item;
+                                InventoryBestBoost = cell;
                             }
                             else
                             {
                                 Boost boost = (Boost)item;
-                                if (inventoryBestBoost.Efficacity < boost.Efficacity)
+                                if (((Boost)inventoryBestBoost.GetItem()).Efficacity < boost.Efficacity)
                                 {
-                                    InventoryBestBoost = boost;
+                                    InventoryBestBoost = cell;
                                 }
                             }
                             break;

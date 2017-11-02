@@ -22,13 +22,16 @@ namespace ProjetSynthese
             if (other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Player) || other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
             {
                 Health health = other.gameObject.GetComponentInChildren<Health>();
-                
-                //Check for AI
-                PlayerController playerController = other.gameObject.GetComponentInChildren<PlayerController>();
 
+                //Check for AI
+                IProtection protectionController = other.gameObject.GetComponentInChildren<PlayerController>() as IProtection;
+                if (protectionController == null)
+                {
+                    protectionController = other.gameObject.GetComponentInChildren<ActorAI>() as IProtection;
+                }
                 if (health != null)
                 {
-                    Item[] protectionItems = playerController.GetInventoryProtection();
+                    Item[] protectionItems = protectionController.GetInventoryProtection();
                     float helmetProtection = protectionItems[0] == null ? 0 : ((Helmet) protectionItems[0]).ProtectionValue;
                     float vestProtection = protectionItems[1] == null ? 0 : ((Vest) protectionItems[1]).ProtectionValue;
                     health.Hit(dommage - (dommage * (helmetProtection + vestProtection) / 100));

@@ -11,24 +11,20 @@ namespace ProjetSynthese
     public delegate void ChangeModeEventHandler(bool isPlayerInFirstPerson);
 
     [AddComponentMenu("Game/Control/PlayerController")]
-    public class PlayerController : NetworkGameScript, IProtection
+    public class PlayerController : NetworkGameScript
     {
         [Tooltip("Le menu de l'inventaire du joueur.")]
         [SerializeField]
         private Menu inventoryMenu;
-
         [Tooltip("Le menu de la map du joueur.")]
         [SerializeField]
         private Menu mapMenu;
-
         [Tooltip("Le transform contenant les armes du joueur.")]
         [SerializeField]
         private Transform weaponHolderTransform;
-
         [Tooltip("Le transform contenant les items du joueur.")]
         [SerializeField]
         private Transform inventoryHolderTransform;
-
         [Tooltip("La camera en première personne du joueur")]
         [SerializeField]
         private Camera firstPersonCamera;
@@ -45,41 +41,12 @@ namespace ProjetSynthese
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
         private BoostHealEventChannel boostHealEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
-        private NetworkTransformChild networkTransformChild;
 
         private Vector2 rotation = Vector2.zero;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
-
-        private bool isSwimming = false;
-
-        public bool IsSwimming
-        {
-            get
-            {
-                return isSwimming;
-            }
-
-            set
-            {
-                isSwimming = value;
-                Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
-                if (isSwimming)
-                {
-                    playerMover.SwitchSwimOn();
-                    gameObject.transform.position = new Vector3(gameObject.transform.position.x, -2, gameObject.transform.position.z);
-                    rigidbody.useGravity = false;
-                }
-                else
-                {
-                    playerMover.SwitchSwimOff();
-                    gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
-                    rigidbody.useGravity = true;
-                }
-            }
-        }
 
         public event UseEventHandler OnUse;
         public event ChangeModeEventHandler OnChangeMode;
@@ -119,7 +86,6 @@ namespace ProjetSynthese
                                             [EntityScope] ItemSensor itemSensor,
                                             [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater,
                                             [GameObjectScope] NetworkIdentity networkIdentity,
-                                            [GameObjectScope] NetworkTransformChild networkTransformChild,
                                             [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel,
                                             [EventChannelScope] BoostHealEventChannel boostHealEventChannel)
         {
@@ -134,17 +100,16 @@ namespace ProjetSynthese
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
             this.boostHealEventChannel = boostHealEventChannel;
             this.soldierAnimatorUpdater = soldierAnimatorUpdater;
-            this.networkTransformChild = networkTransformChild;
         }
 
         private void Start()
         {
+            InjectDependencies("InjectPlayerController");
+
             if (!isLocalPlayer)
             {
                 return;
             }
-
-            InjectDependencies("InjectPlayerController");
 
             keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
@@ -165,7 +130,7 @@ namespace ProjetSynthese
             deathCircleHurtEventChannel.OnEventPublished += OnPlayerOutDeathCircle;
             boostHealEventChannel.OnEventPublished += OnBoostHeal;
 
-            transform.position = Vector3.zero;
+            transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
             inventory.NotifyInventoryChange();
@@ -204,7 +169,6 @@ namespace ProjetSynthese
             {
                 return;
             }
-
             if (canCameraMove)
             {
                 if (!isFirstPerson)
@@ -219,7 +183,7 @@ namespace ProjetSynthese
 
                     distance.y = transform.position.y;
                     soldierAnimatorUpdater.ViewDirection = distance;
-                    soldierAnimatorUpdater.UpdateAnimator();
+
                 }
                 else
                 {
@@ -230,8 +194,12 @@ namespace ProjetSynthese
                     Quaternion localRotation = Quaternion.Euler(rotation.x, rotation.y, 0.0f);
                     firstPersonCamera.transform.rotation = localRotation;
                     transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+
+                    soldierAnimatorUpdater.ViewDirection = transform.localToWorldMatrix.GetColumn(2);
                 }
+
             }
+            soldierAnimatorUpdater.UpdateAnimator();
         }
 
         private void OnSwitchPrimaryWeapon()
@@ -256,15 +224,10 @@ namespace ProjetSynthese
         {
             if ((object)currentWeapon != null)
             {
-                networkTransformChild.target = currentWeapon.transform;
-
                 currentWeapon.gameObject.SetActive(isActive);
-                CmdSetActive(currentWeapon.gameObject, isActive);
-
                 currentWeapon.transform.position = weaponHolderTransform.position;
                 currentWeapon.transform.rotation = weaponHolderTransform.rotation;
                 currentWeapon.transform.Rotate(90, 0, 0);
-                CmdSetTransform(currentWeapon.GameObject, weaponHolderTransform.position, weaponHolderTransform.rotation, currentWeapon.transform.localScale);
             }
         }
 
@@ -302,7 +265,10 @@ namespace ProjetSynthese
         private void OnFire()
         {
             if ((object)currentWeapon != null)
+            {
                 currentWeapon.Use();
+                soldierAnimatorUpdater.Shoot();
+            }
         }
 
         private void OnInteract()
@@ -331,14 +297,14 @@ namespace ProjetSynthese
 
                 if (item.GetComponent<Item>() is Weapon)
                 {
-                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetWeaponHolderTransform());                    
+                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetWeaponHolderTransform());
                 }
                 else
                 {
-                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetInventoryHolderTransform());                    
+                    item.transform.SetParent(identity.GetComponent<PlayerController>().GetInventoryHolderTransform());
                 }
 
-                item.SetActive(false);                
+                item.SetActive(false);
             }
         }
 
@@ -349,19 +315,19 @@ namespace ProjetSynthese
                 int layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
                 item.gameObject.layer = layer;
                 List<GameObject> allItems = item.gameObject.GetAllChildrens().ToList();
-                allItems.ForEach(obj => obj.layer = layer);                
+                allItems.ForEach(obj => obj.layer = layer);
 
                 inventory.Add(item, gameObject);
 
                 if (item.GetComponent<Item>() is Weapon)
                 {
                     item.transform.SetParent(weaponHolderTransform);
-                    
+
                 }
                 else
                 {
                     item.transform.SetParent(inventoryHolderTransform);
-                    
+
                 }
 
                 item.SetActive(false);
@@ -417,7 +383,6 @@ namespace ProjetSynthese
         private void OnDeath()
         {
             Destroy(gameObject);
-            SetCursor(true, false);
         }
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
@@ -426,7 +391,7 @@ namespace ProjetSynthese
         }
 
         private void OnChangeViewMode()
-        {            
+        {
             isFirstPerson = !isFirstPerson;
 
             if (OnChangeMode != null) OnChangeMode(isFirstPerson);
@@ -443,13 +408,6 @@ namespace ProjetSynthese
         private void OnBoostHeal(BoostHealEvent boostHealEvent)
         {
             health.Heal(boostHealEvent.HealthPoints);
-        }
-
-        public Item[] GetInventoryProtection()
-        {
-            ObjectContainedInventory helmet = inventory.GetHelmet();
-            ObjectContainedInventory vest = inventory.GetVest();
-            return new[] { helmet == null ? null : vest.GetItem() , vest == null ? null : vest.GetItem() };
         }
     }
 }

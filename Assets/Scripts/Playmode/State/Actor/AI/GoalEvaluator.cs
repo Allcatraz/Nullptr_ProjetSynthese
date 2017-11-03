@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 namespace ProjetSynthese
 {
     public class GoalEvaluator

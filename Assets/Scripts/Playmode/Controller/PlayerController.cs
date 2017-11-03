@@ -11,7 +11,7 @@ namespace ProjetSynthese
     public delegate void ChangeModeEventHandler(bool isPlayerInFirstPerson);
 
     [AddComponentMenu("Game/Control/PlayerController")]
-    public class PlayerController : NetworkGameScript
+    public class PlayerController : NetworkGameScript, IProtection
     {
         [Tooltip("Le menu de l'inventaire du joueur.")]
         [SerializeField]

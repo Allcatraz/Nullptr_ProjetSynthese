@@ -42,7 +42,6 @@ namespace ProjetSynthese
 
             public void Update()
             {
-                HandleUiInput();
                 HandleActionInput();
                 HandleDirectionInput();
             }
@@ -52,65 +51,49 @@ namespace ProjetSynthese
                 get { return this; }
             }
 
-            private void HandleUiInput()
-            {
-                if (keyboard.GetKeyDown(KeyCode.UpArrow))
-                {
-                    NotifyUp();
-                }
-                if (keyboard.GetKeyDown(KeyCode.DownArrow))
-                {
-                    NotifyDown();
-                }
-                if (keyboard.GetKeyDown(KeyCode.Return))
-                {
-                    NotifyConfirm();
-                }
-            }
-
             private void HandleActionInput()
             {
-                if (keyboard.GetKeyDown(KeyCode.Tab))
+                if (keyboard.GetKeyDown(ActionKey.Instance.ToggleInventory))
                 {
                     NotifyToggleInventory();
                 }
-                if (keyboard.GetKeyDown(KeyCode.M))
+                if (keyboard.GetKeyDown(ActionKey.Instance.ToggleMap))
                 {
                     NotifyToggleMap();
                 }
-                if (keyboard.GetKeyDown(KeyCode.Escape))
+                if (keyboard.GetKeyDown(ActionKey.Instance.TogglePause))
                 {
                     NotifyTogglePause();
                 }
-                if (keyboard.GetKeyDown(KeyCode.LeftShift))
+                if (keyboard.GetKeyDown(ActionKey.Instance.ToggleSprint))
                 {
                     NotifySwitchSprintOn();
                 }
-                if (keyboard.GetKeyUp(KeyCode.LeftShift))
+                if (keyboard.GetKeyUp(ActionKey.Instance.ToggleSprint))
                 {
                     NotifySwitchSprintOff();
                 }
-                if (keyboard.GetKeyDown(KeyCode.Alpha1))
+                if (keyboard.GetKeyDown(ActionKey.Instance.SwitchToPrimaryWeapon))
                 {
                     NotifySwitchPrimaryWeapon();
                 }
-                if (keyboard.GetKeyDown(KeyCode.Alpha2))
+                if (keyboard.GetKeyDown(ActionKey.Instance.SwitchToSecondaryWeapon))
                 {
                     NotifySwitchSecondaryWeapon();
                 }
-                if (keyboard.GetKeyDown(KeyCode.Alpha3))
+                if (keyboard.GetKeyDown(ActionKey.Instance.SwitchToThirdWeapon))
                 {
                     NotifySwitchThridWeapon();
                 }
-                if (keyboard.GetKeyDown(KeyCode.F))
+                if (keyboard.GetKeyDown(ActionKey.Instance.Interact))
                 {
                     NotifyInteract();
                 }
-                if(keyboard.GetKeyDown(KeyCode.R))
+                if(keyboard.GetKeyDown(ActionKey.Instance.Reload))
                 {
                     NotifyReload();
                 }
-                if (keyboard.GetKeyDown(KeyCode.F9))
+                if (keyboard.GetKeyDown(ActionKey.Instance.ChangeViewMode))
                 {
                     NotifyChangeViewMode();
                 }
@@ -118,21 +101,21 @@ namespace ProjetSynthese
 
             private void HandleDirectionInput()
             {
-                if (keyboard.GetKey(KeyCode.W))
+                if (keyboard.GetKey(ActionKey.Instance.MoveFoward))
                 {
-                    NotifyMove(KeyCode.W);
+                    NotifyMove(ActionKey.Instance.MoveFoward);
                 }
-                if (keyboard.GetKey(KeyCode.A))
+                if (keyboard.GetKey(ActionKey.Instance.MoveLeft))
                 {
-                    NotifyMove(KeyCode.A);
+                    NotifyMove(ActionKey.Instance.MoveLeft);
                 }
-                if (keyboard.GetKey(KeyCode.S))
+                if (keyboard.GetKey(ActionKey.Instance.MoveBackward))
                 {
-                    NotifyMove(KeyCode.S);
+                    NotifyMove(ActionKey.Instance.MoveBackward);
                 }
-                if (keyboard.GetKey(KeyCode.D))
+                if (keyboard.GetKey(ActionKey.Instance.MoveRight))
                 {
-                    NotifyMove(KeyCode.D);
+                    NotifyMove(ActionKey.Instance.MoveRight);
                 }
             }
         }

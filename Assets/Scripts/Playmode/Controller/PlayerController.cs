@@ -47,6 +47,35 @@ namespace ProjetSynthese
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
+        private bool isSwimming = false;
+
+        public bool IsSwimming
+        {
+            get
+            {
+                return isSwimming;
+            }
+
+            set
+            {
+                isSwimming = value;
+                Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
+                if (isSwimming)
+                {
+                    playerMover.SwitchSwimOn();
+                    gameObject.transform.position = new Vector3(gameObject.transform.position.x, -2, gameObject.transform.position.z);
+                    rigidbody.useGravity = false;
+                }
+                else
+                {
+                    playerMover.SwitchSwimOff();
+                    gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+                    rigidbody.useGravity = true;
+                }
+
+            }
+        }
+
 
         public event UseEventHandler OnUse;
         public event ChangeModeEventHandler OnChangeMode;

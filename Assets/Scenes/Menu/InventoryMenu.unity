@@ -152,6 +152,11 @@ Prefab:
       propertyPath: m_Spacing
       value: 85
       objectReference: {fileID: 0}
+    - target: {fileID: 114951028042458240, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: radius
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3d96b1a6b15605c48af243df09595a75, type: 2}
   m_IsPrefabParent: 0

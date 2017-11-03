@@ -1324,7 +1324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e14a8e240f085f04b86a5faa8d213b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AIprefab: {fileID: 1893845116203462, guid: 799316fe2eaadff4abc0701c3c7f883f, type: 2}
+  aiPrefab: {fileID: 0}
 --- !u!114 &114091543535803372
 MonoBehaviour:
   m_ObjectHideFlags: 1

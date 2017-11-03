@@ -10,7 +10,6 @@ public class SoldierAnimatorUpdater : MonoBehaviour
     private Animator animator;
     public Vector3 MouvementDirection { get; set; }
     public Vector3 ViewDirection { get; set; }
-    private int leftHandLayer;
     private bool isShooting;
     private float iterpolatingDirectionBegin;
     private float interpolatingDirectionEnd;
@@ -63,15 +62,20 @@ public class SoldierAnimatorUpdater : MonoBehaviour
 
         }
 
+        isShooting = false;
         animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 0);
+        animator.SetBool("IsShooting", isShooting);
         animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 1);
+
 
     }
 
     public void Shoot()
     {
-        animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 1);
-        animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 0);
         isShooting = true;
+        animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 1);
+        animator.SetBool("IsShooting", isShooting);
+        animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 0);
+
     }
 }

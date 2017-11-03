@@ -50,7 +50,6 @@ namespace ProjetSynthese
         private void OnDestroy()
         {
             health.OnDeath -= OnDeath;
-            //drop item ici voir David
         }
 
         private void Update()

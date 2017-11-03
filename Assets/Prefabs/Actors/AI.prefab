@@ -38,6 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4067254600498252}
   - component: {fileID: 114431121773509688}
+  - component: {fileID: 114703202904301794}
   m_Layer: 11
   m_Name: InventoryObject
   m_TagString: Untagged
@@ -377,6 +378,18 @@ MonoBehaviour:
     i15: 63
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114703202904301794
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1307916714788544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 555202a3b7b84f07908f8a30b7fdcf25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cratePrefab: {fileID: 0}
 --- !u!114 &114856437695024692
 MonoBehaviour:
   m_ObjectHideFlags: 1

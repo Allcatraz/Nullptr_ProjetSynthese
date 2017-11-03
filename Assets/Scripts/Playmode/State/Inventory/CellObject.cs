@@ -24,6 +24,7 @@ namespace ProjetSynthese
         private GameObject oldParent;  
         private PlayerController player;
         private Inventory playerInventory;
+        private MouseInputSensor mouseInputSensor;
 
         public EquipWeaponAt EquipAt { get; set; }
         public CellObjectType DropAtType { get; set; }
@@ -52,11 +53,13 @@ namespace ProjetSynthese
 
         private void InjectCellObject([EntityScope] Text textName,
                                     [EntityScope] Button button,
-                                    [EntityScope] Image image)
+                                    [EntityScope] Image image,
+                                    [ApplicationScope] MouseInputSensor mouseInputSensor)
         {
             this.button = button;
             TextName = textName;
             ImageBackground = image;
+            this.mouseInputSensor = mouseInputSensor;
             EquipAt = EquipWeaponAt.Primary;
             button.onClick.AddListener(OnClickButton);
         }
@@ -82,7 +85,7 @@ namespace ProjetSynthese
 
         public void Drag()
         {
-            itemToDrag.transform.position = Input.mousePosition;
+            itemToDrag.transform.position = mouseInputSensor.GetPosition();
         }
 
         public void OnEndDrag()

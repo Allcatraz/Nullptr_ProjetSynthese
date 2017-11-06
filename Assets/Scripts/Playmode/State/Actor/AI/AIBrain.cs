@@ -43,11 +43,11 @@ namespace ProjetSynthese
         private ObjectContainedInventory inventoryBestHelmet = null;
         private ObjectContainedInventory inventoryBestVest = null;
 
-        public ObjectContainedInventory InventoryBestBag { get { return inventoryBestBag; } private set { inventoryBestBag = value; } }
+        public ObjectContainedInventory InventoryBestBag { get { return inventoryBestBag; }  set { inventoryBestBag = value; } }
         public ObjectContainedInventory InventoryBestHeal { get { return inventoryBestHeal; } set { inventoryBestHeal = value; } }
         public ObjectContainedInventory InventoryBestBoost { get { return inventoryBestBoost; } set { inventoryBestBoost = value; } }
-        public ObjectContainedInventory InventoryBestHelmet { get { return inventoryBestHelmet; } private set { inventoryBestHelmet = value; } }
-        public ObjectContainedInventory InventoryBestVest { get { return inventoryBestVest; } private set { inventoryBestVest = value; } }
+        public ObjectContainedInventory InventoryBestHelmet { get { return inventoryBestHelmet; }  set { inventoryBestHelmet = value; } }
+        public ObjectContainedInventory InventoryBestVest { get { return inventoryBestVest; }  set { inventoryBestVest = value; } }
 
 
 
@@ -201,7 +201,6 @@ namespace ProjetSynthese
             {
                 nextState = AIState.Explore;
             }
-
             return nextState;
         }
 

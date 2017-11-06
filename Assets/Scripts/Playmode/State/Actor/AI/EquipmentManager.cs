@@ -35,6 +35,7 @@
                             else
                             {
                                 Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
+                                Actor.Brain.HasPrimaryWeaponEquipped = false;
                             }
                         }
                     }
@@ -58,6 +59,7 @@
                 {
                    Actor.AIInventory.EquipVest(Actor.Brain.InventoryBestVest);
                    Actor.Brain.HasVestEquipped = true;
+                   Actor.Brain.InventoryBestVest = null;
                 }
             }
         }
@@ -77,6 +79,7 @@
                 {
                     Actor.AIInventory.EquipHelmet(Actor.Brain.InventoryBestHelmet);
                     Actor.Brain.HasHelmetEquipped = true;
+                    Actor.Brain.InventoryBestHelmet = null;
                 }
             }
         }
@@ -97,6 +100,7 @@
                 {
                     Actor.AIInventory.EquipBag(Actor.Brain.InventoryBestBag);
                     Actor.Brain.HasBagEquipped = true;
+                    Actor.Brain.InventoryBestBag = null;
                 }
             }
         }

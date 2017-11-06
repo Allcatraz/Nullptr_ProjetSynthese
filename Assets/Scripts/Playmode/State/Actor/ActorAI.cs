@@ -91,5 +91,9 @@ namespace ProjetSynthese
             return new[] { helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem() };
         }
 
+        public void ServerSetActive( GameObject item,bool isActive)
+        {
+            CmdSetActive(item, isActive);
+        }
     }
 }

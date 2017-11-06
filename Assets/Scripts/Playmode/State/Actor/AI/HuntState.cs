@@ -25,7 +25,7 @@ namespace ProjetSynthese
                 aiController.FindTargetItemMapDestination(actor);
             }
             float lootGoalLevel = actor.Brain.goalEvaluator.EvaluateLootGoal();
-            float trackGoalLevel = actor.Brain.goalEvaluator.EvaluateLootGoal();
+            float trackGoalLevel = actor.Brain.goalEvaluator.EvaluateTrackGoal();
             if ((lootGoalLevel > trackGoalLevel) && aiController.ItemTargetDestinationIsKnown)
             {
                 aiController.AIMoveTarget = AIController.MoveTarget.Item;

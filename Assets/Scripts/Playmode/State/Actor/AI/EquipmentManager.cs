@@ -45,7 +45,7 @@
         }
         public void SelectVest()
         {
-            if (Actor.Brain.HasVestEquipped)
+            if (Actor.Brain.HasVestEquipped && Actor.Brain.InventoryBestVest != null)
             {
                 if(((Vest)Actor.Brain.InventoryBestVest.GetItem()).ProtectionValue >
                ((Vest)Actor.AIInventory.GetVest().GetItem()).ProtectionValue)
@@ -65,7 +65,7 @@
         }
         public void SelectHelmet()
         {
-            if (Actor.Brain.HasHelmetEquipped)
+            if (Actor.Brain.HasHelmetEquipped && Actor.Brain.InventoryBestHelmet!=null)
             {
                 if (((Helmet)Actor.Brain.InventoryBestHelmet.GetItem()).ProtectionValue >
                ((Helmet)Actor.AIInventory.GetHelmet().GetItem()).ProtectionValue)
@@ -86,7 +86,7 @@
 
         public void SelectBag()
         {
-            if (Actor.Brain.HasBagEquipped)
+            if (Actor.Brain.HasBagEquipped && Actor.Brain.InventoryBestBag != null)
             {
                 if (((Bag)Actor.Brain.InventoryBestBag.GetItem()).Capacity >
                ((Bag)Actor.AIInventory.GetBag().GetItem()).Capacity)

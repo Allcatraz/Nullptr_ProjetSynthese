@@ -43,11 +43,11 @@ namespace ProjetSynthese
         private ObjectContainedInventory inventoryBestHelmet = null;
         private ObjectContainedInventory inventoryBestVest = null;
 
-        public ObjectContainedInventory InventoryBestBag { get { return inventoryBestBag; }  set { inventoryBestBag = value; } }
+        public ObjectContainedInventory InventoryBestBag { get { return inventoryBestBag; } set { inventoryBestBag = value; } }
         public ObjectContainedInventory InventoryBestHeal { get { return inventoryBestHeal; } set { inventoryBestHeal = value; } }
         public ObjectContainedInventory InventoryBestBoost { get { return inventoryBestBoost; } set { inventoryBestBoost = value; } }
-        public ObjectContainedInventory InventoryBestHelmet { get { return inventoryBestHelmet; }  set { inventoryBestHelmet = value; } }
-        public ObjectContainedInventory InventoryBestVest { get { return inventoryBestVest; }  set { inventoryBestVest = value; } }
+        public ObjectContainedInventory InventoryBestHelmet { get { return inventoryBestHelmet; } set { inventoryBestHelmet = value; } }
+        public ObjectContainedInventory InventoryBestVest { get { return inventoryBestVest; } set { inventoryBestVest = value; } }
 
 
 
@@ -190,6 +190,10 @@ namespace ProjetSynthese
                             nextState = AIState.Hunt;
                         }
                     }
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
                 }
                 else if (FoundItemInPerceptionRange())
                 {
@@ -233,7 +237,6 @@ namespace ProjetSynthese
                     nextState = AIState.Loot;
                 }
             }
-
             if (nextState == AIState.None)
             {
                 nextState = AIState.Explore;
@@ -256,12 +259,11 @@ namespace ProjetSynthese
                         {
                             nextState = AIState.Flee;
                         }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
                     }
-
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
                 }
                 else
                 {
@@ -308,6 +310,10 @@ namespace ProjetSynthese
                             nextState = AIState.Hunt;
                         }
                     }
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
                 }
                 else if (FoundItemInPerceptionRange())
                 {
@@ -340,6 +346,10 @@ namespace ProjetSynthese
                         {
                             nextState = AIState.Hunt;
                         }
+                    }
+                    else
+                    {
+                        nextState = AIState.Hunt;
                     }
                 }
                 else if (FoundItemInPerceptionRange())
@@ -663,7 +673,7 @@ namespace ProjetSynthese
                 foreach (ObjectContainedInventory cell in Actor.AIInventory.ListInventory)
                 {
                     item = cell.GetItem();
-                    
+
                     switch (item.Type)
                     {
                         case ItemType.Helmet:
@@ -671,13 +681,13 @@ namespace ProjetSynthese
                             {
                                 InventoryBestHelmet = cell;
                             }
-                            else 
+                            else
                             {
                                 Helmet helmet = (Helmet)item;
                                 if (((Helmet)inventoryBestHelmet.GetItem()).ProtectionValue < helmet.ProtectionValue)
                                 {
                                     InventoryBestHelmet = cell;
-                                } 
+                                }
                             }
                             break;
                         case ItemType.Vest:

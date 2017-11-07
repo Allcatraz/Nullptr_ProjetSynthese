@@ -164,7 +164,7 @@ namespace ProjetSynthese
             }
             if (nonEquippedNeareastItemIndex != -1)
             {
-                nonEquippedNearestItem = itemsInPerceptionRange[nonEquippedNeareastItemIndex].collider.gameObject.GetComponent<Item>();
+                nonEquippedNearestItem = itemsInPerceptionRange[nonEquippedNeareastItemIndex].collider.gameObject.GetComponentInParent<Item>();
             }
             return nonEquippedNearestItem;
 

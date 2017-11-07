@@ -21,6 +21,7 @@ namespace ProjetSynthese
 
         private ObjectContainedInventory primaryWeapon;
         private ObjectContainedInventory secondaryWeapon;
+        private ObjectContainedInventory grenade;
         private ObjectContainedInventory helmet;
         private ObjectContainedInventory vest;
         private ObjectContainedInventory bag;
@@ -35,6 +36,45 @@ namespace ProjetSynthese
         private void Start()
         {
             Parent = gameObject.transform.parent.gameObject;
+        }
+
+        public void ResetInventory()
+        {
+            currentWeight = 0;
+            primaryWeapon = null;
+            secondaryWeapon = null;
+            helmet = null;
+            vest = null;
+            ListInventory = null;
+            grenade = null;
+        }
+
+        public void NotifyInventoryChange()
+        {
+            if (InventoryChange != null) InventoryChange();
+        }
+
+        public void NotifySpawnDroppedItem(ObjectContainedInventory itemToSpawn)
+        {
+            if (SpawnItem != null) SpawnItem(itemToSpawn);
+        }
+
+        public void EquipGrenade(ObjectContainedInventory itemToEquip)
+        {
+            if (grenade != null)
+            {
+                UnequipGrenade();
+            }
+            grenade = itemToEquip;
+            CheckMultiplePresenceAndRemove(itemToEquip);
+        }
+
+        public void UnequipGrenade()
+        {
+            if (!IsItemPresentInInventory(grenade)) ListInventory.Add(grenade);
+            AddWeight(grenade.GetItem().GetWeight());
+            grenade = null;
+            NotifyInventoryChange();
         }
 
         public void EquipBag(ObjectContainedInventory itemToEquip)
@@ -56,16 +96,6 @@ namespace ProjetSynthese
             bag = null;
             NotifyInventoryChange();
 
-        }
-
-        public void ResetInventory()
-        {
-            currentWeight = 0;
-            primaryWeapon = null;
-            secondaryWeapon = null;
-            helmet = null;
-            vest = null;
-            ListInventory = null;
         }
 
         public void EquipWeaponAt(EquipWeaponAt selection, ObjectContainedInventory itemToEquip)
@@ -108,16 +138,6 @@ namespace ProjetSynthese
             }
         }
 
-        public void NotifyInventoryChange()
-        {
-            if (InventoryChange != null) InventoryChange();
-        }
-
-        public void NotifySpawnDroppedItem(ObjectContainedInventory itemToSpawn)
-        {
-            if (SpawnItem != null) SpawnItem(itemToSpawn);
-        }
-
         public void EquipHelmet(ObjectContainedInventory itemToEquip)
         {
             if (helmet != null)
@@ -152,6 +172,11 @@ namespace ProjetSynthese
             AddWeight(vest.GetItem().GetWeight());
             vest = null;
             NotifyInventoryChange();
+        }
+
+        public ObjectContainedInventory GetGrenade()
+        {
+            return grenade;
         }
 
         public ObjectContainedInventory GetBag()

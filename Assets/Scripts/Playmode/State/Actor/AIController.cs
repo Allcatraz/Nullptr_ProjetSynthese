@@ -120,7 +120,9 @@ namespace ProjetSynthese
                 case AIBrain.OpponentType.AI:
                 case AIBrain.OpponentType.Player:
                     Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
-                    weapon.transform.position = Actor.transform.position;
+                    Vector3 target = Actor.transform.position;
+                    target.y = 0.0f;
+                    weapon.transform.position = target;
                     weapon.transform.rotation = Actor.transform.rotation;
                     weapon.Use();
                     break;

@@ -45,12 +45,14 @@ namespace ProjetSynthese
             {
                 if (aiController.OpponentTargetDestinationIsKnown)
                 {
-                    aiController.AIMoveTarget = AIController.MoveTarget.Opponent;
-                    actor.ActorController.Move(actor);
-
                     if (aiController.HasReachedOpponentTargetDestination(actor))
                     {
                         aiController.OpponentTargetDestinationIsKnown = false;
+                    }
+                    else
+                    {
+                        aiController.AIMoveTarget = AIController.MoveTarget.Opponent;
+                        actor.ActorController.Move(actor);
                     }
                 }
             }

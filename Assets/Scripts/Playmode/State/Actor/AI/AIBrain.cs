@@ -21,6 +21,7 @@ namespace ProjetSynthese
         public readonly float HelmetProtectionMaximum = 50.0f;
         public readonly float VestProtectionMaximum = 50.0f;
 
+        private readonly float WeaponEffectiveRangeDamping = 0.1f;
 
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
@@ -229,7 +230,15 @@ namespace ProjetSynthese
                     }
                     else
                     {
-                        nextState = AIState.Hunt;
+                        if (ExistShootableOpponent())
+                        {
+                            nextState = AIState.Combat;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                        
                     }
                 }
                 else if (FoundItemInPerceptionRange())
@@ -452,7 +461,7 @@ namespace ProjetSynthese
                 Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (equippedPrimaryWeapon != null)
                 {
-                    float range = equippedPrimaryWeapon.EffectiveWeaponRange;
+                    float range = equippedPrimaryWeapon.EffectiveWeaponRange* WeaponEffectiveRangeDamping;
                     if (sqrtTargetDistance < range * range)
                     {
                         return true;

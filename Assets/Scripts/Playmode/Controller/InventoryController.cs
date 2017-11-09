@@ -105,17 +105,26 @@ namespace ProjetSynthese
             inventoryChangedEventChannel.OnEventPublished -= OnInventoryChanged;
         }
 
+        private void InstantiateCellObject(GameObject cellPrefabs, Transform grid, ObjectContainedInventory item, EquipWeaponAt equipWeaponAt = EquipWeaponAt.Primary)
+        {
+            GameObject gameCellObject = Instantiate(cellPrefabs);
+            gameCellObject.transform.SetParent(grid, false);
+            CellObject cellObject = gameCellObject.GetComponentInChildren<CellObject>();
+            cellObject.Inventory = inventory;
+            cellObject.Control = this;
+            cellObject.InstantiateCellObjectFromCell(item);
+            if (cellPrefabs == cellEquippedWeaponPrefabs)
+            {
+                cellObject.EquipAt = equipWeaponAt;
+            }
+        }
+
         public void CreateCellsForInventoryPlayer()
         {
             ClearGrid(gridInventoryPlayer);
             foreach (ObjectContainedInventory item in inventory.ListInventory)
             {
-                GameObject gameCellObject = Instantiate(cellInventoryPrefab);
-                gameCellObject.transform.SetParent(gridInventoryPlayer, false);
-                CellObject cellObject = gameCellObject.GetComponentInChildren<CellObject>();
-                cellObject.Inventory = inventory;
-                cellObject.Control = this;
-                cellObject.InstantiateCellObjectFromCell(item);
+                InstantiateCellObject(cellInventoryPrefab, gridInventoryPlayer, item);
             }
         }
 
@@ -124,23 +133,15 @@ namespace ProjetSynthese
             ClearGrid(gridWeaponEquippedByPlayer);
             if (inventory.GetPrimaryWeapon() != null)
             {
-                GameObject cellWeaponTemp1 = Instantiate(cellEquippedWeaponPrefabs);
-                cellWeaponTemp1.transform.SetParent(gridWeaponEquippedByPlayer, false);
-                CellObject cellObject = cellWeaponTemp1.GetComponentInChildren<CellObject>();
-                cellObject.Inventory = inventory;
-                cellObject.Control = this;
-                cellObject.InstantiateCellObjectFromCell(inventory.GetPrimaryWeapon());
-                cellObject.EquipAt = EquipWeaponAt.Primary;
+                InstantiateCellObject(cellEquippedWeaponPrefabs, gridWeaponEquippedByPlayer, inventory.GetPrimaryWeapon(), EquipWeaponAt.Primary);
             }
             if (inventory.GetSecondaryWeapon() != null)
             {
-                GameObject cellWeaponTemp2 = Instantiate(cellEquippedWeaponPrefabs);
-                cellWeaponTemp2.transform.SetParent(gridWeaponEquippedByPlayer, false);
-                CellObject cellObject = cellWeaponTemp2.GetComponentInChildren<CellObject>();
-                cellObject.Inventory = inventory;
-                cellObject.Control = this;
-                cellObject.InstantiateCellObjectFromCell(inventory.GetSecondaryWeapon());
-                cellObject.EquipAt = EquipWeaponAt.Secondary;
+                InstantiateCellObject(cellEquippedWeaponPrefabs, gridWeaponEquippedByPlayer, inventory.GetSecondaryWeapon(), EquipWeaponAt.Secondary);
+            }
+            if (inventory.GetGrenade() != null)
+            {
+                InstantiateCellObject(cellEquippedWeaponPrefabs, gridWeaponEquippedByPlayer, inventory.GetGrenade());
             }
         }
 
@@ -149,31 +150,15 @@ namespace ProjetSynthese
             ClearGrid(gridProtectionPlayer);
             if (inventory.GetVest() != null)
             {
-                GameObject cellProtectionTemp1 = Instantiate(cellProtectionItemPrefabs);
-                cellProtectionTemp1.transform.SetParent(gridProtectionPlayer, false);
-                CellObject cellObject = cellProtectionTemp1.GetComponentInChildren<CellObject>();
-                cellObject.Inventory = inventory;
-                cellObject.Control = this;
-                cellObject.InstantiateCellObjectFromCell(inventory.GetVest());
+                InstantiateCellObject(cellProtectionItemPrefabs, gridProtectionPlayer, inventory.GetVest());
             }
-
             if (inventory.GetHelmet() != null)
             {
-                GameObject cellProtectionTemp2 = Instantiate(cellProtectionItemPrefabs);
-                cellProtectionTemp2.transform.SetParent(gridProtectionPlayer, false);
-                CellObject cellObject = cellProtectionTemp2.GetComponentInChildren<CellObject>();
-                cellObject.Inventory = inventory;
-                cellObject.Control = this;
-                cellObject.InstantiateCellObjectFromCell(inventory.GetHelmet());
+                InstantiateCellObject(cellProtectionItemPrefabs, gridProtectionPlayer, inventory.GetHelmet());
             }
             if (inventory.GetBag() != null)
             {
-                GameObject cellProtectionTemp3 = Instantiate(cellProtectionItemPrefabs);
-                cellProtectionTemp3.transform.SetParent(gridProtectionPlayer, false);
-                CellObject cellObject = cellProtectionTemp3.GetComponentInChildren<CellObject>();
-                cellObject.Inventory = inventory;
-                cellObject.Control = this;
-                cellObject.InstantiateCellObjectFromCell(inventory.GetBag());
+                InstantiateCellObject(cellProtectionItemPrefabs, gridProtectionPlayer, inventory.GetBag());
             }
         }
 
@@ -185,12 +170,7 @@ namespace ProjetSynthese
             {
                 foreach (ObjectContainedInventory item in inventoryGround.ListInventory)
                 {
-                    GameObject gameCellObject = Instantiate(cellGroundPrefab);
-                    gameCellObject.transform.SetParent(gridGroundInventory, false);
-                    CellObject cellObject = gameCellObject.GetComponentInChildren<CellObject>();
-                    cellObject.Inventory = inventoryGround;
-                    cellObject.Control = this;
-                    cellObject.InstantiateCellObjectFromCell(item);
+                    InstantiateCellObject(cellGroundPrefab, gridGroundInventory, item);
                 }
             }
         }

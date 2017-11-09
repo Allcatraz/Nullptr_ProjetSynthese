@@ -71,10 +71,13 @@ namespace ProjetSynthese
 
         public void UnequipGrenade()
         {
-            if (!IsItemPresentInInventory(grenade)) ListInventory.Add(grenade);
-            AddWeight(grenade.GetItem().GetWeight());
-            grenade = null;
-            NotifyInventoryChange();
+            if (grenade != null)
+            {
+                if (!IsItemPresentInInventory(grenade)) ListInventory.Add(grenade);
+                AddWeight(grenade.GetItem().GetWeight());
+                grenade = null;
+                NotifyInventoryChange();
+            }
         }
 
         public void EquipBag(ObjectContainedInventory itemToEquip)
@@ -90,12 +93,14 @@ namespace ProjetSynthese
 
         public void UnequipBag()
         {
-            if (!IsItemPresentInInventory(bag)) ListInventory.Add(bag);
-            ChangeMaxWeight((bag.GetItem() as Bag).Capacity, false);
-            AddWeight(bag.GetItem().GetWeight());
-            bag = null;
-            NotifyInventoryChange();
-
+            if (bag != null)
+            {
+                if (!IsItemPresentInInventory(bag)) ListInventory.Add(bag);
+                ChangeMaxWeight((bag.GetItem() as Bag).Capacity, false);
+                AddWeight(bag.GetItem().GetWeight());
+                bag = null;
+                NotifyInventoryChange();
+            }
         }
 
         public void EquipWeaponAt(EquipWeaponAt selection, ObjectContainedInventory itemToEquip)
@@ -150,10 +155,13 @@ namespace ProjetSynthese
 
         public void UnequipHelmet()
         {
-            if (!IsItemPresentInInventory(helmet)) ListInventory.Add(helmet);
-            AddWeight(helmet.GetItem().GetWeight());
-            helmet = null;
-            NotifyInventoryChange();
+            if (helmet != null)
+            {
+                if (!IsItemPresentInInventory(helmet)) ListInventory.Add(helmet);
+                AddWeight(helmet.GetItem().GetWeight());
+                helmet = null;
+                NotifyInventoryChange();
+            }      
         }
 
         public void EquipVest(ObjectContainedInventory itemToEquip)
@@ -168,10 +176,13 @@ namespace ProjetSynthese
 
         public void UnequipVest()
         {
-            if (!IsItemPresentInInventory(vest)) ListInventory.Add(vest);
-            AddWeight(vest.GetItem().GetWeight());
-            vest = null;
-            NotifyInventoryChange();
+            if (vest != null)
+            {
+                if (!IsItemPresentInInventory(vest)) ListInventory.Add(vest);
+                AddWeight(vest.GetItem().GetWeight());
+                vest = null;
+                NotifyInventoryChange();
+            }  
         }
 
         public ObjectContainedInventory GetGrenade()

@@ -30,6 +30,10 @@ namespace ProjetSynthese
         [SerializeField]
         private int dommage;
 
+        [Tooltip("Type de munition approprié pour l'arme.")]
+        [SerializeField]
+        private AmmoType ammoType;
+
         public event OnMunitionChanged OnMunitionChanged;
 
         private const int Weight = 0;
@@ -40,6 +44,8 @@ namespace ProjetSynthese
         }
 
         public int MagazineAmount { get; set; }
+
+        public AmmoType WeaponAmmoType{ get { return ammoType; } private set { ammoType = value; } }
 
         public float EffectiveWeaponRange
         {

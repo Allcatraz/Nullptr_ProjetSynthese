@@ -25,7 +25,7 @@ namespace ProjetSynthese
                 aiController.FindTargetItemMapDestination(actor);
             }
             float lootGoalLevel = actor.Brain.goalEvaluator.EvaluateLootGoal();
-            float trackGoalLevel = actor.Brain.goalEvaluator.EvaluateLootGoal();
+            float trackGoalLevel = actor.Brain.goalEvaluator.EvaluateTrackGoal();
             if ((lootGoalLevel > trackGoalLevel) && aiController.ItemTargetDestinationIsKnown)
             {
                 aiController.AIMoveTarget = AIController.MoveTarget.Item;
@@ -45,12 +45,14 @@ namespace ProjetSynthese
             {
                 if (aiController.OpponentTargetDestinationIsKnown)
                 {
-                    aiController.AIMoveTarget = AIController.MoveTarget.Opponent;
-                    actor.ActorController.Move(actor);
-
                     if (aiController.HasReachedOpponentTargetDestination(actor))
                     {
                         aiController.OpponentTargetDestinationIsKnown = false;
+                    }
+                    else
+                    {
+                        aiController.AIMoveTarget = AIController.MoveTarget.Opponent;
+                        actor.ActorController.Move(actor);
                     }
                 }
             }

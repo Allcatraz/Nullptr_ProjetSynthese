@@ -53,7 +53,7 @@ namespace ProjetSynthese
                 }
             }
         }
-        
+
         private const float WalkingSpeed = 4.0f;
         private const float JoggingSpeed = 5.5f;
         private const float RunningSpeed = 7.0f;
@@ -68,7 +68,7 @@ namespace ProjetSynthese
 
         private const float FloorYOffset = 1.0f;
 
-        public enum ControllerMode { None, Explore, Loot, Combat, Flee,Hunt }
+        public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -119,10 +119,11 @@ namespace ProjetSynthese
                     break;
                 case AIBrain.OpponentType.AI:
                 case AIBrain.OpponentType.Player:
-                    Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
-                    weapon.transform.position = Actor.transform.position;
-                    weapon.transform.rotation = Actor.transform.rotation;
-                    weapon.Use();
+                    if (Actor.EquipmentManager.WeaponReadyToUse())
+                    {
+
+                        Actor.EquipmentManager.GetWeapon().Use();
+                    }
                     break;
                 default:
                     break;
@@ -270,7 +271,7 @@ namespace ProjetSynthese
             }
             else
             {
-                
+
                 Vector3 unitZ = actor.transform.forward;
                 Quaternion rotation = actor.transform.rotation;
                 Quaternion rot180 = Quaternion.AngleAxis(180, actor.transform.forward);

@@ -50,7 +50,6 @@ namespace ProjetSynthese
         private void OnDestroy()
         {
             health.OnDeath -= OnDeath;
-            //drop item ici voir David
         }
 
         private void Update()
@@ -92,5 +91,9 @@ namespace ProjetSynthese
             return new[] { helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem() };
         }
 
+        public void ServerSetActive( GameObject item,bool isActive)
+        {
+            CmdSetActive(item, isActive);
+        }
     }
 }

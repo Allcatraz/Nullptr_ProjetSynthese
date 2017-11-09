@@ -21,6 +21,7 @@ namespace ProjetSynthese
         public readonly float HelmetProtectionMaximum = 50.0f;
         public readonly float VestProtectionMaximum = 50.0f;
 
+        private readonly float WeaponEffectiveRangeDamping = 0.1f;
 
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
@@ -43,11 +44,11 @@ namespace ProjetSynthese
         private ObjectContainedInventory inventoryBestHelmet = null;
         private ObjectContainedInventory inventoryBestVest = null;
 
-        public ObjectContainedInventory InventoryBestBag { get { return inventoryBestBag; } private set { inventoryBestBag = value; } }
+        public ObjectContainedInventory InventoryBestBag { get { return inventoryBestBag; } set { inventoryBestBag = value; } }
         public ObjectContainedInventory InventoryBestHeal { get { return inventoryBestHeal; } set { inventoryBestHeal = value; } }
         public ObjectContainedInventory InventoryBestBoost { get { return inventoryBestBoost; } set { inventoryBestBoost = value; } }
-        public ObjectContainedInventory InventoryBestHelmet { get { return inventoryBestHelmet; } private set { inventoryBestHelmet = value; } }
-        public ObjectContainedInventory InventoryBestVest { get { return inventoryBestVest; } private set { inventoryBestVest = value; } }
+        public ObjectContainedInventory InventoryBestHelmet { get { return inventoryBestHelmet; } set { inventoryBestHelmet = value; } }
+        public ObjectContainedInventory InventoryBestVest { get { return inventoryBestVest; } set { inventoryBestVest = value; } }
 
 
 
@@ -190,6 +191,10 @@ namespace ProjetSynthese
                             nextState = AIState.Hunt;
                         }
                     }
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
                 }
                 else if (FoundItemInPerceptionRange())
                 {
@@ -201,7 +206,6 @@ namespace ProjetSynthese
             {
                 nextState = AIState.Explore;
             }
-
             return nextState;
         }
 
@@ -226,7 +230,15 @@ namespace ProjetSynthese
                     }
                     else
                     {
-                        nextState = AIState.Hunt;
+                        if (ExistShootableOpponent())
+                        {
+                            nextState = AIState.Combat;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                        
                     }
                 }
                 else if (FoundItemInPerceptionRange())
@@ -234,7 +246,6 @@ namespace ProjetSynthese
                     nextState = AIState.Loot;
                 }
             }
-
             if (nextState == AIState.None)
             {
                 nextState = AIState.Explore;
@@ -257,12 +268,11 @@ namespace ProjetSynthese
                         {
                             nextState = AIState.Flee;
                         }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
                     }
-
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
                 }
                 else
                 {
@@ -309,6 +319,10 @@ namespace ProjetSynthese
                             nextState = AIState.Hunt;
                         }
                     }
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
                 }
                 else if (FoundItemInPerceptionRange())
                 {
@@ -341,6 +355,10 @@ namespace ProjetSynthese
                         {
                             nextState = AIState.Hunt;
                         }
+                    }
+                    else
+                    {
+                        nextState = AIState.Hunt;
                     }
                 }
                 else if (FoundItemInPerceptionRange())
@@ -428,11 +446,13 @@ namespace ProjetSynthese
             if (playerInPerceptionRange != null)
             {
                 directionVector = playerInPerceptionRange.transform.position - Actor.transform.position;
+                directionVector.y = 0.0f;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
             }
             else if (aiInPerceptionRange != null)
             {
                 directionVector = aiInPerceptionRange.transform.position - Actor.transform.position;
+                directionVector.y = 0.0f;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
             }
 
@@ -441,7 +461,7 @@ namespace ProjetSynthese
                 Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (equippedPrimaryWeapon != null)
                 {
-                    float range = equippedPrimaryWeapon.EffectiveWeaponRange;
+                    float range = equippedPrimaryWeapon.EffectiveWeaponRange* WeaponEffectiveRangeDamping;
                     if (sqrtTargetDistance < range * range)
                     {
                         return true;
@@ -662,7 +682,7 @@ namespace ProjetSynthese
                 foreach (ObjectContainedInventory cell in Actor.AIInventory.ListInventory)
                 {
                     item = cell.GetItem();
-                    
+
                     switch (item.Type)
                     {
                         case ItemType.Helmet:
@@ -670,13 +690,13 @@ namespace ProjetSynthese
                             {
                                 InventoryBestHelmet = cell;
                             }
-                            else 
+                            else
                             {
                                 Helmet helmet = (Helmet)item;
                                 if (((Helmet)inventoryBestHelmet.GetItem()).ProtectionValue < helmet.ProtectionValue)
                                 {
                                     InventoryBestHelmet = cell;
-                                } 
+                                }
                             }
                             break;
                         case ItemType.Vest:

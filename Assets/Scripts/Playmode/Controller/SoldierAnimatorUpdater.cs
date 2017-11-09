@@ -10,14 +10,26 @@ public class SoldierAnimatorUpdater : MonoBehaviour
     private Animator animator;
     public Vector3 MouvementDirection { get; set; }
     public Vector3 ViewDirection { get; set; }
-    private bool isShooting;
-    private float iterpolatingDirectionBegin;
-    private float interpolatingDirectionEnd;
-    private float actualDirection;
-    private float interpolant;
-    private bool isInterpoling;
 
-    private float lastFrameDirection;
+    private bool isShooting;
+
+    private InterpolationFactors directionInterpolationFactors;
+    private InterpolationFactors angleInterpolationFactors;
+
+
+
+    private void Awake()
+    {
+        directionInterpolationFactors = new InterpolationFactors();
+        directionInterpolationFactors.animatorValueName = "DirectionFactor";
+        directionInterpolationFactors.diffFactor = 0.5f;
+        directionInterpolationFactors.interpolatingPerFrameValue = 0.02f;
+
+        angleInterpolationFactors = new InterpolationFactors();
+        angleInterpolationFactors.animatorValueName = "Angle";
+        angleInterpolationFactors.diffFactor = 2;
+        angleInterpolationFactors.interpolatingPerFrameValue = 0.02f;
+    }
 
     public void UpdateAnimator()
     {
@@ -27,55 +39,70 @@ public class SoldierAnimatorUpdater : MonoBehaviour
         {
             double cosTheta = Vector3.Dot(MouvementDirection, ViewDirection) / (mouvMagn * viewMagn);
 
+            cosTheta = cosTheta < -1 ? -1 : cosTheta;
+            cosTheta = cosTheta > 1 ? 1 : cosTheta;
             double angle = Math.Acos(cosTheta);
-            float angleDegree = Mathf.Rad2Deg * (float)angle;
 
-            float presentFrameDirection = Vector3.Dot(new Vector3(MouvementDirection.z * -1, 0, MouvementDirection.x).normalized, ViewDirection.normalized);
+            angleInterpolationFactors.presentFrame = Mathf.Rad2Deg * (float)angle;
 
-            if (Mathf.Abs(lastFrameDirection - presentFrameDirection) > 0.5f)
-            {
-                isInterpoling = true;
-                iterpolatingDirectionBegin = actualDirection;
-                interpolatingDirectionEnd = presentFrameDirection;
-                interpolant = 0;
-            }
+            directionInterpolationFactors.presentFrame = Vector3.Dot(new Vector3(MouvementDirection.z * -1, 0, MouvementDirection.x).normalized, ViewDirection.normalized);
 
-
-            if (isInterpoling == true)
-            {
-                actualDirection = Mathf.Lerp(iterpolatingDirectionBegin, interpolatingDirectionEnd, interpolant);
-                animator.SetFloat("DirectionFactor", actualDirection);
-                interpolant += 0.02f;
-                if (interpolant > 1)
-                {
-                    isInterpoling = false;
-                }
-            }
-
-            animator.SetFloat("Angle", angleDegree);
-
-
-            lastFrameDirection = presentFrameDirection;
+            InterpolateAnimation(ref angleInterpolationFactors);
+            InterpolateAnimation(ref directionInterpolationFactors);
         }
         else
         {
-
+            // TODO : Gèrer le idle
         }
 
-        isShooting = false;
-        animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 0);
-        animator.SetBool("IsShooting", isShooting);
-        animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 1);
 
 
+        //isShooting = false;
+        //animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 0);
+        //animator.SetBool("IsShooting", isShooting);
+        //animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 1);
+    }
+
+    private void InterpolateAnimation(ref InterpolationFactors factors)
+    {
+        if (Mathf.Abs(factors.lastFrame - factors.presentFrame) > factors.diffFactor)
+        {
+            factors.isInterpolating = true;
+            factors.begin = factors.actual;
+            factors.end = factors.presentFrame;
+            factors.interpolant = 0;
+        }
+
+        if (factors.isInterpolating == true)
+        {
+            factors.actual = Mathf.Lerp(factors.begin, factors.end, factors.interpolant);
+            animator.SetFloat(factors.animatorValueName, factors.actual);
+            factors.interpolant += factors.interpolatingPerFrameValue;
+            if (factors.interpolant > 1)
+            {
+                factors.isInterpolating = false;
+            }
+        }
+
+        factors.lastFrame = factors.presentFrame;
     }
 
     public void Shoot()
     {
-        isShooting = true;
-        animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 1);
-        animator.SetBool("IsShooting", isShooting);
-        animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 0);
+        //animator.Play("assault_combat_shoot", -1, 0f);
+    }
 
+    private struct InterpolationFactors
+    {
+        public float begin;
+        public float end;
+        public float actual;
+        public float interpolant;
+        public bool isInterpolating;
+        public float lastFrame;
+        public float presentFrame;
+        public float diffFactor;
+        public string animatorValueName;
+        public float interpolatingPerFrameValue;
     }
 }

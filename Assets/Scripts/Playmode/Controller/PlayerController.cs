@@ -295,8 +295,8 @@ namespace ProjetSynthese
         {
             if ((object)currentWeapon != null)
             {
-                currentWeapon.Use();
                 soldierAnimatorUpdater.Shoot();
+                currentWeapon.Use();
             }
         }
 

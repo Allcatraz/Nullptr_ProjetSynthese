@@ -53,7 +53,7 @@ namespace ProjetSynthese
                 }
             }
         }
-        
+
         private const float WalkingSpeed = 4.0f;
         private const float JoggingSpeed = 5.5f;
         private const float RunningSpeed = 7.0f;
@@ -68,7 +68,7 @@ namespace ProjetSynthese
 
         private const float FloorYOffset = 1.0f;
 
-        public enum ControllerMode { None, Explore, Loot, Combat, Flee,Hunt }
+        public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -120,15 +120,35 @@ namespace ProjetSynthese
                 case AIBrain.OpponentType.AI:
                 case AIBrain.OpponentType.Player:
                     Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
-                    Vector3 target = Actor.transform.position;
-                    target.y = 0.0f;
-                    weapon.transform.position = target;
-                    weapon.transform.rotation = Actor.transform.rotation;
-                    weapon.Use();
+                    if (CheckWeaponAmmunitionStatus(weapon))
+                    {
+                        Vector3 target = Actor.transform.position;
+                        target.y = 0.0f;
+                        weapon.transform.position = target;
+                        weapon.transform.rotation = Actor.transform.rotation;
+                        weapon.Use();
+                    }
+                    else
+                    {
+                        Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
+                        Actor.Brain.HasPrimaryWeaponEquipped = false;
+                    }
+
                     break;
                 default:
                     break;
             }
+        }
+
+        private bool CheckWeaponAmmunitionStatus(Weapon currentEquippedWeapon)
+        {
+            bool weaponCanFire = false;
+            if (currentEquippedWeapon.MagazineAmount > 0 || currentEquippedWeapon.Reload())
+            {
+                weaponCanFire = true;
+            }
+            
+            return weaponCanFire;
         }
 
         public void Move(ActorAI actor)
@@ -272,7 +292,7 @@ namespace ProjetSynthese
             }
             else
             {
-                
+
                 Vector3 unitZ = actor.transform.forward;
                 Quaternion rotation = actor.transform.rotation;
                 Quaternion rot180 = Quaternion.AngleAxis(180, actor.transform.forward);

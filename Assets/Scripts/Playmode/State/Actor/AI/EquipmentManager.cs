@@ -27,7 +27,7 @@
                         {
                             Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
                             Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
-                            if (weapon.Reload())
+                            if (weapon.Reload(Actor.AIInventory))
                             {
                                 Actor.Brain.HasPrimaryWeaponEquipped = true;
                                 break;

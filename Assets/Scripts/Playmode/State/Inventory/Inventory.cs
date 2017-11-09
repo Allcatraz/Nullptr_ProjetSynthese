@@ -320,6 +320,30 @@ namespace ProjetSynthese
             }
         }
 
+        public bool UseAmmoPack(AmmoType ammoType)
+        {
+            Item item = null;
+            if (ListInventory != null)
+            {
+                foreach (ObjectContainedInventory cell in ListInventory)
+                {
+                    if (cell != null)
+                    {
+                        item = cell.GetItem();
+                        if (item != null && item.Type == ItemType.AmmoPack)
+                        {
+                            if ((item as AmmoPack).AmmoType == ammoType)
+                            {
+                                CheckMultiplePresenceAndRemove(cell);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         //Pour AI seulement
         //Calcul la quantité total d'un type objet
         //ex: toutes les helmet peu importe leur force du helmet

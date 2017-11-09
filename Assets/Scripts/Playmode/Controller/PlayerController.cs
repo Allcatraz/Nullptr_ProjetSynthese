@@ -405,7 +405,7 @@ namespace ProjetSynthese
         {
             if ((object)currentWeapon != null)
             {
-                currentWeapon.Reload();
+                currentWeapon.Reload(inventory);
             }
         }
 

@@ -1,8 +1,11 @@
-﻿namespace ProjetSynthese
+﻿using UnityEngine;
+namespace ProjetSynthese
 {
     public class EquipmentManager
     {
         private readonly ActorAI Actor;
+
+        Weapon currentWeapon = null;
 
         public EquipmentManager(ActorAI actor)
         {
@@ -31,12 +34,14 @@
                             {
                                 Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
                                 Actor.Brain.HasPrimaryWeaponEquipped = true;
+                                currentWeapon = weapon;
                                 break;
                             }
                             else
                             {
                                 Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
                                 Actor.Brain.HasPrimaryWeaponEquipped = false;
+                                currentWeapon = null;
                             }
                         }
                     }
@@ -139,6 +144,41 @@
             {
                 return true;
             }
+        }
+        private bool CheckWeaponAmmunitionStatus()
+        {
+            bool weaponCanFire = false;
+            if (currentWeapon != null && (currentWeapon.MagazineAmount > 0 || currentWeapon.Reload()))
+            {
+                weaponCanFire = true;
+            }
+
+            return weaponCanFire;
+        }
+
+        public bool WeaponReadyToUse()
+        {
+            bool weaponCanBeUsed = true;
+            if (CheckWeaponAmmunitionStatus())
+            {
+                Vector3 target = Actor.transform.position;
+                target.y = 0.0f;
+                currentWeapon.transform.position = target;
+                currentWeapon.transform.rotation = Actor.transform.rotation;
+            }
+            else
+            {
+                Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
+                currentWeapon = null;
+                Actor.Brain.HasPrimaryWeaponEquipped = false;
+                weaponCanBeUsed = false;
+            }
+            return weaponCanBeUsed;
+        }
+
+        public Weapon GetWeapon()
+        {
+            return currentWeapon;
         }
     }
 }

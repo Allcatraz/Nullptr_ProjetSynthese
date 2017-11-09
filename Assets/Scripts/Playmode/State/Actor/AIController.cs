@@ -119,36 +119,15 @@ namespace ProjetSynthese
                     break;
                 case AIBrain.OpponentType.AI:
                 case AIBrain.OpponentType.Player:
-                    Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
-                    if (CheckWeaponAmmunitionStatus(weapon))
+                    if (Actor.EquipmentManager.WeaponReadyToUse())
                     {
-                        Vector3 target = Actor.transform.position;
-                        target.y = 0.0f;
-                        weapon.transform.position = target;
-                        weapon.transform.rotation = Actor.transform.rotation;
-                        weapon.Use();
-                    }
-                    else
-                    {
-                        Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
-                        Actor.Brain.HasPrimaryWeaponEquipped = false;
-                    }
 
+                        Actor.EquipmentManager.GetWeapon().Use();
+                    }
                     break;
                 default:
                     break;
             }
-        }
-
-        private bool CheckWeaponAmmunitionStatus(Weapon currentEquippedWeapon)
-        {
-            bool weaponCanFire = false;
-            if (currentEquippedWeapon.MagazineAmount > 0 || currentEquippedWeapon.Reload())
-            {
-                weaponCanFire = true;
-            }
-            
-            return weaponCanFire;
         }
 
         public void Move(ActorAI actor)

@@ -28,6 +28,8 @@ namespace ProjetSynthese
         private PlayerMoveEventChannel playerMoveEventChannel;
         private LineRendererCircle safeCircle;
         private LineRendererCircle deathCircle;
+        public LineRendererCircle SafeCircle {get{return safeCircle;} private set{safeCircle =value;} }
+        public LineRendererCircle DeathCircle { get { return deathCircle; } private set { deathCircle = value; } }
         private TiledMap tiledMap;
         private Phases currentPhase = Phases.Phase1;
 

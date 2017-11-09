@@ -69,7 +69,7 @@ namespace ProjetSynthese
         private const float FloorYOffset = 1.0f;
         private const float SwimYOffset = -1.0f;
 
-        public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt }
+        public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt,DeathCircle }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -122,7 +122,6 @@ namespace ProjetSynthese
                 case AIBrain.OpponentType.Player:
                     if (Actor.EquipmentManager.WeaponReadyToUse())
                     {
-
                         Actor.EquipmentManager.GetWeapon().Use();
                     }
                     break;
@@ -234,6 +233,26 @@ namespace ProjetSynthese
             }
         }
 
+        public void SetDeathCircleFleeDestination(ActorAI actor)
+        {
+            if (FoundFleeDestination(actor))
+            {
+              
+                //circle of death compound direction
+            }
+            else
+            {
+                Vector3 deathCircleCenterPosition = DeathCircle.
+                //fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
+                //fleeDirection.Normalize();
+                //fleeDirection *= FleeRange;
+                //fleeDestination.x += fleeDirection.x;
+                //fleeDestination.z += fleeDirection.z;
+                //MapDestination = fleeDestination;
+            }
+            MapDestinationIsKnown = true;
+        }
+
         public void SetFleeDestination(ActorAI actor)
         {
 
@@ -272,16 +291,7 @@ namespace ProjetSynthese
             }
             else
             {
-
-                Vector3 unitZ = actor.transform.forward;
-                Quaternion rotation = actor.transform.rotation;
-                Quaternion rot180 = Quaternion.AngleAxis(180, actor.transform.forward);
-                fleeDirection = rot180 * (rotation * unitZ);
-                fleeDirection.Normalize();
-                fleeDirection *= FleeRange;
-                fleeDestination.x += fleeDirection.x;
-                fleeDestination.z += fleeDirection.z;
-
+               return false;
             }
             if (ValidateMapDestination(fleeDestination))
             {
@@ -297,6 +307,8 @@ namespace ProjetSynthese
 
         private bool ValidateMapDestination(Vector3 mapDestination)
         {
+            //code si coincé pas de possibilité de fuite return false
+            //exemple mur, circle of death, out of map
             return true;
         }
 
@@ -342,6 +354,10 @@ namespace ProjetSynthese
                     Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;
                 case ControllerMode.Hunt:
+                    AISpeed = AIController.SpeedLevel.Running;
+                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    break;
+                case ControllerMode.DeathCircle:
                     AISpeed = AIController.SpeedLevel.Running;
                     Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;

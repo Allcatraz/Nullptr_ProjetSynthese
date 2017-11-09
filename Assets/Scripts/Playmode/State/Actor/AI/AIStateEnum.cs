@@ -1,4 +1,4 @@
 ﻿namespace ProjetSynthese
 {
-    public enum AIState { None,Dead,Loot,Combat,Hunt,Flee,Explore}
+    public enum AIState { None,Dead,Loot,Combat,Hunt,Flee,Explore,DeathCircle}
 }

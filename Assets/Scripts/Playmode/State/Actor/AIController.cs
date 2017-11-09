@@ -67,6 +67,7 @@ namespace ProjetSynthese
         private const float ErrorPositionTolerance = 0.001f;
 
         private const float FloorYOffset = 1.0f;
+        private const float SwimYOffset = -1.0f;
 
         public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt }
         private ControllerMode aiControllerMode;
@@ -302,6 +303,17 @@ namespace ProjetSynthese
         public ControllerMode GetAIControllerMode()
         {
             return aiControllerMode;
+        }
+
+        public void SwitchOnSwimPosition()
+        {
+            Actor.transform.position = new Vector3(Actor.transform.position.x, SwimYOffset, Actor.transform.position.z);
+            Actor.GetComponent<Rigidbody>().useGravity = false;
+        }
+        public void SwitchOffSwimPosition()
+        {
+            Actor.transform.position = new Vector3(Actor.transform.position.x, FloorYOffset, Actor.transform.position.z);
+            Actor.GetComponent<Rigidbody>().useGravity = true;
         }
 
         public void SetAIControllerMode(ControllerMode controllerMode)

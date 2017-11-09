@@ -61,12 +61,12 @@ namespace ProjetSynthese
             }
         }
 
-        public bool Reload()
+        public bool Reload(Inventory inventory)
         {
-            MagazineAmount = MagazineMax;
-            NotidyMunitionChanged();
-            if (MagazineAmount > 0)
+            if (inventory.UseAmmoPack(AmmoType.Ammo45acp))
             {
+                MagazineAmount = MagazineMax;
+                NotidyMunitionChanged();
                 return true;
             }
             return false;

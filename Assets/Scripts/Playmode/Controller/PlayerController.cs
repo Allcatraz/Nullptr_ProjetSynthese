@@ -11,7 +11,7 @@ namespace ProjetSynthese
     public delegate void ChangeModeEventHandler(bool isPlayerInFirstPerson);
 
     [AddComponentMenu("Game/Control/PlayerController")]
-    public class PlayerController : NetworkGameScript, ISwim,IProtection
+    public class PlayerController : NetworkGameScript, ISwim ,IProtection
     {
         [Tooltip("Le menu de l'inventaire du joueur.")]
         [SerializeField]
@@ -40,6 +40,7 @@ namespace ProjetSynthese
         private NetworkIdentity networkIdentity;
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
         private BoostHealEventChannel boostHealEventChannel;
+        private PlayerDeathEventChannel playerDeathEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
 
         private Vector2 rotation = Vector2.zero;
@@ -116,7 +117,8 @@ namespace ProjetSynthese
                                             [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater,
                                             [GameObjectScope] NetworkIdentity networkIdentity,
                                             [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel,
-                                            [EventChannelScope] BoostHealEventChannel boostHealEventChannel)
+                                            [EventChannelScope] BoostHealEventChannel boostHealEventChannel,
+                                            [EventChannelScope] PlayerDeathEventChannel playerDeathEventChannel)
         {
             this.keyboardInputSensor = keyboardInputSensor;
             this.mouseInputSensor = mouseInputSensor;
@@ -129,6 +131,7 @@ namespace ProjetSynthese
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
             this.boostHealEventChannel = boostHealEventChannel;
             this.soldierAnimatorUpdater = soldierAnimatorUpdater;
+            this.playerDeathEventChannel = playerDeathEventChannel;
         }
 
         private void Start()
@@ -154,8 +157,7 @@ namespace ProjetSynthese
 
             mouseInputSensor.Mouses.OnFire += OnFire;
 
-            health.OnDeath += OnDeath;
-
+            playerDeathEventChannel.OnEventPublished += OnDeath;
             deathCircleHurtEventChannel.OnEventPublished += OnPlayerOutDeathCircle;
             boostHealEventChannel.OnEventPublished += OnBoostHeal;
 
@@ -186,8 +188,7 @@ namespace ProjetSynthese
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
 
-            health.OnDeath -= OnDeath;
-
+            playerDeathEventChannel.OnEventPublished -= OnDeath;
             deathCircleHurtEventChannel.OnEventPublished -= OnPlayerOutDeathCircle;
             boostHealEventChannel.OnEventPublished -= OnBoostHeal;
         }
@@ -409,8 +410,9 @@ namespace ProjetSynthese
             }
         }
 
-        private void OnDeath()
+        private void OnDeath(PlayerDeathEvent playerDeathEvent)
         {
+            CmdDestroy(gameObject);
             Destroy(gameObject);
         }
 

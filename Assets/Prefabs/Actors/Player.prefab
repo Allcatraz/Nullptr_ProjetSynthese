@@ -1337,7 +1337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e14a8e240f085f04b86a5faa8d213b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiPrefab: {fileID: 0}
+  aiPrefab: {fileID: 1893845116203462, guid: 799316fe2eaadff4abc0701c3c7f883f, type: 2}
 --- !u!114 &114091543535803372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1610,7 +1610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 555202a3b7b84f07908f8a30b7fdcf25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cratePrefab: {fileID: 1206018250619120, guid: 60e3e041c5d1f414ba42b2963b20cb1d,
+  cratePrefab: {fileID: 1000012137004694, guid: 902fd1e5fea9b414188db1b1a0dc0a00,
     type: 2}
 --- !u!114 &114829462464532168
 MonoBehaviour:

@@ -11,7 +11,7 @@ namespace ProjetSynthese
     public delegate void ChangeModeEventHandler(bool isPlayerInFirstPerson);
 
     [AddComponentMenu("Game/Control/PlayerController")]
-    public class PlayerController : NetworkGameScript
+    public class PlayerController : NetworkGameScript, ISwim,IProtection
     {
         [Tooltip("Le menu de l'inventaire du joueur.")]
         [SerializeField]
@@ -405,7 +405,7 @@ namespace ProjetSynthese
         {
             if ((object)currentWeapon != null)
             {
-                currentWeapon.Reload();
+                currentWeapon.Reload(inventory);
             }
         }
 
@@ -437,6 +437,13 @@ namespace ProjetSynthese
         private void OnBoostHeal(BoostHealEvent boostHealEvent)
         {
             health.Heal(boostHealEvent.HealthPoints);
+        }
+
+        public Item[] GetInventoryProtection()
+        {
+            ObjectContainedInventory helmet = inventory.GetHelmet();
+            ObjectContainedInventory vest = inventory.GetVest();
+            return new[] { helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem() };
         }
     }
 }

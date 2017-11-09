@@ -21,6 +21,7 @@ namespace ProjetSynthese
 
         private ObjectContainedInventory primaryWeapon;
         private ObjectContainedInventory secondaryWeapon;
+        private ObjectContainedInventory grenade;
         private ObjectContainedInventory helmet;
         private ObjectContainedInventory vest;
         private ObjectContainedInventory bag;
@@ -37,6 +38,48 @@ namespace ProjetSynthese
             Parent = gameObject.transform.parent.gameObject;
         }
 
+        public void ResetInventory()
+        {
+            currentWeight = 0;
+            primaryWeapon = null;
+            secondaryWeapon = null;
+            helmet = null;
+            vest = null;
+            ListInventory = null;
+            grenade = null;
+        }
+
+        public void NotifyInventoryChange()
+        {
+            if (InventoryChange != null) InventoryChange();
+        }
+
+        public void NotifySpawnDroppedItem(ObjectContainedInventory itemToSpawn)
+        {
+            if (SpawnItem != null) SpawnItem(itemToSpawn);
+        }
+
+        public void EquipGrenade(ObjectContainedInventory itemToEquip)
+        {
+            if (grenade != null)
+            {
+                UnequipGrenade();
+            }
+            grenade = itemToEquip;
+            CheckMultiplePresenceAndRemove(itemToEquip);
+        }
+
+        public void UnequipGrenade()
+        {
+            if (grenade != null)
+            {
+                if (!IsItemPresentInInventory(grenade)) ListInventory.Add(grenade);
+                AddWeight(grenade.GetItem().GetWeight());
+                grenade = null;
+                NotifyInventoryChange();
+            }
+        }
+
         public void EquipBag(ObjectContainedInventory itemToEquip)
         {
             if (bag != null)
@@ -50,22 +93,14 @@ namespace ProjetSynthese
 
         public void UnequipBag()
         {
-            if (!IsItemPresentInInventory(bag)) ListInventory.Add(bag);
-            ChangeMaxWeight((bag.GetItem() as Bag).Capacity, false);
-            AddWeight(bag.GetItem().GetWeight());
-            bag = null;
-            NotifyInventoryChange();
-
-        }
-
-        public void ResetInventory()
-        {
-            currentWeight = 0;
-            primaryWeapon = null;
-            secondaryWeapon = null;
-            helmet = null;
-            vest = null;
-            ListInventory = null;
+            if (bag != null)
+            {
+                if (!IsItemPresentInInventory(bag)) ListInventory.Add(bag);
+                ChangeMaxWeight((bag.GetItem() as Bag).Capacity, false);
+                AddWeight(bag.GetItem().GetWeight());
+                bag = null;
+                NotifyInventoryChange();
+            }
         }
 
         public void EquipWeaponAt(EquipWeaponAt selection, ObjectContainedInventory itemToEquip)
@@ -108,16 +143,6 @@ namespace ProjetSynthese
             }
         }
 
-        public void NotifyInventoryChange()
-        {
-            if (InventoryChange != null) InventoryChange();
-        }
-
-        public void NotifySpawnDroppedItem(ObjectContainedInventory itemToSpawn)
-        {
-            if (SpawnItem != null) SpawnItem(itemToSpawn);
-        }
-
         public void EquipHelmet(ObjectContainedInventory itemToEquip)
         {
             if (helmet != null)
@@ -130,10 +155,13 @@ namespace ProjetSynthese
 
         public void UnequipHelmet()
         {
-            if (!IsItemPresentInInventory(helmet)) ListInventory.Add(helmet);
-            AddWeight(helmet.GetItem().GetWeight());
-            helmet = null;
-            NotifyInventoryChange();
+            if (helmet != null)
+            {
+                if (!IsItemPresentInInventory(helmet)) ListInventory.Add(helmet);
+                AddWeight(helmet.GetItem().GetWeight());
+                helmet = null;
+                NotifyInventoryChange();
+            }      
         }
 
         public void EquipVest(ObjectContainedInventory itemToEquip)
@@ -148,10 +176,18 @@ namespace ProjetSynthese
 
         public void UnequipVest()
         {
-            if (!IsItemPresentInInventory(vest)) ListInventory.Add(vest);
-            AddWeight(vest.GetItem().GetWeight());
-            vest = null;
-            NotifyInventoryChange();
+            if (vest != null)
+            {
+                if (!IsItemPresentInInventory(vest)) ListInventory.Add(vest);
+                AddWeight(vest.GetItem().GetWeight());
+                vest = null;
+                NotifyInventoryChange();
+            }  
+        }
+
+        public ObjectContainedInventory GetGrenade()
+        {
+            return grenade;
         }
 
         public ObjectContainedInventory GetBag()
@@ -226,13 +262,16 @@ namespace ProjetSynthese
 
         public void DropAll()
         {
-            while (ListInventory.Count > 0)
+            if (ListInventory != null)
             {
-                for (int i = 0; i < this.ListInventory.Count; i++)
+                while (ListInventory.Count > 0)
                 {
-                    Drop(ListInventory[i]);
+                    for (int i = 0; i < this.ListInventory.Count; i++)
+                    {
+                        Drop(ListInventory[i]);
+                    }
                 }
-            }   
+            }
         }
 
         private void ChangeMaxWeight(float newWeightToAdd, bool addOrRemove = true)
@@ -283,6 +322,31 @@ namespace ProjetSynthese
                 NotifyInventoryChange();
             }
         }
+
+        public bool UseAmmoPack(AmmoType ammoType)
+        {
+            Item item = null;
+            if (ListInventory != null)
+            {
+                foreach (ObjectContainedInventory cell in ListInventory)
+                {
+                    if (cell != null)
+                    {
+                        item = cell.GetItem();
+                        if (item != null && item.Type == ItemType.AmmoPack)
+                        {
+                            if ((item as AmmoPack).AmmoType == ammoType)
+                            {
+                                CheckMultiplePresenceAndRemove(cell);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         //Pour AI seulement
         //Calcul la quantité total d'un type objet
         //ex: toutes les helmet peu importe leur force du helmet

@@ -177,9 +177,9 @@ namespace ProjetSynthese
             else
             {
                 Item item= actor.Brain.ItemInPerceptionRange;
-                float distanceToItem = Vector3.Distance(actor.transform.position, item.transform.position);
                 if (actor.Brain.ItemInPerceptionRange != null)
                 {
+                    float distanceToItem = Vector3.Distance(actor.transform.position, item.transform.position);
                     lootGoalLevel += EvaluateItemValue(item, distanceToItem);
                 }
             }

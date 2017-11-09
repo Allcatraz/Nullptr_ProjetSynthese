@@ -3,10 +3,11 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class ActorAI : NetworkGameScript,IProtection
+    public class ActorAI : NetworkGameScript, IProtection, ISwim
     {
         public StateMachine CurrentState { get; private set; }
         public AIController ActorController { get; private set; }
+        private bool isSwimming = false;
 
         public AIRadar Sensor { get; private set; }
         public AIBrain Brain { get; private set; }
@@ -50,7 +51,6 @@ namespace ProjetSynthese
         private void OnDestroy()
         {
             health.OnDeath -= OnDeath;
-            //drop item ici voir David
         }
 
         private void Update()
@@ -60,7 +60,7 @@ namespace ProjetSynthese
             {
                 CurrentState.Execute(this);
             }
-            
+
             AIState nextState = Brain.WhatIsMyNextState(CurrentState.currentAIState);
             if (nextState != CurrentState.currentAIState)
             {
@@ -90,6 +90,32 @@ namespace ProjetSynthese
             ObjectContainedInventory helmet = inventory.GetHelmet();
             ObjectContainedInventory vest = inventory.GetVest();
             return new[] { helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem() };
+        }
+
+        public bool IsSwimming
+        {
+            get
+            {
+                return isSwimming;
+            }
+            set
+            {
+                isSwimming = value;
+                Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
+                if (isSwimming)
+                {
+                    ActorController.AISpeed = AIController.SpeedLevel.Swimming;
+                }
+                else
+                {
+                    ActorController.SetAIControllerMode(ActorController.GetAIControllerMode());
+                }
+            }
+        }
+
+        public void ServerSetActive(GameObject item, bool isActive)
+        {
+            CmdSetActive(item, isActive);
         }
 
     }

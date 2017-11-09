@@ -24,12 +24,12 @@
                         || item.Type == ItemType.M1911
                         || item.Type == ItemType.Saiga12)
                         {
-                            Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
-                            Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
-                           
-                            //Actor.Brain.GetAmmoPackStorageRatio(ammoPack.AmmoType)
-                            if (weapon.Reload())
+                            Weapon weapon = (Weapon)cell.GetItem();
+                            AmmoType ammoType = weapon.WeaponAmmoType;
+                            //ammoType utiliser plus tard lors de décision choix weapon
+                            if (weapon.MagazineAmount > 0 || weapon.Reload())
                             {
+                                Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
                                 Actor.Brain.HasPrimaryWeaponEquipped = true;
                                 break;
                             }

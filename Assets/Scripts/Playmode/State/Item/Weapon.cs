@@ -45,6 +45,8 @@ namespace ProjetSynthese
 
         public int MagazineAmount { get; set; }
 
+        public AmmoType WeaponAmmoType{ get { return ammoType; } private set { ammoType = value; } }
+
         public float EffectiveWeaponRange
         {
             get { return bulletLivingTime * bulletSpeed; }

@@ -8,19 +8,27 @@ namespace ProjetSynthese
 
         private void OnTriggerEnter(Collider col)
         {
-            PlayerController playerController = col.gameObject.GetComponent<PlayerController>();
-            if (playerController != null && playerController.IsSwimming == false)
+            ISwim actorController = col.gameObject.GetComponent<PlayerController>() as ISwim;
+            if (actorController == null)
             {
-                playerController.IsSwimming = true;
+                actorController = col.gameObject.GetComponentInParent<ActorAI>() as ISwim;
+            }
+            if (actorController != null && actorController.IsSwimming == false)
+            {
+                actorController.IsSwimming = true;
             }
         }
 
         private void OnTriggerExit(Collider col)
         {
-            PlayerController playerController = col.gameObject.GetComponent<PlayerController>();
-            if (playerController != null && playerController.IsSwimming == true)
+            ISwim actorController = col.gameObject.GetComponent<PlayerController>() as ISwim;
+            if (actorController == null)
             {
-                playerController.IsSwimming = false;
+                actorController = col.gameObject.GetComponentInParent<ActorAI>() as ISwim;
+            }
+            if (actorController != null && actorController.IsSwimming == true)
+            {
+                actorController.IsSwimming = false;
             }
         }
     }

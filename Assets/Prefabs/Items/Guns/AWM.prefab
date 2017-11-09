@@ -556,3 +556,4 @@ MonoBehaviour:
   bulletLivingTime: 2
   magazineMaxAmount: 10
   dommage: 132
+  ammoType: 1

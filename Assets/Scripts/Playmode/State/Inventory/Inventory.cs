@@ -262,13 +262,16 @@ namespace ProjetSynthese
 
         public void DropAll()
         {
-            while (ListInventory.Count > 0)
+            if (ListInventory != null)
             {
-                for (int i = 0; i < this.ListInventory.Count; i++)
+                while (ListInventory.Count > 0)
                 {
-                    Drop(ListInventory[i]);
+                    for (int i = 0; i < this.ListInventory.Count; i++)
+                    {
+                        Drop(ListInventory[i]);
+                    }
                 }
-            }   
+            }
         }
 
         private void ChangeMaxWeight(float newWeightToAdd, bool addOrRemove = true)

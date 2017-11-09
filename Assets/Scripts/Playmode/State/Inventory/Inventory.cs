@@ -308,6 +308,7 @@ namespace ProjetSynthese
                 NotifyInventoryChange();
             }
         }
+
         //Pour AI seulement
         //Calcul la quantité total d'un type objet
         //ex: toutes les helmet peu importe leur force du helmet

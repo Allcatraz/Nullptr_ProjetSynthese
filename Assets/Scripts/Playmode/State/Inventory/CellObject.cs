@@ -236,6 +236,10 @@ namespace ProjetSynthese
             {
                 Inventory.UnequipWeaponAt(EquipAt);
             }
+            else if (CellContained.GetItem() as Grenade)
+            {
+                Inventory.UnequipGrenade();
+            }
         }
 
         private void ClickOnInventoryButton()
@@ -243,6 +247,10 @@ namespace ProjetSynthese
             if (willDropItem)
             {
                 Inventory.Drop(CellContained);
+            }
+            else if (CellContained.GetItem() as Grenade)
+            {
+                Inventory.EquipGrenade(CellContained);
             }
             else if (CellContained.GetItem() as Weapon)
             {

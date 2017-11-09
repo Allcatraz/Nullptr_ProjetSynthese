@@ -30,7 +30,7 @@ namespace ProjetSynthese
                             Weapon weapon = (Weapon)cell.GetItem();
                             AmmoType ammoType = weapon.WeaponAmmoType;
                             //ammoType utiliser plus tard lors de décision choix weapon
-                            if (weapon.MagazineAmount > 0 || weapon.Reload())
+                            if (weapon.MagazineAmount > 0 || weapon.Reload(Actor.AIInventory))
                             {
                                 Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
                                 Actor.Brain.HasPrimaryWeaponEquipped = true;
@@ -116,7 +116,7 @@ namespace ProjetSynthese
             {
                 Actor.Brain.InventoryBestBoost.GetItem().Player = Actor.gameObject;
 
-                (Actor.Brain.InventoryBestBoost.GetItem() as Usable).Use();
+                ((Usable) Actor.Brain.InventoryBestBoost.GetItem()).Use();
                 Actor.AIInventory.CheckMultiplePresenceAndRemove(Actor.Brain.InventoryBestBoost);
                 Actor.Brain.InventoryBestBoost = null;
             }
@@ -128,7 +128,7 @@ namespace ProjetSynthese
             {
                 Actor.Brain.InventoryBestHeal.GetItem().Player = Actor.gameObject;
 
-                (Actor.Brain.InventoryBestHeal.GetItem() as Usable).Use();
+                ((Usable) Actor.Brain.InventoryBestHeal.GetItem()).Use();
                 Actor.AIInventory.CheckMultiplePresenceAndRemove(Actor.Brain.InventoryBestHeal);
                 Actor.Brain.InventoryBestHeal = null;
             }
@@ -140,20 +140,11 @@ namespace ProjetSynthese
             {
                  return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
         private bool CheckWeaponAmmunitionStatus()
         {
-            bool weaponCanFire = false;
-            if (currentWeapon != null && (currentWeapon.MagazineAmount > 0 || currentWeapon.Reload()))
-            {
-                weaponCanFire = true;
-            }
-
-            return weaponCanFire;
+            return currentWeapon != null && (currentWeapon.MagazineAmount > 0 || currentWeapon.Reload(Actor.AIInventory));
         }
 
         public bool WeaponReadyToUse()

@@ -22,11 +22,12 @@
                         if (item.Type == ItemType.AWM
                         || item.Type == ItemType.M16A4
                         || item.Type == ItemType.M1911
-                        || item.Type == ItemType.Saiga12
-                        || item.Type == ItemType.Grenade)
+                        || item.Type == ItemType.Saiga12)
                         {
                             Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);
                             Weapon weapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
+                           
+                            //Actor.Brain.GetAmmoPackStorageRatio(ammoPack.AmmoType)
                             if (weapon.Reload())
                             {
                                 Actor.Brain.HasPrimaryWeaponEquipped = true;

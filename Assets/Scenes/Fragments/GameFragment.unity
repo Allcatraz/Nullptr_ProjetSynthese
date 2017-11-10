@@ -959,7 +959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualTransform: {fileID: 1111921893}
-  angle: 0
+  angle: 100
 --- !u!1 &888161433
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,7 +1075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualTransform: {fileID: 1948570230}
-  angle: 0
+  angle: 100
 --- !u!65 &916443507
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1614,7 +1614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualTransform: {fileID: 628424661}
-  angle: 0
+  angle: 100
 --- !u!65 &1292110510
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1829,7 +1829,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualTransform: {fileID: 748901026}
-  angle: 0
+  angle: 100
 --- !u!65 &1393343011
 BoxCollider:
   m_ObjectHideFlags: 0

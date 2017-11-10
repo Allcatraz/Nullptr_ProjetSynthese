@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.Experimental.UIElements;
+﻿using System.IO;
+using UnityEngine;
 
 namespace ProjetSynthese
 {
@@ -26,38 +26,174 @@ namespace ProjetSynthese
         public KeyCode Reload { get; set; }
         public KeyCode ChangeViewMode { get; set; }
 
-        public MouseButton Fire { get; set; }
+        public KeyCode Fire { get; set; }
 
         public KeyCode ChangeWeaponSlot { get; set; }
         public KeyCode DropItemTrigger { get; set; }
 
+        private KeyData data;
+        private string keyDataFile = "/data.json";
+
         private void Start()
         {
             Instance = this;
+            data = new KeyData();
+            LoadKeyData();
+        }
 
-            MoveFoward = KeyCode.W;
-            MoveBackward = KeyCode.S;
-            MoveLeft = KeyCode.A;
-            MoveRight = KeyCode.D;
+        private void OnDestroy()
+        {
+            SaveKeyData();
+        }
 
-            ToggleInventory = KeyCode.Tab;
-            ToggleMap = KeyCode.M;
-            TogglePause = KeyCode.Escape;
+        private void LoadKeyData()
+        {
+            string filePath = Application.streamingAssetsPath + keyDataFile;
+            if (File.Exists(filePath))
+            {
+                string dataAsJson = File.ReadAllText(filePath);
+                data = JsonUtility.FromJson<KeyData>(dataAsJson);
+                if (data != null)
+                {
+                    for (int i = 0; i < data.Keys.Length; i++)
+                    {
+                        SetKeyAt(i + 1, data.Keys[i]);
+                    }
+                }
+            }
+            else
+            {           
+                File.Create(filePath);
+            }
+        }
 
-            ToggleSprint = KeyCode.LeftShift;
+        private void SaveKeyData()
+        {
+            if (data != null)
+            {
+                data.Keys[0] = MoveFoward;
+                data.Keys[1] = MoveBackward;
+                data.Keys[2] = MoveLeft;
+                data.Keys[3] = MoveRight;
+                data.Keys[4] = ToggleInventory;
+                data.Keys[5] = ToggleMap;
+                data.Keys[6] = TogglePause;
+                data.Keys[7] = ToggleSprint;
+                data.Keys[8] = SwitchToPrimaryWeapon;
+                data.Keys[9] = SwitchToSecondaryWeapon;
+                data.Keys[10] = SwitchToThirdWeapon;
+                data.Keys[11] = Interact;
+                data.Keys[12] = Reload;
+                data.Keys[13] = ChangeViewMode;
+                data.Keys[14] = Fire;
+                data.Keys[15] = ChangeWeaponSlot;
+                data.Keys[16] = DropItemTrigger;
 
-            SwitchToPrimaryWeapon = KeyCode.Alpha1;
-            SwitchToSecondaryWeapon = KeyCode.Alpha2;
-            SwitchToThirdWeapon = KeyCode.Alpha3;
+                string dataAsJason = JsonUtility.ToJson(data);
+                string filePath = Application.streamingAssetsPath + keyDataFile;
+                File.WriteAllText(filePath, dataAsJason);
+            }
+        }
 
-            Interact = KeyCode.F;
-            Reload = KeyCode.R;
-            ChangeViewMode = KeyCode.F9;
+        public void SetKeyAt(int i, KeyCode key)
+        {
+            switch (i)
+            {
+                case 1:
+                    MoveFoward = key;
+                    break;
+                case 2:
+                    MoveBackward = key;
+                    break;
+                case 3:
+                    MoveLeft = key;
+                    break;
+                case 4:
+                    MoveRight = key;
+                    break;
+                case 5:
+                    ToggleInventory = key;
+                    break;
+                case 6:
+                    ToggleMap = key;
+                    break;
+                case 7:
+                    TogglePause = key;
+                    break;
+                case 8:
+                    ToggleSprint = key;
+                    break;
+                case 9:
+                    SwitchToPrimaryWeapon = key;
+                    break;
+                case 10:
+                    SwitchToSecondaryWeapon = key;
+                    break;
+                case 11:
+                    SwitchToThirdWeapon = key;
+                    break;
+                case 12:
+                    Interact = key;
+                    break;
+                case 13:
+                    Reload = key;
+                    break;
+                case 14:
+                    ChangeViewMode = key;
+                    break;
+                case 15:
+                    Fire = key;
+                    break;
+                case 16:
+                    ChangeWeaponSlot = key;
+                    break;
+                case 17:
+                    DropItemTrigger = key;
+                    break;
+            }
+        }
 
-            Fire = MouseButton.LeftMouse;
-
-            ChangeWeaponSlot = KeyCode.LeftControl;
-            DropItemTrigger = KeyCode.LeftAlt;
+        public KeyCode GetKeyAt(int i)
+        {
+            switch (i)
+            {
+                case 1:
+                    return MoveFoward;
+                case 2:
+                    return MoveBackward;
+                case 3:
+                    return MoveLeft;
+                case 4:
+                    return MoveRight;
+                case 5:
+                    return ToggleInventory;
+                case 6:
+                    return ToggleMap;
+                case 7:
+                    return TogglePause;
+                case 8:
+                    return ToggleSprint;
+                case 9:
+                    return SwitchToPrimaryWeapon;
+                case 10:
+                    return SwitchToSecondaryWeapon;
+                case 11:
+                    return SwitchToThirdWeapon;
+                case 12:
+                    return Interact;
+                case 13:
+                    return Reload;
+                case 14:
+                    return ChangeViewMode;
+                case 15:
+                    return Fire;
+                case 16:
+                    return ChangeWeaponSlot;
+                case 17:
+                    return DropItemTrigger;
+                default:
+                    return KeyCode.None;
+            }
         }
     }
 }

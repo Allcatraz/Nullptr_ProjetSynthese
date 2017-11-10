@@ -14,11 +14,23 @@ namespace ProjetSynthese
         [SerializeField]
         private RectTransform rectTransform;
 
+        [Tooltip("Entier représentant la fonction qu'à la key.")]
+        [SerializeField]
+        private int fonction;
+
+        private KeyCode[] keyCodes = (KeyCode[]) System.Enum.GetValues(typeof(KeyCode));
         private bool canCheckKey = false;
+        private Text buttonText;
+
+        private void Awake()
+        {
+            buttonText = button.GetComponentInChildren<Text>();
+        }
 
         private void OnEnable()
         {
             button.Events().OnClick += OnClick;
+            buttonText.text = ActionKey.Instance.GetKeyAt(fonction).ToString();
         }
 
         private void OnDisable()
@@ -28,11 +40,19 @@ namespace ProjetSynthese
 
         private void FixedUpdate()
         {
-            if (Input.anyKeyDown && canCheckKey)
+            if (canCheckKey)
             {
-                button.GetComponentInChildren<Text>().text = Input.inputString;
-                rectTransform.gameObject.SetActive(false);
-                canCheckKey = false;
+                for (int i = 0; i < keyCodes.Length; i++)
+                {
+                    if (Input.GetKeyDown(keyCodes[i]))
+                    {
+                        buttonText.text = keyCodes[i].ToString();
+                        rectTransform.gameObject.SetActive(false);
+                        ActionKey.Instance.SetKeyAt(fonction, keyCodes[i]);
+                        canCheckKey = false;
+                        break;
+                    }
+                }
             }
         }
 

@@ -60,7 +60,7 @@ namespace ProjetSynthese
                     Vector2 tiledMapScaled = new Vector2((float)tileMap.MapWidthInPixels / tileMap.TileWidth, (float)tileMap.MapHeightInPixels / tileMap.TileHeight);
                     Vector3 viewportPosition = new Vector3((mousePos.x - left) / (right - left), (mousePos.y - bottom) / (top - bottom));
                     viewportPosition.y = 1 - viewportPosition.y;
-                    Vector3 worldPos = new Vector3(viewportPosition.x * tiledMapScaled.x, 10, -viewportPosition.y * tiledMapScaled.y);
+                    Vector3 worldPos = new Vector3(viewportPosition.x * tiledMapScaled.x, 0.5f, -viewportPosition.y * tiledMapScaled.y);
 
                     activityStack.StopCurrentMenu();
                     transform.position = worldPos;

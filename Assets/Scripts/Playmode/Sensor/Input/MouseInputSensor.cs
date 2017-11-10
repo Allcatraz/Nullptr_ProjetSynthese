@@ -58,7 +58,7 @@ namespace ProjetSynthese
 
             private void HandleActionInput()
             {
-                if (mouse.GetMouseButtonDown(ActionKey.Instance.Fire))
+                if (mouse.GetMouseButtonDown((MouseButton)ActionKey.Instance.Fire))
                 {
                     NotifyFire();
                 }

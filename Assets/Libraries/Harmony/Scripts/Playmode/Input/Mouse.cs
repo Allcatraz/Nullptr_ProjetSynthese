@@ -8,12 +8,12 @@ namespace Harmony
     {
         public bool GetMouseButton(MouseButton button)
         {
-            return Input.GetMouseButton((int)button);
+            return Input.GetMouseButton((int) button);
         }
 
         public bool GetMouseButtonDown(MouseButton button)
         {
-            return Input.GetMouseButtonDown((int)button);
+            return Input.GetMouseButtonDown((int) button);
         }
 
         public Vector3 GetMousePosition()

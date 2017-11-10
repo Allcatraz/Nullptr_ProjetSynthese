@@ -10,10 +10,7 @@ namespace ProjetSynthese
 
         private KeyboardsInputDevice keyboardsInputDevice;
 
-        public IInputDevice Keyboards
-        {
-            get { return keyboardsInputDevice; }
-        }
+        public IInputDevice Keyboards { get { return keyboardsInputDevice; } }
 
         private void InjectKeyboardInputSensor([GameObjectScope] Keyboard keyboard)
         {
@@ -46,10 +43,7 @@ namespace ProjetSynthese
                 HandleDirectionInput();
             }
 
-            public override IInputDevice this[int deviceIndex]
-            {
-                get { return this; }
-            }
+            public override IInputDevice this[int deviceIndex] { get { return this; } }
 
             private void HandleActionInput()
             {
@@ -89,7 +83,7 @@ namespace ProjetSynthese
                 {
                     NotifyInteract();
                 }
-                if(keyboard.GetKeyDown(ActionKey.Instance.Reload))
+                if (keyboard.GetKeyDown(ActionKey.Instance.Reload))
                 {
                     NotifyReload();
                 }

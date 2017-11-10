@@ -31,6 +31,12 @@ namespace ProjetSynthese
         }
 
         [Command]
+        protected void CmdDestroy(GameObject item)
+        {
+            NetworkServer.Destroy(item);
+        }
+
+        [Command]
         protected void CmdSetTransform(GameObject item, Vector3 position, Quaternion rotation, Vector3 scale)
         {
             RpcSetTransform(item, position, rotation, scale);

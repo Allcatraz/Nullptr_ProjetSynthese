@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 114670875352537290}
   - component: {fileID: 114007633270102854}
   - component: {fileID: 65726999585969710}
-  - component: {fileID: 65665023250657660}
+  - component: {fileID: 65380443423827348}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -1168,7 +1168,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1509576154526796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.78602, y: 0.5931649, z: -32.24702}
+  m_LocalPosition: {x: 16.83, y: 0.5931649, z: -15.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4927863986204956}
@@ -1271,7 +1271,7 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 54c59f8780aaa2f4ebdae0e8027edf29, type: 3}
---- !u!65 &65665023250657660
+--- !u!65 &65380443423827348
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1281,8 +1281,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 3.4733083, z: 1.125536}
-  m_Center: {x: 0, y: 1.7389714, z: 0.058766365}
+  m_Size: {x: 1, y: 3.47338, z: 1.1255}
+  m_Center: {x: 0, y: 1.7, z: 0.058}
 --- !u!65 &65726999585969710
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1293,8 +1293,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 4.160865, z: 1}
-  m_Center: {x: 0, y: 1.5804322, z: 0}
+  m_Size: {x: 1, y: 4, z: 1.1255}
+  m_Center: {x: 0, y: 1.7, z: 0.058}
 --- !u!81 &81580336282396766
 AudioListener:
   m_ObjectHideFlags: 1

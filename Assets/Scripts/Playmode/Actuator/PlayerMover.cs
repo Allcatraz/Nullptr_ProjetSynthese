@@ -16,20 +16,20 @@ namespace ProjetSynthese
         [Tooltip("La vitesse du joueur lors de son déplcament à la nage normal.")]
         [SerializeField] private float swimSpeed;
 
-        private Transform topParentTransform;
+        private Rigidbody rigidbody;
         private float speed = 0;
 
         public event MoveEventHandler OnMove;
 
-        private void InjectPlayerMover([RootScope] Transform topParentTransform)
+        private void InjectPlayerMover([RootScope] Rigidbody rigidbody)
         {
-            this.topParentTransform = topParentTransform;
+            this.rigidbody = rigidbody;
         }
 
         private void Awake()
         {
             InjectDependencies("InjectPlayerMover");
-            topParentTransform.rotation = Quaternion.identity;
+            rigidbody.rotation = Quaternion.identity;
             speed = moveSpeed;
         }
 
@@ -55,7 +55,7 @@ namespace ProjetSynthese
 
         public void Move(Vector3 direction)
         {
-            topParentTransform.position += direction * speed * Time.deltaTime;
+            rigidbody.velocity = direction * (speed * Time.deltaTime);
             if (OnMove != null) OnMove();
         }
 
@@ -63,7 +63,8 @@ namespace ProjetSynthese
         {
             if (Input.GetKey(KeyCode.LeftControl) != true)
             {
-                topParentTransform.eulerAngles = angle;
+                rigidbody.transform.eulerAngles = angle;
+                
             }
         }
     }

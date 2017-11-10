@@ -16,6 +16,11 @@ public class SoldierAnimatorUpdater : MonoBehaviour
     private InterpolationFactors directionInterpolationFactors;
     private InterpolationFactors angleInterpolationFactors;
 
+    [SerializeField]
+    private AnimationClip shootingAnimation;
+    [SerializeField]
+    private AnimationClip grenadeAnimation;
+
 
 
     private void Awake()
@@ -29,6 +34,12 @@ public class SoldierAnimatorUpdater : MonoBehaviour
         angleInterpolationFactors.animatorValueName = "Angle";
         angleInterpolationFactors.diffFactor = 2;
         angleInterpolationFactors.interpolatingPerFrameValue = 0.02f;
+
+        AnimationEvent shootingEvent = new AnimationEvent();
+        shootingEvent.time = shootingAnimation.length;
+        shootingEvent.functionName = "EndShooting";
+        shootingAnimation.AddEvent(shootingEvent);
+        
     }
 
     public void UpdateAnimator()
@@ -54,13 +65,6 @@ public class SoldierAnimatorUpdater : MonoBehaviour
         {
             // TODO : Gèrer le idle
         }
-
-
-
-        //isShooting = false;
-        //animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 0);
-        //animator.SetBool("IsShooting", isShooting);
-        //animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 1);
     }
 
     private void InterpolateAnimation(ref InterpolationFactors factors)
@@ -89,7 +93,15 @@ public class SoldierAnimatorUpdater : MonoBehaviour
 
     public void Shoot()
     {
-        //animator.Play("assault_combat_shoot", -1, 0f);
+        animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 1);
+        animator.Play("assault_combat_shoot", -1, 0f);
+        Debug.Log("Begin the shooting animation");
+    }
+
+    public void EndShooting()
+    {
+        animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 0);
+        Debug.Log("End the shooting animation");
     }
 
     private struct InterpolationFactors

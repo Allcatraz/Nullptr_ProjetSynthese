@@ -6,14 +6,14 @@ namespace Harmony
     [AddComponentMenu("Game/Input/Mouse")]
     public class Mouse : Script
     {
-        public bool GetMouseButton(MouseButton button)
+        public bool GetMouseButton(KeyCode key)
         {
-            return Input.GetMouseButton((int) button);
+            return Input.GetKey(key);
         }
 
-        public bool GetMouseButtonDown(MouseButton button)
+        public bool GetMouseButtonDown(KeyCode key)
         {
-            return Input.GetMouseButtonDown((int) button);
+            return Input.GetKeyDown(key);
         }
 
         public Vector3 GetMousePosition()

@@ -103,12 +103,16 @@ namespace ProjetSynthese
                 isSwimming = value;
                 Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
                 if (isSwimming)
-                {
+                {                    
                     ActorController.AISpeed = AIController.SpeedLevel.Swimming;
+                    //gameObject.transform.position = new Vector3(gameObject.transform.position.x, -2, gameObject.transform.position.z);
+                    rigidbody.useGravity = false;
                 }
                 else
-                {
+                {                    
                     ActorController.SetAIControllerMode(ActorController.GetAIControllerMode());
+                    //gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
+                    rigidbody.useGravity = true;
                 }
             }
         }

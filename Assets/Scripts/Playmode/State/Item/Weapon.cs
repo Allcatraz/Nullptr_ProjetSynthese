@@ -69,7 +69,7 @@ namespace ProjetSynthese
 
         public bool Reload(Inventory inventory)
         {
-            if (inventory.UseAmmoPack(AmmoType.Ammo45acp))
+            if (inventory.UseAmmoPack(ammoType))
             {
                 MagazineAmount = MagazineMax;
                 NotidyMunitionChanged();

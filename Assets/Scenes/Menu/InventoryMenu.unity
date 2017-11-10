@@ -347,6 +347,31 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: -47
       objectReference: {fileID: 0}
+    - target: {fileID: 114688903327862562, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: m_Inertia
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114223332095636052, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: m_ScrollSensitivity
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114651071121198448, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: m_ScrollSensitivity
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114564095195512318, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: m_ScrollSensitivity
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688903327862562, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: m_ScrollSensitivity
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3d96b1a6b15605c48af243df09595a75, type: 2}
   m_IsPrefabParent: 0

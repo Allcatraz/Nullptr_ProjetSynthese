@@ -48,12 +48,11 @@ namespace ProjetSynthese
         private BoostHealEventChannel boostHealEventChannel;
         private PlayerDeathEventChannel playerDeathEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
-        private RectTransform optionMenu;
+        private RectTransform endGamePanel;
 
         private Vector2 rotation = Vector2.zero;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
-        private bool isOptionOpen = false;
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
         private bool isSwimming = false;
@@ -145,9 +144,7 @@ namespace ProjetSynthese
                 return;
             }
 
-            GameObject[] gameObjects = SceneManager.GetSceneByName("DontDestroyOnLoad").GetRootGameObjects();
-            GameObject menu = gameObjects.Find(obj => obj.name == R.S.GameObject.OptionsPanel);
-            optionMenu = menu.GetComponent<RectTransform>();
+            endGamePanel = GameObject.FindGameObjectWithTag(R.S.Tag.EndGamePanel).GetAllChildrens()[0].GetComponent<RectTransform>();
 
             keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
@@ -444,8 +441,9 @@ namespace ProjetSynthese
 
         private void OnDeath(PlayerDeathEvent playerDeathEvent)
         {
+            endGamePanel.gameObject.SetActive(true);
             CmdDestroy(gameObject);
-            Destroy(gameObject);
+            Destroy(gameObject);            
         }
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
@@ -482,9 +480,6 @@ namespace ProjetSynthese
 
         private void OnPause()
         {
-            isOptionOpen = !isOptionOpen;
-            optionMenu.gameObject.SetActive(isOptionOpen);
-            canCameraMove = !isOptionOpen;
         }
     }
 }

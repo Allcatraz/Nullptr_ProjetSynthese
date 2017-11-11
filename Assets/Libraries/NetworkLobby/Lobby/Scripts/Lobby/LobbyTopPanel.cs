@@ -13,6 +13,7 @@ namespace Prototype.NetworkLobby
         void Start()
         {
             panelImage = GetComponent<Image>();
+            ToggleVisibility(false);
         }
 
 
@@ -25,7 +26,6 @@ namespace Prototype.NetworkLobby
             {
                 ToggleVisibility(!isDisplayed);
             }
-
         }
 
         public void ToggleVisibility(bool visible)

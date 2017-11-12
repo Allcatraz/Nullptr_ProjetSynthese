@@ -89,7 +89,7 @@ namespace ProjetSynthese
         {
             ObjectContainedInventory helmet = inventory.GetHelmet();
             ObjectContainedInventory vest = inventory.GetVest();
-            return new[] { helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem() };
+            return new[] { helmet == null ? null : helmet.GetItem(), vest == null ? null : vest.GetItem() };
         }
 
         public bool IsSwimming
@@ -105,13 +105,11 @@ namespace ProjetSynthese
                 if (isSwimming)
                 {                    
                     ActorController.AISpeed = AIController.SpeedLevel.Swimming;
-                    //gameObject.transform.position = new Vector3(gameObject.transform.position.x, -2, gameObject.transform.position.z);
                     rigidbody.useGravity = false;
                 }
                 else
                 {                    
                     ActorController.SetAIControllerMode(ActorController.GetAIControllerMode());
-                    //gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
                     rigidbody.useGravity = true;
                 }
             }

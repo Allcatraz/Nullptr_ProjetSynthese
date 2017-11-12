@@ -11,6 +11,7 @@ TagManager:
   - AI
   - Map
   - TopPanel
+  - EndGamePanel
   layers:
   - Default
   - TransparentFX

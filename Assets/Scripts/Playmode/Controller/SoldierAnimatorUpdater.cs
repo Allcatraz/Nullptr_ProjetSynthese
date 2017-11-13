@@ -35,11 +35,11 @@ public class SoldierAnimatorUpdater : MonoBehaviour
         angleInterpolationFactors.diffFactor = 2;
         angleInterpolationFactors.interpolatingPerFrameValue = 0.02f;
 
-        AnimationEvent shootingEvent = new AnimationEvent();
-        shootingEvent.time = shootingAnimation.length;
-        shootingEvent.functionName = "EndShooting";
-        shootingAnimation.AddEvent(shootingEvent);
-        
+        //AnimationEvent shootingEvent = new AnimationEvent();
+        //shootingEvent.time = shootingAnimation.length;
+        //shootingEvent.functionName = "EndShooting";
+        //shootingAnimation.AddEvent(shootingEvent);
+
     }
 
     public void UpdateAnimator()

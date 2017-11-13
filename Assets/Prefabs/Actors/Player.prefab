@@ -1513,6 +1513,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 95523666130526634}
+  shootingAnimation: {fileID: 7400000, guid: cbb6bbf945dda7d4d8c062dd76028577, type: 3}
+  grenadeAnimation: {fileID: 0}
 --- !u!114 &114571264583394874
 MonoBehaviour:
   m_ObjectHideFlags: 1

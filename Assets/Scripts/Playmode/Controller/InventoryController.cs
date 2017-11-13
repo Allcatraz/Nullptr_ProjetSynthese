@@ -23,6 +23,11 @@ namespace ProjetSynthese
         [SerializeField] private GameObject cellInventoryPrefab;
         [Tooltip("Le prefab utilisé pour la création des boutons utilisé par les objets de l'inventaire du sol")]
         [SerializeField] private GameObject cellGroundPrefab;
+        //Dirty bug fix begin
+        [Tooltip("Le prefab utilisé entant que filler pour les panels d'inventaire")]
+        [SerializeField]
+        private GameObject inventoryFiller;
+        //Dirty bug fix end
 
         [Tooltip("Contien l'inventaire du sol")]
         [SerializeField] private Inventory inventoryGround;
@@ -119,6 +124,14 @@ namespace ProjetSynthese
             }
         }
 
+        //Dirty bug fix begin
+        private void InstantiateInventoryFiller(Transform grid)
+        {
+            GameObject filler = Instantiate(inventoryFiller);
+            filler.transform.SetParent(grid, false);
+        }
+        //Dirty bug fix end
+
         public void CreateCellsForInventoryPlayer()
         {
             ClearGrid(gridInventoryPlayer);
@@ -126,6 +139,7 @@ namespace ProjetSynthese
             {
                 InstantiateCellObject(cellInventoryPrefab, gridInventoryPlayer, item);
             }
+            InstantiateInventoryFiller(gridInventoryPlayer);
         }
 
         public void CreateCellsForWeaponByPlayer()
@@ -172,6 +186,7 @@ namespace ProjetSynthese
                 {
                     InstantiateCellObject(cellGroundPrefab, gridGroundInventory, item);
                 }
+                InstantiateInventoryFiller(gridGroundInventory);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using Harmony;
 
 namespace ProjetSynthese
 {
@@ -36,6 +37,10 @@ namespace ProjetSynthese
                 return health;
             }
         }
+
+        public DeathCircleController DeathCircleController { get; private set; }
+       
+
         private void Start()
         {
             //Ordre d'initialisation important
@@ -46,7 +51,16 @@ namespace ProjetSynthese
             EquipmentManager = new EquipmentManager(this);
             HealthManager = new HealthManager(this);
             health.OnDeath += OnDeath;
+
+            InjectDependencies("InjectAIActor");
+            float f = DeathCircleController.DeathCircle.Radius;
         }
+
+        private void InjectAIActor([SceneScope] DeathCircleController deathCircleController)
+        {
+            this.DeathCircleController = deathCircleController;
+        }
+
 
         private void OnDestroy()
         {

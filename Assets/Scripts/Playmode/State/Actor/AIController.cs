@@ -242,7 +242,8 @@ namespace ProjetSynthese
             }
             else
             {
-                Vector3 deathCircleCenterPosition = DeathCircle.
+                float deathCircleRadius = Actor.DeathCircleController.DeathCircle.Radius;
+                //Vector3 deathCircleCenterPosition = Actor.DeathCircleController.DeathCircle.Radius;
                 //fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
                 //fleeDirection.Normalize();
                 //fleeDirection *= FleeRange;

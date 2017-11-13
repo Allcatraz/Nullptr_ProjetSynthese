@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Castle.Core.Internal;
 using Harmony;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
@@ -20,7 +22,7 @@ namespace ProjetSynthese
         [Tooltip("Le menu de la map du joueur.")]
         [SerializeField]
         private Menu mapMenu;
-
+        
         [Tooltip("Le transform contenant les armes du joueur.")]
         [SerializeField]
         private Transform weaponHolderTransform;
@@ -46,6 +48,7 @@ namespace ProjetSynthese
         private BoostHealEventChannel boostHealEventChannel;
         private PlayerDeathEventChannel playerDeathEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
+        private RectTransform endGamePanel;
 
         private Vector2 rotation = Vector2.zero;
         private bool isInventoryOpen = false;
@@ -141,6 +144,8 @@ namespace ProjetSynthese
                 return;
             }
 
+            endGamePanel = GameObject.FindGameObjectWithTag(R.S.Tag.EndGamePanel).GetAllChildrens()[0].GetComponent<RectTransform>();
+
             keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
             keyboardInputSensor.Keyboards.OnInteract += OnInteract;
@@ -150,6 +155,7 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon += OnSwitchSecondaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon += OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap += OnToggleMap;
+            keyboardInputSensor.Keyboards.OnTogglePause += OnPause;
             keyboardInputSensor.Keyboards.OnReload += OnReload;
             keyboardInputSensor.Keyboards.OnChangeViewMode += OnChangeViewMode;
 
@@ -181,6 +187,7 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon -= OnSwitchSecondaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon -= OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap -= OnToggleMap;
+            keyboardInputSensor.Keyboards.OnTogglePause -= OnPause;
             keyboardInputSensor.Keyboards.OnReload -= OnReload;
             keyboardInputSensor.Keyboards.OnChangeViewMode -= OnChangeViewMode;
 
@@ -258,7 +265,7 @@ namespace ProjetSynthese
                 currentWeapon.gameObject.SetActive(isActive);
                 currentWeapon.transform.position = weaponHolderTransform.position;
                 currentWeapon.transform.rotation = weaponHolderTransform.rotation;
-                currentWeapon.transform.Rotate(90, 0, 0);
+                currentWeapon.transform.Rotate(93, 0, 0);
             }
         }
 
@@ -434,8 +441,9 @@ namespace ProjetSynthese
 
         private void OnDeath(PlayerDeathEvent playerDeathEvent)
         {
+            endGamePanel.gameObject.SetActive(true);
             CmdDestroy(gameObject);
-            Destroy(gameObject);
+            Destroy(gameObject);            
         }
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
@@ -468,6 +476,10 @@ namespace ProjetSynthese
             ObjectContainedInventory helmet = inventory.GetHelmet();
             ObjectContainedInventory vest = inventory.GetVest();
             return new[] {helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem()};
+        }
+
+        private void OnPause()
+        {
         }
     }
 }

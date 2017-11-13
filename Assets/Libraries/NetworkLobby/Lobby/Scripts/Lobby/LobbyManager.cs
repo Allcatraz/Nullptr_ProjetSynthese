@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace Prototype.NetworkLobby
 {
-    public class LobbyManager : NetworkLobbyManager 
+    public class LobbyManager : NetworkLobbyManager
     {
         static short MsgKicked = MsgType.Highest + 1;
 
@@ -32,8 +32,6 @@ namespace Prototype.NetworkLobby
 
         protected RectTransform currentPanel;
 
-        public Button backButton;
-
         public Text statusInfo;
         public Text hostInfo;
 
@@ -47,7 +45,7 @@ namespace Prototype.NetworkLobby
         public bool _isMatchmaking = false;
 
         protected bool _disconnectServer = false;
-        
+
         protected ulong _currentMatchID;
 
         protected LobbyHook _lobbyHooks;
@@ -58,7 +56,6 @@ namespace Prototype.NetworkLobby
             _lobbyHooks = GetComponent<Prototype.NetworkLobby.LobbyHook>();
             currentPanel = mainMenuPanel;
 
-            backButton.gameObject.SetActive(false);
             GetComponent<Canvas>().enabled = true;
 
             DontDestroyOnLoad(gameObject);
@@ -132,11 +129,9 @@ namespace Prototype.NetworkLobby
 
             if (currentPanel != mainMenuPanel)
             {
-                backButton.gameObject.SetActive(true);
             }
             else
             {
-                backButton.gameObject.SetActive(false);
                 SetServerInfo("Offline", "None");
                 _isMatchmaking = false;
             }
@@ -160,7 +155,7 @@ namespace Prototype.NetworkLobby
         public void GoBackButton()
         {
             backDelegate();
-			topPanel.isInGame = false;
+            topPanel.isInGame = false;
         }
 
         // ----------------- Server management
@@ -179,20 +174,20 @@ namespace Prototype.NetworkLobby
         {
             ChangeTo(mainMenuPanel);
         }
-                 
+
         public void StopHostClbk()
         {
             if (_isMatchmaking)
             {
-				matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
-				_disconnectServer = true;
+                matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
+                _disconnectServer = true;
             }
             else
             {
                 StopHost();
             }
 
-            
+
             ChangeTo(mainMenuPanel);
         }
 
@@ -240,16 +235,16 @@ namespace Prototype.NetworkLobby
             SetServerInfo("Hosting", networkAddress);
         }
 
-		public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo)
-		{
-			base.OnMatchCreate(success, extendedInfo, matchInfo);
+        public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo)
+        {
+            base.OnMatchCreate(success, extendedInfo, matchInfo);
             _currentMatchID = (System.UInt64)matchInfo.networkId;
-		}
+        }
 
-		public override void OnDestroyMatch(bool success, string extendedInfo)
-		{
-			base.OnDestroyMatch(success, extendedInfo);
-			if (_disconnectServer)
+        public override void OnDestroyMatch(bool success, string extendedInfo)
+        {
+            base.OnDestroyMatch(success, extendedInfo);
+            if (_disconnectServer)
             {
                 StopMatchMaker();
                 StopHost();
@@ -338,15 +333,15 @@ namespace Prototype.NetworkLobby
 
         public override void OnLobbyServerPlayersReady()
         {
-			bool allready = true;
-			for(int i = 0; i < lobbySlots.Length; ++i)
-			{
-				if(lobbySlots[i] != null)
-					allready &= lobbySlots[i].readyToBegin;
-			}
+            bool allready = true;
+            for (int i = 0; i < lobbySlots.Length; ++i)
+            {
+                if (lobbySlots[i] != null)
+                    allready &= lobbySlots[i].readyToBegin;
+            }
 
-			if(allready)
-				StartCoroutine(ServerCountdownCoroutine());
+            if (allready)
+                StartCoroutine(ServerCountdownCoroutine());
         }
 
         public IEnumerator ServerCountdownCoroutine()

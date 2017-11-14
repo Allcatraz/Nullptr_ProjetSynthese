@@ -38,9 +38,17 @@ namespace ProjetSynthese
             }
         }
 
-        public DeathCircleController DeathCircleController { get; private set; }
-       
+        DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel;
+        private void InjectDeathCircleController([EventChannelScope] DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel)
+        {
+          this.deathCircleStatusUpdateEventChannel = deathCircleStatusUpdateEventChannel;
+        }
 
+        private void Awake()
+        {
+            InjectDependencies("InjectDeathCircleController");
+            deathCircleStatusUpdateEventChannel.OnEventPublished += OnDeathCircleFixedUpdate;
+        }
         private void Start()
         {
             //Ordre d'initialisation important
@@ -51,15 +59,9 @@ namespace ProjetSynthese
             EquipmentManager = new EquipmentManager(this);
             HealthManager = new HealthManager(this);
             health.OnDeath += OnDeath;
-
-            InjectDependencies("InjectAIActor");
-            float f = DeathCircleController.DeathCircle.Radius;
+           
         }
 
-        private void InjectAIActor([SceneScope] DeathCircleController deathCircleController)
-        {
-            this.DeathCircleController = deathCircleController;
-        }
 
 
         private void OnDestroy()
@@ -130,6 +132,11 @@ namespace ProjetSynthese
         public void ServerSetActive(GameObject item, bool isActive)
         {
             CmdSetActive(item, isActive);
+        }
+
+        private void OnDeathCircleFixedUpdate(DeathCircleStatusUpdateEvent deathCircleStatusUpdateEvent)
+        {
+           
         }
 
     }

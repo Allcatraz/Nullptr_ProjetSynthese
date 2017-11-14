@@ -8,12 +8,15 @@ namespace ProjetSynthese
 
     public delegate void OnDistanceChangeEventHandler(float safeCircleRadius, float deathCircleRadius, float playerRadius);
 
+    public delegate void OnDeathCircleStatusUpdateEventHandler();
+
     public class DeathCircleController : GameScript
     {
         enum Phases { Phase1, Phase2, Phase3, Phase4, Phase5, Phase6, Phase7, Phase8 }
 
         [Tooltip("Les informations sur les états du DeathCircle.")]
-        [SerializeField] private DeathCircle deathCircleValues;
+        [SerializeField]
+        private DeathCircle deathCircleValues;
 
         private const float InitialShrinkTime = 0.05f;
         private const float InitialPlayerHurtTime = 1.0f;
@@ -28,13 +31,14 @@ namespace ProjetSynthese
         private PlayerMoveEventChannel playerMoveEventChannel;
         private LineRendererCircle safeCircle;
         private LineRendererCircle deathCircle;
-        public LineRendererCircle SafeCircle {get{return safeCircle;} private set{safeCircle =value;} }
+        public LineRendererCircle SafeCircle { get { return safeCircle; } private set { safeCircle = value; } }
         public LineRendererCircle DeathCircle { get { return deathCircle; } private set { deathCircle = value; } }
         private TiledMap tiledMap;
         private Phases currentPhase = Phases.Phase1;
 
         public event OnPlayerHurtEventHandler OnPlayerHurt;
         public event OnDistanceChangeEventHandler OnDistanceChanged;
+        public event OnDeathCircleStatusUpdateEventHandler OnFixedUpdate;
 
         private void InjectDeathCircleController([SiblingsScope] TiledMap tiledMap,
                                                  [EventChannelScope] PlayerMoveEventChannel playerMoveEventChannel)
@@ -53,7 +57,7 @@ namespace ProjetSynthese
             deathCircle = GetAllChildrens()[1].GetComponent<LineRendererCircle>();
 
             playerMoveEventChannel.OnEventPublished += OnPlayerMove;
-            
+
             Vector2 tiledMapScaled = new Vector2((float)tiledMap.MapWidthInPixels / tiledMap.TileWidth, (float)tiledMap.MapHeightInPixels / tiledMap.TileHeight);
             transform.position = new Vector3(tiledMapScaled.x / 2f, 90, -tiledMapScaled.y / 2f);
             float mapDiagonalRadius = Mathf.Sqrt((tiledMapScaled.x * tiledMapScaled.x) + (tiledMapScaled.y * tiledMapScaled.y) / 2);
@@ -72,8 +76,8 @@ namespace ProjetSynthese
                 {
                     if (!hasMoveTimeSet)
                     {
-                        moveTime = deathCircleValues.MoveTimeInSecond[(int) currentPhase];
-                        CreateCircle(ref safeCircle, safeCircle.Radius * deathCircleValues.Shrink[(int) currentPhase]);
+                        moveTime = deathCircleValues.MoveTimeInSecond[(int)currentPhase];
+                        CreateCircle(ref safeCircle, safeCircle.Radius * deathCircleValues.Shrink[(int)currentPhase]);
 
                         hasMoveTimeSet = true;
                     }
@@ -94,7 +98,7 @@ namespace ProjetSynthese
                                 {
                                     currentPhase += 1;
                                 }
-                                waitTime = deathCircleValues.WaitTimeInSecond[(int) currentPhase];
+                                waitTime = deathCircleValues.WaitTimeInSecond[(int)currentPhase];
                                 hasMoveTimeSet = false;
                                 return;
                             }
@@ -112,11 +116,14 @@ namespace ProjetSynthese
                 if (playerHurtTime <= 0.0f)
                 {
                     playerHurtTime = InitialPlayerHurtTime;
-                    if (OnPlayerHurt != null) OnPlayerHurt(deathCircleValues.DomagePerSecond[(int) currentPhase]);
+                    if (OnPlayerHurt != null) OnPlayerHurt(deathCircleValues.DomagePerSecond[(int)currentPhase]);
                 }
             }
 
-            if (OnDistanceChanged != null) OnDistanceChanged(safeCircle.Radius, deathCircle.Radius ,playerRadius);
+            if (OnDistanceChanged != null) OnDistanceChanged(safeCircle.Radius, deathCircle.Radius, playerRadius);
+
+            if (OnFixedUpdate != null) OnFixedUpdate();
+ 
         }
 
         private void OnPlayerMove(PlayerMoveEvent playerMoveEvent)

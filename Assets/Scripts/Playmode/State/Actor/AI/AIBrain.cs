@@ -30,6 +30,7 @@ namespace ProjetSynthese
         #endregion
 
         #region Knowledge
+        private float deltaTimelastDeathCircleEvent = 0.0f;
         private float healthRatio = 1.0f;
         private float healNumberStorageRatio = 0.0f;
         private float boostNumberStorageRatio = 0.0f;
@@ -760,6 +761,11 @@ namespace ProjetSynthese
                     }
                 }
             }
+        }
+
+        public void UpdateDeathCircleKnowledge(DeathCircleHurtEvent deathCircleHurtEvent)
+        {
+            deltaTimelastDeathCircleEvent += Time.deltaTime;
         }
     }
 }

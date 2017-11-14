@@ -54,10 +54,10 @@ namespace ProjetSynthese
             }
         }
 
-        private const float WalkingSpeed = 4.0f;
-        private const float JoggingSpeed = 5.5f;
-        private const float RunningSpeed = 7.0f;
-        private const float SwimmingSpeed = 0.5f;
+        private const float WalkingSpeed = 0.0f;//4.0f;
+        private const float JoggingSpeed = 0.0f;//5.5f;
+        private const float RunningSpeed = 0.0f;//7.0f;
+        private const float SwimmingSpeed = 0.0f;//0.5f;
         private const float NoSpeed = 0.0f;
 
         private float currentSpeedLevel;
@@ -242,7 +242,7 @@ namespace ProjetSynthese
             }
             else
             {
-                float deathCircleRadius = Actor.DeathCircleController.DeathCircle.Radius;
+                //float deathCircleRadius = Actor.DeathCircleController.DeathCircle.Radius;
                 //Vector3 deathCircleCenterPosition = Actor.DeathCircleController.DeathCircle.Radius;
                 //fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
                 //fleeDirection.Normalize();

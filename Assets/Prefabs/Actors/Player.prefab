@@ -1370,6 +1370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryMenu: {fileID: 11400000, guid: 589e738a3b2298e4588b3051b4c164ac, type: 2}
   mapMenu: {fileID: 11400000, guid: a90bf0f1f67a57e41b2286896d6bda89, type: 2}
+  uiMenu: {fileID: 11400000, guid: c1a96c45c3dade44c8ca780fbe720fed, type: 2}
   weaponHolderTransform: {fileID: 4236748107255540}
   inventoryHolderTransform: {fileID: 4132227477362130}
   firstPersonCamera: {fileID: 20009433431343892}

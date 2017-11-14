@@ -49,3 +49,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: DeathMenu
+    uniqueID: 238674139
+    locked: 0
+  - name: PauseMenu
+    uniqueID: 4218960423
+    locked: 0

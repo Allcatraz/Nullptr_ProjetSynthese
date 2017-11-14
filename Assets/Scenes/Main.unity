@@ -3985,6 +3985,7 @@ GameObject:
   m_Component:
   - component: {fileID: 584623481}
   - component: {fileID: 584623482}
+  - component: {fileID: 584623483}
   m_Layer: 5
   m_Name: EndGame
   m_TagString: EndGamePanel
@@ -4023,6 +4024,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInGame: 0
+--- !u!210 &584623483
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 584623480}
+  m_Enabled: 1
+  m_SortingLayerID: 238674139
+  m_SortingLayer: 1
+  m_SortingOrder: 1
 --- !u!1 &600414881
 GameObject:
   m_ObjectHideFlags: 0
@@ -5770,6 +5781,21 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224149526940490074, guid: 16571f242322d574bb68af1bcb3a3249,
     type: 2}
   m_PrefabInternal: {fileID: 777468443}
+--- !u!1 &777468445 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1790125559325524, guid: 16571f242322d574bb68af1bcb3a3249,
+    type: 2}
+  m_PrefabInternal: {fileID: 777468443}
+--- !u!210 &777468446
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 777468445}
+  m_Enabled: 1
+  m_SortingLayerID: -76006873
+  m_SortingLayer: 2
+  m_SortingOrder: 2
 --- !u!1 &778581519
 GameObject:
   m_ObjectHideFlags: 0

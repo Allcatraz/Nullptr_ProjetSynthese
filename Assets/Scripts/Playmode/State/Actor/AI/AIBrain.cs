@@ -31,6 +31,11 @@ namespace ProjetSynthese
 
         #region Knowledge
         private float deltaTimelastDeathCircleEvent = 0.0f;
+        private Vector3 safeCircleCenterPosition;
+        private Vector3 deathCircleCenterPosition;
+        private float safeCircleRadius;
+        private float deathCircleRadius;
+        private float currentDeathCircleHurtPoints;
         private float healthRatio = 1.0f;
         private float healNumberStorageRatio = 0.0f;
         private float boostNumberStorageRatio = 0.0f;
@@ -763,9 +768,14 @@ namespace ProjetSynthese
             }
         }
 
-        public void UpdateDeathCircleKnowledge(DeathCircleHurtEvent deathCircleHurtEvent)
+        public void UpdateDeathCircleKnowledge(DeathCircleController deathCircleController)
         {
             deltaTimelastDeathCircleEvent += Time.deltaTime;
-        }
+            safeCircleCenterPosition = deathCircleController.SafeCircle.transform.position;
+            deathCircleCenterPosition = deathCircleController.DeathCircle.transform.position;
+            safeCircleRadius = deathCircleController.SafeCircle.Radius;
+            deathCircleRadius = deathCircleController.DeathCircle.Radius;
+            currentDeathCircleHurtPoints = deathCircleController.DeathCircleValues.DomagePerSecond[(int)deathCircleController.CurrentPhase];
+         }
     }
 }

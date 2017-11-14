@@ -136,7 +136,7 @@ namespace ProjetSynthese
 
         private void OnDeathCircleFixedUpdate(DeathCircleStatusUpdateEvent deathCircleStatusUpdateEvent)
         {
-           
+            Brain.UpdateDeathCircleKnowledge(deathCircleStatusUpdateEvent.DeathCircleController);
         }
 
     }

@@ -12,11 +12,13 @@ namespace ProjetSynthese
 
     public class DeathCircleController : GameScript
     {
-        enum Phases { Phase1, Phase2, Phase3, Phase4, Phase5, Phase6, Phase7, Phase8 }
+        public enum Phases { Phase1, Phase2, Phase3, Phase4, Phase5, Phase6, Phase7, Phase8 }
 
         [Tooltip("Les informations sur les états du DeathCircle.")]
         [SerializeField]
         private DeathCircle deathCircleValues;
+
+        public DeathCircle DeathCircleValues { get { return deathCircleValues; } private set { deathCircleValues = value; } }
 
         private const float InitialShrinkTime = 0.05f;
         private const float InitialPlayerHurtTime = 1.0f;
@@ -35,6 +37,7 @@ namespace ProjetSynthese
         public LineRendererCircle DeathCircle { get { return deathCircle; } private set { deathCircle = value; } }
         private TiledMap tiledMap;
         private Phases currentPhase = Phases.Phase1;
+        public Phases CurrentPhase { get { return currentPhase; } private set { currentPhase = value; } }
 
         public event OnPlayerHurtEventHandler OnPlayerHurt;
         public event OnDistanceChangeEventHandler OnDistanceChanged;

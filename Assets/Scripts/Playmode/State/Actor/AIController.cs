@@ -69,7 +69,7 @@ namespace ProjetSynthese
         private const float FloorYOffset = 1.0f;
         private const float SwimYOffset = -1.0f;
 
-        public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt,DeathCircle }
+        public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt, DeathCircle }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -237,19 +237,43 @@ namespace ProjetSynthese
         {
             if (FoundFleeDestination(actor))
             {
-              
                 //circle of death compound direction
+                Vector3 fleeDirection = Vector3.zero;
+                Vector3 aiCurrentPosition = actor.transform.position;
+                Vector3 fleeDestination = aiCurrentPosition;
+                fleeDirection = actor.Brain.SafeCircleCenterPosition - aiCurrentPosition;
+                fleeDirection.Normalize();
+                fleeDirection *= FleeRange;
+                fleeDestination.x += fleeDirection.x;
+                fleeDestination.z += fleeDirection.z;
+
+                Vector3 opponentEscapingDirection = MapDestination;
+                float scalarProduct = Vector3.Dot(fleeDestination, opponentEscapingDirection);
+                if (scalarProduct < 0.0f)
+                {
+
+                }
+                else
+                {
+                    //différence de radius facteur entre safe et death
+                    //radius safe effect pour éloigner maximum opponent
+                    //effet rate changement safe versus death
+                    //point de vie rate loosing dernièrement
+                }
+                //MapDestination = fleeDestination;
             }
             else
             {
-                //float deathCircleRadius = Actor.DeathCircleController.DeathCircle.Radius;
-                //Vector3 deathCircleCenterPosition = Actor.DeathCircleController.DeathCircle.Radius;
-                //fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
-                //fleeDirection.Normalize();
-                //fleeDirection *= FleeRange;
-                //fleeDestination.x += fleeDirection.x;
-                //fleeDestination.z += fleeDirection.z;
-                //MapDestination = fleeDestination;
+                Vector3 fleeDirection = Vector3.zero;
+                Vector3 aiCurrentPosition = actor.transform.position;
+                Vector3 fleeDestination = aiCurrentPosition;
+
+                fleeDirection = actor.Brain.SafeCircleCenterPosition - aiCurrentPosition;
+                fleeDirection.Normalize();
+                fleeDirection *= FleeRange;
+                fleeDestination.x += fleeDirection.x;
+                fleeDestination.z += fleeDirection.z;
+                MapDestination = fleeDestination;
             }
             MapDestinationIsKnown = true;
         }
@@ -292,7 +316,7 @@ namespace ProjetSynthese
             }
             else
             {
-               return false;
+                return false;
             }
             if (ValidateMapDestination(fleeDestination))
             {

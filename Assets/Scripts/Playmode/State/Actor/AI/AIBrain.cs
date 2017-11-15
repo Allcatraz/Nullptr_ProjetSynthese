@@ -30,12 +30,15 @@ namespace ProjetSynthese
         #endregion
 
         #region Knowledge
+
+        public Vector3 SafeCircleCenterPosition { get; private set; }
+        public Vector3 DeathCircleCenterPosition { get; private set; }
+        public float SafeCircleRadius { get; private set; }
+        public float DeathCircleRadius { get; private set; }
         private float deltaTimelastDeathCircleEvent = 0.0f;
-        private Vector3 safeCircleCenterPosition;
-        private Vector3 deathCircleCenterPosition;
-        private float safeCircleRadius;
-        private float deathCircleRadius;
         private float currentDeathCircleHurtPoints;
+        private float currentHurtPointsDamageRate;
+        private float currentDeathCircleGapDiminishingRate;
         private float healthRatio = 1.0f;
         private float healNumberStorageRatio = 0.0f;
         private float boostNumberStorageRatio = 0.0f;
@@ -244,7 +247,7 @@ namespace ProjetSynthese
                         {
                             nextState = AIState.Hunt;
                         }
-                        
+
                     }
                 }
                 else if (FoundItemInPerceptionRange())
@@ -467,7 +470,7 @@ namespace ProjetSynthese
                 Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (equippedPrimaryWeapon != null)
                 {
-                    float range = equippedPrimaryWeapon.EffectiveWeaponRange* WeaponEffectiveRangeDamping;
+                    float range = equippedPrimaryWeapon.EffectiveWeaponRange * WeaponEffectiveRangeDamping;
                     if (sqrtTargetDistance < range * range)
                     {
                         return true;
@@ -771,11 +774,11 @@ namespace ProjetSynthese
         public void UpdateDeathCircleKnowledge(DeathCircleController deathCircleController)
         {
             deltaTimelastDeathCircleEvent += Time.deltaTime;
-            safeCircleCenterPosition = deathCircleController.SafeCircle.transform.position;
-            deathCircleCenterPosition = deathCircleController.DeathCircle.transform.position;
-            safeCircleRadius = deathCircleController.SafeCircle.Radius;
-            deathCircleRadius = deathCircleController.DeathCircle.Radius;
+            SafeCircleCenterPosition = deathCircleController.SafeCircle.transform.position;
+            DeathCircleCenterPosition = deathCircleController.DeathCircle.transform.position;
+            SafeCircleRadius = deathCircleController.SafeCircle.Radius;
+            DeathCircleRadius = deathCircleController.DeathCircle.Radius;
             currentDeathCircleHurtPoints = deathCircleController.DeathCircleValues.DomagePerSecond[(int)deathCircleController.CurrentPhase];
-         }
+        }
     }
 }

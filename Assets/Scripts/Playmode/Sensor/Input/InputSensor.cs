@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ProjetSynthese
 {
@@ -14,7 +15,7 @@ namespace ProjetSynthese
             public event ToggleMapEventHandler OnToggleMap;
             public event TogglePauseEventHandler OnTogglePause;
 
-            public event MoveTowardEventHandler OnMoveToward;
+            public event MoveTowardEventHandler OnMove;
             public event SwitchSprintOnEventHandler OnSwitchSprintOn;
             public event SwitchSprintOffEventHandler OnSwitchSprintOff;
 
@@ -62,9 +63,9 @@ namespace ProjetSynthese
                 if (OnTogglePause != null) OnTogglePause();
             }
 
-            protected virtual void NotifyMove(KeyCode key)
+            protected virtual void NotifyMove(List<KeyCode> key)
             {
-                if (OnMoveToward != null) OnMoveToward(key);
+                if (OnMove != null) OnMove(key);
             }
 
             protected virtual void NotifySwitchSprintOn()
@@ -222,7 +223,7 @@ namespace ProjetSynthese
                 }
             }
 
-            protected override void NotifyMove(KeyCode key)
+            protected override void NotifyMove(List<KeyCode> key)
             {
                 if (!moveTriggerd)
                 {

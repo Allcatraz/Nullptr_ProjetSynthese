@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Harmony;
 
 namespace ProjetSynthese
@@ -95,22 +96,27 @@ namespace ProjetSynthese
 
             private void HandleDirectionInput()
             {
+                List<KeyCode> keys = new List<KeyCode>();
+
                 if (keyboard.GetKey(ActionKey.Instance.MoveFoward))
                 {
-                    NotifyMove(ActionKey.Instance.MoveFoward);
+                    keys.Add(ActionKey.Instance.MoveFoward);
                 }
                 if (keyboard.GetKey(ActionKey.Instance.MoveLeft))
                 {
-                    NotifyMove(ActionKey.Instance.MoveLeft);
+                    keys.Add(ActionKey.Instance.MoveLeft);
                 }
                 if (keyboard.GetKey(ActionKey.Instance.MoveBackward))
                 {
-                    NotifyMove(ActionKey.Instance.MoveBackward);
+                    keys.Add(ActionKey.Instance.MoveBackward);
                 }
                 if (keyboard.GetKey(ActionKey.Instance.MoveRight))
                 {
-                    NotifyMove(ActionKey.Instance.MoveRight);
+                    keys.Add(ActionKey.Instance.MoveRight);
                 }
+
+                if(keys.Count > 0)
+                    NotifyMove(keys);
             }
         }
     }

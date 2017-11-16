@@ -5683,6 +5683,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 772307929}
+  nameInput: {fileID: 101298624}
+  passwordInput: {fileID: 1554419360}
 --- !u!1001 &777468443
 Prefab:
   m_ObjectHideFlags: 0

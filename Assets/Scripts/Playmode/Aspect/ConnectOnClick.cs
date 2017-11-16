@@ -9,7 +9,19 @@ namespace ProjetSynthese
     {
         [Tooltip("Button connect.")]
         [SerializeField] private Button button;
-        
+
+        private PlayerRepository playerRepository;
+
+        private void InjectConnectButton([ApplicationScope] PlayerRepository playerRepository)
+        {
+            this.playerRepository = playerRepository;
+        }
+
+        public void Awake()
+        {
+            InjectDependencies("InjectConnectButton");
+        }
+
         private void OnEnable()
         {
             button.Events().OnClick += OnClick;

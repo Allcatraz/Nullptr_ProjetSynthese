@@ -237,30 +237,36 @@ namespace ProjetSynthese
         {
             if (FoundFleeDestination(actor))
             {
-                //circle of death compound direction
+                //Safe circle flee direction
                 Vector3 fleeDirection = Vector3.zero;
                 Vector3 aiCurrentPosition = actor.transform.position;
                 Vector3 fleeDestination = aiCurrentPosition;
                 fleeDirection = actor.Brain.SafeCircleCenterPosition - aiCurrentPosition;
                 fleeDirection.Normalize();
-                fleeDirection *= FleeRange;
-                fleeDestination.x += fleeDirection.x;
-                fleeDestination.z += fleeDirection.z;
+                //fleeDirection *= FleeRange;
+                //fleeDestination.x += fleeDirection.x;
+                //fleeDestination.z += fleeDirection.z;
 
                 Vector3 opponentEscapingDirection = MapDestination;
+                opponentEscapingDirection.Normalize();
                 float scalarProduct = Vector3.Dot(fleeDestination, opponentEscapingDirection);
+
                 if (scalarProduct < 0.0f)
                 {
-
+                    //add les vecteurs
+                    //comme les vacteur par facteur escape selon point de vie
+                    //et distance de circle
                 }
                 else
                 {
+                    opponentEscapingDirection = -opponentEscapingDirection;
                     //différence de radius facteur entre safe et death
                     //radius safe effect pour éloigner maximum opponent
                     //effet rate changement safe versus death
                     //point de vie rate loosing dernièrement
                 }
                 //MapDestination = fleeDestination;
+                //ajouter un safe range intérieur cercle
             }
             else
             {

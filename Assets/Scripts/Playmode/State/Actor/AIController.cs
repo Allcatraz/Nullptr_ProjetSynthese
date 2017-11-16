@@ -69,7 +69,7 @@ namespace ProjetSynthese
         private const float FloorYOffset = 1.0f;
         private const float SwimYOffset = -1.0f;
 
-        public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt }
+        public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt, DeathCircle }
         private ControllerMode aiControllerMode;
         private readonly ActorAI Actor;
 
@@ -235,6 +235,71 @@ namespace ProjetSynthese
             }
         }
 
+        public void SetDeathCircleFleeDestination(ActorAI actor)
+        {
+            
+            if ( actor.Brain.ExistVisibleOpponent() && FoundFleeDestination(actor))
+            {
+                //Safe circle flee direction
+                Vector3 fleeDirection = Vector3.zero;
+                Vector3 aiCurrentPosition = actor.transform.position;
+                Vector3 fleeDestination = aiCurrentPosition;
+                fleeDirection = actor.Brain.SafeCircleCenterPosition - aiCurrentPosition;
+                fleeDestination.y = 0.0f;
+                fleeDirection.Normalize();
+                
+                Vector3 opponentEscapingDirection = MapDestination;
+                opponentEscapingDirection.y = 0.0f;
+                opponentEscapingDirection.Normalize();
+                float scalarProduct = Vector3.Dot(fleeDestination, opponentEscapingDirection);
+
+                float opponentPositionFactor = 1.0f;
+                if (actor.Brain.CurrentDistanceOutsideSafeCircle > 0.0f)
+                {
+                    float expectedLifePointLoss = (actor.Brain.CurrentDistanceOutsideSafeCircle / currentSpeedLevel) * actor.Brain.CurrentDeathCircleHurtPoints;
+                    opponentPositionFactor = (actor.AIHealth.HealthPoints - expectedLifePointLoss) / actor.AIHealth.HealthPoints;
+                    if (opponentPositionFactor < 0.0f)
+                    {
+                        opponentPositionFactor = 0.0f;
+                    }
+                }
+                
+                if (scalarProduct < 0.0f)
+                {
+                    fleeDestination = opponentPositionFactor * opponentEscapingDirection + fleeDestination;
+                }
+                else
+                {
+                    opponentEscapingDirection = -opponentEscapingDirection;
+                    Vector3 yPerpendicularVector = Vector3.Cross(fleeDestination, opponentEscapingDirection);
+                    yPerpendicularVector.Normalize();
+                    opponentEscapingDirection = Vector3.Cross(fleeDestination, yPerpendicularVector);
+                    opponentEscapingDirection.Normalize();
+                    fleeDestination = opponentPositionFactor * opponentEscapingDirection + fleeDestination;
+                }
+                fleeDirection.Normalize();
+                fleeDirection *= FleeRange;
+                fleeDestination.x += fleeDirection.x;
+                fleeDestination.z += fleeDirection.z;
+                MapDestination = fleeDestination;
+
+            }
+            else
+            {
+                Vector3 fleeDirection = Vector3.zero;
+                Vector3 aiCurrentPosition = actor.transform.position;
+                Vector3 fleeDestination = aiCurrentPosition;
+
+                fleeDirection = actor.Brain.SafeCircleCenterPosition - aiCurrentPosition;
+                fleeDirection.Normalize();
+                fleeDirection *= FleeRange;
+                fleeDestination.x += fleeDirection.x;
+                fleeDestination.z += fleeDirection.z;
+                MapDestination = fleeDestination;
+            }
+            MapDestinationIsKnown = true;
+        }
+
         public void SetFleeDestination(ActorAI actor)
         {
 
@@ -254,7 +319,7 @@ namespace ProjetSynthese
             Vector3 fleeDirection = Vector3.zero;
             Vector3 aiCurrentPosition = actor.transform.position;
             Vector3 fleeDestination = aiCurrentPosition;
-
+            //check le plus proche ou fait composite
             if (actor.Brain.AiInPerceptionRange != null)
             {
                 fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
@@ -273,16 +338,7 @@ namespace ProjetSynthese
             }
             else
             {
-
-                Vector3 unitZ = actor.transform.forward;
-                Quaternion rotation = actor.transform.rotation;
-                Quaternion rot180 = Quaternion.AngleAxis(180, actor.transform.forward);
-                fleeDirection = rot180 * (rotation * unitZ);
-                fleeDirection.Normalize();
-                fleeDirection *= FleeRange;
-                fleeDestination.x += fleeDirection.x;
-                fleeDestination.z += fleeDirection.z;
-
+                return false;
             }
             if (ValidateMapDestination(fleeDestination))
             {
@@ -298,6 +354,8 @@ namespace ProjetSynthese
 
         private bool ValidateMapDestination(Vector3 mapDestination)
         {
+            //code si coincé pas de possibilité de fuite return false
+            //exemple mur, circle of death, out of map
             return true;
         }
 
@@ -343,6 +401,10 @@ namespace ProjetSynthese
                     Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;
                 case ControllerMode.Hunt:
+                    AISpeed = AIController.SpeedLevel.Running;
+                    Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
+                    break;
+                case ControllerMode.DeathCircle:
                     AISpeed = AIController.SpeedLevel.Running;
                     Actor.Sensor.AIPerceptionLevel = AIRadar.PerceptionLevel.High;
                     break;

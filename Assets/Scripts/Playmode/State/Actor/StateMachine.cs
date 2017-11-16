@@ -28,6 +28,9 @@ namespace ProjetSynthese
                 case AIState.Flee:
                     actor.ChangeState(new FleeState());
                     break;
+                case AIState.DeathCircle:
+                    actor.ChangeState(new DeathCircleState());
+                    break;
                 default:
                     break;
             }

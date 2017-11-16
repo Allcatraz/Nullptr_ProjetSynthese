@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using Harmony;
 
 namespace ProjetSynthese
 {
@@ -36,6 +37,18 @@ namespace ProjetSynthese
                 return health;
             }
         }
+
+        DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel;
+        private void InjectDeathCircleController([EventChannelScope] DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel)
+        {
+          this.deathCircleStatusUpdateEventChannel = deathCircleStatusUpdateEventChannel;
+        }
+
+        private void Awake()
+        {
+            InjectDependencies("InjectDeathCircleController");
+            deathCircleStatusUpdateEventChannel.OnEventPublished += OnDeathCircleFixedUpdate;
+        }
         private void Start()
         {
             //Ordre d'initialisation important
@@ -46,11 +59,15 @@ namespace ProjetSynthese
             EquipmentManager = new EquipmentManager(this);
             HealthManager = new HealthManager(this);
             health.OnDeath += OnDeath;
+           
         }
+
+
 
         private void OnDestroy()
         {
             health.OnDeath -= OnDeath;
+            deathCircleStatusUpdateEventChannel.OnEventPublished -= OnDeathCircleFixedUpdate;
         }
 
         private void Update()
@@ -129,6 +146,22 @@ namespace ProjetSynthese
         public void ServerSetActive(GameObject item, bool isActive)
         {
             CmdSetActive(item, isActive);
+        }
+
+        private void OnDeathCircleFixedUpdate(DeathCircleStatusUpdateEvent deathCircleStatusUpdateEvent)
+        {
+            Brain.UpdateDeathCircleKnowledge(deathCircleStatusUpdateEvent.DeathCircleController);
+            Vector2 aiPosition = Vector2.zero;
+            Vector2 deathCirclePosition = Vector2.zero;
+            aiPosition.x = this.transform.position.x;
+            aiPosition.y = this.transform.position.z;
+            deathCirclePosition.x = Brain.DeathCircleCenterPosition.x;
+            deathCirclePosition.y = Brain.DeathCircleCenterPosition.z;
+            if (Vector2.Distance(aiPosition, deathCirclePosition) > Brain.DeathCircleRadius)
+            {
+                health.Hit(Brain.CurrentDeathCircleHurtPoints*Time.deltaTime);
+                Brain.InjuredByDeathCircle = true;
+            }
         }
 
     }

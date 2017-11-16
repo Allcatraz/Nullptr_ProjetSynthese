@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
@@ -6,7 +7,7 @@ namespace ProjetSynthese
     public delegate void DeathEventHandler();
 
     [AddComponentMenu("Game/State/Health")]
-    public class Health : GameScript
+    public class Health : NetworkGameScript
     {
         [Tooltip("Le nombre de points de vie initial.")]
         [SerializeField] private int initialHealthPoints;
@@ -48,6 +49,11 @@ namespace ProjetSynthese
 
         public void Hit(float hitPoints)
         {
+            if (!isServer)
+            {
+                return;
+            }
+
             HealthPoints -= hitPoints;
         }
 

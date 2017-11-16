@@ -33,7 +33,13 @@ namespace ProjetSynthese
         [Command]
         protected void CmdDestroy(GameObject item)
         {
-            NetworkServer.Destroy(item);
+            Destroy(item);
+        }
+
+        [Command]
+        protected void CmdDestroyTime(GameObject item, float time)
+        {
+            Destroy(item, time);
         }
 
         [Command]

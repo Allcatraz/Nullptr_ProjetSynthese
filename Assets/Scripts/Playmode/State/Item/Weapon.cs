@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
@@ -61,7 +62,9 @@ namespace ProjetSynthese
         {
             if (MagazineAmount > 0)
             {
-                CmdSpawnObject(BulletFactory.CreateBullet(bulletSpawnPoint, chamber, bulletSpeed, bulletLivingTime, dommage));
+                GameObject bullet = BulletFactory.CreateBullet(bulletSpawnPoint, chamber, bulletSpeed, dommage);
+                CmdSpawnObject(bullet);
+                CmdDestroyTime(bullet, bulletLivingTime);
                 MagazineAmount -= 1;
                 NotidyMunitionChanged(); 
             }

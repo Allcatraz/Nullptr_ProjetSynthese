@@ -146,7 +146,7 @@ namespace ProjetSynthese
 
             endGamePanel = GameObject.FindGameObjectWithTag(R.S.Tag.EndGamePanel).GetAllChildrens()[0].GetComponent<RectTransform>();
 
-            keyboardInputSensor.Keyboards.OnMoveToward += OnMoveToward;
+            keyboardInputSensor.Keyboards.OnMove += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
             keyboardInputSensor.Keyboards.OnInteract += OnInteract;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn += playerMover.SwitchSprintOn;
@@ -178,7 +178,7 @@ namespace ProjetSynthese
                 return;
             }
 
-            keyboardInputSensor.Keyboards.OnMoveToward -= OnMoveToward;
+            keyboardInputSensor.Keyboards.OnMove -= OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory -= OnToggleInventory;
             keyboardInputSensor.Keyboards.OnInteract -= OnInteract;
             keyboardInputSensor.Keyboards.OnSwitchSprintOn -= playerMover.SwitchSprintOn;
@@ -269,7 +269,7 @@ namespace ProjetSynthese
             }
         }
 
-        private void OnMoveToward(KeyCode key)
+        private void OnMoveToward(List<KeyCode> key)
         {
             Matrix4x4 transformMatrix = transform.localToWorldMatrix;
             Vector3 direction = Vector3.zero;
@@ -280,40 +280,43 @@ namespace ProjetSynthese
                 //transformMatrix.GetColumn(2) : Colonne ayant les données du vecteur "Foward"
                 //transformMatrix.GetColumn(1) : Colonne ayant les données du vecteur "Up"
                 //transformMatrix.GetColumn(0) : Colonne ayant les données du vecteur "Right"
-                if (key == ActionKey.Instance.MoveFoward)
+                if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveFoward)
                 {
-                    direction = transformMatrix.GetColumn(2);
+                    direction = transformMatrix.GetColumn(2);                   
                 }
-                else if (key == ActionKey.Instance.MoveBackward)
+                else if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveBackward)
                 {
                     direction = -transformMatrix.GetColumn(2);
                 }
-                else if (key == ActionKey.Instance.MoveLeft)
+                else if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveLeft)
                 {
                     direction = -transformMatrix.GetColumn(0);
                 }
-                else if (key == ActionKey.Instance.MoveRight)
+                else if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveRight)
                 {
                     direction = transformMatrix.GetColumn(0);
                 }               
             }
             else
             {
-                if (key == ActionKey.Instance.MoveFoward)
+                foreach (KeyCode k in key)
                 {
-                    direction = Vector3.forward;
-                }
-                else if (key == ActionKey.Instance.MoveBackward)
-                {
-                    direction = Vector3.back;
-                }
-                else if (key == ActionKey.Instance.MoveLeft)
-                {
-                    direction = Vector3.left;
-                }
-                else if (key == ActionKey.Instance.MoveRight)
-                {
-                    direction = Vector3.right;
+                    if (k == ActionKey.Instance.MoveFoward)
+                    {
+                        direction += Vector3.forward;
+                    }
+                    else if (k == ActionKey.Instance.MoveBackward)
+                    {
+                        direction += Vector3.back;
+                    }
+                    else if (k == ActionKey.Instance.MoveLeft)
+                    {
+                        direction += Vector3.left;
+                    }
+                    else if (k == ActionKey.Instance.MoveRight)
+                    {
+                        direction += Vector3.right;
+                    }
                 }
             }
 

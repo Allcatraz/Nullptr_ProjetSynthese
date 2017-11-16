@@ -35,10 +35,10 @@ namespace ProjetSynthese
         public Vector3 DeathCircleCenterPosition { get; private set; }
         public float SafeCircleRadius { get; private set; }
         public float DeathCircleRadius { get; private set; }
+        public float CurrentDeathCircleHurtPoints { get; private set; }
         private float deltaTimelastDeathCircleEvent = 0.0f;
-        private float currentDeathCircleHurtPoints;
-        private float currentHurtPointsDamageRate;
-        private float currentDeathCircleGapDiminishingRate;
+        private float CurrentHurtPointsDamageRate = 0.0f;
+        private float currentDeathCircleGap = 0.0f;
         private float healthRatio = 1.0f;
         private float healNumberStorageRatio = 0.0f;
         private float boostNumberStorageRatio = 0.0f;
@@ -773,12 +773,16 @@ namespace ProjetSynthese
 
         public void UpdateDeathCircleKnowledge(DeathCircleController deathCircleController)
         {
-            deltaTimelastDeathCircleEvent += Time.deltaTime;
+            //deltaTimelastDeathCircleEvent += Time.deltaTime;
             SafeCircleCenterPosition = deathCircleController.SafeCircle.transform.position;
             DeathCircleCenterPosition = deathCircleController.DeathCircle.transform.position;
             SafeCircleRadius = deathCircleController.SafeCircle.Radius;
             DeathCircleRadius = deathCircleController.DeathCircle.Radius;
-            currentDeathCircleHurtPoints = deathCircleController.DeathCircleValues.DomagePerSecond[(int)deathCircleController.CurrentPhase];
+            CurrentDeathCircleHurtPoints = deathCircleController.DeathCircleValues.DomagePerSecond[(int)deathCircleController.CurrentPhase];
+            //currentHurtPointsDamageRate = 0.0f;
+            //currentDeathCircleGap = 0.0f;
+
+            
         }
     }
 }

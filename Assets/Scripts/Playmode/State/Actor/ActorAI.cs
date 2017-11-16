@@ -67,6 +67,7 @@ namespace ProjetSynthese
         private void OnDestroy()
         {
             health.OnDeath -= OnDeath;
+            deathCircleStatusUpdateEventChannel.OnEventPublished -= OnDeathCircleFixedUpdate;
         }
 
         private void Update()
@@ -137,6 +138,16 @@ namespace ProjetSynthese
         private void OnDeathCircleFixedUpdate(DeathCircleStatusUpdateEvent deathCircleStatusUpdateEvent)
         {
             Brain.UpdateDeathCircleKnowledge(deathCircleStatusUpdateEvent.DeathCircleController);
+            Vector2 aiPosition = Vector2.zero;
+            Vector2 deathCirclePosition = Vector2.zero;
+            aiPosition.x = this.transform.position.x;
+            aiPosition.y = this.transform.position.z;
+            deathCirclePosition.x = Brain.DeathCircleCenterPosition.x;
+            deathCirclePosition.y = Brain.DeathCircleCenterPosition.z;
+            if (Vector2.Distance(aiPosition, deathCirclePosition) > Brain.DeathCircleRadius)
+            {
+                health.Hit(Brain.CurrentDeathCircleHurtPoints*Time.deltaTime);
+            }
         }
 
     }

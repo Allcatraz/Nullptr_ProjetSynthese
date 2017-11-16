@@ -532,9 +532,10 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 1840684040347732}
   chamber: {fileID: 1498158215004174}
   bulletSpeed: 50
-  bulletLivingTime: 100
+  bulletLivingTime: 2
   magazineMaxAmount: 30
   dommage: 41
+  ammoType: 0
 --- !u!114 &114532783154580194
 MonoBehaviour:
   m_ObjectHideFlags: 1

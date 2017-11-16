@@ -62,9 +62,9 @@ namespace ProjetSynthese
         {
             if (MagazineAmount > 0)
             {
-                GameObject bullet = BulletFactory.CreateBullet(bulletSpawnPoint, chamber, bulletSpeed, bulletLivingTime, dommage);
+                GameObject bullet = BulletFactory.CreateBullet(bulletSpawnPoint, chamber, bulletSpeed, dommage);
                 CmdSpawnObject(bullet);
-                bullet.GetComponent<BulletController>().SetLivingTime(bulletLivingTime);
+                CmdDestroyTime(bullet, bulletLivingTime);
                 MagazineAmount -= 1;
                 NotidyMunitionChanged(); 
             }

@@ -8,11 +8,6 @@ namespace ProjetSynthese
     {
         private float dommage = 10;
 
-        public void SetLivingTime(float livingTime)
-        {
-            Destroy(gameObject, livingTime);
-        }
-
         public void SetDommage(float dommage)
         {
             this.dommage = dommage;

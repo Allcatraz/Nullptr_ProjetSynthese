@@ -242,31 +242,42 @@ namespace ProjetSynthese
                 Vector3 aiCurrentPosition = actor.transform.position;
                 Vector3 fleeDestination = aiCurrentPosition;
                 fleeDirection = actor.Brain.SafeCircleCenterPosition - aiCurrentPosition;
+                fleeDestination.y = 0.0f;
                 fleeDirection.Normalize();
-                //fleeDirection *= FleeRange;
-                //fleeDestination.x += fleeDirection.x;
-                //fleeDestination.z += fleeDirection.z;
-
+                
                 Vector3 opponentEscapingDirection = MapDestination;
+                opponentEscapingDirection.y = 0.0f;
                 opponentEscapingDirection.Normalize();
                 float scalarProduct = Vector3.Dot(fleeDestination, opponentEscapingDirection);
 
+                float opponentPositionFactor = 1.0f;
+                if (actor.Brain.CurrentDistanceOutsideDeathCircle > 0.0f)
+                {
+                    float expectedLifePointLoss = (actor.Brain.CurrentDistanceOutsideDeathCircle / currentSpeedLevel) * actor.Brain.CurrentDeathCircleHurtPoints;
+                    opponentPositionFactor = (actor.AIHealth.HealthPoints - expectedLifePointLoss) / actor.AIHealth.HealthPoints;
+                    if (opponentPositionFactor < 0.0f)
+                    {
+                        opponentPositionFactor = 0.0f;
+                    }
+                }
+                
                 if (scalarProduct < 0.0f)
                 {
-                    //add les vecteurs
-                    //comme les vacteur par facteur escape selon point de vie
-                    //et distance de circle
+                    fleeDestination = opponentPositionFactor * opponentEscapingDirection + fleeDestination;
                 }
                 else
                 {
                     opponentEscapingDirection = -opponentEscapingDirection;
-                    //différence de radius facteur entre safe et death
-                    //radius safe effect pour éloigner maximum opponent
-                    //effet rate changement safe versus death
-                    //point de vie rate loosing dernièrement
+                    Vector3 yPerpendicularVector = Vector3.Cross(fleeDestination, opponentEscapingDirection);
+                    opponentEscapingDirection = Vector3.Cross(fleeDestination, yPerpendicularVector);
+                    fleeDestination = opponentPositionFactor * opponentEscapingDirection + fleeDestination;
                 }
-                //MapDestination = fleeDestination;
-                //ajouter un safe range intérieur cercle
+                fleeDirection.Normalize();
+                fleeDirection *= FleeRange;
+                fleeDestination.x += fleeDirection.x;
+                fleeDestination.z += fleeDirection.z;
+                MapDestination = fleeDestination;
+
             }
             else
             {

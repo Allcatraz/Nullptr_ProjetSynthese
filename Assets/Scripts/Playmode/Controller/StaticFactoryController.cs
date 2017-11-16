@@ -40,6 +40,9 @@ namespace ProjetSynthese
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les M1911")]
         GameObject m1911Prefab;
+        [SerializeField]
+        [Tooltip("Le prefab utilisé pour instancié les grenades")]
+        GameObject grenadePrefab;
 
         // AmmoPack
         [SerializeField]
@@ -68,6 +71,7 @@ namespace ProjetSynthese
             AWMFactory.AWMPrefab = awmPrefab;
             SAIGA12Factory.Saiga12Prefab = saiga12Prefab;
             M1911Factory.M1911Prefab = m1911Prefab;
+            GrenadeFactory.GrenadePrefab = grenadePrefab;
 
             // AmmoPack
             AmmoFactory.AmmoPackPrefab = ammoPackPrefab;

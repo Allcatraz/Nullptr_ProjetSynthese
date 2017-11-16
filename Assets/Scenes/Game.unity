@@ -652,6 +652,8 @@ MonoBehaviour:
     type: 2}
   m1911Prefab: {fileID: 1006045350083210, guid: dbddbdf50d0ddeb47bb80e37350152d7,
     type: 2}
+  grenadePrefab: {fileID: 1711692997422464, guid: c5de67c0a88184240ba35fcc74fbd30e,
+    type: 2}
   ammoPackPrefab: {fileID: 1738024043829670, guid: 331ca4435a91b27448584b74b228d66a,
     type: 2}
 --- !u!1 &1724042211

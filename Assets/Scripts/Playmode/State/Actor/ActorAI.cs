@@ -98,6 +98,11 @@ namespace ProjetSynthese
             return weapon == null ? null : weapon.GetItem() as Weapon;
         }
 
+        public void CreateBullet(Vector3 spawnPointPosition, Quaternion spawnPointRotation, Vector3 chamberPosition, float bulletSpeed, float livingTime, int dommage)
+        {
+            CmdSpawnBullet(spawnPointPosition, spawnPointRotation, chamberPosition, bulletSpeed, livingTime, dommage);
+        }
+
         public bool IsSwimming
         {
             get

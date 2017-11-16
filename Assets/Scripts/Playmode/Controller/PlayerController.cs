@@ -22,7 +22,7 @@ namespace ProjetSynthese
         [Tooltip("Le menu de la map du joueur.")]
         [SerializeField]
         private Menu mapMenu;
-        
+
         [Tooltip("Le transform contenant les armes du joueur.")]
         [SerializeField]
         private Transform weaponHolderTransform;
@@ -34,10 +34,6 @@ namespace ProjetSynthese
         [Tooltip("La camera en première personne du joueur")]
         [SerializeField]
         private Camera firstPersonCamera;
-
-        [Tooltip("Prefab de l'objet représentant l'inventaire dans le monde")]
-        [SerializeField]
-        private GameObject cratePrefab;
 
         private ActivityStack activityStack;
         private Health health;
@@ -171,7 +167,6 @@ namespace ProjetSynthese
 
             transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
-            CrateFactory.Prefab = cratePrefab;
 
             inventory.NotifyInventoryChange();
         }
@@ -287,7 +282,7 @@ namespace ProjetSynthese
                 //transformMatrix.GetColumn(0) : Colonne ayant les données du vecteur "Right"
                 if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveFoward)
                 {
-                    direction = transformMatrix.GetColumn(2);                   
+                    direction = transformMatrix.GetColumn(2);
                 }
                 else if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveBackward)
                 {
@@ -300,7 +295,7 @@ namespace ProjetSynthese
                 else if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveRight)
                 {
                     direction = transformMatrix.GetColumn(0);
-                }               
+                }
             }
             else
             {
@@ -337,6 +332,9 @@ namespace ProjetSynthese
             {
                 soldierAnimatorUpdater.Shoot();
                 currentWeapon.Use();
+
+                CmdSpawnBullet(currentWeapon.SpawnPoint.transform.position, currentWeapon.SpawnPoint.transform.rotation,
+                               currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage);
             }
         }
 
@@ -453,13 +451,13 @@ namespace ProjetSynthese
 
             endGamePanel.gameObject.SetActive(true);
             CmdDestroy(gameObject);
-            Destroy(gameObject);             
+            Destroy(gameObject);
         }
 
         private void InventoryOnDeath()
         {
             inventory.DropAll();
-            CmdSpawnObject(CrateFactory.Create(transform.position));
+            CmdSpawnCrate();
         }
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)

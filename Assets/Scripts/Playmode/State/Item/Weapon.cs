@@ -39,6 +39,11 @@ namespace ProjetSynthese
 
         private const int Weight = 0;
 
+        public float BulletSpeed { get { return bulletSpeed; } }
+        public float LivingTime { get { return bulletLivingTime; } }
+        public GameObject Chamber { get { return chamber; } }
+        public GameObject SpawnPoint { get { return bulletSpawnPoint; } }
+
         public int Dommage
         {
             get { return dommage; }
@@ -67,10 +72,6 @@ namespace ProjetSynthese
         {
             if (MagazineAmount > 0)
             {
-                GameObject bullet = BulletFactory.CreateBullet(bulletSpawnPoint, chamber, bulletSpeed, dommage);
-                CmdSpawnObject(bullet);
-                CmdSetDommage(bullet, dommage);
-                CmdDestroyTime(bullet, bulletLivingTime);
                 MagazineAmount -= 1;
                 NotidyMunitionChanged(); 
             }

@@ -122,8 +122,9 @@ namespace ProjetSynthese
                 case AIBrain.OpponentType.Player:
                     if (Actor.EquipmentManager.WeaponReadyToUse())
                     {
-
-                        Actor.EquipmentManager.GetWeapon().Use();
+                        Weapon weapon = Actor.EquipmentManager.GetWeapon();
+                        weapon.Use();
+                        Actor.CreateBullet(weapon.SpawnPoint.transform.position, weapon.SpawnPoint.transform.rotation, weapon.Chamber.transform.position, weapon.BulletSpeed, weapon.LivingTime, weapon.Dommage);
                     }
                     break;
                 default:

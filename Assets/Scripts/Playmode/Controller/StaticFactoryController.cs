@@ -4,51 +4,52 @@ namespace ProjetSynthese
 {
     public class StaticFactoryController : GameScript
     {
-        [SerializeField]
-        [Tooltip("Le prefab utilisé pour instancié les bullets")]
-        GameObject bulletPrefab;
-
         // Consumable
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les heals")]
-        GameObject healPrefab;
+        private GameObject healPrefab;
+
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les boosts")]
-        GameObject boostPrefab;
+        private GameObject boostPrefab;
 
         // Equipement
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les vests")]
-        GameObject vestPrefab;
+        private GameObject vestPrefab;
+
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les helmets")]
-        GameObject helmentPrefab;
+        private GameObject helmentPrefab;
+
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les bags")]
-        GameObject bagPrefab;
+        private GameObject bagPrefab;
 
         // Weapon
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les M16A4")]
-        GameObject m16A4Prefab;
+        private GameObject m16A4Prefab;
+
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les AWM")]
-        GameObject awmPrefab;
+        private GameObject awmPrefab;
+
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les Saiga12")]
-        GameObject saiga12Prefab;
+        private GameObject saiga12Prefab;
+
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les M1911")]
-        GameObject m1911Prefab;
+        private GameObject m1911Prefab;
 
         // AmmoPack
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les ammo packs")]
-        GameObject ammoPackPrefab;
+        private GameObject ammoPackPrefab;
 
         private void Awake()
         {
-            BulletFactory.BulletPrefab = bulletPrefab;
             InitializeItemFabrics();
         }
 
@@ -74,5 +75,3 @@ namespace ProjetSynthese
         }
     }
 }
-
-

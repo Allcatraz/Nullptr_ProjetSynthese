@@ -1574,6 +1574,8 @@ GameObject:
   - component: {fileID: 179170074}
   - component: {fileID: 179170076}
   - component: {fileID: 179170075}
+  - component: {fileID: 179170077}
+  - component: {fileID: 179170078}
   m_Layer: 5
   m_Name: Database
   m_TagString: Application Dependencies
@@ -1622,6 +1624,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   databaseFileName: Database.db
+--- !u!114 &179170077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 179170073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c32be66aa804c943ac7190cd96497a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &179170078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 179170073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fcac405bdb56c641a03fb2a2de4c4e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &198618614
 GameObject:
   m_ObjectHideFlags: 0
@@ -3134,6 +3158,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 451205285}
+  nameInput: {fileID: 2031758506}
+  passwordInput: {fileID: 1585921894}
 --- !u!1 &457592537
 GameObject:
   m_ObjectHideFlags: 0
@@ -5657,6 +5683,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 772307929}
+  nameInput: {fileID: 101298624}
+  passwordInput: {fileID: 1554419360}
 --- !u!1001 &777468443
 Prefab:
   m_ObjectHideFlags: 0

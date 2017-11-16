@@ -51,6 +51,11 @@ namespace ProjetSynthese
             return repository.Count();
         }
 
+        public virtual long CountWithName(Player player)
+        {
+            return repository.CountWithName(player.Name);
+        }
+
         private class Repository : DbRepository<Player>
         {
             private readonly PlayerRepository playerRepository;
@@ -97,6 +102,11 @@ namespace ProjetSynthese
             public long Count()
             {
                 return ExecuteScallar("SElECT COUNT(*) FROM Player;", new object[] { });
+            }
+
+            public long CountWithName(string name)
+            {
+                return ExecuteScallar("SElECT COUNT(*) FROM Player WHERE name = ?;", new object[] { name });
             }
         }
     }

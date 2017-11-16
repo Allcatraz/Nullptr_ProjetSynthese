@@ -280,21 +280,24 @@ namespace ProjetSynthese
                 //transformMatrix.GetColumn(2) : Colonne ayant les données du vecteur "Foward"
                 //transformMatrix.GetColumn(1) : Colonne ayant les données du vecteur "Up"
                 //transformMatrix.GetColumn(0) : Colonne ayant les données du vecteur "Right"
-                if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveFoward)
+                foreach (KeyCode k in key)
                 {
-                    direction = transformMatrix.GetColumn(2);
-                }
-                else if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveBackward)
-                {
-                    direction = -transformMatrix.GetColumn(2);
-                }
-                else if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveLeft)
-                {
-                    direction = -transformMatrix.GetColumn(0);
-                }
-                else if (ListExtension.GetLastIndex(key) == ActionKey.Instance.MoveRight)
-                {
-                    direction = transformMatrix.GetColumn(0);
+                    if (k == ActionKey.Instance.MoveFoward)
+                    {
+                        direction += (Vector3)transformMatrix.GetColumn(2);                        
+                    }
+                    else if (k == ActionKey.Instance.MoveBackward)
+                    {
+                        direction += -(Vector3)transformMatrix.GetColumn(2);
+                    }
+                    else if (k == ActionKey.Instance.MoveLeft)
+                    {
+                        direction += -(Vector3)transformMatrix.GetColumn(0);
+                    }
+                    else if (k == ActionKey.Instance.MoveRight)
+                    {
+                        direction += (Vector3)transformMatrix.GetColumn(0);
+                    }
                 }
             }
             else

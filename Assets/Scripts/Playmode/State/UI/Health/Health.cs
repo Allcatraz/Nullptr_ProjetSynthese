@@ -49,7 +49,7 @@ namespace ProjetSynthese
 
         public void Hit(float hitPoints)
         {
-            if (!isServer)
+            if (!isLocalPlayer)
             {
                 return;
             }

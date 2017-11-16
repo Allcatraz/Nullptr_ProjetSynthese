@@ -39,6 +39,11 @@ namespace ProjetSynthese
 
         private const int Weight = 0;
 
+        public int Dommage
+        {
+            get { return dommage; }
+        }
+
         public int MagazineMax
         {
             get { return magazineMaxAmount; }
@@ -64,6 +69,7 @@ namespace ProjetSynthese
             {
                 GameObject bullet = BulletFactory.CreateBullet(bulletSpawnPoint, chamber, bulletSpeed, dommage);
                 CmdSpawnObject(bullet);
+                CmdSetDommage(bullet, dommage);
                 CmdDestroyTime(bullet, bulletLivingTime);
                 MagazineAmount -= 1;
                 NotidyMunitionChanged(); 

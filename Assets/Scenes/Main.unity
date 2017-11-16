@@ -5204,6 +5204,7 @@ MonoBehaviour:
   - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
   - {fileID: 1369578581811908, guid: 656661b308b4abf40b09bcac342f3c85, type: 2}
   - {fileID: 1893845116203462, guid: 799316fe2eaadff4abc0701c3c7f883f, type: 2}
+  - {fileID: 1000012137004694, guid: 902fd1e5fea9b414188db1b1a0dc0a00, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -5772,6 +5773,31 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 224424394472452724, guid: 16571f242322d574bb68af1bcb3a3249,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 69
+      objectReference: {fileID: 0}
+    - target: {fileID: 224424394472452724, guid: 16571f242322d574bb68af1bcb3a3249,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -193
+      objectReference: {fileID: 0}
+    - target: {fileID: 224654775813629414, guid: 16571f242322d574bb68af1bcb3a3249,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 195
+      objectReference: {fileID: 0}
+    - target: {fileID: 224059698991717304, guid: 16571f242322d574bb68af1bcb3a3249,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -70
+      objectReference: {fileID: 0}
+    - target: {fileID: 224005521922534256, guid: 16571f242322d574bb68af1bcb3a3249,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 63
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 16571f242322d574bb68af1bcb3a3249, type: 2}

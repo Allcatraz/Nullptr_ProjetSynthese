@@ -9,6 +9,14 @@ namespace ProjetSynthese
     /// </summary>
     public abstract class NetworkGameScript : NetworkScript
     {
+        [Tooltip("Le prefab utilisé pour instancié les bullets")]
+        [SerializeField]
+        private GameObject bulletPrefab;
+
+        [Tooltip("Prefab de l'objet représentant l'inventaire dans le monde")]
+        [SerializeField]
+        private GameObject cratePrefab;
+
         /// <summary>
         /// Injecte les dépendances de ce NetworkGameScript.
         /// </summary>
@@ -28,6 +36,30 @@ namespace ProjetSynthese
         protected void CmdSpawnObject(GameObject item)
         {
             NetworkServer.Spawn(item);
+        }
+
+        [Command]
+        protected void CmdSpawnBullet(Vector3 spawnPointPosition, Quaternion rotation, Vector3 chamberPosition, float bulletSpeed, float livingTime, int dommage)
+        {
+            GameObject bullet = Instantiate(bulletPrefab);
+            bullet.transform.position = spawnPointPosition;
+            bullet.transform.rotation = rotation;
+
+            Vector3 direction = Vector3.Normalize(spawnPointPosition - chamberPosition);
+            Vector3 velocity = direction * bulletSpeed;
+            bullet.GetComponent<Rigidbody>().velocity = velocity;
+
+            NetworkServer.Spawn(bullet);
+
+            RpcSetDommage(bullet, dommage);
+            Destroy(bullet, livingTime);
+        }
+
+        [Command]
+        protected void CmdSpawnCrate()
+        {
+            GameObject crate = Instantiate(cratePrefab);
+            NetworkServer.Spawn(crate);
         }
 
         [Command]

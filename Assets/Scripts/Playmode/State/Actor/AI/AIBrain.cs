@@ -7,6 +7,7 @@ namespace ProjetSynthese
     public class AIBrain
     {
         #region Parameters
+        private const float ErrorCirclesGapTolerance = 0.001f;
         private const float LifeFleeThresholdFactor = 0.20f;
         private readonly float LifeFleeThreshold;
         private float lastLifePointLevel;
@@ -37,6 +38,9 @@ namespace ProjetSynthese
         public float DeathCircleRadius { get; private set; }
         public float CurrentDeathCircleHurtPoints { get; private set; }
         public float CurrentDistanceOutsideDeathCircle { get; private set; }
+        private float lastDeathCircleSafeCircleGap = 0.0f;
+        private bool deathCircleIsClosing = false;
+        public bool InjuredByDeathCircle { get; set; }
         private float healthRatio = 1.0f;
         private float healNumberStorageRatio = 0.0f;
         private float boostNumberStorageRatio = 0.0f;
@@ -136,6 +140,7 @@ namespace ProjetSynthese
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
             ResetActualPerception();
             currentOpponentType = OpponentType.None;
+            InjuredByDeathCircle = false;
         }
 
         public AIState WhatIsMyNextState(AIState currentState)
@@ -165,6 +170,9 @@ namespace ProjetSynthese
                 case AIState.Flee:
                     nextState = ChooseANewStateFromFleeState();
                     break;
+                case AIState.DeathCircle:
+                    nextState = ChooseANewStateFromDeathCircleState();
+                    break;
                 default:
                     break;
             }
@@ -183,6 +191,10 @@ namespace ProjetSynthese
 
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None && deathCircleIsClosing)
+            {
+                nextState = AIState.DeathCircle;
+            }
             if (nextState == AIState.None)
             {
                 if (ExistVisibleOpponent())
@@ -220,6 +232,10 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None && deathCircleIsClosing)
+            {
+                nextState = AIState.DeathCircle;
+            }
             if (nextState == AIState.None)
             {
                 if (ExistVisibleOpponent())
@@ -265,6 +281,10 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None && deathCircleIsClosing)
+            {
+                nextState = AIState.DeathCircle;
+            }
             if (nextState == AIState.None)
             {
                 if (ExistVisibleOpponent())
@@ -306,7 +326,10 @@ namespace ProjetSynthese
             AIState nextState = AIState.None;
 
             nextState = HasBeenInjuredRelatedStateCheck();
-
+            if (nextState == AIState.None && deathCircleIsClosing)
+            {
+                nextState = AIState.DeathCircle;
+            }
             if (nextState == AIState.None)
             {
                 if (ExistShootableOpponent())
@@ -348,6 +371,52 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None && deathCircleIsClosing)
+            {
+                nextState = AIState.DeathCircle;
+            }
+            if (nextState == AIState.None)
+            {
+                if (ExistVisibleOpponent())
+                {
+                    if (!hasPrimaryWeaponEquipped)
+                    {
+                        if (!FoundItemInPerceptionRange())
+                        {
+                            nextState = AIState.Flee;
+                        }
+                        else
+                        {
+                            nextState = AIState.Hunt;
+                        }
+                    }
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
+                }
+                else if (FoundItemInPerceptionRange())
+                {
+                    nextState = AIState.Loot;
+                }
+            }
+
+            if (nextState == AIState.None)
+            {
+                nextState = AIState.Explore;
+            }
+
+            return nextState;
+        }
+
+        private AIState ChooseANewStateFromDeathCircleState()
+        {
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None && deathCircleIsClosing)
+            {
+                nextState = AIState.DeathCircle;
+            }
             if (nextState == AIState.None)
             {
                 if (ExistVisibleOpponent())
@@ -391,16 +460,7 @@ namespace ProjetSynthese
             return false;
         }
 
-        private bool HasBeenHealed()
-        {
-            if ((lastLifePointLevel - Actor.AIHealth.HealthPoints) < ErrorLifeTolerance)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool FoundAIInPerceptionRange()
+         public bool FoundAIInPerceptionRange()
         {
 
             ActorAI opponentAI = Actor.Sensor.NeareastNonAllyAI(Actor);
@@ -478,7 +538,7 @@ namespace ProjetSynthese
             return false;
         }
 
-        private bool ExistVisibleOpponent()
+        public bool ExistVisibleOpponent()
         {
             if (FoundPlayerInPerceptionRange() || FoundAIInPerceptionRange())
             {
@@ -538,11 +598,16 @@ namespace ProjetSynthese
         private AIState HasBeenInjuredRelatedStateCheck()
         {
             AIState nextState = AIState.None;
-            if (HasBeenInjured())
+            if (HasBeenInjured() || InjuredByDeathCircle)
             {
                 if (Actor.AIHealth.HealthPoints < 0.0f)
                 {
                     nextState = AIState.Dead;
+                }
+                else if (InjuredByDeathCircle)
+                {
+                    InjuredByDeathCircle = false;
+                    nextState = AIState.DeathCircle;
                 }
                 else if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
                 {
@@ -557,6 +622,7 @@ namespace ProjetSynthese
                     nextState = AIState.Hunt;
                 }
             }
+
             return nextState;
         }
 
@@ -771,13 +837,23 @@ namespace ProjetSynthese
 
         public void UpdateDeathCircleKnowledge(DeathCircleController deathCircleController)
         {
-            
             SafeCircleCenterPosition = deathCircleController.SafeCircle.transform.position;
             DeathCircleCenterPosition = deathCircleController.DeathCircle.transform.position;
             SafeCircleRadius = deathCircleController.SafeCircle.Radius;
             DeathCircleRadius = deathCircleController.DeathCircle.Radius;
             CurrentDeathCircleHurtPoints = deathCircleController.DeathCircleValues.DomagePerSecond[(int)deathCircleController.CurrentPhase];
             CurrentDistanceOutsideDeathCircle = Vector3.Distance(Actor.transform.position, SafeCircleCenterPosition) - SafeCircleRadius;
+
+            float currentDeathCircleSafeCircleGap = DeathCircleRadius - SafeCircleRadius;
+            if (lastDeathCircleSafeCircleGap - currentDeathCircleSafeCircleGap > ErrorCirclesGapTolerance)
+            {
+                lastDeathCircleSafeCircleGap = currentDeathCircleSafeCircleGap;
+                deathCircleIsClosing = true;
+            }
+            else
+            {
+                deathCircleIsClosing = false;
+            }
         }
     }
 }

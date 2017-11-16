@@ -147,6 +147,7 @@ namespace ProjetSynthese
             if (Vector2.Distance(aiPosition, deathCirclePosition) > Brain.DeathCircleRadius)
             {
                 health.Hit(Brain.CurrentDeathCircleHurtPoints*Time.deltaTime);
+                Brain.InjuredByDeathCircle = true;
             }
         }
 

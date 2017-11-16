@@ -235,7 +235,8 @@ namespace ProjetSynthese
 
         public void SetDeathCircleFleeDestination(ActorAI actor)
         {
-            if (FoundFleeDestination(actor))
+            
+            if ( actor.Brain.ExistVisibleOpponent() && FoundFleeDestination(actor))
             {
                 //Safe circle flee direction
                 Vector3 fleeDirection = Vector3.zero;
@@ -314,7 +315,7 @@ namespace ProjetSynthese
             Vector3 fleeDirection = Vector3.zero;
             Vector3 aiCurrentPosition = actor.transform.position;
             Vector3 fleeDestination = aiCurrentPosition;
-
+            //check le plus proche ou fait composite
             if (actor.Brain.AiInPerceptionRange != null)
             {
                 fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);

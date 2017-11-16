@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ProjetSynthese
 {
@@ -12,7 +13,7 @@ namespace ProjetSynthese
     public delegate void ToggleInventoryEventHandler();
     public delegate void ToggleMapEventHandler();
 
-    public delegate void MoveTowardEventHandler(KeyCode key);
+    public delegate void MoveTowardEventHandler(List<KeyCode> key);
     public delegate void SwitchSprintOnEventHandler();
     public delegate void SwitchSprintOffEventHandler();
 
@@ -40,7 +41,7 @@ namespace ProjetSynthese
         event ToggleInventoryEventHandler OnToggleInventory;
         event ToggleMapEventHandler OnToggleMap;
 
-        event MoveTowardEventHandler OnMoveToward;
+        event MoveTowardEventHandler OnMove;
         event SwitchSprintOnEventHandler OnSwitchSprintOn;
         event SwitchSprintOffEventHandler OnSwitchSprintOff;
 

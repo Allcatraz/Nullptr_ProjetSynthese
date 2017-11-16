@@ -7,10 +7,6 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/Aspect/InstanciateOnDeath")]
     public class InstanciateOnDeath : GameScript
     {
-        [Tooltip("Prefab de l'objet représentant l'inventaire dans le monde")]
-        [SerializeField]
-        private GameObject cratePrefab;
-
         private PlayerDeathEventChannel playerDeathEventChannel;
         private Inventory inventory;
 
@@ -39,9 +35,6 @@ namespace ProjetSynthese
         private void OnPlayerDeath(PlayerDeathEvent newEvent)
         {
             inventory.DropAll();
-            GameObject crate = Instantiate(cratePrefab);
-            crate.transform.position = inventory.Parent.transform.position;
-            NetworkServer.Spawn(crate);
         }
     }
 }

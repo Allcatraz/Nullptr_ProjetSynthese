@@ -43,9 +43,29 @@ namespace ProjetSynthese
 
         private void OnClick()
         {
-            playerRepository.AddPlayer(ExtractPlayerFromInputField());
-            long lastEntry = playerRepository.Count();
-            Player insertOne = playerRepository.GetPlayerFromId(new Player { Id = lastEntry, Name = "", Password = "" });
+            Player playerToAdd = ExtractPlayerFromInputField();
+            if (1 <= playerRepository.CountWithName(playerToAdd))
+            {
+                FeedbackWrongName();
+            }
+            else
+            {
+                playerRepository.AddPlayer(ExtractPlayerFromInputField());
+                FeedbackSuccesfulCreation();
+            }
+            
+        }
+
+        private void FeedbackSuccesfulCreation()
+        {
+            //Feedback temporaire : barre d'erreur?
+            nameInput.text = "User succesfuly created";
+        }
+
+        private void FeedbackWrongName()
+        {
+            //Feedback temporaire : barre d'erreur?
+            nameInput.text = "User name invalid";
         }
 
         private Player ExtractPlayerFromInputField()

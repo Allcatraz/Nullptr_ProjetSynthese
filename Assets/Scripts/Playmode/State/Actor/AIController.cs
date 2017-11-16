@@ -54,10 +54,10 @@ namespace ProjetSynthese
             }
         }
 
-        private const float WalkingSpeed = 0.0f;//4.0f;
-        private const float JoggingSpeed = 0.0f;//5.5f;
-        private const float RunningSpeed = 0.0f;//7.0f;
-        private const float SwimmingSpeed = 0.0f;//0.5f;
+        private const float WalkingSpeed = 4.0f;
+        private const float JoggingSpeed = 5.5f;
+        private const float RunningSpeed = 7.0f;
+        private const float SwimmingSpeed = 0.5f;
         private const float NoSpeed = 0.0f;
 
         private float currentSpeedLevel;
@@ -252,9 +252,9 @@ namespace ProjetSynthese
                 float scalarProduct = Vector3.Dot(fleeDestination, opponentEscapingDirection);
 
                 float opponentPositionFactor = 1.0f;
-                if (actor.Brain.CurrentDistanceOutsideDeathCircle > 0.0f)
+                if (actor.Brain.CurrentDistanceOutsideSafeCircle > 0.0f)
                 {
-                    float expectedLifePointLoss = (actor.Brain.CurrentDistanceOutsideDeathCircle / currentSpeedLevel) * actor.Brain.CurrentDeathCircleHurtPoints;
+                    float expectedLifePointLoss = (actor.Brain.CurrentDistanceOutsideSafeCircle / currentSpeedLevel) * actor.Brain.CurrentDeathCircleHurtPoints;
                     opponentPositionFactor = (actor.AIHealth.HealthPoints - expectedLifePointLoss) / actor.AIHealth.HealthPoints;
                     if (opponentPositionFactor < 0.0f)
                     {
@@ -270,7 +270,9 @@ namespace ProjetSynthese
                 {
                     opponentEscapingDirection = -opponentEscapingDirection;
                     Vector3 yPerpendicularVector = Vector3.Cross(fleeDestination, opponentEscapingDirection);
+                    yPerpendicularVector.Normalize();
                     opponentEscapingDirection = Vector3.Cross(fleeDestination, yPerpendicularVector);
+                    opponentEscapingDirection.Normalize();
                     fleeDestination = opponentPositionFactor * opponentEscapingDirection + fleeDestination;
                 }
                 fleeDirection.Normalize();

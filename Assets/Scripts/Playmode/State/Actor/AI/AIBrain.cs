@@ -37,7 +37,7 @@ namespace ProjetSynthese
         public float SafeCircleRadius { get; private set; }
         public float DeathCircleRadius { get; private set; }
         public float CurrentDeathCircleHurtPoints { get; private set; }
-        public float CurrentDistanceOutsideDeathCircle { get; private set; }
+        public float CurrentDistanceOutsideSafeCircle { get; private set; }
         private float lastDeathCircleSafeCircleGap = 0.0f;
         private bool deathCircleIsClosing = false;
         public bool InjuredByDeathCircle { get; set; }
@@ -191,7 +191,7 @@ namespace ProjetSynthese
 
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && deathCircleIsClosing)
+            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
             {
                 nextState = AIState.DeathCircle;
             }
@@ -232,7 +232,7 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && deathCircleIsClosing)
+            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
             {
                 nextState = AIState.DeathCircle;
             }
@@ -281,7 +281,7 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && deathCircleIsClosing)
+            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
             {
                 nextState = AIState.DeathCircle;
             }
@@ -326,7 +326,7 @@ namespace ProjetSynthese
             AIState nextState = AIState.None;
 
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && deathCircleIsClosing)
+            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
             {
                 nextState = AIState.DeathCircle;
             }
@@ -371,7 +371,7 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && deathCircleIsClosing)
+            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
             {
                 nextState = AIState.DeathCircle;
             }
@@ -413,7 +413,7 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && deathCircleIsClosing)
+            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
             {
                 nextState = AIState.DeathCircle;
             }
@@ -842,7 +842,7 @@ namespace ProjetSynthese
             SafeCircleRadius = deathCircleController.SafeCircle.Radius;
             DeathCircleRadius = deathCircleController.DeathCircle.Radius;
             CurrentDeathCircleHurtPoints = deathCircleController.DeathCircleValues.DomagePerSecond[(int)deathCircleController.CurrentPhase];
-            CurrentDistanceOutsideDeathCircle = Vector3.Distance(Actor.transform.position, SafeCircleCenterPosition) - SafeCircleRadius;
+            CurrentDistanceOutsideSafeCircle = Vector3.Distance(Actor.transform.position, SafeCircleCenterPosition) - SafeCircleRadius;
 
             float currentDeathCircleSafeCircleGap = DeathCircleRadius - SafeCircleRadius;
             if (lastDeathCircleSafeCircleGap - currentDeathCircleSafeCircleGap > ErrorCirclesGapTolerance)
@@ -854,6 +854,19 @@ namespace ProjetSynthese
             {
                 deathCircleIsClosing = false;
             }
+        }
+
+        private bool NeedToEscapeClosingDeathCircle()
+        {
+            bool needToEscape = false;
+            if (deathCircleIsClosing)
+            {
+                if (CurrentDistanceOutsideSafeCircle > 0.0f)
+                {
+                    needToEscape = true;
+                }
+            }
+            return needToEscape;
         }
     }
 }

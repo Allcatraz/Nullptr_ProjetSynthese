@@ -6,12 +6,7 @@ namespace ProjetSynthese
 {
     public class BulletController : GameScript
     {
-        private float dommage = 10;
-
-        public void SetDommage(float dommage)
-        {
-            this.dommage = dommage;
-        }
+        public int Dommage { get; set; }
 
         private void OnCollisionEnter(Collision other)
         {
@@ -19,18 +14,17 @@ namespace ProjetSynthese
             {
                 Health health = other.gameObject.GetComponentInChildren<Health>();
 
-                //Check for AI
-                IProtection protectionController = other.gameObject.GetComponentInChildren<PlayerController>() as IProtection;
-                if (protectionController == null)
+                IInventory inventoryController = other.gameObject.GetComponentInChildren<PlayerController>();        
+                if (inventoryController == null)
                 {
-                    protectionController = other.gameObject.GetComponentInChildren<ActorAI>() as IProtection;
+                    inventoryController = other.gameObject.GetComponentInChildren<ActorAI>();
                 }
                 if (health != null && other.gameObject.GetComponent<NetworkBehaviour>().isLocalPlayer)
                 {
-                    Item[] protectionItems = protectionController.GetInventoryProtection();
+                    Item[] protectionItems = inventoryController.GetProtections();
                     float helmetProtection = protectionItems[0] == null ? 0 : ((Helmet) protectionItems[0]).ProtectionValue;
                     float vestProtection = protectionItems[1] == null ? 0 : ((Vest) protectionItems[1]).ProtectionValue;
-                    health.Hit(10); //dommage - (dommage * (helmetProtection + vestProtection) / 100));
+                    health.Hit(Dommage - (Dommage * ((helmetProtection + vestProtection) / 100)));
                 }
             }
             Destroy(gameObject);

@@ -17,9 +17,6 @@ namespace ProjetSynthese
             Vector3 velocity = direction * bulletSpeed;
             bullet.GetComponent<Rigidbody>().velocity = velocity;
 
-            BulletController controller = bullet.GetComponent<BulletController>();
-            controller.SetDommage(dommage);
-
             return bullet;
         }
     }

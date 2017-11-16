@@ -13,7 +13,7 @@ namespace ProjetSynthese
     public delegate void ChangeModeEventHandler(bool isPlayerInFirstPerson);
 
     [AddComponentMenu("Game/Control/PlayerController")]
-    public class PlayerController : NetworkGameScript, ISwim, IProtection
+    public class PlayerController : NetworkGameScript, ISwim, IInventory
     {
         [Tooltip("Le menu de l'inventaire du joueur.")]
         [SerializeField]
@@ -34,6 +34,10 @@ namespace ProjetSynthese
         [Tooltip("La camera en première personne du joueur")]
         [SerializeField]
         private Camera firstPersonCamera;
+
+        [Tooltip("Prefab de l'objet représentant l'inventaire dans le monde")]
+        [SerializeField]
+        private GameObject cratePrefab;
 
         private ActivityStack activityStack;
         private Health health;
@@ -167,6 +171,7 @@ namespace ProjetSynthese
 
             transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
+            CrateFactory.Prefab = cratePrefab;
 
             inventory.NotifyInventoryChange();
         }
@@ -444,9 +449,17 @@ namespace ProjetSynthese
 
         private void OnDeath(PlayerDeathEvent playerDeathEvent)
         {
+            InventoryOnDeath();
+
             endGamePanel.gameObject.SetActive(true);
             CmdDestroy(gameObject);
-            Destroy(gameObject);            
+            Destroy(gameObject);             
+        }
+
+        private void InventoryOnDeath()
+        {
+            inventory.DropAll();
+            CmdSpawnObject(CrateFactory.Create(transform.position));
         }
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
@@ -474,11 +487,16 @@ namespace ProjetSynthese
             health.Heal(boostHealEvent.HealthPoints);
         }
 
-        public Item[] GetInventoryProtection()
+        public Item[] GetProtections()
         {
             ObjectContainedInventory helmet = inventory.GetHelmet();
             ObjectContainedInventory vest = inventory.GetVest();
             return new[] {helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem()};
+        }
+
+        public Weapon GetWeapon()
+        {
+            return currentWeapon;
         }
 
         private void OnPause()

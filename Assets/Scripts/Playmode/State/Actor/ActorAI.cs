@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
-    public class ActorAI : NetworkGameScript, IProtection, ISwim
+    public class ActorAI : NetworkGameScript, IInventory, ISwim
     {
         public StateMachine CurrentState { get; private set; }
         public AIController ActorController { get; private set; }
@@ -85,11 +85,17 @@ namespace ProjetSynthese
 
         }
 
-        public Item[] GetInventoryProtection()
+        public Item[] GetProtections()
         {
             ObjectContainedInventory helmet = inventory.GetHelmet();
             ObjectContainedInventory vest = inventory.GetVest();
             return new[] { helmet == null ? null : helmet.GetItem(), vest == null ? null : vest.GetItem() };
+        }
+
+        public Weapon GetWeapon()
+        {
+            ObjectContainedInventory weapon = inventory.GetPrimaryWeapon();
+            return weapon == null ? null : weapon.GetItem() as Weapon;
         }
 
         public bool IsSwimming

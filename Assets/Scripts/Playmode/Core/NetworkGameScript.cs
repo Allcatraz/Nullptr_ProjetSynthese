@@ -33,7 +33,7 @@ namespace ProjetSynthese
         [Command]
         protected void CmdDestroy(GameObject item)
         {
-            Destroy(item);
+            RpcDestroy(item);
         }
 
         [Command]
@@ -60,6 +60,12 @@ namespace ProjetSynthese
             RpcSetActive(item, isActive);
         }
 
+        [Command]
+        protected void CmdSetDommage(GameObject item, int dommage)
+        {
+            RpcSetDommage(item, dommage);
+        }
+
         //////////////////////////////////
         /// COMMAND CALL ON ALL CLIENT ///
         //////////////////////////////////
@@ -82,6 +88,18 @@ namespace ProjetSynthese
         protected void RpcSetActive(GameObject item, bool isActive)
         {
             item.SetActive(isActive);
+        }
+
+        [ClientRpc]
+        protected void RpcSetDommage(GameObject item, int dommage)
+        {
+            item.GetComponent<BulletController>().Dommage = dommage;
+        }
+
+        [ClientRpc]
+        protected void RpcDestroy(GameObject item)
+        {
+            Destroy(item);
         }
     }
 }

@@ -2,15 +2,15 @@
 
 namespace ProjetSynthese
 {
-    public class PlayerMapper : SqLiteDataMapper<Player>
+    public class AchivementMapper : SqLiteDataMapper<Achivement>
     {
-        public override Player GetObjectFromReader(DbDataReader reader)
+        public override Achivement GetObjectFromReader(DbDataReader reader)
         {
-            return new Player
+            return new Achivement
             {
                 Id = reader.GetInt32(reader.GetOrdinal("id")),
                 Name = reader.GetString(reader.GetOrdinal("name")),
-                Password = reader.GetString(reader.GetOrdinal("password"))
+                PlayerId = reader.GetInt32(reader.GetOrdinal("playerId"))
             };
         }
     }

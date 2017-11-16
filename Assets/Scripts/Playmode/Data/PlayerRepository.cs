@@ -10,7 +10,7 @@ namespace ProjetSynthese
     {
         private Repository repository;
 
-        public void InjectHighScoreRepository([ApplicationScope] IDbConnectionFactory connectionFactory,
+        public void InjectPlayerRepository([ApplicationScope] IDbConnectionFactory connectionFactory,
                                               [ApplicationScope] IDbParameterFactory parameterFactory)
         {
             repository = new Repository(this, connectionFactory, parameterFactory, new PlayerMapper());
@@ -18,7 +18,7 @@ namespace ProjetSynthese
 
         public void Awake()
         {
-            InjectDependencies("InjectHighScoreRepository");
+            InjectDependencies("InjectPlayerRepository");
         }
 
         public virtual void AddPlayer(Player player)

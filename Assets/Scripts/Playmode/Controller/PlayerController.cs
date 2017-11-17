@@ -345,8 +345,12 @@ namespace ProjetSynthese
         {
             if (isHoldingGrenade == true)
             {
-                currentGrenade.Throw(networkIdentity, grenadeThrowingForce);
-                soldierAnimatorUpdater.ThrowGrenade(currentGrenade);
+                Grenade newGrenade = Instantiate(currentGrenade);
+                newGrenade.Throw(networkIdentity, grenadeThrowingForce + GetComponentInChildren<PlayerMover>().Speed);
+                soldierAnimatorUpdater.ThrowGrenade(newGrenade);
+                inventory.RemoveThrownGrenade();
+                currentGrenade = null;
+                isHoldingGrenade = false;              
             }
             else if ((object) currentWeapon != null)
             {

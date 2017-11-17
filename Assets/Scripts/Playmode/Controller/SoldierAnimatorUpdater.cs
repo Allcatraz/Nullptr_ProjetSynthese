@@ -158,7 +158,8 @@ namespace ProjetSynthese
 
         private void ReleaseGrenadeEvent()
         {
-            grenade.Release();      
+            grenade.Release();
+            grenade = null;
         }
 
         private void EndThrowingGrenadeAnimationEvent()

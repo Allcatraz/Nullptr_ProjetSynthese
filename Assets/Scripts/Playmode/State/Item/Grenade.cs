@@ -8,6 +8,14 @@ namespace ProjetSynthese
 {
     public class Grenade : Throwable
     {
+        [SerializeField]
+        [Tooltip("Le prefab de l'explosion lorsque la grenade explose")]
+        private GameObject explosionPrefab;
+
+        [SerializeField]
+        [Tooltip("Le temps avant que la grenade explose après avoir été lancée")]
+        private float explosionTime;
+
         private const int Weight = 6;
 
         public override int GetWeight()
@@ -21,6 +29,7 @@ namespace ProjetSynthese
             CmdSetActive(gameObject, true);
             CmdChangeGrenadeParentAndResetPositioIfParentNotNull(gameObject, identity);
             this.force = force;
+            Destroy(gameObject, explosionTime);
         }
 
         public override void Release()
@@ -28,8 +37,13 @@ namespace ProjetSynthese
             Matrix4x4 rootTransform = transform.root.transform.localToWorldMatrix;
             CmdChangeGrenadeParentAndResetPositioIfParentNotNull(gameObject, null);
             Rigidbody rb = gameObject.AddComponent<Rigidbody>();
-            rb.velocity = rootTransform.GetColumn(2) * force * Time.deltaTime;
+            rb.velocity = rootTransform.GetColumn(2) * force;
             rb.drag = 0.5f;
+        }
+
+        private void OnDestroy()
+        {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
 
 

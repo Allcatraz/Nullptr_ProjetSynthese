@@ -158,8 +158,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4402028347705794}
   - component: {fileID: 114427208224105084}
+  - component: {fileID: 114972191652513856}
   m_Layer: 8
-  m_Name: ActorItemSensor
+  m_Name: Sensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,7 +237,7 @@ GameObject:
   - component: {fileID: 114557487456833158}
   - component: {fileID: 114541165062068710}
   m_Layer: 8
-  m_Name: PlayerMover
+  m_Name: Mover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -362,7 +363,7 @@ GameObject:
   - component: {fileID: 114571937182770680}
   - component: {fileID: 114796744405591290}
   m_Layer: 8
-  m_Name: InventoryObject
+  m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -625,7 +626,7 @@ GameObject:
   - component: {fileID: 114956846738126240}
   - component: {fileID: 114527490288276990}
   m_Layer: 8
-  m_Name: ActorHealth
+  m_Name: Boost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1337,10 +1338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e14a8e240f085f04b86a5faa8d213b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1463063252352646, guid: ba227a9f07835d0469f7e0075390e16d,
-    type: 2}
-  cratePrefab: {fileID: 1206018250619120, guid: 60e3e041c5d1f414ba42b2963b20cb1d,
-    type: 2}
+  bulletPrefab: {fileID: 0}
+  cratePrefab: {fileID: 0}
   aiPrefab: {fileID: 1893845116203462, guid: 799316fe2eaadff4abc0701c3c7f883f, type: 2}
 --- !u!114 &114051683891613544
 MonoBehaviour:
@@ -1391,7 +1390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1463063252352646, guid: ba227a9f07835d0469f7e0075390e16d,
     type: 2}
-  cratePrefab: {fileID: 1206018250619120, guid: 60e3e041c5d1f414ba42b2963b20cb1d,
+  cratePrefab: {fileID: 1000012137004694, guid: 902fd1e5fea9b414188db1b1a0dc0a00,
     type: 2}
   inventoryMenu: {fileID: 11400000, guid: 589e738a3b2298e4588b3051b4c164ac, type: 2}
   mapMenu: {fileID: 11400000, guid: a90bf0f1f67a57e41b2286896d6bda89, type: 2}
@@ -1424,7 +1423,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryOf: 1
   maxWeight: 100
---- !u!114 &114229850043973198
+--- !u!114 &114199910577703988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509576154526796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa4a88033de38242b6ed17dbf3ddbdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 0}
+  cratePrefab: {fileID: 0}
+  initialHealthPoints: 100
+  maxHealthPoints: 100
+--- !u!114 &114211786471674650
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1665,21 +1679,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14d8c7e4f8c686442b265f1c4363af63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114981566213520182
+--- !u!114 &114972191652513856
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1509576154526796}
+  m_GameObject: {fileID: 1188521153107254}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1180575928, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: f5eeef61887d0984c9f0faed24b6f903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HostMigration: 1
-  m_ShowGUI: 1
-  m_OffsetX: 10
-  m_OffsetY: 300
+  radius: 2
 --- !u!124 &124619954975705222
 Behaviour:
   m_ObjectHideFlags: 1

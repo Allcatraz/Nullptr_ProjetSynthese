@@ -31,7 +31,7 @@ TagManager:
   - ItemSensor
   - Map
   - SafeCircle
-  - FreeItem
+  - Interactible
   - 
   - 
   - 

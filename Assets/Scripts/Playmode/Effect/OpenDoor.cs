@@ -27,7 +27,7 @@ namespace ProjetSynthese
         private void Awake()
         {
             InjectDependencies("InjectOpenDoor");
-            playerUseEventChannel.OnEventPublished += OnPlayerUse;
+            //playerUseEventChannel.OnEventPublished += OnPlayerUse;
             startAngle = visualTransform.localEulerAngles.y;
             if (startAngle == 0)
             {
@@ -45,7 +45,7 @@ namespace ProjetSynthese
             isPlayerInRange = false;
         }
 
-        private void OnPlayerUse(PlayerUseEvent playerUseEvent)
+        public void Use()
         {
             if (isPlayerInRange)
             {                  

@@ -38,7 +38,7 @@ namespace ProjetSynthese
         public float DeathCircleRadius { get; private set; }
         public float CurrentDeathCircleHurtPoints { get; private set; }
         public float CurrentDistanceOutsideSafeCircle { get; private set; }
-        private float lastDeathCircleSafeCircleGap = 0.0f;
+        //private float lastDeathCircleSafeCircleGap = 0.0f;
         private bool deathCircleIsClosing = false;
         public bool InjuredByDeathCircle { get; set; }
         private float healthRatio = 1.0f;
@@ -460,7 +460,7 @@ namespace ProjetSynthese
             return false;
         }
 
-         public bool FoundAIInPerceptionRange()
+        public bool FoundAIInPerceptionRange()
         {
 
             ActorAI opponentAI = Actor.Sensor.NeareastNonAllyAI(Actor);
@@ -842,18 +842,22 @@ namespace ProjetSynthese
             SafeCircleRadius = deathCircleController.SafeCircle.Radius;
             DeathCircleRadius = deathCircleController.DeathCircle.Radius;
             CurrentDeathCircleHurtPoints = deathCircleController.DeathCircleValues.DomagePerSecond[(int)deathCircleController.CurrentPhase];
-            CurrentDistanceOutsideSafeCircle = Vector3.Distance(Actor.transform.position, SafeCircleCenterPosition) - SafeCircleRadius;
 
-            float currentDeathCircleSafeCircleGap = DeathCircleRadius - SafeCircleRadius;
-            if (lastDeathCircleSafeCircleGap - currentDeathCircleSafeCircleGap > ErrorCirclesGapTolerance)
-            {
-                lastDeathCircleSafeCircleGap = currentDeathCircleSafeCircleGap;
-                deathCircleIsClosing = true;
-            }
-            else
-            {
-                deathCircleIsClosing = false;
-            }
+            Vector2 aiPosition = Vector2.zero;
+            Vector2 safeCirclePosition = Vector2.zero;
+            aiPosition.x = Actor.transform.position.x;
+            aiPosition.y = Actor.transform.position.z;
+            safeCirclePosition.x = DeathCircleCenterPosition.x;
+            safeCirclePosition.y = DeathCircleCenterPosition.z;
+            CurrentDistanceOutsideSafeCircle = Vector2.Distance(aiPosition, safeCirclePosition) - SafeCircleRadius;
+            //{
+
+            //    deathCircleIsClosing = true;
+            //}
+            //else
+            //{
+            //    deathCircleIsClosing = false;
+            //}
         }
 
         private bool NeedToEscapeClosingDeathCircle()

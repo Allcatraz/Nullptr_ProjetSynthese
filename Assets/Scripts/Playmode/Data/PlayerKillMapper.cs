@@ -2,11 +2,11 @@
 
 namespace ProjetSynthese
 {
-    public class AiKillMapper : SqLiteDataMapper<AiKill>
+    public class PlayerKillMapper : SqLiteDataMapper<PlayerKill>
     {
-        public override AiKill GetObjectFromReader(DbDataReader reader)
+        public override PlayerKill GetObjectFromReader(DbDataReader reader)
         {
-            return new AiKill
+            return new PlayerKill
             {
                 Id = reader.GetInt32(reader.GetOrdinal("id")),
                 PlayerId = reader.GetInt32(reader.GetOrdinal("playerId"))

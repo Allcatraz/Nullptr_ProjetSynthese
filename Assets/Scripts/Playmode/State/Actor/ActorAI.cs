@@ -39,15 +39,18 @@ namespace ProjetSynthese
         }
 
         DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel;
-        private void InjectDeathCircleController([EventChannelScope] DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel)
+        DeathCircleTimeLeftEventChannel deathCircleTimeLeftEventChannel;
+        private void InjectDeathCircleController([EventChannelScope] DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel, [EventChannelScope] DeathCircleTimeLeftEventChannel deathCircleTimeLeftEventChannel)
         {
-          this.deathCircleStatusUpdateEventChannel = deathCircleStatusUpdateEventChannel;
+            this.deathCircleStatusUpdateEventChannel = deathCircleStatusUpdateEventChannel;
+            this.deathCircleTimeLeftEventChannel = deathCircleTimeLeftEventChannel;
         }
 
         private void Awake()
         {
             InjectDependencies("InjectDeathCircleController");
             deathCircleStatusUpdateEventChannel.OnEventPublished += OnDeathCircleFixedUpdate;
+            deathCircleTimeLeftEventChannel.OnEventPublished += OnDeathCircleTimeLeftEvent;
         }
         private void Start()
         {
@@ -59,7 +62,7 @@ namespace ProjetSynthese
             EquipmentManager = new EquipmentManager(this);
             HealthManager = new HealthManager(this);
             health.OnDeath += OnDeath;
-           
+
         }
 
 
@@ -68,6 +71,7 @@ namespace ProjetSynthese
         {
             health.OnDeath -= OnDeath;
             deathCircleStatusUpdateEventChannel.OnEventPublished -= OnDeathCircleFixedUpdate;
+            deathCircleTimeLeftEventChannel.OnEventPublished -= OnDeathCircleTimeLeftEvent;
         }
 
         private void Update()
@@ -131,12 +135,12 @@ namespace ProjetSynthese
                 isSwimming = value;
                 Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
                 if (isSwimming)
-                {                    
+                {
                     ActorController.AISpeed = AIController.SpeedLevel.Swimming;
                     rigidbody.useGravity = false;
                 }
                 else
-                {                    
+                {
                     ActorController.SetAIControllerMode(ActorController.GetAIControllerMode());
                     rigidbody.useGravity = true;
                 }
@@ -159,10 +163,21 @@ namespace ProjetSynthese
             deathCirclePosition.y = Brain.DeathCircleCenterPosition.z;
             if (Vector2.Distance(aiPosition, deathCirclePosition) > Brain.DeathCircleRadius)
             {
-                health.Hit(Brain.CurrentDeathCircleHurtPoints*Time.deltaTime);
+                health.Hit(Brain.CurrentDeathCircleHurtPoints * Time.deltaTime);
                 Brain.InjuredByDeathCircle = true;
             }
         }
 
+        private void OnDeathCircleTimeLeftEvent(DeathCircleTimeLeftEvent deathCircleTimeLeftEvent)
+        {
+            if (deathCircleTimeLeftEvent.Minutes < 1 && deathCircleTimeLeftEvent.Seconds < 30)
+            {
+                Brain.DeathCircleIsClosing = true;
+            }
+            else
+            {
+                Brain.DeathCircleIsClosing = false;
+            }
+        }
     }
 }

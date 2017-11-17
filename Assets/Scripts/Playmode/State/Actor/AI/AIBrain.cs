@@ -38,8 +38,8 @@ namespace ProjetSynthese
         public float DeathCircleRadius { get; private set; }
         public float CurrentDeathCircleHurtPoints { get; private set; }
         public float CurrentDistanceOutsideSafeCircle { get; private set; }
-        //private float lastDeathCircleSafeCircleGap = 0.0f;
-        private bool deathCircleIsClosing = false;
+
+        public bool DeathCircleIsClosing { get; set; }
         public bool InjuredByDeathCircle { get; set; }
         private float healthRatio = 1.0f;
         private float healNumberStorageRatio = 0.0f;
@@ -141,6 +141,7 @@ namespace ProjetSynthese
             ResetActualPerception();
             currentOpponentType = OpponentType.None;
             InjuredByDeathCircle = false;
+            DeathCircleIsClosing = false;
         }
 
         public AIState WhatIsMyNextState(AIState currentState)
@@ -191,7 +192,7 @@ namespace ProjetSynthese
 
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
+            if (nextState == AIState.None && DeathCircleIsClosing)
             {
                 nextState = AIState.DeathCircle;
             }
@@ -232,7 +233,7 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
+            if (nextState == AIState.None && DeathCircleIsClosing)
             {
                 nextState = AIState.DeathCircle;
             }
@@ -281,7 +282,7 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
+            if (nextState == AIState.None && DeathCircleIsClosing)
             {
                 nextState = AIState.DeathCircle;
             }
@@ -326,7 +327,7 @@ namespace ProjetSynthese
             AIState nextState = AIState.None;
 
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
+            if (nextState == AIState.None && DeathCircleIsClosing)
             {
                 nextState = AIState.DeathCircle;
             }
@@ -371,7 +372,7 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
+            if (nextState == AIState.None && DeathCircleIsClosing)
             {
                 nextState = AIState.DeathCircle;
             }
@@ -413,7 +414,7 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && NeedToEscapeClosingDeathCircle())
+            if (nextState == AIState.None && DeathCircleIsClosing)
             {
                 nextState = AIState.DeathCircle;
             }
@@ -860,17 +861,17 @@ namespace ProjetSynthese
             //}
         }
 
-        private bool NeedToEscapeClosingDeathCircle()
-        {
-            bool needToEscape = false;
-            if (deathCircleIsClosing)
-            {
-                if (CurrentDistanceOutsideSafeCircle > 0.0f)
-                {
-                    needToEscape = true;
-                }
-            }
-            return needToEscape;
-        }
+        //private bool NeedToEscapeClosingDeathCircle()
+        //{
+        //    bool needToEscape = false;
+        //    if (deathCircleIsClosing)
+        //    {
+        //        if (CurrentDistanceOutsideSafeCircle > 0.0f)
+        //        {
+        //            needToEscape = true;
+        //        }
+        //    }
+        //    return needToEscape;
+        //}
     }
 }

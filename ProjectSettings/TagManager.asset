@@ -12,6 +12,7 @@ TagManager:
   - Map
   - TopPanel
   - EndGamePanel
+  - Fire
   layers:
   - Default
   - TransparentFX

@@ -18,7 +18,7 @@ namespace ProjetSynthese
 
         private Rigidbody rigidbody;
         private DeathCircleDistanceEventChannel deathCircleDistanceEventChannel;
-        private float speed = 0;
+        public float Speed { get; private set; }
 
         public event MoveEventHandler OnMove;
 
@@ -33,7 +33,7 @@ namespace ProjetSynthese
         {
             InjectDependencies("InjectPlayerMover");
             rigidbody.rotation = Quaternion.identity;
-            speed = moveSpeed;
+            Speed = moveSpeed;
 
             deathCircleDistanceEventChannel.OnEventPublished += OnDeathCircleDistanceChanged;
         }
@@ -45,27 +45,27 @@ namespace ProjetSynthese
 
         public void SwitchSprintOn()
         {
-            speed = sprintSpeed;
+            Speed = sprintSpeed;
         }
 
         public void SwitchSprintOff()
         {
-            speed = moveSpeed;
+            Speed = moveSpeed;
         }
 
         public void SwitchSwimOn()
         {
-            speed = swimSpeed;
+            Speed = swimSpeed;
         }
 
         public void SwitchSwimOff()
         {
-            speed = moveSpeed;
+            Speed = moveSpeed;
         }
 
         public void Move(Vector3 direction)
         {
-            rigidbody.velocity = direction * (speed * Time.deltaTime);
+            rigidbody.velocity = direction * Speed;
             if (OnMove != null) OnMove();
         }
 

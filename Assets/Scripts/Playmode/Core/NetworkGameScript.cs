@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -31,6 +32,11 @@ namespace ProjetSynthese
         //////////////////////////////
         /// COMMAND CALL ON SERVER ///
         //////////////////////////////
+        [Command]
+        public void CmdChangeLayerForAllChildrens(GameObject root, string layer)
+        {
+            RpcChangeLayerForAllChildrens(root, layer);
+        }
 
         [Command]
         protected void CmdSpawnObject(GameObject item)
@@ -132,6 +138,18 @@ namespace ProjetSynthese
         protected void RpcDestroy(GameObject item)
         {
             Destroy(item);
+        }
+
+        [ClientRpc]
+        private void RpcChangeLayerForAllChildrens(GameObject root, string layer)
+        {
+            int layerMask = LayerMask.NameToLayer(layer);
+            root.layer = layerMask;
+            IList<GameObject> allChildrens = root.GetAllChildrens();
+            for (int i = 0; i < allChildrens.Count; i++)
+            {
+                allChildrens[i].layer = layerMask;
+            }
         }
     }
 }

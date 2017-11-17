@@ -555,7 +555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1921219572930376
 GameObject:
   m_ObjectHideFlags: 1
@@ -1336,6 +1336,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 95332389489760476}
+  shootingAnimation: {fileID: 0}
+  grenadeAnimation: {fileID: 0}
 --- !u!114 &114668875301481778
 MonoBehaviour:
   m_ObjectHideFlags: 1

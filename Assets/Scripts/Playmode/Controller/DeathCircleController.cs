@@ -69,7 +69,7 @@ namespace ProjetSynthese
             CreateCircle(ref deathCircle, mapDiagonalRadius);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (currentPhase <= Phases.Phase8)
             {
@@ -95,6 +95,8 @@ namespace ProjetSynthese
                             deathCircle.Radius -= 0.2f;
                             deathCircle.Create();
 
+                            if (OnDistanceChanged != null) OnDistanceChanged(safeCircle.Radius, deathCircle.Radius, playerRadius);
+
                             if (deathCircle.Radius <= safeCircle.Radius)
                             {
                                 if (currentPhase < Phases.Phase8)
@@ -119,14 +121,11 @@ namespace ProjetSynthese
                 if (playerHurtTime <= 0.0f)
                 {
                     playerHurtTime = InitialPlayerHurtTime;
-                    if (OnPlayerHurt != null) OnPlayerHurt(deathCircleValues.DomagePerSecond[(int)currentPhase]);
+                    if (OnPlayerHurt != null) OnPlayerHurt(deathCircleValues.DomagePerSecond[(int) currentPhase]);
                 }
             }
 
-            if (OnDistanceChanged != null) OnDistanceChanged(safeCircle.Radius, deathCircle.Radius, playerRadius);
-
-            if (OnFixedUpdate != null) OnFixedUpdate();
- 
+            if (OnFixedUpdate != null) OnFixedUpdate(); 
         }
 
         private void OnPlayerMove(PlayerMoveEvent playerMoveEvent)

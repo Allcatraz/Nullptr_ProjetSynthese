@@ -20,8 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4736777251903804}
   - component: {fileID: 114751654864556258}
-  - component: {fileID: 114207786147267550}
   - component: {fileID: 114317553142637654}
+  - component: {fileID: 65742199157424666}
+  - component: {fileID: 114207786147267550}
   - component: {fileID: 114651244658166054}
   m_Layer: 10
   m_Name: M1911
@@ -38,7 +39,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4027645415064602}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +54,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4313771801350684}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +69,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4056299383316704}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 R Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +84,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4255943372657116}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +99,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4827554883822672}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: HK-mp5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +114,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4811938677146350}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +129,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4995437739275520}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 R UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,8 +146,7 @@ GameObject:
   - component: {fileID: 4160287040467040}
   - component: {fileID: 33057935943567760}
   - component: {fileID: 23330779683199924}
-  - component: {fileID: 65566857290058880}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: weapon_mp5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4057632212900484}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 R Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4596066498385776}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4754660327858484}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4343231401212112}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 R Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4860399776641850}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Chamber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,12 +462,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1752207540517898}
   m_Mesh: {fileID: 4300000, guid: 6e1bfa0891295c44891e38b0fcc75852, type: 3}
---- !u!65 &65566857290058880
+--- !u!65 &65742199157424666
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1752207540517898}
+  m_GameObject: {fileID: 1006045350083210}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -549,6 +549,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ad926c3292fa6647baaa6cd7a79032e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 0}
+  cratePrefab: {fileID: 0}
   type: 3
   bulletSpawnPoint: {fileID: 1952353094734770}
   chamber: {fileID: 1983344287765540}

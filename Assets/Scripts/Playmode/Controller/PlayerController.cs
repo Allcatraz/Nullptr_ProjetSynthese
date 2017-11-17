@@ -35,6 +35,15 @@ namespace ProjetSynthese
         [SerializeField]
         private Camera firstPersonCamera;
 
+        [Tooltip("La force de tir de la grenade")]
+        [SerializeField]
+        private int grenadeThrowingForce;
+
+        [Tooltip("La main avec laquelle le joueur lance la grenade")]
+        [SerializeField]
+        private GameObject grenadeThrowingHand;
+
+
         private ActivityStack activityStack;
         private Health health;
         private KeyboardInputSensor keyboardInputSensor;
@@ -43,6 +52,7 @@ namespace ProjetSynthese
         private Inventory inventory;
         private ItemSensor itemSensor;
         private Weapon currentWeapon;
+        private Grenade currentGrenade;
         private NetworkIdentity networkIdentity;
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
         private BoostHealEventChannel boostHealEventChannel;
@@ -56,6 +66,7 @@ namespace ProjetSynthese
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
         private bool isSwimming = false;
+        private bool isHoldingGrenade = false;
 
         public bool IsSwimming
         {
@@ -85,6 +96,11 @@ namespace ProjetSynthese
         public Transform GetWeaponHolderTransform()
         {
             return weaponHolderTransform;
+        }
+
+        public GameObject GetGrenadeHolder()
+        {
+            return grenadeThrowingHand;
         }
 
         public Transform GetInventoryHolderTransform()
@@ -243,6 +259,7 @@ namespace ProjetSynthese
             currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();
+            isHoldingGrenade = false;
         }
 
         private void OnSwitchSecondaryWeapon()
@@ -252,10 +269,18 @@ namespace ProjetSynthese
             currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();
+            isHoldingGrenade = false;
         }
 
         private void OnSwitchThirdWeapon()
         {
+            ObjectContainedInventory grenade = inventory.GetGrenade();
+            currentGrenade = grenade == null ? null : grenade.GetItem() as Grenade;
+            if (currentGrenade != null)
+            {
+                isHoldingGrenade = true;
+            }
+
         }
 
         private void SetCurrentWeaponActive(bool isActive)
@@ -331,7 +356,16 @@ namespace ProjetSynthese
 
         private void OnFire()
         {
-            if ((object) currentWeapon != null)
+            if (isHoldingGrenade == true)
+            {
+                Grenade newGrenade = Instantiate(currentGrenade);
+                newGrenade.Throw(networkIdentity, grenadeThrowingForce + GetComponentInChildren<PlayerMover>().Speed);
+                soldierAnimatorUpdater.ThrowGrenade(newGrenade);
+                inventory.RemoveThrownGrenade();
+                currentGrenade = null;
+                isHoldingGrenade = false;              
+            }
+            else if ((object) currentWeapon != null)
             {
                 soldierAnimatorUpdater.Shoot();
                 currentWeapon.Use();

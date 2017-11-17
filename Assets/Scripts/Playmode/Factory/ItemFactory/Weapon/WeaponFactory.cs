@@ -6,14 +6,16 @@ namespace ProjetSynthese
     public class WeaponFactory
     {
         private const int PercentChanceSpawnM16A4 = 40;
-        private const int PercentChanceSpawnAWM = 10;
-        private const int PercentChanceSpawnSAIGA12 = 20;
+        private const int PercentChanceSpawnAWM = 1;
+        private const int PercentChanceSpawnSAIGA12 = 30;
         private const int PercentChanceSpawnM1911 = 20;
+        private const int PercentChanceSpawnGrenade = 9;
 
         private static Vector2 Range1 = new Vector2(0, PercentChanceSpawnM16A4);
         private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawnAWM);
         private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawnSAIGA12);
         private static Vector2 Range4 = new Vector2(Range3.y, Range3.y + PercentChanceSpawnM1911);
+        private static Vector2 Range5 = new Vector2(Range4.y, Range4.y + PercentChanceSpawnGrenade);
 
         public static void CreateItem(List<GameObject> itemList, Vector3 spawnPoint, System.Random random)
         {
@@ -34,6 +36,10 @@ namespace ProjetSynthese
             else if (item >= Range4.x && item <= Range4.y)
             {
                 M1911Factory.CreateItem(itemList, spawnPoint, random);
+            }
+            else if (item >= Range5.x && item <= Range5.y)
+            {
+                GrenadeFactory.CreateItem(itemList, spawnPoint, random);
             }
         }
     }

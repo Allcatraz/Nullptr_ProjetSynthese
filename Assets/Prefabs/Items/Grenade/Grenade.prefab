@@ -216,7 +216,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c15cf78dcf73604f8d6bbb36007ead5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 0}
+  cratePrefab: {fileID: 0}
   type: 4
+  explosionPrefab: {fileID: 131164, guid: 3c5f4e32698bdb04eaed647f60310510, type: 2}
+  explosionTime: 5
 --- !u!114 &114418321366851042
 MonoBehaviour:
   m_ObjectHideFlags: 1

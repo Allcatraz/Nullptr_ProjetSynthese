@@ -51,7 +51,6 @@ namespace ProjetSynthese
 
         private void Awake()
         {
-            BulletFactory.BulletPrefab = bulletPrefab;
             InitializeItemFabrics();
         }
 

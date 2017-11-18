@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4596029080182068}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Chamber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4387319633113754}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4466365735168602}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 R Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,8 +66,7 @@ GameObject:
   - component: {fileID: 4578963079233076}
   - component: {fileID: 33231055594483462}
   - component: {fileID: 23999165916374048}
-  - component: {fileID: 65010978751019224}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: weapon_M110
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +81,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4889528197631826}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +96,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4024423396107180}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +111,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4561434342210700}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 R Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,8 +127,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4493250341325166}
   - component: {fileID: 114724182066724082}
-  - component: {fileID: 114626473777302560}
   - component: {fileID: 114302715723661442}
+  - component: {fileID: 65726172621761622}
+  - component: {fileID: 114626473777302560}
   - component: {fileID: 114008078740284496}
   m_Layer: 10
   m_Name: AWM
@@ -146,7 +146,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4342284196108226}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: M110
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4745789949669890}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4148571445030992}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4351274874231836}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 R Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4759848945676354}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 R UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4139952700744706}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Bip001 Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,12 +462,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1278600687139378}
   m_Mesh: {fileID: 4300000, guid: bb78b0ab3b2dd964ebbdf4a78f6c8215, type: 3}
---- !u!65 &65010978751019224
+--- !u!65 &65726172621761622
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1278600687139378}
+  m_GameObject: {fileID: 1596026197941954}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -549,6 +549,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ad926c3292fa6647baaa6cd7a79032e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 0}
+  cratePrefab: {fileID: 0}
   type: 1
   bulletSpawnPoint: {fileID: 1739869433896542}
   chamber: {fileID: 1071602076758938}

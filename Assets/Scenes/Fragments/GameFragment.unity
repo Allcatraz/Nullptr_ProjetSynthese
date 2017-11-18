@@ -328,7 +328,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 252684700}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,6 +454,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1792314269822074, guid: e9d33b85409b9214e965cf167234a834, type: 2}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e9d33b85409b9214e965cf167234a834, type: 2}
   m_IsPrefabParent: 0
@@ -465,7 +469,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 333994200}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Door02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -568,7 +572,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 541244860}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Door03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -748,7 +752,7 @@ GameObject:
   - component: {fileID: 628424661}
   - component: {fileID: 628424663}
   - component: {fileID: 628424662}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: DoorVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -866,7 +870,7 @@ GameObject:
   - component: {fileID: 748901026}
   - component: {fileID: 748901028}
   - component: {fileID: 748901027}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: DoorVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -939,7 +943,7 @@ GameObject:
   - component: {fileID: 859853249}
   - component: {fileID: 859853250}
   - component: {fileID: 859853251}
-  m_Layer: 12
+  m_Layer: 17
   m_Name: DoorTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1067,7 +1071,7 @@ GameObject:
   - component: {fileID: 916443505}
   - component: {fileID: 916443507}
   - component: {fileID: 916443506}
-  m_Layer: 12
+  m_Layer: 17
   m_Name: DoorTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1373,7 +1377,7 @@ GameObject:
   - component: {fileID: 1111921893}
   - component: {fileID: 1111921895}
   - component: {fileID: 1111921894}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: DoorVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1606,7 +1610,7 @@ GameObject:
   - component: {fileID: 1292110508}
   - component: {fileID: 1292110510}
   - component: {fileID: 1292110509}
-  m_Layer: 12
+  m_Layer: 17
   m_Name: DoorTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1821,7 +1825,7 @@ GameObject:
   - component: {fileID: 1393343009}
   - component: {fileID: 1393343011}
   - component: {fileID: 1393343010}
-  m_Layer: 12
+  m_Layer: 17
   m_Name: DoorTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2463,7 +2467,7 @@ GameObject:
   - component: {fileID: 1948570230}
   - component: {fileID: 1948570232}
   - component: {fileID: 1948570231}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: DoorVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

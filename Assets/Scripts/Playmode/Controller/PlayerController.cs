@@ -41,6 +41,7 @@ namespace ProjetSynthese
         private MouseInputSensor mouseInputSensor;
         private PlayerMover playerMover;
         private Inventory inventory;
+        private InteractableSensor interactableSensor;
         private ItemSensor itemSensor;
         private Weapon currentWeapon;
         private NetworkIdentity networkIdentity;
@@ -114,6 +115,7 @@ namespace ProjetSynthese
                                             [EntityScope] PlayerMover playerMover,
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
+                                            [EntityScope] InteractableSensor interactableSensor,
                                             [EntityScope] ItemSensor itemSensor,
                                             [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater,
                                             [GameObjectScope] NetworkIdentity networkIdentity,
@@ -127,6 +129,7 @@ namespace ProjetSynthese
             this.playerMover = playerMover;
             this.health = health;
             this.inventory = inventory;
+            this.interactableSensor = interactableSensor;
             this.itemSensor = itemSensor;
             this.networkIdentity = networkIdentity;
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
@@ -343,11 +346,20 @@ namespace ProjetSynthese
 
         private void OnInteract()
         {
-            GameObject item = itemSensor.GetItemNearest();
-            TakeItem(item);
-            CmdTakeItem(item, networkIdentity);
+            GameObject obj = interactableSensor.GetNearestInteractible();
 
-            if (OnUse != null) OnUse(true);
+            if (obj != null)
+            {
+                if (obj.GetComponent<Item>())
+                {
+                    TakeItem(obj);
+                    CmdTakeItem(obj, networkIdentity);
+                }
+                else if (obj.GetComponent<OpenDoor>())
+                {
+                    obj.GetComponent<OpenDoor>().Use();
+                }
+            }
         }
 
         [Command]

@@ -1,7 +1,7 @@
 ﻿using Harmony;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 namespace ProjetSynthese
 {
@@ -32,16 +32,17 @@ namespace ProjetSynthese
         //////////////////////////////
         /// COMMAND CALL ON SERVER ///
         //////////////////////////////
+
         [Command]
-        public void CmdChangeLayerForAllChildrens(GameObject root, string layer)
+        public void CmdSpawnObject(GameObject item)
         {
-            RpcChangeLayerForAllChildrens(root, layer);
+            NetworkServer.Spawn(item);
         }
 
         [Command]
-        protected void CmdSpawnObject(GameObject item)
+        protected void CmdSpawnGrenade()
         {
-            NetworkServer.Spawn(item);
+            GameObject
         }
 
         [Command]
@@ -69,8 +70,7 @@ namespace ProjetSynthese
         }
 
         [Command]
-        protected void CmdDestroy(GameObject item)
-        {
+        public void CmdDestroy(GameObject item)        {
             RpcDestroy(item);
         }
 
@@ -81,19 +81,19 @@ namespace ProjetSynthese
         }
 
         [Command]
-        protected void CmdSetTransform(GameObject item, Vector3 position, Quaternion rotation, Vector3 scale)
+        public void CmdSetTransform(GameObject item, Vector3 position, Quaternion rotation, Vector3 scale)
         {
             RpcSetTransform(item, position, rotation, scale);
         }
 
         [Command]
-        protected void CmdChangeParent(GameObject item, GameObject parent)
+        public void CmdChangeTransformPosition(GameObject gameObject, Vector3 position)
         {
-            RpcChangeParent(item, parent);
+            RpcChangeTransformPosition(gameObject, position);
         }
 
         [Command]
-        protected void CmdSetActive(GameObject item, bool isActive)
+        public void CmdSetActive(GameObject item, bool isActive)
         {
             RpcSetActive(item, isActive);
         }
@@ -102,6 +102,12 @@ namespace ProjetSynthese
         protected void CmdSetDommage(GameObject item, int dommage)
         {
             RpcSetDommage(item, dommage);
+        }
+
+		[Command]
+        public void CmdChangeLayerForAllChildrens(GameObject root, string layer)
+        {
+            RpcChangeLayerForAllChildrens(root, layer);
         }
 
         //////////////////////////////////
@@ -117,15 +123,15 @@ namespace ProjetSynthese
         }
 
         [ClientRpc]
-        protected void RpcChangeParent(GameObject item, GameObject parent)
-        {
-            item.transform.SetParent(parent.transform);
-        }
-
-        [ClientRpc]
         protected void RpcSetActive(GameObject item, bool isActive)
         {
             item.SetActive(isActive);
+        }
+
+        [ClientRpc]
+        private void RpcChangeTransformPosition(GameObject gameObject, Vector3 position)
+        {
+            gameObject.transform.position = position;
         }
 
         [ClientRpc]

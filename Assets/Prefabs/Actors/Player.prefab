@@ -361,7 +361,6 @@ GameObject:
   - component: {fileID: 114169419075714274}
   - component: {fileID: 114535921600472296}
   - component: {fileID: 114571937182770680}
-  - component: {fileID: 114796744405591290}
   m_Layer: 8
   m_Name: Inventory
   m_TagString: Untagged
@@ -427,7 +426,6 @@ GameObject:
   - component: {fileID: 114095602013616882}
   - component: {fileID: 114638758293720702}
   - component: {fileID: 114301871804280328}
-  - component: {fileID: 114981566213520182}
   - component: {fileID: 114091543535803372}
   - component: {fileID: 54390617244429252}
   - component: {fileID: 114884844836443650}
@@ -435,9 +433,9 @@ GameObject:
   - component: {fileID: 114007633270102854}
   - component: {fileID: 65726999585969710}
   - component: {fileID: 65380443423827348}
-  - component: {fileID: 114051683891613544}
-  - component: {fileID: 114229850043973198}
-  - component: {fileID: 114751108740189446}
+  - component: {fileID: 114199910577703988}
+  - component: {fileID: 114211786471674650}
+  - component: {fileID: 114530595359914134}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -1333,7 +1331,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1509576154526796}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e14a8e240f085f04b86a5faa8d213b83, type: 3}
   m_Name: 
@@ -1341,23 +1339,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 0}
   cratePrefab: {fileID: 0}
   aiPrefab: {fileID: 1893845116203462, guid: 799316fe2eaadff4abc0701c3c7f883f, type: 2}
---- !u!114 &114051683891613544
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1509576154526796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6aa4a88033de38242b6ed17dbf3ddbdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1463063252352646, guid: ba227a9f07835d0469f7e0075390e16d,
-    type: 2}
-  cratePrefab: {fileID: 1206018250619120, guid: 60e3e041c5d1f414ba42b2963b20cb1d,
-    type: 2}
-  initialHealthPoints: 100
-  maxHealthPoints: 100
 --- !u!114 &114091543535803372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1469,7 +1450,7 @@ MonoBehaviour:
   m_VelocityThreshold: 0.0001
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
+  m_InterpolateMovement: 0.9
 --- !u!114 &114427208224105084
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1491,6 +1472,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cb09a427b74fc946b15c7e2e27dfa46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114530595359914134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509576154526796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f9b2ed1ab9e4c5ab22f644614514ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114535921600472296
@@ -1526,8 +1518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b0469524231f8640b4effbebacff6a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 14
-  sprintSpeed: 25
+  moveSpeed: 12
+  sprintSpeed: 16
   swimSpeed: 8
 --- !u!114 &114568882111241350
 MonoBehaviour:
@@ -1634,28 +1626,6 @@ MonoBehaviour:
   - {x: 42, y: 0, z: -42}
   itemSpawnerPrefab: {fileID: 1369578581811908, guid: 656661b308b4abf40b09bcac342f3c85,
     type: 2}
---- !u!114 &114751108740189446
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1509576154526796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f9b2ed1ab9e4c5ab22f644614514ffe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114796744405591290
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1437739655389598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555202a3b7b84f07908f8a30b7fdcf25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114884844836443650
 MonoBehaviour:
   m_ObjectHideFlags: 1

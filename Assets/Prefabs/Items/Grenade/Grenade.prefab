@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4314162034879888}
   - component: {fileID: 137844542644163876}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4409139792098684}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Grenade_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4375329997245672}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Grenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +66,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4962619028206864}
   - component: {fileID: 137539926407952814}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 114756923874857804}
   - component: {fileID: 114418321366851042}
   - component: {fileID: 114287564801411198}
+  - component: {fileID: 65329665797689724}
   m_Layer: 10
   m_Name: Grenade
   m_TagString: Untagged
@@ -101,7 +102,7 @@ GameObject:
   - component: {fileID: 4296746733449120}
   - component: {fileID: 137390912814688348}
   - component: {fileID: 64496799445369238}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,6 +206,18 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300002, guid: cbafd1270e278a54ebf81a9120ac7a2d, type: 3}
+--- !u!65 &65329665797689724
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1711692997422464}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.63547695, y: 0.908869, z: 0.47600877}
+  m_Center: {x: -0.060753882, y: 0.40249407, z: -0.021083415}
 --- !u!114 &114287564801411198
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -233,7 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.1
+  m_SendInterval: 0.2
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0

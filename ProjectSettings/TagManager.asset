@@ -11,7 +11,6 @@ TagManager:
   - AI
   - Map
   - TopPanel
-  - EndGamePanel
   layers:
   - Default
   - TransparentFX
@@ -30,7 +29,7 @@ TagManager:
   - ItemSensor
   - Map
   - SafeCircle
-  - Interactible
+  - FreeItem
   - 
   - 
   - 
@@ -48,10 +47,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: DeathMenu
-    uniqueID: 238674139
-    locked: 0
-  - name: PauseMenu
-    uniqueID: 4218960423
     locked: 0

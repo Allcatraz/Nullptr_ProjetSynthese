@@ -17,15 +17,12 @@ namespace ProjetSynthese
         [SerializeField] private float swimSpeed;
 
         private Rigidbody rigidbody;
-        private DeathCircleDistanceEventChannel deathCircleDistanceEventChannel;
-        private float speed = 0;
+        public float Speed { get; private set; }
 
         public event MoveEventHandler OnMove;
 
-        private void InjectPlayerMover([RootScope] Rigidbody rigidbody,
-                                       [EventChannelScope] DeathCircleDistanceEventChannel deathCircleDistanceEventChannel)
+        private void InjectPlayerMover([RootScope] Rigidbody rigidbody)
         {
-            this.deathCircleDistanceEventChannel = deathCircleDistanceEventChannel;
             this.rigidbody = rigidbody;
         }
 
@@ -33,39 +30,32 @@ namespace ProjetSynthese
         {
             InjectDependencies("InjectPlayerMover");
             rigidbody.rotation = Quaternion.identity;
-            speed = moveSpeed;
-
-            deathCircleDistanceEventChannel.OnEventPublished += OnDeathCircleDistanceChanged;
-        }
-
-        private void OnDestroy()
-        {
-            deathCircleDistanceEventChannel.OnEventPublished -= OnDeathCircleDistanceChanged;
+            Speed = moveSpeed;
         }
 
         public void SwitchSprintOn()
         {
-            speed = sprintSpeed;
+            Speed = sprintSpeed;
         }
 
         public void SwitchSprintOff()
         {
-            speed = moveSpeed;
+            Speed = moveSpeed;
         }
 
         public void SwitchSwimOn()
         {
-            speed = swimSpeed;
+            Speed = swimSpeed;
         }
 
         public void SwitchSwimOff()
         {
-            speed = moveSpeed;
+            Speed = moveSpeed;
         }
 
         public void Move(Vector3 direction)
         {
-            rigidbody.velocity = direction * (speed * Time.deltaTime);
+            rigidbody.velocity = direction * Speed;
             if (OnMove != null) OnMove();
         }
 
@@ -76,11 +66,6 @@ namespace ProjetSynthese
                 rigidbody.transform.eulerAngles = angle;
                 
             }
-        }
-
-        private void OnDeathCircleDistanceChanged(DeathCircleDistanceEvent deathCircleDistanceEvent)
-        {
-            if (OnMove != null) OnMove();
         }
     }
 }

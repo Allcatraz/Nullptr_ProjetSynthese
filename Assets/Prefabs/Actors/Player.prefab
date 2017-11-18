@@ -1378,6 +1378,8 @@ MonoBehaviour:
   weaponHolderTransform: {fileID: 4236748107255540}
   inventoryHolderTransform: {fileID: 4132227477362130}
   firstPersonCamera: {fileID: 20009433431343892}
+  grenadeThrowingForce: 600
+  grenadeThrowingHand: {fileID: 1473631201260102}
 --- !u!114 &114095602013616882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1531,6 +1533,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 95523666130526634}
+  shootingAnimation: {fileID: 7400000, guid: cbb6bbf945dda7d4d8c062dd76028577, type: 3}
+  grenadeAnimation: {fileID: 7400000, guid: ee8fe990b6b8d584a80a8477c96adcb8, type: 3}
 --- !u!114 &114571264583394874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1614,6 +1618,11 @@ MonoBehaviour:
   - {x: 4, y: 0, z: -5}
   - {x: 34, y: 0, z: -16}
   - {x: 18, y: 0, z: -39}
+  - {x: 42, y: 0, z: -42}
+  - {x: 42, y: 0, z: -42}
+  - {x: 42, y: 0, z: -42}
+  - {x: 42, y: 0, z: -42}
+  - {x: 42, y: 0, z: -42}
   - {x: 42, y: 0, z: -42}
   itemSpawnerPrefab: {fileID: 1369578581811908, guid: 656661b308b4abf40b09bcac342f3c85,
     type: 2}

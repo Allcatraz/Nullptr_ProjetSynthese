@@ -190,6 +190,12 @@ namespace ProjetSynthese
             return grenade;
         }
 
+        public void RemoveThrownGrenade()
+        {
+            this.grenade = null;
+            NotifyInventoryChange();
+        }
+
         public ObjectContainedInventory GetBag()
         {
             return bag;

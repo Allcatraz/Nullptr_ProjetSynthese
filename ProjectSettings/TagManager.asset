@@ -11,6 +11,8 @@ TagManager:
   - AI
   - Map
   - TopPanel
+  - Fire
+  - EndGamePanel
   layers:
   - Default
   - TransparentFX
@@ -30,7 +32,7 @@ TagManager:
   - Map
   - SafeCircle
   - FreeItem
-  - 
+  - Interactible
   - 
   - 
   - 

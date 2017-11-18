@@ -40,6 +40,12 @@ namespace ProjetSynthese
         }
 
         [Command]
+        protected void CmdSpawnGrenade()
+        {
+            GameObject
+        }
+
+        [Command]
         protected void CmdSpawnBullet(Vector3 spawnPointPosition, Quaternion rotation, Vector3 chamberPosition, float bulletSpeed, float livingTime, int dommage)
         {
             GameObject bullet = Instantiate(bulletPrefab);

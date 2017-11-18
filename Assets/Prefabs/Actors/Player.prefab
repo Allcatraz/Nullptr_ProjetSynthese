@@ -1378,7 +1378,7 @@ MonoBehaviour:
   weaponHolderTransform: {fileID: 4236748107255540}
   inventoryHolderTransform: {fileID: 4132227477362130}
   firstPersonCamera: {fileID: 20009433431343892}
-  grenadeThrowingForce: 600
+  grenadeThrowingForce: 12
   grenadeThrowingHand: {fileID: 1473631201260102}
 --- !u!114 &114095602013616882
 MonoBehaviour:
@@ -1518,9 +1518,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b0469524231f8640b4effbebacff6a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1000
-  sprintSpeed: 1300
-  swimSpeed: 350
+  moveSpeed: 12
+  sprintSpeed: 16
+  swimSpeed: 8
 --- !u!114 &114568882111241350
 MonoBehaviour:
   m_ObjectHideFlags: 1

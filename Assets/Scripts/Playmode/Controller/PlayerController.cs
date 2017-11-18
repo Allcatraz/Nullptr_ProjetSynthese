@@ -362,6 +362,7 @@ namespace ProjetSynthese
             if (isHoldingGrenade == true)
             {
                 Grenade newGrenade = Instantiate(currentGrenade);
+                CmdSpawnObject(newGrenade.gameObject);
                 newGrenade.Throw(networkIdentity, grenadeThrowingForce + GetComponentInChildren<PlayerMover>().Speed);
                 soldierAnimatorUpdater.ThrowGrenade(newGrenade);
                 inventory.RemoveThrownGrenade();

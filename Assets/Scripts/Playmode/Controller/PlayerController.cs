@@ -35,14 +35,25 @@ namespace ProjetSynthese
         [SerializeField]
         private Camera firstPersonCamera;
 
+        [Tooltip("La force de tir de la grenade")]
+        [SerializeField]
+        private int grenadeThrowingForce;
+
+        [Tooltip("La main avec laquelle le joueur lance la grenade")]
+        [SerializeField]
+        private GameObject grenadeThrowingHand;
+
+
         private ActivityStack activityStack;
         private Health health;
         private KeyboardInputSensor keyboardInputSensor;
         private MouseInputSensor mouseInputSensor;
         private PlayerMover playerMover;
         private Inventory inventory;
+        private InteractableSensor interactableSensor;
         private ItemSensor itemSensor;
         private Weapon currentWeapon;
+        private Grenade currentGrenade;
         private NetworkIdentity networkIdentity;
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
         private BoostHealEventChannel boostHealEventChannel;
@@ -56,6 +67,7 @@ namespace ProjetSynthese
         private bool isFirstPerson = false;
         private bool canCameraMove = true;
         private bool isSwimming = false;
+        private bool isHoldingGrenade = false;
 
         public bool IsSwimming
         {
@@ -87,6 +99,11 @@ namespace ProjetSynthese
             return weaponHolderTransform;
         }
 
+        public GameObject GetGrenadeHolder()
+        {
+            return grenadeThrowingHand;
+        }
+
         public Transform GetInventoryHolderTransform()
         {
             return inventoryHolderTransform;
@@ -114,6 +131,7 @@ namespace ProjetSynthese
                                             [EntityScope] PlayerMover playerMover,
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
+                                            [EntityScope] InteractableSensor interactableSensor,
                                             [EntityScope] ItemSensor itemSensor,
                                             [EntityScope] SoldierAnimatorUpdater soldierAnimatorUpdater,
                                             [GameObjectScope] NetworkIdentity networkIdentity,
@@ -127,6 +145,7 @@ namespace ProjetSynthese
             this.playerMover = playerMover;
             this.health = health;
             this.inventory = inventory;
+            this.interactableSensor = interactableSensor;
             this.itemSensor = itemSensor;
             this.networkIdentity = networkIdentity;
             this.deathCircleHurtEventChannel = deathCircleHurtEventChannel;
@@ -243,6 +262,7 @@ namespace ProjetSynthese
             currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();
+            isHoldingGrenade = false;
         }
 
         private void OnSwitchSecondaryWeapon()
@@ -252,10 +272,18 @@ namespace ProjetSynthese
             currentWeapon = weapon == null ? null : weapon.GetItem() as Weapon;
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();
+            isHoldingGrenade = false;
         }
 
         private void OnSwitchThirdWeapon()
         {
+            ObjectContainedInventory grenade = inventory.GetGrenade();
+            currentGrenade = grenade == null ? null : grenade.GetItem() as Grenade;
+            if (currentGrenade != null)
+            {
+                isHoldingGrenade = true;
+            }
+
         }
 
         private void SetCurrentWeaponActive(bool isActive)
@@ -331,7 +359,16 @@ namespace ProjetSynthese
 
         private void OnFire()
         {
-            if ((object) currentWeapon != null)
+            if (isHoldingGrenade == true)
+            {
+                Grenade newGrenade = Instantiate(currentGrenade);
+                newGrenade.Throw(networkIdentity, grenadeThrowingForce + GetComponentInChildren<PlayerMover>().Speed);
+                soldierAnimatorUpdater.ThrowGrenade(newGrenade);
+                inventory.RemoveThrownGrenade();
+                currentGrenade = null;
+                isHoldingGrenade = false;              
+            }
+            else if ((object) currentWeapon != null)
             {
                 soldierAnimatorUpdater.Shoot();
                 currentWeapon.Use();
@@ -343,11 +380,20 @@ namespace ProjetSynthese
 
         private void OnInteract()
         {
-            GameObject item = itemSensor.GetItemNearest();
-            TakeItem(item);
-            CmdTakeItem(item, networkIdentity);
+            GameObject obj = interactableSensor.GetNearestInteractible();
 
-            if (OnUse != null) OnUse(true);
+            if (obj != null)
+            {
+                if (obj.GetComponent<Item>())
+                {
+                    TakeItem(obj);
+                    CmdTakeItem(obj, networkIdentity);
+                }
+                else if (obj.GetComponent<OpenDoor>())
+                {
+                    obj.GetComponent<OpenDoor>().Use();
+                }
+            }
         }
 
         [Command]

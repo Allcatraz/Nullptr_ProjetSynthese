@@ -394,10 +394,9 @@ GameObject:
   - component: {fileID: 1032707491}
   - component: {fileID: 1032707492}
   - component: {fileID: 1032707494}
-  - component: {fileID: 1032707500}
-  - component: {fileID: 1032707501}
   - component: {fileID: 1032707495}
   - component: {fileID: 1032707498}
+  - component: {fileID: 1032707500}
   m_Layer: 0
   m_Name: EventChannels
   m_TagString: Event Channels
@@ -569,17 +568,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1032707485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c076414f87805b44a78153b77239acf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1032707501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1032707485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a59b7fd072fbdf94fa47e7cfcca77163, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -660,6 +648,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3864739ec3d7b4b418bb8ab2e7709087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 1463063252352646, guid: ba227a9f07835d0469f7e0075390e16d,
+    type: 2}
   healPrefab: {fileID: 1052699911796752, guid: 115ad7cc0094f4b45a3007988d9716a8, type: 2}
   boostPrefab: {fileID: 1000390021323102, guid: f2a0c21a465cd854d95dbecf09254127,
     type: 2}
@@ -673,6 +663,8 @@ MonoBehaviour:
   saiga12Prefab: {fileID: 1539770592342268, guid: e0224e8a0878e0e42893bf71948dba4c,
     type: 2}
   m1911Prefab: {fileID: 1006045350083210, guid: dbddbdf50d0ddeb47bb80e37350152d7,
+    type: 2}
+  grenadePrefab: {fileID: 1711692997422464, guid: c5de67c0a88184240ba35fcc74fbd30e,
     type: 2}
   ammoPackPrefab: {fileID: 1738024043829670, guid: 331ca4435a91b27448584b74b228d66a,
     type: 2}

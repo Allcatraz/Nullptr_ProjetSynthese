@@ -26,21 +26,23 @@ namespace ProjetSynthese
         public List<GameObject> GetAllItems(Transform transformPlayer)
         {
             List<Collider> itemsRaycast = Physics.OverlapSphere(transformPlayer.position, radius, 1 << LayerMask.NameToLayer(R.S.Layer.Item)).ToList();
-            return itemsRaycast.ConvertAll(item => item.transform.root.gameObject);
+            return itemsRaycast.ConvertAll(item => item.gameObject);
         }
 
         public List<GameObject> GetAllItems()
         {
-            List<Collider> itemsRaycast = Physics.OverlapSphere(sensor.transform.position, radius, 1 << LayerMask.NameToLayer(R.S.Layer.Item)).ToList();
-            return itemsRaycast.ConvertAll(item => item.transform.root.gameObject);
+            List<Collider> itemsRaycast = Physics.OverlapSphere(sensor.position, radius, 1 << LayerMask.NameToLayer(R.S.Layer.Item)).ToList();
+            return itemsRaycast.ConvertAll(item => item.gameObject);
         }
 
         public GameObject GetItemNearest()
         {
             List<GameObject> items = GetAllItems();
-			items.Sort ((x, y) => Vector3.Distance(transform.position, x.transform.position).CompareTo(Vector3.Distance(transform.position, y.transform.position)));
+            items.Sort((x, y) => Vector3.Distance(transform.position, x.transform.position)
+                                        .CompareTo(Vector3.Distance(transform.position, y.transform.position)));
             if (items.Count >= 1)
                 return items[0];
+
             return null;
         }
     }

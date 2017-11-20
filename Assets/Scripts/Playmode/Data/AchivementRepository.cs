@@ -31,7 +31,7 @@ namespace ProjetSynthese
             return repository.GetAchivementFromId(achivement.Id);
         }
 
-        public virtual Achivement GetAchivementFromPlayerId(Player player)
+        public virtual IList<Achivement> GetAchivementFromPlayerId(Player player)
         {
             return repository.GetAllAchivementFromPlayerId(player.Id);
         }
@@ -83,9 +83,9 @@ namespace ProjetSynthese
                 return ExecuteSelectOne("SELECT * FROM Achivement WHERE id = ?;", new object[] { Id });
             }
 
-            public Achivement GetAllAchivementFromPlayerId(long playerId)
+            public IList<Achivement> GetAllAchivementFromPlayerId(long playerId)
             {
-                return ExecuteSelectOne("SELECT * FROM Achivement WHERE playerId = ?;", new object[] { playerId });
+                return ExecuteSelectAll("SELECT * FROM Achivement WHERE playerId = ?;", new object[] { playerId });
             }
 
             public void DeleteAllAchivementAtPlayerId(long playerId)

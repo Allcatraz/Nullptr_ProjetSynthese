@@ -42,7 +42,6 @@ namespace ProjetSynthese
         [Command]
         protected void CmdSpawnGrenade()
         {
-            GameObject
         }
 
         [Command]

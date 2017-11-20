@@ -43,7 +43,6 @@ namespace ProjetSynthese
         [SerializeField]
         private GameObject grenadeThrowingHand;
 
-
         private ActivityStack activityStack;
         private Health health;
         private KeyboardInputSensor keyboardInputSensor;

@@ -36,6 +36,11 @@ namespace ProjetSynthese
             return repository.GetAllEntryOfPlayer(playerId);
         }
 
+        public virtual IList<ProtectionOfPlayer> GetAllLevel3EntryOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel3EntryOfPlayer(playerId);
+        }
+
         public virtual long Count()
         {
             return repository.Count();
@@ -72,6 +77,11 @@ namespace ProjetSynthese
             public IList<ProtectionOfPlayer> GetAllEntryOfPlayer(long playerId)
             {
                 return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ?;", new object[] { playerId });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel3EntryOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ?;", new object[] { playerId, 3 });
             }
 
             public long Count()

@@ -21,6 +21,11 @@ namespace ProjetSynthese
             InjectDependencies("InjectAchivementRepository");
         }
 
+        public virtual void AddAchivement(Achivement achivement)
+        {
+            repository.AddAchivement(achivement);
+        }
+
         public virtual Achivement GetAchivementFromName(Achivement achivement)
         {
             return repository.GetAchivementFromName(achivement.Name);

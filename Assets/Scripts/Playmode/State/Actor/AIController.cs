@@ -245,13 +245,13 @@ namespace ProjetSynthese
                 Vector3 aiCurrentPosition = actor.transform.position;
                 Vector3 fleeDestination = aiCurrentPosition;
                 fleeDirection = actor.Brain.SafeCircleCenterPosition - aiCurrentPosition;
-                fleeDestination.y = 0.0f;
+                fleeDirection.y = FloorYOffset;
                 fleeDirection.Normalize();
                 
                 Vector3 opponentEscapingDirection = MapDestination;
-                opponentEscapingDirection.y = 0.0f;
+                opponentEscapingDirection.y = FloorYOffset;
                 opponentEscapingDirection.Normalize();
-                float scalarProduct = Vector3.Dot(fleeDestination, opponentEscapingDirection);
+                float scalarProduct = Vector3.Dot(fleeDirection, opponentEscapingDirection);
 
                 float opponentPositionFactor = 1.0f;
                 if (actor.Brain.CurrentDistanceOutsideSafeCircle > 0.0f)
@@ -266,16 +266,18 @@ namespace ProjetSynthese
                 
                 if (scalarProduct < 0.0f)
                 {
-                    fleeDestination = opponentPositionFactor * opponentEscapingDirection + fleeDestination;
+                    fleeDirection = opponentPositionFactor * opponentEscapingDirection + fleeDirection;
                 }
                 else
                 {
                     opponentEscapingDirection = -opponentEscapingDirection;
-                    Vector3 yPerpendicularVector = Vector3.Cross(fleeDestination, opponentEscapingDirection);
+                    Vector3 yPerpendicularVector = Vector3.Cross(fleeDirection, opponentEscapingDirection);
                     yPerpendicularVector.Normalize();
-                    opponentEscapingDirection = Vector3.Cross(fleeDestination, yPerpendicularVector);
+                    opponentEscapingDirection = Vector3.Cross(fleeDirection, yPerpendicularVector);
+                    opponentEscapingDirection.y = FloorYOffset;
                     opponentEscapingDirection.Normalize();
-                    fleeDestination = opponentPositionFactor * opponentEscapingDirection + fleeDestination;
+                    fleeDirection = opponentPositionFactor * opponentEscapingDirection + fleeDirection;
+                    fleeDirection.y = FloorYOffset;
                 }
                 fleeDirection.Normalize();
                 fleeDirection *= FleeRange;
@@ -291,6 +293,7 @@ namespace ProjetSynthese
                 Vector3 fleeDestination = aiCurrentPosition;
 
                 fleeDirection = actor.Brain.SafeCircleCenterPosition - aiCurrentPosition;
+                fleeDirection.y = FloorYOffset;
                 fleeDirection.Normalize();
                 fleeDirection *= FleeRange;
                 fleeDestination.x += fleeDirection.x;

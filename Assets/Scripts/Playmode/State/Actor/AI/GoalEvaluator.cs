@@ -46,7 +46,7 @@ namespace ProjetSynthese
                         case ItemType.M16A4:
                         case ItemType.AWM:
                         case ItemType.Saiga12:
-                        case ItemType.M1911:
+                        case ItemType.MP5:
                             inventoryValues[i] = EvaluateWeaponValue(distanceToItem, item);
                             break;
                         case ItemType.Grenade:
@@ -95,7 +95,7 @@ namespace ProjetSynthese
                         case ItemType.M16A4:
                         case ItemType.AWM:
                         case ItemType.Saiga12:
-                        case ItemType.M1911:
+                        case ItemType.MP5:
                             foundItemsValues[i] = EvaluateWeaponValue(distanceToItem, item);
                             break;
                         case ItemType.Grenade:
@@ -135,7 +135,7 @@ namespace ProjetSynthese
                     case ItemType.M16A4:
                     case ItemType.AWM:
                     case ItemType.Saiga12:
-                    case ItemType.M1911:
+                    case ItemType.MP5:
                         itemValue = EvaluateWeaponValue(distanceToItem, item);
                         break;
                     case ItemType.Grenade:

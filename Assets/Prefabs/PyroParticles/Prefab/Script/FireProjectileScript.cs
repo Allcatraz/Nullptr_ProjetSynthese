@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace DigitalRuby.PyroParticles
 {
@@ -98,7 +99,7 @@ namespace DigitalRuby.PyroParticles
             {
                 ProjectileExplosionParticleSystem.transform.position = c.contacts[0].point;
                 ProjectileExplosionParticleSystem.Play();
-                FireBaseScript.CreateExplosion(c.contacts[0].point, ProjectileExplosionRadius, ProjectileExplosionForce);
+                FireBaseScript.CreateExplosion(c.contacts[0].point, ProjectileExplosionRadius, ProjectileExplosionForce, excludedLayers);
                 if (CollisionDelegate != null)
                 {
                     CollisionDelegate(this, c.contacts[0].point);

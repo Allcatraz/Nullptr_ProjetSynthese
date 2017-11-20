@@ -5,6 +5,7 @@
         Ammo556,
         AmmoWinchester,
         AmmoCalibre12,
-        Ammo45acp,None
+        Ammo9mm,
+        None
     }
 }

@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Harmony;
+using UnityEngine.Internal;
+using ProjetSynthese;
+using UnityEngine.Networking;
 
 namespace DigitalRuby.PyroParticles
 {
@@ -40,8 +45,13 @@ namespace DigitalRuby.PyroParticles
         [Tooltip("A hint to users of the script that your object is a projectile and is meant to be shot out from a person or trap, etc.")]
         public bool IsProjectile;
 
+        [SerializeField]
+        public List<string> excludedLayers = new List<string>();
+
         [Tooltip("Particle systems that must be manually started and will not be played on start.")]
         public ParticleSystem[] ManualParticleSystems;
+
+
 
         private float startTimeMultiplier;
         private float startTimeIncrement;
@@ -54,7 +64,7 @@ namespace DigitalRuby.PyroParticles
             // 2 extra seconds just to make sure animation and graphics have finished ending
             yield return new WaitForSeconds(StopTime + 2.0f);
 
-            GameObject.Destroy(gameObject);
+            Destroy(gameObject);
         }
 
         private void StartParticleSystems()
@@ -93,7 +103,7 @@ namespace DigitalRuby.PyroParticles
             startTimeMultiplier = 1.0f / StartTime;
 
             // if this effect has an explosion force, apply that now
-            CreateExplosion(gameObject.transform.position, ForceRadius, ForceAmount);
+            CreateExplosion(gameObject.transform.position, ForceRadius, ForceAmount, excludedLayers);
 
             // start any particle system that is not in the list of manual start particle systems
             StartParticleSystems();
@@ -144,21 +154,57 @@ namespace DigitalRuby.PyroParticles
             }
         }
 
-        public static void CreateExplosion(Vector3 pos, float radius, float force)
+        public static void CreateExplosion(Vector3 pos, float radius, float force, IList<string> excludedLayers)
         {
             if (force <= 0.0f || radius <= 0.0f)
             {
                 return;
             }
 
-            // find all colliders and add explosive force
-            Collider[] objects = UnityEngine.Physics.OverlapSphere(pos, radius);
-            foreach (Collider h in objects)
+            LayerMask layerMask;
+            if (excludedLayers.Count > 0)
             {
-                Rigidbody r = h.GetComponent<Rigidbody>();
+                layerMask = (1 << LayerMask.NameToLayer(excludedLayers[0]));
+                for (int i = 1; i < excludedLayers.Count; i++)
+                {
+                    layerMask = (1 << LayerMask.NameToLayer(excludedLayers[i])) | layerMask;
+                }
+            }
+            else
+            {
+                layerMask = new LayerMask();
+            }
+            CreateExplosionOverlapSphere(pos, radius, force, layerMask);
+        }
+
+        private static void CreateExplosionOverlapSphere(Vector3 pos, float radius, float force, int layerMask)
+        {
+            // find all colliders and add explosive force
+            Collider[] objects = UnityEngine.Physics.OverlapSphere(pos, radius, layerMask);
+            foreach (Collider collider in objects)
+            {
+                Rigidbody r = collider.GetComponent<Rigidbody>();
                 if (r != null)
                 {
                     r.AddExplosionForce(force, pos, radius);
+                    if (collider.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Player) || collider.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
+                    {
+                        Health health = collider.gameObject.GetComponentInChildren<Health>();
+
+                        IInventory inventoryController = collider.gameObject.GetComponentInChildren<ProjetSynthese.PlayerController>();
+                        if (inventoryController == null)
+                        {
+                            inventoryController = collider.gameObject.GetComponentInChildren<ActorAI>();
+                        }
+                        if (health != null && collider.gameObject.GetComponent<NetworkBehaviour>().isLocalPlayer)
+                        {
+                            Item[] protectionItems = inventoryController.GetProtections();
+                            float helmetProtection = protectionItems[0] == null ? 0 : ((Helmet)protectionItems[0]).ProtectionValue;
+                            float vestProtection = protectionItems[1] == null ? 0 : ((Vest)protectionItems[1]).ProtectionValue;
+                            float dist = 105 - Vector3.Distance(collider.transform.position, pos);
+                            health.Hit(dist - (dist * ((helmetProtection + vestProtection) / 100)));
+                        }
+                    }
                 }
             }
         }

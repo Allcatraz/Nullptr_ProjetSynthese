@@ -1371,7 +1371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1463063252352646, guid: ba227a9f07835d0469f7e0075390e16d,
     type: 2}
-  cratePrefab: {fileID: 1000012137004694, guid: 902fd1e5fea9b414188db1b1a0dc0a00,
+  cratePrefab: {fileID: 1206018250619120, guid: 60e3e041c5d1f414ba42b2963b20cb1d,
     type: 2}
   inventoryMenu: {fileID: 11400000, guid: 589e738a3b2298e4588b3051b4c164ac, type: 2}
   mapMenu: {fileID: 11400000, guid: a90bf0f1f67a57e41b2286896d6bda89, type: 2}

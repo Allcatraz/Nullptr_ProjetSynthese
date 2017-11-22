@@ -68,13 +68,15 @@ namespace ProjetSynthese
             MagazineAmount = MagazineMax;
         }
 
-        public override void Use()
+        public override bool Use()
         {
             if (MagazineAmount > 0)
             {
                 MagazineAmount -= 1;
-                NotidyMunitionChanged(); 
+                NotidyMunitionChanged();
+                return true;
             }
+            return false;
         }
 
         public bool Reload(Inventory inventory)

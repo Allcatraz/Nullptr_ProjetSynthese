@@ -90,6 +90,11 @@ namespace ProjetSynthese
             return false;
         }
 
+        public void UpdateBullets()
+        {
+            NotidyMunitionChanged();
+        }
+
         private void NotidyMunitionChanged()
         {
             if (OnMunitionChanged != null) OnMunitionChanged();

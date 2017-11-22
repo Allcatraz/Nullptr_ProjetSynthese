@@ -22,9 +22,10 @@
             }
         }
 
-        public override void Use()
+        public override bool Use()
         {
             Player.GetComponentInChildren<Health>().Heal(Efficacity);
+            return true;
         }
 
         public override int GetWeight()

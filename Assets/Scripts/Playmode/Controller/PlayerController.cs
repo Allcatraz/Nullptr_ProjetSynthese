@@ -371,10 +371,11 @@ namespace ProjetSynthese
             else if ((object) currentWeapon != null)
             {
                 soldierAnimatorUpdater.Shoot();
-                currentWeapon.Use();
-
-                CmdSpawnBullet(currentWeapon.SpawnPoint.transform.position, currentWeapon.SpawnPoint.transform.rotation,
-                               currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage);
+                if (currentWeapon.Use())
+                {
+                    CmdSpawnBullet(currentWeapon.SpawnPoint.transform.position, currentWeapon.SpawnPoint.transform.rotation,
+                                   currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage);
+                }
             }
         }
 

@@ -2,7 +2,7 @@
 {
     public abstract class Usable : Item
     {
-        public abstract void Use();
+        public abstract bool Use();
     }
 }
 

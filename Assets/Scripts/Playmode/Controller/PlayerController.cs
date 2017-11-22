@@ -293,6 +293,7 @@ namespace ProjetSynthese
                 currentWeapon.transform.position = weaponHolderTransform.position;
                 currentWeapon.transform.rotation = weaponHolderTransform.rotation;
                 currentWeapon.transform.Rotate(93, 0, 0);
+                currentWeapon.UpdateBullets();
             }
         }
 

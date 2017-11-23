@@ -42,12 +42,14 @@ namespace ProjetSynthese
         private void OnWeaponEquip()
         {
             achivementController.TriggerFirstWeapon();
+            achivementController.CheckAchivements();
         }
 
         private void OnProtectionEquipped(ProtectionOfPlayer protectionOfPlayer)
         {
             protectionOfPlayer.PlayerId = achivementController.GetPlayer().Id;
             protectionOfPlayerRepository.AddProtectionOfPlayer(protectionOfPlayer);
+            achivementController.CheckAchivements();
         }
     }
 }

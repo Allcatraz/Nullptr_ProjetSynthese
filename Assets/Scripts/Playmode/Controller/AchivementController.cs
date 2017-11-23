@@ -34,11 +34,6 @@ namespace ProjetSynthese
             InjectDependencies("InjectAchivementController");
         }
 
-        private void FixedUpdate()
-        {
-            CheckAchivements();
-        }
-
         public void SetPlayer(Player player)
         {
             this.player = player;
@@ -77,7 +72,7 @@ namespace ProjetSynthese
             }
         }
 
-        private void CheckAchivements()
+        public void CheckAchivements()
         {
             if (player != null)
             {
@@ -184,7 +179,7 @@ namespace ProjetSynthese
             GameObject gameObject = Instantiate(feedBackPrefab);
             gameObject.GetComponentInChildren<Text>().text = achivement.Name;
             gameObject.transform.SetParent(transform, false);
-            Destroy(gameObject, 2.0f);
+            Destroy(gameObject, 10.0f);
         }
     }
 }

@@ -79,9 +79,12 @@ namespace ProjetSynthese
 
         private void CheckAchivements()
         {
-            CheckPlayerKillAchivement();
-            CheckAiKillAchivement();
-            CheckProtectionOfPlayerAchivement();
+            if (player != null)
+            {
+                CheckPlayerKillAchivement();
+                CheckAiKillAchivement();
+                CheckProtectionOfPlayerAchivement();
+            }
         }
 
         private void CheckPlayerKillAchivement()
@@ -112,7 +115,7 @@ namespace ProjetSynthese
             if (!CheckIfAchivementExist(achivement))
             {
                 long countAiKill = aiKillRepository.GetAiKillCountFromMurderer(player.Id);
-                if (countAiKill <= 50)
+                if (countAiKill >= 50)
                 {
                     achivementRepository.AddAchivement(achivement);
                     TriggerFeedBackAchivement(achivement);
@@ -180,7 +183,8 @@ namespace ProjetSynthese
         {
             GameObject gameObject = Instantiate(feedBackPrefab);
             gameObject.GetComponentInChildren<Text>().text = achivement.Name;
-            Destroy(gameObject, 1.0f);
+            gameObject.transform.SetParent(transform, false);
+            Destroy(gameObject, 2.0f);
         }
     }
 }

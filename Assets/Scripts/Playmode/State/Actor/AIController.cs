@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
-
+using UnityEngine.AI;
 namespace ProjetSynthese
 {
     public class AIController
     {
         private const float FleeRange = 2.0f;
+        private const int PathVectorIndex = 1;
 
         public bool IsInBuilding { get; set; }
 
@@ -156,6 +157,21 @@ namespace ProjetSynthese
                 default:
                     break;
             }
+            destination.y = FloorYOffset;
+            //
+            NavMeshPath path = new NavMeshPath();
+            NavMesh.CalculatePath(actor.transform.position, destination, NavMesh.AllAreas, path);
+            Vector3[] pathpoints;
+            if (path.status != NavMeshPathStatus.PathInvalid)
+            {
+                pathpoints = new Vector3[path.corners.Length];
+                int nbr = path.GetCornersNonAlloc(pathpoints);
+                if (nbr > PathVectorIndex)
+                {
+                    destination = pathpoints[PathVectorIndex];
+                }
+             }
+            //
             destination.y = FloorYOffset;
             Vector3 nouvellePosition = Vector3.MoveTowards(actor.transform.position, destination, pas);
             Vector3 mouvement = new Vector3(nouvellePosition.x - actor.transform.position.x, nouvellePosition.y - actor.transform.position.y, nouvellePosition.z - actor.transform.position.z);

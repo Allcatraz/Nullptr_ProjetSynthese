@@ -38,11 +38,19 @@ namespace ProjetSynthese
         private void OnTriggerEnter(Collider other)
         {
             isPlayerInRange = true;
+            if (other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
+            {
+                this.Use();
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
             isPlayerInRange = false;
+            if (other.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
+            {
+                this.Use();
+            }
         }
 
         public void Use()

@@ -157,12 +157,13 @@ namespace ProjetSynthese
                 default:
                     break;
             }
+            //Note : navmesh bugger
             destination.y = FloorYOffset;
             //
             NavMeshPath path = new NavMeshPath();
             NavMesh.CalculatePath(actor.transform.position, destination, NavMesh.AllAreas, path);
             Vector3[] pathpoints;
-            if (path.status != NavMeshPathStatus.PathInvalid)
+            if (path.status == NavMeshPathStatus.PathComplete)
             {
                 pathpoints = new Vector3[path.corners.Length];
                 int nbr = path.GetCornersNonAlloc(pathpoints);
@@ -170,7 +171,7 @@ namespace ProjetSynthese
                 {
                     destination = pathpoints[PathVectorIndex];
                 }
-             }
+            }
             //
             destination.y = FloorYOffset;
             Vector3 nouvellePosition = Vector3.MoveTowards(actor.transform.position, destination, pas);

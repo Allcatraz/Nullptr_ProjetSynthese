@@ -15,8 +15,8 @@ namespace ProjetSynthese
         private const float XMapOriginCornerCoordinate = 0.0f;
         private const float ZMapOriginCornerCoordinate = 0.0f;
         private const float DefaultHeighPosition = 1.0f;
-        private const float XMapOriginOppositeCornerCoordinate = 40000.0f;
-        private const float ZMapOriginOppositeCornerCoordinate = 40000.0f;
+        private const float XMapOriginOppositeCornerCoordinate = 50.0f;//40000.0f;
+        private const float ZMapOriginOppositeCornerCoordinate = 50.0f;//40000.0f;
 
         private void Start()
         {

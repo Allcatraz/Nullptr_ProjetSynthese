@@ -92,7 +92,7 @@ namespace ProjetSynthese
             if (!CheckIfAchivementExist(achivement))
             {
                 long countPlayerKill = playerKillrepository.GetCountFromMurderer(player.Id);
-                if (countPlayerKill <= 70)
+                if (countPlayerKill >= 70)
                 {
                     achivementRepository.AddAchivement(achivement);
                     TriggerFeedBackAchivement(achivement);
@@ -179,7 +179,7 @@ namespace ProjetSynthese
             GameObject gameObject = Instantiate(feedBackPrefab);
             gameObject.GetComponentInChildren<Text>().text = achivement.Name;
             gameObject.transform.SetParent(transform, false);
-            Destroy(gameObject, 10.0f);
+            Destroy(gameObject, 2.0f);
         }
     }
 }

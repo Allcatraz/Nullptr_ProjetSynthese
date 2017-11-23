@@ -513,7 +513,7 @@ namespace ProjetSynthese
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
         {
-            health.Hit(deathCircleHurtEvent.HurtPoints);
+            health.Hit(deathCircleHurtEvent.HurtPoints, false);
         }
 
         private void OnChangeViewMode()

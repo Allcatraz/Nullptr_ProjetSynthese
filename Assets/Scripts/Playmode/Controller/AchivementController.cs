@@ -6,14 +6,12 @@ namespace ProjetSynthese
     public class AchivementController : GameScript
     {
         [SerializeField] private string[] achivementName;
-        [SerializeField] private Player player;
+        private Player player;
         private ProtectionOfPlayerRepository protectionOfPlayerRepository;
         private AchivementRepository achivementRepository;
         private AiKillRepository aiKillRepository;
         private PlayerKillrepository playerKillrepository;
         private PlayerRepository playerRepository;
-        private bool firstVictory;
-        private bool firstWeapon;
 
         public void InjectAchivementController([ApplicationScope] PlayerRepository playerRepository,
                                                 [ApplicationScope] ProtectionOfPlayerRepository protectionOfPlayerRepository,
@@ -33,34 +31,46 @@ namespace ProjetSynthese
             InjectDependencies("InjectAchivementController");
         }
 
+        private void FixedUpdate()
+        {
+            CheckAchivements();
+        }
+
+        public void SetPlayer(Player player)
+        {
+            this.player = player;
+        }
+
+        public Player GetPlayer()
+        {
+            return player;
+        }
+
         public void TriggerFirstWeapon()
         {
-            if (firstWeapon != true)
+            Achivement achivement = new Achivement
             {
-                Achivement achivement = new Achivement
-                {
-                    Name = achivementName[0],
-                    PlayerId = player.Id
-                };
+                Name = achivementName[0],
+                PlayerId = player.Id
+            };
+            if (!CheckIfAchivementExist(achivement))
+            {
                 achivementRepository.AddAchivement(achivement);
                 TriggerFeedBackAchivement(achivement);
-                firstWeapon = true;
             }
         }
 
         public void TriggerFirstVictory()
         {
-            if (firstVictory != true)
+            Achivement achivement = new Achivement
             {
-                Achivement achivement = new Achivement
-                {
-                    Name = achivementName[4],
-                    PlayerId = player.Id
-                };
+                Name = achivementName[4],
+                PlayerId = player.Id
+            };
+            if (!CheckIfAchivementExist(achivement))
+            {
                 achivementRepository.AddAchivement(achivement);
-                TriggerFeedBackAchivement(achivement);
-                firstVictory = true;
-                
+                TriggerFeedBackAchivement(achivement); 
             }
         }
 
@@ -73,46 +83,36 @@ namespace ProjetSynthese
 
         private void CheckPlayerKillAchivement()
         {
-            Achivement achivement = achivementRepository.GetAchivementFromName(new Achivement
+            Achivement achivement = new Achivement
             {
                 Name = achivementName[3],
                 PlayerId = player.Id
-            });
-            if (achivement == null)
+            };
+            if (!CheckIfAchivementExist(achivement))
             {
                 long countPlayerKill = playerKillrepository.GetCountFromMurderer(player.Id);
                 if (countPlayerKill <= 70)
                 {
-                    Achivement achivementToAdd = new Achivement
-                    {
-                        Name = achivementName[3],
-                        PlayerId = player.Id
-                    };
-                    achivementRepository.AddAchivement(achivementToAdd);
-                    TriggerFeedBackAchivement(achivementToAdd);
+                    achivementRepository.AddAchivement(achivement);
+                    TriggerFeedBackAchivement(achivement);
                 }
             }
         }
 
         private void CheckAiKillAchivement()
         {
-            Achivement achivement = achivementRepository.GetAchivementFromName(new Achivement
-                                                                                {
-                                                                                    Name = achivementName[2],
-                                                                                    PlayerId = player.Id
-                                                                                });
-            if (achivement == null)
+            Achivement achivement = new Achivement
+            {
+                Name = achivementName[2],
+                PlayerId = player.Id
+            };
+            if (!CheckIfAchivementExist(achivement))
             {
                 long countAiKill = aiKillRepository.GetAiKillCountFromMurderer(player.Id);
                 if (countAiKill <= 50)
                 {
-                    Achivement achivementToAdd = new Achivement
-                                                    {
-                                                        Name = achivementName[2],
-                                                        PlayerId = player.Id
-                                                    };
-                    achivementRepository.AddAchivement(achivementToAdd);
-                    TriggerFeedBackAchivement(achivementToAdd);
+                    achivementRepository.AddAchivement(achivement);
+                    TriggerFeedBackAchivement(achivement);
 
                 }
             }
@@ -120,12 +120,12 @@ namespace ProjetSynthese
 
         private void CheckProtectionOfPlayerAchivement()
         {
-            Achivement achivement = achivementRepository.GetAchivementFromName(new Achivement
+            Achivement achivement = new Achivement
             {
                 Name = achivementName[1],
                 PlayerId = player.Id
-            });
-            if (achivement == null)
+            };
+            if (!CheckIfAchivementExist(achivement))
             {
                 IList<ProtectionOfPlayer> listAllProtection = protectionOfPlayerRepository.GetAllLevel3EntryOfPlayer(player.Id);
                 if (listAllProtection != null)
@@ -150,16 +150,27 @@ namespace ProjetSynthese
                     }
                     if (helmet && bag && vest)
                     {
-                        Achivement achivementToAdd = new Achivement
-                        {
-                            Name = achivementName[1],
-                            PlayerId = player.Id
-                        };
-                        achivementRepository.AddAchivement(achivementToAdd);
-                        TriggerFeedBackAchivement(achivementToAdd);
+                        achivementRepository.AddAchivement(achivement);
+                        TriggerFeedBackAchivement(achivement);
                     }
                 }
             }      
+        }
+
+        private bool CheckIfAchivementExist(Achivement achivement)
+        {
+            IList<Achivement> achivementToCheck = achivementRepository.GetAchivementFromPlayerId(player);
+            if (achivementToCheck != null)
+            {
+                foreach (Achivement item in achivementToCheck)
+                {
+                    if (item.Name == achivement.Name)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private void TriggerFeedBackAchivement(Achivement achivement)

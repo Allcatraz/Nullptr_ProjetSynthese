@@ -9,6 +9,8 @@ namespace ProjetSynthese
 
     public delegate void OnInventoryChange();
     public delegate void OnSpawnDroppedItem(ObjectContainedInventory itemToSpawn);
+    public delegate void OnProtectionLevel3Equipped(ProtectionOfPlayer protectionOfPlayer);
+    public delegate void OnEquipWeapon();
 
     public class Inventory : GameScript
     {
@@ -29,6 +31,8 @@ namespace ProjetSynthese
 
         public event OnInventoryChange InventoryChange;
         public event OnSpawnDroppedItem SpawnItem;
+        public event OnProtectionLevel3Equipped ProtectionEquipped;
+        public event OnEquipWeapon OnWeaponEquip;
 
         public GameObject Parent { get; set; }
         public List<ObjectContainedInventory> ListInventory { get; private set; }
@@ -52,6 +56,22 @@ namespace ProjetSynthese
         public void NotifyInventoryChange()
         {
             if (InventoryChange != null) InventoryChange();
+        }
+
+        public void NotifyWeaponEquip()
+        {
+            if (OnWeaponEquip != null) OnWeaponEquip();
+        }
+
+        public void NotifyProtectionEquipped(ObjectContainedInventory objectContainedInventory)
+        {
+            Item itemOfProtection = objectContainedInventory.GetItem();
+            ProtectionOfPlayer protectionOfPlayer = new ProtectionOfPlayer
+            {
+                LevelProtection = itemOfProtection.Level,
+                TypeProtection = itemOfProtection.Type.ToString()
+            };
+            if (ProtectionEquipped != null) ProtectionEquipped(protectionOfPlayer);
         }
 
         public void NotifySpawnDroppedItem(ObjectContainedInventory itemToSpawn)
@@ -89,6 +109,7 @@ namespace ProjetSynthese
             bag = itemToEquip;
             CheckMultiplePresenceAndRemove(itemToEquip);
             ChangeMaxWeight((itemToEquip.GetItem() as Bag).Capacity);
+            NotifyProtectionEquipped(bag);
         }
 
         public void UnequipBag()
@@ -113,6 +134,7 @@ namespace ProjetSynthese
                 }
                 primaryWeapon = itemToEquip;
                 CheckMultiplePresenceAndRemove(itemToEquip);
+                NotifyWeaponEquip();
             }
             if (selection == ProjetSynthese.EquipWeaponAt.Secondary)
             {
@@ -122,6 +144,7 @@ namespace ProjetSynthese
                 }
                 secondaryWeapon = itemToEquip;
                 CheckMultiplePresenceAndRemove(itemToEquip);
+                NotifyWeaponEquip();
             }
         }
 
@@ -151,6 +174,7 @@ namespace ProjetSynthese
             }
             helmet = itemToEquip;
             CheckMultiplePresenceAndRemove(itemToEquip);
+            NotifyProtectionEquipped(helmet);
         }
 
         public void UnequipHelmet()
@@ -172,6 +196,7 @@ namespace ProjetSynthese
             }
             vest = itemToEquip;
             CheckMultiplePresenceAndRemove(itemToEquip);
+            NotifyProtectionEquipped(vest);
         }
 
         public void UnequipVest()

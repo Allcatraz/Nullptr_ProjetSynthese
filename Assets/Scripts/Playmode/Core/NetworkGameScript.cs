@@ -57,14 +57,16 @@ namespace ProjetSynthese
         }
 
         [Command]
-        protected void CmdSpawnCrate()
+        protected void CmdSpawnCrate(Vector3 position)
         {
             GameObject crate = Instantiate(cratePrefab);
+            crate.transform.position = position;
             NetworkServer.Spawn(crate);
         }
 
         [Command]
-        public void CmdDestroy(GameObject item)        {
+        public void CmdDestroy(GameObject item)
+        {
             RpcDestroy(item);
         }
 

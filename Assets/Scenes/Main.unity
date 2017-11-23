@@ -5289,6 +5289,7 @@ MonoBehaviour:
   - {fileID: 1369578581811908, guid: 656661b308b4abf40b09bcac342f3c85, type: 2}
   - {fileID: 1893845116203462, guid: 799316fe2eaadff4abc0701c3c7f883f, type: 2}
   - {fileID: 1711692997422464, guid: c5de67c0a88184240ba35fcc74fbd30e, type: 2}
+  - {fileID: 1206018250619120, guid: 60e3e041c5d1f414ba42b2963b20cb1d, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -8745,6 +8746,11 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224446065504700154, guid: 3f53d6016637ecd458c47d0d81b28c5a,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.004638672
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114253026634017336, guid: 3f53d6016637ecd458c47d0d81b28c5a, type: 2}

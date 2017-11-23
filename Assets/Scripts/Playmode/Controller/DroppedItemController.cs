@@ -8,6 +8,8 @@ namespace ProjetSynthese
 {
     public class DroppedItemController : GameScript
     {
+        public static DroppedItemController Instance { get; set; }
+
         private SpawnItemDropEventChannel spawnItemDropEventChannel;
 
         [Tooltip("La location de spawn de l'objet passé en paramètre")]
@@ -15,37 +17,28 @@ namespace ProjetSynthese
 
         private void Awake()
         {
-            InjectDependencies("InjectEventSensor");
-            spawnItemDropEventChannel.OnEventPublished += SpawnItemDropEventChannel_OnEventPublished;
+            Instance = this;
         }
 
-        private void OnDestroy()
-        {
-            spawnItemDropEventChannel.OnEventPublished -= SpawnItemDropEventChannel_OnEventPublished;
-        }
-
-        private void InjectEventSensor([EventChannelScope] SpawnItemDropEventChannel spawnItemDropEventChannel)
-        {
-            this.spawnItemDropEventChannel = spawnItemDropEventChannel;
-        }
-
-        private void SpawnItemDropEventChannel_OnEventPublished(SpawnItemDropEvent newEvent)
+        public GameObject SpawnItemDropEventChannel(SpawnItemDropEvent newEvent)
         {
             if (newEvent.ItemToSpawn.GetItem() != null && newEvent.ItemToSpawn.GetItem().Player != null)
             {
-                SpawnItem(newEvent.ItemToSpawn.GetItem().gameObject, newEvent.ItemToSpawn.GetItem().Player.transform);
+                return SpawnItem(newEvent.ItemToSpawn.GetItem().gameObject, newEvent.ItemToSpawn.GetItem().Player.transform.position);
             }
+
+            return null;
         }
 
-        private void SpawnItem(GameObject itemToSpawn, Transform player)
+        private GameObject SpawnItem(GameObject itemToSpawn, Vector3 playerPos)
         {
             GameObject newItem = Instantiate(itemToSpawn);
             SetAmmoTypeInNewObjectIfIsAmmoPack(itemToSpawn, newItem);
             newItem.GetComponent<Item>().Level = itemToSpawn.GetComponent<Item>().Level;
             ChangeLayerOfItemAndChildrenTo(newItem, R.S.Layer.Item);
-            newItem.transform.position = player.position;
+            newItem.transform.position = playerPos;
             newItem.SetActive(true);
-            NetworkServer.Spawn(newItem);
+            return newItem;
         }
 
         private void SetAmmoTypeInNewObjectIfIsAmmoPack(GameObject itemToSpawn, GameObject newItem)

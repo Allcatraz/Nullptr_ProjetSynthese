@@ -46,30 +46,36 @@ namespace ProjetSynthese
 
         public void TriggerFirstWeapon()
         {
-            Achivement achivement = new Achivement
+            if (player != null)
             {
-                Name = achivementName[0],
-                PlayerId = player.Id
-            };
-            if (!CheckIfAchivementExist(achivement))
-            {
-                achivementRepository.AddAchivement(achivement);
-                TriggerFeedBackAchivement(achivement);
+                Achivement achivement = new Achivement
+                {
+                    Name = achivementName[0],
+                    PlayerId = player.Id
+                };
+                if (!CheckIfAchivementExist(achivement))
+                {
+                    achivementRepository.AddAchivement(achivement);
+                    TriggerFeedBackAchivement(achivement);
+                }
             }
         }
 
         public void TriggerFirstVictory()
         {
-            Achivement achivement = new Achivement
+            if (player != null)
             {
-                Name = achivementName[4],
-                PlayerId = player.Id
-            };
-            if (!CheckIfAchivementExist(achivement))
-            {
-                achivementRepository.AddAchivement(achivement);
-                TriggerFeedBackAchivement(achivement); 
-            }
+                Achivement achivement = new Achivement
+                {
+                    Name = achivementName[4],
+                    PlayerId = player.Id
+                };
+                if (!CheckIfAchivementExist(achivement))
+                {
+                    achivementRepository.AddAchivement(achivement);
+                    TriggerFeedBackAchivement(achivement);
+                }
+            }  
         }
 
         public void CheckAchivements()

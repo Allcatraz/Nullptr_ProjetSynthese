@@ -7711,7 +7711,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1927081764}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.4831177
+  m_Size: 0.48311767
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9964,7 +9964,7 @@ Prefab:
     - target: {fileID: 224191113445240730, guid: c87a23d5c1189db4ab680ad9ec5e0967,
         type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 224191113445240730, guid: c87a23d5c1189db4ab680ad9ec5e0967,
         type: 2}
@@ -13242,6 +13242,8 @@ MonoBehaviour:
   - Down with SkyNet!
   - I don't like competition
   - Victory!
+  feedBackPrefab: {fileID: 1386172788462924, guid: 7a0de0a26917fe94b82715c5a20031aa,
+    type: 2}
 --- !u!1 &2025833495
 GameObject:
   m_ObjectHideFlags: 0

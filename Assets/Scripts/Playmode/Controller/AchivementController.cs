@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using Harmony;
 using UnityEngine;
+using UnityEngine.UI;
+
 namespace ProjetSynthese
 {
     public class AchivementController : GameScript
     {
         [SerializeField] private string[] achivementName;
+        [SerializeField] private GameObject feedBackPrefab;
         private Player player;
         private ProtectionOfPlayerRepository protectionOfPlayerRepository;
         private AchivementRepository achivementRepository;
@@ -175,7 +178,9 @@ namespace ProjetSynthese
 
         private void TriggerFeedBackAchivement(Achivement achivement)
         {
-
+            GameObject gameObject = Instantiate(feedBackPrefab);
+            gameObject.GetComponentInChildren<Text>().text = achivement.Name;
+            Destroy(gameObject, 1.0f);
         }
     }
 }

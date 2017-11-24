@@ -57,6 +57,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224703206820822116}
+  - component: {fileID: 114607268903503396}
   m_Layer: 5
   m_Name: AchivementController
   m_TagString: Untagged
@@ -131,6 +132,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   databaseFileName: Database.db
+--- !u!114 &114607268903503396
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1977628507547768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a549cd7ad677be7438cf0dab9ca07ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  achivementName:
+  - Almost ready...
+  - I'm the tank now.
+  - Down with SkyNet!
+  - I don't like competition
+  - Finnally... you won
+  feedBackPrefab: {fileID: 1386172788462924, guid: 7a0de0a26917fe94b82715c5a20031aa,
+    type: 2}
 --- !u!114 &114756046870364480
 MonoBehaviour:
   m_ObjectHideFlags: 1

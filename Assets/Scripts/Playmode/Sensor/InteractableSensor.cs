@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
+    public delegate void InteractableFoundEventHandler(bool foundInteractible);
+
     public class InteractableSensor : GameScript
     {
         [Tooltip("Distance que le joueur pourra détecter les objects intéractible autour de lui.")]
@@ -12,6 +14,7 @@ namespace ProjetSynthese
         private float radius;
 
         private Transform sensor;
+        public event InteractableFoundEventHandler OnInteratableFound;
 
         private void InjectInteractableSensor([GameObjectScope] Transform sensor)
         {
@@ -23,10 +26,23 @@ namespace ProjetSynthese
             InjectDependencies("InjectInteractableSensor");
         }
 
+        private void FixedUpdate()
+        {
+            if (GetAllInteractible().Count > 0)
+            {
+                if (OnInteratableFound != null) OnInteratableFound(true);
+            }
+            else
+            {
+                if (OnInteratableFound != null) OnInteratableFound(false);
+            }
+        }
+
         public List<GameObject> GetAllInteractible()
         {
-            List<Collider> interactibleColliders = Physics.OverlapSphere(sensor.position, radius, (1 << LayerMask.NameToLayer(R.S.Layer.Item)) | 
-                                                                                                  (1 << LayerMask.NameToLayer(R.S.Layer.Interactible))).ToList();
+            List<Collider> interactibleColliders = Physics.OverlapSphere(sensor.position, radius, (1 << LayerMask.NameToLayer(R.S.Layer.Item)) |
+                                                                                                  (1 << LayerMask.NameToLayer(R.S.Layer.Interactible)))
+                                                          .ToList();
             return interactibleColliders.ConvertAll(item => item.gameObject);
         }
 

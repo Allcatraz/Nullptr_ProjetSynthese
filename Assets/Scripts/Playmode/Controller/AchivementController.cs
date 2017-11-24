@@ -17,10 +17,10 @@ namespace ProjetSynthese
         private PlayerRepository playerRepository;
 
         public void InjectAchivementController([ApplicationScope] PlayerRepository playerRepository,
-                                                [ApplicationScope] ProtectionOfPlayerRepository protectionOfPlayerRepository,
-                                                [ApplicationScope] PlayerKillrepository playerKillrepository,
-                                                [ApplicationScope] AiKillRepository aiKillRepository,
-                                                [ApplicationScope] AchivementRepository achivementRepository)
+                                               [ApplicationScope] ProtectionOfPlayerRepository protectionOfPlayerRepository,
+                                               [ApplicationScope] PlayerKillrepository playerKillrepository,
+                                               [ApplicationScope] AiKillRepository aiKillRepository,
+                                               [ApplicationScope] AchivementRepository achivementRepository)
         {
             this.playerRepository = playerRepository;
             this.playerKillrepository = playerKillrepository;

@@ -187,5 +187,25 @@ namespace ProjetSynthese
             gameObject.transform.SetParent(transform, false);
             Destroy(gameObject, 2.0f);
         }
+
+        public void AddAiKill()
+        {
+            if (player != null)
+            {
+                aiKillRepository.AddAiKill(player.Id);
+            }
+        }
+
+        public void AddPlayerKill()
+        {
+            if (player != null)
+            {
+                PlayerKill playerKill = new PlayerKill
+                {
+                    PlayerId = player.Id
+                };
+                playerKillrepository.AddPlayerKill(playerKill);
+            }
+        }
     }
 }

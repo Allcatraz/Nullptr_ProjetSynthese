@@ -40,17 +40,16 @@ namespace ProjetSynthese
             NetworkServer.Spawn(item);
         }
 
-<<<<<<< HEAD
+
         [Command]
         protected void CmdSpawnGrenade()
         {
         }
 
-=======
+
         //Obliger de faire les spawns de balles comme cela si l'on veut que le network les spawns correctememt
->>>>>>> master
         [Command]
-        protected void CmdSpawnBullet(Vector3 spawnPointPosition, Quaternion rotation, Vector3 chamberPosition, float bulletSpeed, float livingTime, int dommage)
+        protected void CmdSpawnBullet(Vector3 spawnPointPosition, Quaternion rotation, Vector3 chamberPosition, float bulletSpeed, float livingTime, int dommage, NetworkIdentity networkIdentity)
         {
             GameObject bullet = Instantiate(bulletPrefab);
             bullet.transform.position = spawnPointPosition;
@@ -63,6 +62,7 @@ namespace ProjetSynthese
             NetworkServer.Spawn(bullet);
 
             RpcSetDommage(bullet, dommage);
+            RpcChangeShooter(bullet, networkIdentity);
             Destroy(bullet, livingTime);
         }
 
@@ -193,6 +193,13 @@ namespace ProjetSynthese
             {
                 allChildrens[i].layer = layerMask;
             }
+        }
+
+        [ClientRpc]
+        private void RpcChangeShooter(GameObject bullet, NetworkIdentity networkIdentity)
+        {
+            BulletController bulletController = bullet.GetComponent<BulletController>();
+            bulletController.playerWhoShot = networkIdentity;
         }
     }
 }

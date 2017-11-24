@@ -7,7 +7,7 @@ namespace ProjetSynthese
 {
     public class AchivementAfficher : GameScript
     {
-        [SerializeField] private Transform grid;
+        [SerializeField] private RectTransform grid;
         [SerializeField] private GameObject achivementViewPrefab;
         private AchivementController achivementController;
         private AchivementRepository achivementRepository;
@@ -53,6 +53,9 @@ namespace ProjetSynthese
                     GameObject gameObject = Instantiate(achivementViewPrefab);
                     gameObject.transform.SetParent(grid, false);
                     gameObject.GetComponentInChildren<Text>().text = achiv.Name;
+                    Vector2 size = grid.sizeDelta;
+                    size.y += 172.7f;
+                    grid.sizeDelta = size;
                 }
             }
         }

@@ -1,6 +1,6 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using Harmony;
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
@@ -123,7 +123,7 @@ namespace ProjetSynthese
 
         public void CreateBullet(Vector3 spawnPointPosition, Quaternion spawnPointRotation, Vector3 chamberPosition, float bulletSpeed, float livingTime, int dommage)
         {
-            CmdSpawnBullet(spawnPointPosition, spawnPointRotation, chamberPosition, bulletSpeed, livingTime, dommage);
+            CmdSpawnBullet(spawnPointPosition, spawnPointRotation, chamberPosition, bulletSpeed, livingTime, dommage, GetComponent<NetworkIdentity>());
         }
 
         public bool IsSwimming

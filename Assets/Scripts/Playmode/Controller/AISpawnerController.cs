@@ -9,15 +9,15 @@ namespace ProjetSynthese
         [SerializeField]
         private GameObject aiPrefab;
 
-       
-        private const int AINumber = 1;
+        private const int AINumber = 5;
 
-        private const float XMapCornerCoordinate = 0.0f;
-        private const float ZMapCornerCoordinate = 0.0f;
-        private const float DefaultHeighPosition = 1.0f;
+        private const float XMapOriginCornerCoordinate = 0.0f;
+        private const float ZMapOriginCornerCoordinate = 0.0f;
+        private const float DefaultHeighPosition = 2.0f;
+        private const float XMapOriginOppositeCornerCoordinate = 50.0f;//40000.0f;
+        private const float ZMapOriginOppositeCornerCoordinate = -50.0f;//40000.0f;
 
-        private const float XOffset = 15.0f;
-        private const float ZOffset = -15.0f;
+        private static int timeExecute = 0;
 
         private void Start()
         {
@@ -26,19 +26,34 @@ namespace ProjetSynthese
 
         private void SpawnAIs()
         {
-            Vector3[] position = new Vector3[AINumber];
-            for (int i = 0; i < AINumber; i++)
+            if (timeExecute < 1)
             {
-                position[i] = new Vector3(XMapCornerCoordinate + XOffset, DefaultHeighPosition, ZMapCornerCoordinate + ZOffset);
-            }
-    
-            for (int i = 0; i < AINumber; i++)
-            {
-                aiPrefab.GetComponent<NetworkStartPosition>().transform.position = position[i];
-                CmdSpawnObject(AIFactory.CmdSpawnAI(aiPrefab));
-            }
+                Vector3[] position = new Vector3[AINumber];
+                float xOffset = 0.0f;
+                float zOffset = 0.0f;
+                for (int i = 0; i < AINumber; i++)
+                {
+                    xOffset = Random.Range(XMapOriginCornerCoordinate, XMapOriginOppositeCornerCoordinate);
+                    zOffset = Random.Range(ZMapOriginCornerCoordinate, ZMapOriginOppositeCornerCoordinate);
+                    position[i] = new Vector3(XMapOriginCornerCoordinate + xOffset, DefaultHeighPosition, ZMapOriginCornerCoordinate + zOffset);
+                }
 
-            Destroy(this);
+                for (int i = 0; i < AINumber; i++)
+                {
+                    CmdSpawnAi(position[i]);
+                }
+
+                timeExecute++;
+                Destroy(this);
+            }
+        }
+
+        [Command]
+        private void CmdSpawnAi(Vector3 position)
+        {
+            GameObject aI = Instantiate(aiPrefab);
+            aI.GetComponent<NetworkStartPosition>().transform.position = position;
+            NetworkServer.Spawn(aI);
         }
     }
 }

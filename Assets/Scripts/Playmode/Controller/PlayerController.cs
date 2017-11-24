@@ -43,7 +43,6 @@ namespace ProjetSynthese
         [SerializeField]
         private GameObject grenadeThrowingHand;
 
-
         private ActivityStack activityStack;
         private Health health;
         private KeyboardInputSensor keyboardInputSensor;
@@ -56,6 +55,7 @@ namespace ProjetSynthese
         private Grenade currentGrenade;
         private NetworkIdentity networkIdentity;
         private DeathCircleHurtEventChannel deathCircleHurtEventChannel;
+        private SpawnItemDropEventChannel spawnItemDropEventChannel;
         private BoostHealEventChannel boostHealEventChannel;
         private PlayerDeathEventChannel playerDeathEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
@@ -137,7 +137,8 @@ namespace ProjetSynthese
                                             [GameObjectScope] NetworkIdentity networkIdentity,
                                             [EventChannelScope] DeathCircleHurtEventChannel deathCircleHurtEventChannel,
                                             [EventChannelScope] BoostHealEventChannel boostHealEventChannel,
-                                            [EventChannelScope] PlayerDeathEventChannel playerDeathEventChannel)
+                                            [EventChannelScope] PlayerDeathEventChannel playerDeathEventChannel,
+                                            [EventChannelScope] SpawnItemDropEventChannel spawnItemDropEventChannel)
         {
             this.keyboardInputSensor = keyboardInputSensor;
             this.mouseInputSensor = mouseInputSensor;
@@ -152,6 +153,7 @@ namespace ProjetSynthese
             this.boostHealEventChannel = boostHealEventChannel;
             this.soldierAnimatorUpdater = soldierAnimatorUpdater;
             this.playerDeathEventChannel = playerDeathEventChannel;
+            this.spawnItemDropEventChannel = spawnItemDropEventChannel;
         }
 
         private void Start()
@@ -183,6 +185,7 @@ namespace ProjetSynthese
             playerDeathEventChannel.OnEventPublished += OnDeath;
             deathCircleHurtEventChannel.OnEventPublished += OnPlayerOutDeathCircle;
             boostHealEventChannel.OnEventPublished += OnBoostHeal;
+            spawnItemDropEventChannel.OnEventPublished += SpawnItemDrop;
 
             transform.position = new Vector3(0, 0, 0);
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
@@ -215,6 +218,7 @@ namespace ProjetSynthese
             playerDeathEventChannel.OnEventPublished -= OnDeath;
             deathCircleHurtEventChannel.OnEventPublished -= OnPlayerOutDeathCircle;
             boostHealEventChannel.OnEventPublished -= OnBoostHeal;
+            spawnItemDropEventChannel.OnEventPublished -= SpawnItemDrop;
         }
 
         private void FixedUpdate()
@@ -294,6 +298,7 @@ namespace ProjetSynthese
                 currentWeapon.transform.position = weaponHolderTransform.position;
                 currentWeapon.transform.rotation = weaponHolderTransform.rotation;
                 currentWeapon.transform.Rotate(93, 0, 0);
+                currentWeapon.UpdateBullets();
             }
         }
 
@@ -372,10 +377,11 @@ namespace ProjetSynthese
             else if ((object) currentWeapon != null)
             {
                 soldierAnimatorUpdater.Shoot();
-                currentWeapon.Use();
-
-                CmdSpawnBullet(currentWeapon.SpawnPoint.transform.position, currentWeapon.SpawnPoint.transform.rotation,
-                               currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage);
+                if (currentWeapon.Use())
+                {
+                    CmdSpawnBullet(currentWeapon.SpawnPoint.transform.position, currentWeapon.SpawnPoint.transform.rotation,
+                                   currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage);
+                }
             }
         }
 
@@ -507,12 +513,17 @@ namespace ProjetSynthese
         private void InventoryOnDeath()
         {
             inventory.DropAll();
-            CmdSpawnCrate();
+            CmdSpawnCrate(transform.position);
+        }
+
+        private void SpawnItemDrop(SpawnItemDropEvent newEvent)
+        {
+            CmdSpawnItemDrop(newEvent.ItemToSpawn.GetItem().GetComponent<NetworkIdentity>(), transform.position);
         }
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)
         {
-            health.Hit(deathCircleHurtEvent.HurtPoints);
+            health.Hit(deathCircleHurtEvent.HurtPoints, false);
         }
 
         private void OnChangeViewMode()

@@ -47,9 +47,9 @@ namespace ProjetSynthese
             healthPoints = initialHealthPoints;
         }
 
-        public void Hit(float hitPoints)
+        public void Hit(float hitPoints, bool isAI)
         {
-            if (!isLocalPlayer)
+            if (!isLocalPlayer && !isAI)
             {
                 return;
             }

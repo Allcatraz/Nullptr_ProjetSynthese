@@ -9,6 +9,7 @@ namespace ProjetSynthese
         public StateMachine CurrentState { get; private set; }
         public AIController ActorController { get; private set; }
         private bool isSwimming = false;
+        private InteractableSensor interactableSensor;
 
         public AIRadar Sensor { get; private set; }
         public AIBrain Brain { get; private set; }
@@ -40,10 +41,11 @@ namespace ProjetSynthese
 
         DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel;
         DeathCircleTimeLeftEventChannel deathCircleTimeLeftEventChannel;
-        private void InjectDeathCircleController([EventChannelScope] DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel, [EventChannelScope] DeathCircleTimeLeftEventChannel deathCircleTimeLeftEventChannel)
+        private void InjectDeathCircleController([EventChannelScope] DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel, [EventChannelScope] DeathCircleTimeLeftEventChannel deathCircleTimeLeftEventChannel, [EntityScope] InteractableSensor interactableSensor)
         {
             this.deathCircleStatusUpdateEventChannel = deathCircleStatusUpdateEventChannel;
             this.deathCircleTimeLeftEventChannel = deathCircleTimeLeftEventChannel;
+            this.interactableSensor = interactableSensor;
         }
 
         private void Awake()
@@ -163,7 +165,7 @@ namespace ProjetSynthese
             deathCirclePosition.y = Brain.DeathCircleCenterPosition.z;
             if (Vector2.Distance(aiPosition, deathCirclePosition) > Brain.DeathCircleRadius)
             {
-                health.Hit(Brain.CurrentDeathCircleHurtPoints * Time.deltaTime);
+                health.Hit(Brain.CurrentDeathCircleHurtPoints * Time.deltaTime, true);
                 Brain.InjuredByDeathCircle = true;
             }
         }
@@ -177,6 +179,19 @@ namespace ProjetSynthese
             else
             {
                 Brain.DeathCircleIsClosing = false;
+            }
+        }
+
+        private void OnInteract()
+        {
+            GameObject obj = interactableSensor.GetNearestInteractible();
+
+            if (obj != null)
+            {
+                if (obj.GetComponent<OpenDoor>())
+                {
+                    obj.GetComponent<OpenDoor>().Use();
+                }
             }
         }
     }

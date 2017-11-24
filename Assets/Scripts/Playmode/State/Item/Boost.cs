@@ -22,10 +22,10 @@
             }
         }
 
-        public override void Use()
+        public override bool Use()
         {
             Player.GetComponentInChildren<BoostStats>().Heal(Efficacity);
-            //Todo: Enlever un boost dans l'inventaire
+            return true;
         }
 
         public override int GetWeight()

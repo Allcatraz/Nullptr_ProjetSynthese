@@ -171,8 +171,7 @@ namespace ProjetSynthese
         }
 
         public bool IsGameObjectHasLineOfSight(Vector3 position, PlayerController target)
-        {
-         
+        {         
             Vector3 direction = Vector3.zero;
             direction = target.transform.position - position;          
             return Physics.Raycast(position, direction, currentPerceptionRange);

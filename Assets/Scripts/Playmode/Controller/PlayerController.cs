@@ -518,8 +518,7 @@ namespace ProjetSynthese
 
         private void SpawnItemDrop(SpawnItemDropEvent newEvent)
         {
-            GameObject item = DroppedItemController.Instance.SpawnItemDropEventChannel(newEvent);
-            NetworkServer.Spawn(item);
+            CmdSpawnItemDrop(newEvent.ItemToSpawn.GetItem().GetComponent<NetworkIdentity>(), transform.position);
         }
 
         private void OnPlayerOutDeathCircle(DeathCircleHurtEvent deathCircleHurtEvent)

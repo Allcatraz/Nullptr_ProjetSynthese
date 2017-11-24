@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjetSynthese
 {
@@ -10,11 +11,12 @@ namespace ProjetSynthese
     /// </summary>
     public abstract class NetworkGameScript : NetworkScript
     {
-        [Tooltip("Le prefab utilisé pour instancié les bullets")]
+        //Serialize field obligatoire à cause du networking
+        [Tooltip("Le prefab utilisé pour instancié les bullets pour le joueur ou l'AI")]
         [SerializeField]
         private GameObject bulletPrefab;
 
-        [Tooltip("Prefab de l'objet représentant l'inventaire dans le monde")]
+        [Tooltip("Prefab de l'objet représentant l'inventaire dans le monde du joueur et de l'AI")]
         [SerializeField]
         private GameObject cratePrefab;
 
@@ -32,13 +34,13 @@ namespace ProjetSynthese
         //////////////////////////////
         /// COMMAND CALL ON SERVER ///
         //////////////////////////////
-
         [Command]
         public void CmdSpawnObject(GameObject item)
         {
             NetworkServer.Spawn(item);
         }
 
+        //Obliger de faire les spawns de balles comme cela si l'on veut que le network les spawns correctememt
         [Command]
         protected void CmdSpawnBullet(Vector3 spawnPointPosition, Quaternion rotation, Vector3 chamberPosition, float bulletSpeed, float livingTime, int dommage)
         {
@@ -56,12 +58,43 @@ namespace ProjetSynthese
             Destroy(bullet, livingTime);
         }
 
+        //Obliger de faire les spawns de crates comme cela si l'on veut que le network les spawns correctememt
         [Command]
         protected void CmdSpawnCrate(Vector3 position)
         {
             GameObject crate = Instantiate(cratePrefab);
             crate.transform.position = position;
             NetworkServer.Spawn(crate);
+        }
+
+        //Obliger de faire le spawn des items que l'on drop dans le player si l'on veut que le network de Unity puissent les spawners correctememt.
+        [Command]
+        protected void CmdSpawnItemDrop(NetworkIdentity identity, Vector3 position)
+        {
+            Item itemToSpawn = identity.GetComponent<Item>();           
+            if (itemToSpawn != null)
+            {
+                GameObject newItem = Instantiate(itemToSpawn.gameObject);
+
+                Item spawner = newItem.GetComponent<Item>();
+                if (spawner != null)
+                {
+                    if (itemToSpawn as AmmoPack && spawner as AmmoPack)
+                    {
+                        (spawner as AmmoPack).AmmoType = (itemToSpawn as AmmoPack).AmmoType;
+                    }
+                }
+
+                newItem.GetComponent<Item>().Level = itemToSpawn.Level;
+
+                newItem.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.Item);
+                List<GameObject> allItems = newItem.gameObject.GetAllChildrens().ToList();
+                allItems.ForEach(obj => obj.layer = LayerMask.NameToLayer(R.S.Layer.Item));
+
+                newItem.transform.position = position;
+                newItem.SetActive(true);
+                NetworkServer.Spawn(newItem);
+            }
         }
 
         [Command]

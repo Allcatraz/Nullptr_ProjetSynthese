@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Harmony;
-using UnityEngine.Internal;
 using ProjetSynthese;
 using UnityEngine.Networking;
 
@@ -201,7 +200,7 @@ namespace DigitalRuby.PyroParticles
                             Item[] protectionItems = inventoryController.GetProtections();
                             float helmetProtection = protectionItems[0] == null ? 0 : ((Helmet)protectionItems[0]).ProtectionValue;
                             float vestProtection = protectionItems[1] == null ? 0 : ((Vest)protectionItems[1]).ProtectionValue;
-                            float dist = 105 - Vector3.Distance(collider.transform.position, pos);
+                            float dist = 95 - Vector3.Distance(collider.transform.position, pos);
                             health.Hit(dist - (dist * ((helmetProtection + vestProtection) / 100)));
                         }
                     }

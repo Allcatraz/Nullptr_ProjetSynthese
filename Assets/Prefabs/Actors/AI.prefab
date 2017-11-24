@@ -549,6 +549,7 @@ GameObject:
   - component: {fileID: 65330194202153460}
   - component: {fileID: 65620109435184090}
   - component: {fileID: 114425472729367428}
+  - component: {fileID: 114553208731676496}
   m_Layer: 11
   m_Name: AI
   m_TagString: Untagged
@@ -855,7 +856,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1893845116203462}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.392368, y: 2, z: -26.58883}
+  m_LocalPosition: {x: 27.255716, y: 2, z: -14.59097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4067254600498252}
@@ -1343,6 +1344,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryOf: 1
   maxWeight: 100
+--- !u!114 &114553208731676496
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1893845116203462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5eeef61887d0984c9f0faed24b6f903, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 2
 --- !u!114 &114566190629936516
 MonoBehaviour:
   m_ObjectHideFlags: 1

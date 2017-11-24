@@ -60,6 +60,7 @@ namespace ProjetSynthese
         private PlayerDeathEventChannel playerDeathEventChannel;
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
         private RectTransform endGamePanel;
+        private AchivementController achivementController;
 
         private Vector2 rotation = Vector2.zero;
         private bool isInventoryOpen = false;
@@ -128,6 +129,7 @@ namespace ProjetSynthese
         private void InjectPlayerController([ApplicationScope] KeyboardInputSensor keyboardInputSensor,
                                             [ApplicationScope] MouseInputSensor mouseInputSensor,
                                             [ApplicationScope] ActivityStack activityStack,
+                                            [ApplicationScope] AchivementController achivementController,
                                             [EntityScope] PlayerMover playerMover,
                                             [EntityScope] Health health,
                                             [EntityScope] Inventory inventory,
@@ -154,6 +156,7 @@ namespace ProjetSynthese
             this.soldierAnimatorUpdater = soldierAnimatorUpdater;
             this.playerDeathEventChannel = playerDeathEventChannel;
             this.spawnItemDropEventChannel = spawnItemDropEventChannel;
+            this.achivementController = achivementController;
         }
 
         private void Start()
@@ -380,7 +383,7 @@ namespace ProjetSynthese
                 if (currentWeapon.Use())
                 {
                     CmdSpawnBullet(currentWeapon.SpawnPoint.transform.position, currentWeapon.SpawnPoint.transform.rotation,
-                                   currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage);
+                                   currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage, networkIdentity);
                 }
             }
         }
@@ -551,6 +554,21 @@ namespace ProjetSynthese
             ObjectContainedInventory helmet = inventory.GetHelmet();
             ObjectContainedInventory vest = inventory.GetVest();
             return new[] {helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem()};
+        }
+
+        public void AddKillToDatabse(bool isAi)
+        {
+            if (isLocalPlayer)
+            {
+                if (isAi)
+                {
+                    achivementController.AddAiKill();
+                }
+                else
+                {
+                    achivementController.AddPlayerKill();
+                }
+            }
         }
 
         public Weapon GetWeapon()

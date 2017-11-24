@@ -14,6 +14,7 @@ namespace ProjetSynthese
         [Tooltip("Le nombre de points de vie maximal.")]
         [SerializeField] private int maxHealthPoints;
 
+        [SyncVar]
         private float healthPoints;
 
         public event HealthChangedEventHandler OnHealthChanged;

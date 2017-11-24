@@ -18,11 +18,14 @@ namespace ProjetSynthese
         [SerializeField]
         private InputField passwordInput;
 
+        private AchivementController achivementController;
         private PlayerRepository playerRepository;
 
-        private void InjectConnectButton([ApplicationScope] PlayerRepository playerRepository)
+        private void InjectConnectButton([ApplicationScope] PlayerRepository playerRepository,
+                                            [ApplicationScope] AchivementController achivementController)
         {
             this.playerRepository = playerRepository;
+            this.achivementController = achivementController;
         }
 
         public void Awake()
@@ -50,7 +53,7 @@ namespace ProjetSynthese
             }
             else if (playerToConnect.Password == playerWithNameInDatabase.Password)
             {
-                FeedbackSuccesfulConnection();
+                FeedbackSuccesfulConnection(playerToConnect);
             }
             else
             {
@@ -58,10 +61,11 @@ namespace ProjetSynthese
             }
         }
 
-        private void FeedbackSuccesfulConnection()
+        private void FeedbackSuccesfulConnection(Player player)
         {
             //Feedback temporaire : barre d'erreur?
             nameInput.text = "User succesfuly connected";
+            achivementController.SetPlayer(player);
         }
 
         private void FeedbackNoUserWithTheName()

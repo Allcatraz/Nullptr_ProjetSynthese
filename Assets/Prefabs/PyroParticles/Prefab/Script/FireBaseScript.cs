@@ -185,6 +185,8 @@ namespace DigitalRuby.PyroParticles
                 Rigidbody r = collider.GetComponent<Rigidbody>();
                 if (r != null)
                 {
+                    bool isAI = false;
+
                     r.AddExplosionForce(force, pos, radius);
                     if (collider.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Player) || collider.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
                     {
@@ -194,6 +196,7 @@ namespace DigitalRuby.PyroParticles
                         if (inventoryController == null)
                         {
                             inventoryController = collider.gameObject.GetComponentInChildren<ActorAI>();
+                            isAI = true;
                         }
                         if (health != null && collider.gameObject.GetComponent<NetworkBehaviour>().isLocalPlayer)
                         {
@@ -201,7 +204,7 @@ namespace DigitalRuby.PyroParticles
                             float helmetProtection = protectionItems[0] == null ? 0 : ((Helmet)protectionItems[0]).ProtectionValue;
                             float vestProtection = protectionItems[1] == null ? 0 : ((Vest)protectionItems[1]).ProtectionValue;
                             float dist = 95 - Vector3.Distance(collider.transform.position, pos);
-                            health.Hit(dist - (dist * ((helmetProtection + vestProtection) / 100)));
+                            health.Hit(dist - (dist * ((helmetProtection + vestProtection) / 100)), isAI); 
                         }
                     }
                 }

@@ -44,13 +44,6 @@ namespace ProjetSynthese
             NetworkServer.Spawn(item);
         }
 
-
-        [Command]
-        protected void CmdSpawnGrenade()
-        {
-        }
-
-
         //Obliger de faire les spawns de balles comme cela si l'on veut que le network les spawns correctememt
         [Command]
         protected void CmdSpawnBullet(Vector3 spawnPointPosition, Quaternion rotation, Vector3 chamberPosition, float bulletSpeed, float livingTime, int dommage, NetworkIdentity networkIdentity)
@@ -79,10 +72,9 @@ namespace ProjetSynthese
             NetworkServer.Spawn(grenade);
             player.GetComponent<PlayerController>().TargetFinishGrenadeThrow(player.connectionToClient, grenade.GetComponent<NetworkIdentity>());
         }
-        protected void CmdSpawnCrate(Vector3 position)
 
         [Command]
-        protected void CmdSpawnCrate()
+        protected void CmdSpawnCrate(Vector3 position)
         {
             GameObject crate = Instantiate(cratePrefab);
             crate.transform.position = position;

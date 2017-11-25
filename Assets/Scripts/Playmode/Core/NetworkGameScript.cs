@@ -20,6 +20,10 @@ namespace ProjetSynthese
         [SerializeField]
         private GameObject cratePrefab;
 
+        [Tooltip("Le prefab utilisé pour instancié les grenades")]
+        [SerializeField]
+        private GameObject grenadePrefab;
+
         /// <summary>
         /// Injecte les dépendances de ce NetworkGameScript.
         /// </summary>
@@ -68,7 +72,17 @@ namespace ProjetSynthese
 
         //Obliger de faire les spawns de crates comme cela si l'on veut que le network les spawns correctememt
         [Command]
+        public void CmdSpawnGrenade(Vector3 spawnPointPosition, NetworkIdentity player)
+        {
+            GameObject grenade = Instantiate(grenadePrefab);
+            grenade.transform.position = spawnPointPosition;
+            NetworkServer.Spawn(grenade);
+            player.GetComponent<PlayerController>().TargetFinishGrenadeThrow(player.connectionToClient, grenade.GetComponent<NetworkIdentity>());
+        }
         protected void CmdSpawnCrate(Vector3 position)
+
+        [Command]
+        protected void CmdSpawnCrate()
         {
             GameObject crate = Instantiate(cratePrefab);
             crate.transform.position = position;
@@ -141,7 +155,7 @@ namespace ProjetSynthese
             RpcSetDommage(item, dommage);
         }
 
-		[Command]
+        [Command]
         public void CmdChangeLayerForAllChildrens(GameObject root, string layer)
         {
             RpcChangeLayerForAllChildrens(root, layer);

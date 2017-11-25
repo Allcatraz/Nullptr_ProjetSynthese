@@ -24,7 +24,7 @@ namespace ProjetSynthese
                         item = cell.GetItem();
                         if (item.Type == ItemType.AWM
                         || item.Type == ItemType.M16A4
-                        || item.Type == ItemType.M1911
+                        || item.Type == ItemType.MP5
                         || item.Type == ItemType.Saiga12)
                         {
                             Weapon weapon = (Weapon)cell.GetItem();

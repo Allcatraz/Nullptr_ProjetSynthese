@@ -82,12 +82,14 @@ namespace ProjetSynthese
                     playerMover.SwitchSwimOn();
                     gameObject.transform.position = new Vector3(gameObject.transform.position.x, -2, gameObject.transform.position.z);
                     rigidbody.useGravity = false;
+                    rigidbody.constraints = rigidbody.constraints | RigidbodyConstraints.FreezePositionY;
                 }
                 else
                 {
                     playerMover.SwitchSwimOff();
                     gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z);
                     rigidbody.useGravity = true;
+                    rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
                 }
             }
         }
@@ -295,7 +297,7 @@ namespace ProjetSynthese
 
         private void SetCurrentWeaponActive(bool isActive)
         {
-            if ((object) currentWeapon != null)
+            if ((object)currentWeapon != null)
             {
                 currentWeapon.gameObject.SetActive(isActive);
                 currentWeapon.transform.position = weaponHolderTransform.position;
@@ -320,7 +322,7 @@ namespace ProjetSynthese
                 {
                     if (k == ActionKey.Instance.MoveFoward)
                     {
-                        direction += (Vector3)transformMatrix.GetColumn(2);                        
+                        direction += (Vector3)transformMatrix.GetColumn(2);
                     }
                     else if (k == ActionKey.Instance.MoveBackward)
                     {
@@ -369,15 +371,9 @@ namespace ProjetSynthese
         {
             if (isHoldingGrenade == true)
             {
-                Grenade newGrenade = Instantiate(currentGrenade);
-                CmdSpawnObject(newGrenade.gameObject);
-                newGrenade.Throw(networkIdentity, grenadeThrowingForce + GetComponentInChildren<PlayerMover>().Speed);
-                soldierAnimatorUpdater.ThrowGrenade(newGrenade);
-                inventory.RemoveThrownGrenade();
-                currentGrenade = null;
-                isHoldingGrenade = false;              
+                CmdSpawnGrenade(currentGrenade.transform.position, networkIdentity);
             }
-            else if ((object) currentWeapon != null)
+            else if ((object)currentWeapon != null)
             {
                 soldierAnimatorUpdater.Shoot();
                 if (currentWeapon.Use())
@@ -386,6 +382,17 @@ namespace ProjetSynthese
                                    currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage, networkIdentity);
                 }
             }
+        }
+
+        [TargetRpc]
+        public void TargetFinishGrenadeThrow(NetworkConnection connection, NetworkIdentity grenade)
+        {
+            Grenade newGrenade = grenade.GetComponent<Grenade>();
+            newGrenade.Throw(networkIdentity, grenadeThrowingForce + GetComponentInChildren<PlayerMover>().Speed);
+            soldierAnimatorUpdater.ThrowGrenade(newGrenade);
+            inventory.RemoveThrownGrenade();
+            currentGrenade = null;
+            isHoldingGrenade = false;
         }
 
         private void OnInteract()
@@ -415,7 +422,7 @@ namespace ProjetSynthese
         [ClientRpc]
         private void RpcTakeItem(GameObject item, NetworkIdentity identity)
         {
-            if ((object) item != null)
+            if ((object)item != null)
             {
                 item.gameObject.layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
                 List<GameObject> allItems = item.gameObject.GetAllChildrens().ToList();
@@ -436,7 +443,7 @@ namespace ProjetSynthese
 
         private void TakeItem(GameObject item)
         {
-            if ((object) item != null)
+            if ((object)item != null)
             {
                 int layer = LayerMask.NameToLayer(R.S.Layer.EquippedItem);
                 item.gameObject.layer = layer;
@@ -498,7 +505,7 @@ namespace ProjetSynthese
 
         private void OnReload()
         {
-            if ((object) currentWeapon != null)
+            if ((object)currentWeapon != null)
             {
                 currentWeapon.Reload(inventory);
             }
@@ -553,7 +560,7 @@ namespace ProjetSynthese
         {
             ObjectContainedInventory helmet = inventory.GetHelmet();
             ObjectContainedInventory vest = inventory.GetVest();
-            return new[] {helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem()};
+            return new[] { helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem() };
         }
 
         public void AddKillToDatabse(bool isAi)

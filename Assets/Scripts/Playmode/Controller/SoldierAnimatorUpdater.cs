@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
-    public class SoldierAnimatorUpdater : MonoBehaviour
+    public class SoldierAnimatorUpdater : NetworkGameScript
     {
-        [SerializeField]
-        [Tooltip("L'animator utilisé pour faire l'animation du joueur.")]
         private Animator animator;
+        private NetworkAnimator networkAnimator;
         public Vector3 MouvementDirection { get; set; }
         public Vector3 ViewDirection { get; set; }
 
@@ -24,12 +24,25 @@ namespace ProjetSynthese
         [SerializeField]
         private AnimationClip grenadeAnimation;
 
-
         private Grenade grenade;
-        bool isThrowingGrenade;
+        private bool isThrowingGrenade;
+
+        [SerializeField]
+        [Tooltip("The number of parameters to sync on the network")]
+        private int numberOfParamsToSync;
 
         private void Awake()
         {
+            animator = GetComponentInParent<Animator>();
+            networkAnimator = GetComponentInParent<NetworkAnimator>();
+
+
+            for (int i = 0; i < numberOfParamsToSync; i++)
+            {
+                networkAnimator.SetParameterAutoSend(i, true);
+            }
+
+
             directionInterpolationFactors = new InterpolationFactors();
             directionInterpolationFactors.animatorValueName = "DirectionFactor";
             directionInterpolationFactors.diffFactor = 0.5f;
@@ -130,6 +143,18 @@ namespace ProjetSynthese
 
         public void Shoot()
         {
+            CmdShoot();
+        }
+
+        [Command]
+        private void CmdShoot()
+        {
+            RpcShoot();
+        }
+
+        [ClientRpc]
+        private void RpcShoot()
+        {
             shootingLayerInterpolationFactors.isInterpolating = false;
             animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 1);
             animator.Play("assault_combat_shoot", -1, 0f);
@@ -137,18 +162,41 @@ namespace ProjetSynthese
 
         public void ThrowGrenade(Grenade grenade)
         {
+            CmdThrowGrenade(grenade.gameObject.GetComponent<NetworkIdentity>());
+        }
+
+        [Command]
+        private void CmdThrowGrenade(NetworkIdentity grenade)
+        {
+            RpcThrowGrenade(grenade);
+        }
+
+        [ClientRpc]
+        private void RpcThrowGrenade(NetworkIdentity grenade)
+        {
             if (grenade != null && isThrowingGrenade == false)
             {
                 animator.SetLayerWeight(animator.GetLayerIndex("GrenadeThrow"), 1);
                 animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 0);
                 animator.Play("assault_combat_throw_grenade", -1, 0f);
                 isThrowingGrenade = true;
-                this.grenade = grenade;
+                this.grenade = grenade.gameObject.GetComponent<Grenade>();
             }
-
         }
 
         private void EndShootingEvent()
+        {
+            CmdEndShootingEvent();
+        }
+
+        [Command]
+        private void CmdEndShootingEvent()
+        {
+            RpcEndShootingEvent();
+        }
+
+        [ClientRpc]
+        private void RpcEndShootingEvent()
         {
             shootingLayerInterpolationFactors.isInterpolating = true;
             shootingLayerInterpolationFactors.begin = 1;
@@ -158,11 +206,42 @@ namespace ProjetSynthese
 
         private void ReleaseGrenadeEvent()
         {
-            grenade.Release();
-            grenade = null;
+            if (isLocalPlayer)
+            {
+                grenade.Release();
+                grenade = null;
+            }
+        }
+
+        [Command]
+        private void CmdReleaseGrenadeEvent(NetworkIdentity grenade)
+        {
+            RpcReleaseGrenadeEvent(grenade);
+        }
+
+        [ClientRpc]
+        private void RpcReleaseGrenadeEvent(NetworkIdentity grenade)
+        {
+            if (isLocalPlayer)
+            {
+                grenade.GetComponent<Grenade>().Release();
+            }
+
         }
 
         private void EndThrowingGrenadeAnimationEvent()
+        {
+            CmdEndThrowingGrenadeAnimationEvent();
+        }
+
+        [Command]
+        private void CmdEndThrowingGrenadeAnimationEvent()
+        {
+            RpcEndThrowingGrenadeAnimationEvent();
+        }
+
+        [ClientRpc]
+        private void RpcEndThrowingGrenadeAnimationEvent()
         {
             animator.SetLayerWeight(animator.GetLayerIndex("GrenadeThrow"), 0);
             animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 1);

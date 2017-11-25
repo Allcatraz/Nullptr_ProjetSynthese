@@ -5,7 +5,7 @@
         M16A4,
         AWM,
         Saiga12,
-        M1911,
+        MP5,
         Grenade,
         Helmet,
         Vest,

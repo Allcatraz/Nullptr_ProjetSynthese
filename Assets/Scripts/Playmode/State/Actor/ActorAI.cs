@@ -76,6 +76,9 @@ namespace ProjetSynthese
             deathCircleTimeLeftEventChannel.OnEventPublished -= OnDeathCircleTimeLeftEvent;
         }
 
+        //BEN_REVIEW : Je pense que ce serait suffisant de le faire au "FixedUpdate". Cela pourrait améliorer les performances de votre jeu, car
+        //             il y a beaucoup d'appels au moteur de Physique (SphereCastAll par exemple) causés indirectement par un appel à la
+        //             fonction "WhatIsMyNextState".
         private void Update()
         {
             //Ordre exécution important

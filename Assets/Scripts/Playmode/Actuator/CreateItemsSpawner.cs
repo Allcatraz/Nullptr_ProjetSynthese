@@ -32,17 +32,20 @@ namespace ProjetSynthese
             InjectDependencies("InjectCreateItemsSpawner");
         }
 
+        //BEN_CORRECTION : private.
         void Update()
         {
             if (nbSpawn == 0)
             {
                 if (!activityStack.HasActivityLoading())
                 {
+                    //BEN_CORRECTION : Et s'il n'est pas le serveur ? Ce script reste donc là ? Il ne sera jamais détruit.
                     if (playerController.isServer)
                     {
                         GameObject[] gameObjects = SceneManager.GetSceneByName(R.S.Scene.GameFragment).GetRootGameObjects();
                         TiledMap tileMap = gameObjects.Find(obj => obj.name == "Map").GetComponent<TiledMap>();
 
+                        //BEN_CORRECTION : Nommage (vec3).
                         foreach (Vector3 vec3 in itemSpawnerPositions)
                         {
                             GameObject itemSpawner = Instantiate(itemSpawnerPrefab, tileMap.transform);

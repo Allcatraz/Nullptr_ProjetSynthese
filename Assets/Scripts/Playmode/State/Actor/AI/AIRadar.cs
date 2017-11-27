@@ -47,8 +47,10 @@ namespace ProjetSynthese
             }
         }
 
+        //BEN_CORRECTION : Pourquoi ne pas avoir utilisé R.E.Layer ?
         public enum LayerType { None, Default, Item, EquippedItem,Player, AI, Building }
 
+        //BEN_CORRECTION : Pourquoi ne pas avoir utilisé R.S.Layer ?
         public static readonly string[] LayerNames = { "None", "Default", "Item", "EquippedItem", "Player", "AI", "Building" };
 
         public AIRadar()
@@ -57,8 +59,20 @@ namespace ProjetSynthese
             currentPerceptionRange = LowRangePerception;
         }
 
-        public ObjectType NeareastGameObject<ObjectType>(Vector3 position, LayerType layerType)
+        public ObjectType NeareastGameObject<ObjectType>(Vector3 position, LayerType layerType) /* where ObjectType : class */
         {
+            //BEN_REVIEW : "default", en C#, retourne la valeur par défaut pour un type donné. Si c'est un type de base (tel que int), retourne
+            //             sa valeur par défaut (0 pour int, false pour bool, etc...). Dans le cas d'un type "référence" (n'importe quel objet quoi),
+            //             cela retourne "null".
+            //
+            //             Dans votre cas, ce sera toujours un objet, donc vous pouvez directement mettre "null" à la place.
+            //             Par contre, ça va créer une erreur à la compilation et c'est là que le mot clé "where" entre en jeu (voir ce que j'ai mis
+            //             en commentaire après le nom de la fonction).
+            //
+            //             Ce que je veux dire ici :
+            //              1. default est assez lent.
+            //              2. default est peu utilisé et peu porter à confusion.
+            //              3. default, dans ce cas présent, retournera toujours null.
             ObjectType nearestObject = default(ObjectType);
             RaycastHit[] inRangeObjects;
             if (layerType == LayerType.None)

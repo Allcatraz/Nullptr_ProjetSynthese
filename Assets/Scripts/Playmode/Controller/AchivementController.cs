@@ -166,6 +166,10 @@ namespace ProjetSynthese
 
         private bool CheckIfAchivementExist(Achivement achivement)
         {
+            //BEN_CORRECTION : Au lieu de tout obtenir de la base de données et de faire la recherche ici,
+            //                 pourquoi ne pas avoir laissé la BD effectuer la recherche ?
+            //
+            //                 La BD sera toujours plus rapide.
             IList<Achivement> achivementToCheck = achivementRepository.GetAchivementFromPlayerId(player);
             if (achivementToCheck != null)
             {

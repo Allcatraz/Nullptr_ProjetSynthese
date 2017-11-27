@@ -3,6 +3,12 @@
 namespace ProjetSynthese
 {
 
+    //BEN_REVIEW : Vous avez l'AI ayant le plus de "knowledge" que j'ai vu jusqu'à présent. C'est tout simplement halucinant!
+    //
+    //             Peut-être que vous auriez pu en faire moins sur ce point. Peut-être que cela vous aurait donné plus de temps
+    //             pour faire autre chose.
+    
+    //BEN_CORRECTION : Quelques parties encore divisibles en plus petites fonctions et code en commentaire à supprimer.
 
     public class AIBrain
     {
@@ -656,6 +662,9 @@ namespace ProjetSynthese
 
         private void UpdateProtectionKnowledge()
         {
+            //BEN_CORRECTION : À moins d'une imcompréhension de ma part, "SelectHelmet" et "SelectVest" ne font pas partie
+            //                 du "Knwoledge" à mettre à jour. C'est plus une "action", et non pas une "observation".
+            
             Actor.EquipmentManager.SelectHelmet();
             Actor.EquipmentManager.SelectVest();
 

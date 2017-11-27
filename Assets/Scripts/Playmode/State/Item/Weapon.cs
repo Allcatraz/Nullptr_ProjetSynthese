@@ -37,6 +37,7 @@ namespace ProjetSynthese
 
         public event OnMunitionChanged OnMunitionChanged;
 
+        //BEN_REVIEW : Constantes tout en haut. Standard.
         private const int Weight = 0;
 
         public float BulletSpeed { get { return bulletSpeed; } }
@@ -44,6 +45,7 @@ namespace ProjetSynthese
         public GameObject Chamber { get { return chamber; } }
         public GameObject SpawnPoint { get { return bulletSpawnPoint; } }
 
+        //BEN_REVIEW : "Damage", pas "Dommage". 
         public int Dommage
         {
             get { return dommage; }
@@ -95,6 +97,9 @@ namespace ProjetSynthese
             NotidyMunitionChanged();
         }
 
+        //BEN_REVIEW : Typo. "NotifyMunitionChanged", non pas "NotidyMunitionChanged"
+        //                        ^                                ^
+        //                        |                                | 
         private void NotidyMunitionChanged()
         {
             if (OnMunitionChanged != null) OnMunitionChanged();

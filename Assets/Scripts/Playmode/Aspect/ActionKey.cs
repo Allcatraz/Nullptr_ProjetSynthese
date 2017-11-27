@@ -3,10 +3,19 @@ using UnityEngine;
 
 namespace ProjetSynthese
 {
+    //BEN_REVIEW : Une petite classe qui ne fait qu'une seule chose...
+    //
+    //             C'est super!
+    
     public class ActionKey : GameScript
     {
         public static ActionKey Instance;
 
+        //BEN_REVIEW : Information en double. Pourquoi est-ce que vos
+        //             properties n'utilisent pas directement ce qui se trouve
+        //             dans l'attribut "data" ? Ce faisant, la fonction "SetKeyAt"
+        //             et "GetKeyAt" deviennent inutiles.
+        
         public KeyCode MoveFoward { get; set; }
         public KeyCode MoveBackward { get; set; }
         public KeyCode MoveLeft { get; set; }
@@ -48,6 +57,16 @@ namespace ProjetSynthese
 
         private void LoadKeyData()
         {
+            //BEN_CORRECTION : Erreur de logique qui causera plantage.
+            //
+            //                 StreamingAssets est pas toujours acessible en lecture,
+            //                 surtout si les données du jeu se trouvent dans
+            //                 "Program Files".
+            //
+            //                 Utilisez "persistentDataPath" à la place. C'est plus 
+            //                 sûr.
+            
+            //BEN_REVIEW : Utilisez "Path.Combine" pour concaténer des chemins.
             string filePath = Application.streamingAssetsPath + keyDataFile;
             if (File.Exists(filePath))
             {

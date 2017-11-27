@@ -9,9 +9,21 @@ namespace ProjetSynthese
 
     public delegate void OnInventoryChange();
     public delegate void OnSpawnDroppedItem(ObjectContainedInventory itemToSpawn);
+    
+    //BEN_CORRECTION : Level13 ? C'est pour un achievement ?
+    //
+    //                 Pourtant, si je regarde votre code, je vois rien en lien avec
+    //                 Level 13...
+    //
+    //                 Vieux nom ?
     public delegate void OnProtectionLevel3Equipped(ProtectionOfPlayer protectionOfPlayer);
     public delegate void OnEquipWeapon();
 
+    //BEN_REVIEW : Je sais pas si c'est moi, mais il me semble qu'il y a une grande différence
+    //             entre ce que c'était à l'alpha et ce que c'est à la beta...et pour le mieux
+    //
+    //             Je vais continuer à lire, mais pour l'instant, bravo.
+    
     public class Inventory : GameScript
     {
         [Tooltip("Le type de contenue de l'inventaire.")]
@@ -23,6 +35,13 @@ namespace ProjetSynthese
 
         private ObjectContainedInventory primaryWeapon;
         private ObjectContainedInventory secondaryWeapon;
+        //BEN_CORRECTION : Ce sont les items équipés ?
+        //
+        //                 Pourquoi pas les nommer :
+        //                      * "equipedGrenade" ?
+        //                      * "equipedHelmet" ?
+        //                      * "equipedVest" ?
+        //                      * "equipedBag" ?
         private ObjectContainedInventory grenade;
         private ObjectContainedInventory helmet;
         private ObjectContainedInventory vest;
@@ -35,6 +54,7 @@ namespace ProjetSynthese
         public event OnEquipWeapon OnWeaponEquip;
 
         public GameObject Parent { get; set; }
+        
         public List<ObjectContainedInventory> ListInventory { get; private set; }
 
         private void Start()
@@ -53,6 +73,14 @@ namespace ProjetSynthese
             grenade = null;
         }
 
+        //BEN_REVIEW : Pas vraiment une bonne idée que ce soit public. Ici, c'est public
+        //             pour que "CellObject" puisse avertir les autres que l'inventaire (dont
+        //             elle même) a été modifié.
+        //
+        //             En temps normal, on aurait vu "Inventory" s'abonner à un événement
+        //             de "CellObject" qui l'aurait notifié qu'elle a changé. Suite à la réception
+        //             de cet événement, "Inventory" aurait, à son tour, déclanché l'événement
+        //             "InventoryChange".
         public void NotifyInventoryChange()
         {
             if (InventoryChange != null) InventoryChange();
@@ -93,6 +121,21 @@ namespace ProjetSynthese
         {
             if (grenade != null)
             {
+                //BEN_REVIEW : Je pense que ces deux lignes devraient être dans leur propre
+                //             fonction. Ajouter un élément à la list veut aussi dire
+                //             ajouter son poids au poids total. Ça va toujours ensemble
+                //             non ?
+                //
+                //             Faire ce genre de regroupement logique permet d'éviter
+                //             des oublis en même temps. C'est l'art de se protéger contre
+                //             soit même.
+                //
+                //             Enfin, je pense que tu as un bogue ici. Je suis pas certain
+                //             de ce que tu veux faire excactement, mais ça ressemble
+                //             à un "check" pour éviter qu'un item soit "unequiped"
+                //             plusieurs fois. Or, le poids est tout de même ajouté...
+                //             bref....ça m'a l'air étrange comme logique....
+                
                 if (!IsItemPresentInInventory(grenade)) ListInventory.Add(grenade);
                 AddWeight(grenade.GetItem().GetWeight());
                 grenade = null;
@@ -305,6 +348,10 @@ namespace ProjetSynthese
             }
         }
 
+        //BEN_REVIEW :     Préfère créer deux méthodes au lieu d'une seule avec un bool.
+        //
+        //BEN_CORRECTION : Aussi, je pensais que "Change" voulais dire "set", et non pas
+        //                 "add" ou "remove".
         private void ChangeMaxWeight(float newWeightToAdd, bool addOrRemove = true)
         {
             if (addOrRemove)
@@ -338,6 +385,7 @@ namespace ProjetSynthese
 
         private void CreateListeIfNotExist()
         {
+            //BEN_REVIEW : Pourquoi pas faire ça au "Awake" ?
             if (ListInventory == null)
             {
                 ListInventory = new List<ObjectContainedInventory>();
@@ -429,6 +477,16 @@ namespace ProjetSynthese
                 }
                 else if (item == cell && item.GetItem().Level == cell.GetItem().Level)
                 {
+                    //BEN_REVIEW : Le nom de ta méthode "IsItemPresentInInventory"
+                    //             laisse présumer qu'elle ne modifiera pas l'état
+                    //             de l'inventaire, qu'elle ne fait que vérifier une
+                    //             information.
+                    //
+                    //             Pourtant, ce n'est pas le cas à en juger par 
+                    //             l'appel à "item.AddCompteur".
+                    //
+                    //             Il faut absolument éviter ce genre de situation, car
+                    //             cela risque fort de causer des bogues étranges et subtils.
                     item.AddCompteur();
                     itemIsPresentInInventory = true;
                     NotifyInventoryChange();
@@ -464,7 +522,7 @@ namespace ProjetSynthese
         {
             ObjectContainedInventory cell = new ItemContainedInventory();
             cell.SetItem(game);
-            cell.SetImage();
+            cell.SetImage(); //BEN_CORRECTION : Inutile, car la méthode est vide et personne ne la surcharge.
             return cell;
         }
 

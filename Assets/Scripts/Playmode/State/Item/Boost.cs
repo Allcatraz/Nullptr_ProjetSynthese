@@ -2,6 +2,7 @@
 {
     public class Boost : Usable
     {
+        //BEN_CORRECTION : Constantes pourraient être "private".
         public const int Level1Efficacity = 5;
         public const int Level2Efficacity = 15;
         public const int Level3Efficacity = 35;

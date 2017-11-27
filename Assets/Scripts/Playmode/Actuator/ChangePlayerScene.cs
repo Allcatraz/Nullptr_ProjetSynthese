@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
 {
+    //BEN_CORRECTION : Deux (trois ?) responsabilités différentes dans cette classe.
+    
     public class ChangePlayerScene : GameScript
     {
         [Tooltip("Le menu de la map du joueur pour pouvoir apparaître.")]
@@ -37,6 +39,7 @@ namespace ProjetSynthese
         {
             if (!activityStack.HasActivityLoading())
             {
+                //BEN_CORRECTION : Nom trompeur. Lis le nom de ta variable et regarde ce qu'elle fait. Complètement l'inverse.
                 if (hasMapMenuLoaded)
                 {
                     activityStack.StartMenu(mapMenu);

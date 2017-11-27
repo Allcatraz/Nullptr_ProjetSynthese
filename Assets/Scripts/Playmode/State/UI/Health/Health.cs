@@ -50,6 +50,22 @@ namespace ProjetSynthese
 
         public void Hit(float hitPoints, bool isAI)
         {
+            //BEN_CORRECTION : Pourquoi "isAI" ne serait pas un "SerializedField" ?
+            //
+            //                 Vous avez des "Prefabs" pour vos "Ai" non ? Alors pourquoi cette information
+            //                 ne serait pas contenue là au lieu d'être calculée, à chaque fois, avec ce bout
+            //                 de code :
+            
+            /*
+             *       bool isAI = false;
+             *
+             *       IInventory inventoryController = other.gameObject.GetComponentInChildren<PlayerController>();        
+             *       if (inventoryController == null)
+             *       {
+             *           isAI = true;
+             *       }
+             */
+            
             if (!isLocalPlayer && !isAI)
             {
                 return;

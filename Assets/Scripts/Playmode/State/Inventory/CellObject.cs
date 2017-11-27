@@ -216,15 +216,15 @@ namespace ProjetSynthese
 
         private void ClickOnProtectionButton()
         {
-            if (CellContained.GetItem() as Helmet)
+            if (CellContained.GetItem() as Helmet) //BEN_CORRECTION : "is", pas "as"
             {
                 Inventory.UnequipHelmet();
             }
-            else if (CellContained.GetItem() as Vest)
+            else if (CellContained.GetItem() as Vest) //BEN_CORRECTION : "is", pas "as"
             {
                 Inventory.UnequipVest();
             }
-            else if (CellContained.GetItem() as Bag)
+            else if (CellContained.GetItem() as Bag) //BEN_CORRECTION : "is", pas "as"
             {
                 Inventory.UnequipBag();
             }
@@ -232,11 +232,11 @@ namespace ProjetSynthese
 
         private void ClickOnWeaponButton()
         {
-            if (CellContained.GetItem() as Weapon)
+            if (CellContained.GetItem() as Weapon) //BEN_CORRECTION : "is", pas "as"
             {
                 Inventory.UnequipWeaponAt(EquipAt);
             }
-            else if (CellContained.GetItem() as Grenade)
+            else if (CellContained.GetItem() as Grenade) //BEN_CORRECTION : "is", pas "as"
             {
                 Inventory.UnequipGrenade();
             }
@@ -248,32 +248,38 @@ namespace ProjetSynthese
             {
                 Inventory.Drop(CellContained);
             }
-            else if (CellContained.GetItem() as Grenade)
+            else if (CellContained.GetItem() as Grenade) //BEN_CORRECTION : "is", pas "as"
             {
                 Inventory.EquipGrenade(CellContained);
             }
-            else if (CellContained.GetItem() as Weapon)
+            else if (CellContained.GetItem() as Weapon) //BEN_CORRECTION : "is", pas "as"
             {
                 Inventory.EquipWeaponAt(EquipAt, CellContained);
             }
-            else if (CellContained.GetItem() as Helmet)
+            else if (CellContained.GetItem() as Helmet) //BEN_CORRECTION : "is", pas "as"
             {
                 Inventory.EquipHelmet(CellContained);
             }
-            else if (CellContained.GetItem() as Vest)
+            else if (CellContained.GetItem() as Vest) //BEN_CORRECTION : "is", pas "as"
             {
                 Inventory.EquipVest(CellContained);
             }
-            else if (CellContained.GetItem() as Heal || CellContained.GetItem() as Boost)
+            else if (CellContained.GetItem() as Heal || CellContained.GetItem() as Boost) //BEN_CORRECTION : "is", pas "as"
             {
                 //Bug fix temporaire
                 CellContained.GetItem().Player = player.gameObject;
                 //Fin bug fix temporaire
 
+                //BEN_REVIEW : Normalement, j'aurais dit "Attention au NullPtrException", 
+                //             mais ici, un "Heal" et un "Boost" sont tous les deux
+                //             des "Usable", alors ce "Cast" est safe.
+                //
+                //             En ce sens, un "Cast" style "C++" aurait été plus rapide,
+                //             car "safe".
                 (CellContained.GetItem() as Usable).Use(); 
                 Inventory.CheckMultiplePresenceAndRemove(CellContained);
             }
-            else if (CellContained.GetItem() as Bag)
+            else if (CellContained.GetItem() as Bag) //BEN_CORRECTION : "is", pas "as" (etc....)
             {
                 Inventory.EquipBag(CellContained);
             }

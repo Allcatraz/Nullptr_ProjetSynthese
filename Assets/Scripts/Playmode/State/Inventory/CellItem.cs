@@ -6,6 +6,10 @@ namespace ProjetSynthese
     {
         private Item item;
 
+        //BEN_CORRECTION : Ces deux constructeurs sont inutiles. Le constructeur
+        //                 avec paramêtre est jamais utilisé et le constructeur par défaut
+        //                 ne fait rien.
+        
         public ItemContainedInventory()
         {
 

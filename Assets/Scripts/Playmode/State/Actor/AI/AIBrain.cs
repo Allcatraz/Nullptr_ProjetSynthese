@@ -517,7 +517,7 @@ namespace ProjetSynthese
                 directionVector.y = 0.0f;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
             }
-            else if (aiInPerceptionRange != null)
+            else
             {
                 directionVector = aiInPerceptionRange.transform.position - Actor.transform.position;
                 directionVector.y = 0.0f;

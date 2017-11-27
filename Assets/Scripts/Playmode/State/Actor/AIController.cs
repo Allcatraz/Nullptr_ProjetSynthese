@@ -161,7 +161,7 @@ namespace ProjetSynthese
                 default:
                     break;
             }
-            //Note : navmesh bugger
+            
             destination.y = FloorYOffset;
 
             NavMeshPath path = new NavMeshPath();

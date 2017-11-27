@@ -40,11 +40,11 @@ namespace ProjetSynthese
             string name = "";
             if (equipped != null)
             {
-                if (inventory.GetPrimaryWeapon().GetItem() == equipped)
+                if (inventory.GetPrimaryWeapon() != null && inventory.GetPrimaryWeapon().GetItem() == equipped)
                 {
                     textSlot.text = EquipWeaponAt.Primary.ToString();
                 }
-                else if (inventory.GetSecondaryWeapon().GetItem() == equipped)
+                else if (inventory.GetSecondaryWeapon() != null && inventory.GetSecondaryWeapon().GetItem() == equipped)
                 {
                     textSlot.text = EquipWeaponAt.Secondary.ToString();
                 }

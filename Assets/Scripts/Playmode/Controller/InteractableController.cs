@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Harmony;
-using ProjetSynthese;
+﻿using Harmony;
 using UnityEngine;
 using UnityEngine.UI;
 

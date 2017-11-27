@@ -529,7 +529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.2
+  m_SendInterval: 0
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -551,6 +551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 0}
   cratePrefab: {fileID: 0}
+  grenadePrefab: {fileID: 0}
   type: 3
   bulletSpawnPoint: {fileID: 1952353094734770}
   chamber: {fileID: 1983344287765540}

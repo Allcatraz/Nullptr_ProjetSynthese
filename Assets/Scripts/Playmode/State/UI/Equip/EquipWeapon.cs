@@ -6,10 +6,6 @@ namespace ProjetSynthese
 {
     public class EquipWeapon : GameScript
     {
-        [Tooltip("Type de slot utilisé.")]
-        [SerializeField]
-        private EquipWeaponAt typeSlot;
-
         [Tooltip("Nom de l'object")]
         [SerializeField]
         private Text textName;
@@ -39,11 +35,19 @@ namespace ProjetSynthese
 
         private void UpdateText(Inventory inventory)
         {
-            textSlot.text = typeSlot.ToString();
-            string name = "";
             Weapon equipped = inventory.Parent.GetComponent<PlayerController>().GetCurrentWeapon();
+            textSlot.text = "";
+            string name = "";
             if (equipped != null)
             {
+                if (inventory.GetPrimaryWeapon().GetItem() == equipped)
+                {
+                    textSlot.text = EquipWeaponAt.Primary.ToString();
+                }
+                else if (inventory.GetSecondaryWeapon().GetItem() == equipped)
+                {
+                    textSlot.text = EquipWeaponAt.Secondary.ToString();
+                }
                 name = equipped.Type.ToString();
             }
             textName.text = name;  

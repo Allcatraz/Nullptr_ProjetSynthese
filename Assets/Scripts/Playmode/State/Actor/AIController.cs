@@ -162,20 +162,20 @@ namespace ProjetSynthese
                     break;
             }
             
-            destination.y = FloorYOffset;
+            //destination.y = FloorYOffset;
 
-            NavMeshPath path = new NavMeshPath();
-            NavMesh.CalculatePath(actor.transform.position, destination, NavMesh.AllAreas, path);
-            Vector3[] pathpoints;
-            if (path.status == NavMeshPathStatus.PathComplete)
-            {
-                pathpoints = new Vector3[path.corners.Length];
-                int nbr = path.GetCornersNonAlloc(pathpoints);
-                if (nbr > PathVectorIndex)
-                {
-                    destination = pathpoints[PathVectorIndex];
-                }
-            }
+            //NavMeshPath path = new NavMeshPath();
+            //NavMesh.CalculatePath(actor.transform.position, destination, NavMesh.AllAreas, path);
+            //Vector3[] pathpoints;
+            //if (path.status == NavMeshPathStatus.PathComplete)
+            //{
+            //    pathpoints = new Vector3[path.corners.Length];
+            //    int nbr = path.GetCornersNonAlloc(pathpoints);
+            //    if (nbr > PathVectorIndex)
+            //    {
+            //        destination = pathpoints[PathVectorIndex];
+            //    }
+            //}
             //
             destination.y = FloorYOffset;
             Vector3 nouvellePosition = Vector3.MoveTowards(actor.transform.position, destination, pas);

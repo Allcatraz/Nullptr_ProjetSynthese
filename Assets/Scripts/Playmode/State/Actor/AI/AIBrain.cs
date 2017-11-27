@@ -413,41 +413,51 @@ namespace ProjetSynthese
         private AIState ChooseANewStateFromDeathCircleState()
         {
             AIState nextState = AIState.None;
-            nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && DeathCircleIsClosing)
+            if (InjuredByDeathCircle || DeathCircleIsClosing)
             {
                 nextState = AIState.DeathCircle;
             }
-            if (nextState == AIState.None)
-            {
-                if (ExistVisibleOpponent())
-                {
-                    if (!hasPrimaryWeaponEquipped)
-                    {
-                        if (!FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
-                    }
-                    else
-                    {
-                        nextState = AIState.Hunt;
-                    }
-                }
-                else if (FoundItemInPerceptionRange())
-                {
-                    nextState = AIState.Loot;
-                }
-            }
-
-            if (nextState == AIState.None)
+            else
             {
                 nextState = AIState.Explore;
             }
+            return nextState;
+            //AIState nextState = AIState.None;
+            //nextState = HasBeenInjuredRelatedStateCheck();
+            //if (nextState == AIState.None && DeathCircleIsClosing)
+            //{
+            //    nextState = AIState.DeathCircle;
+            //}
+            //if (nextState == AIState.None)
+            //{
+            //    if (ExistVisibleOpponent())
+            //    {
+            //        if (!hasPrimaryWeaponEquipped)
+            //        {
+            //            if (!FoundItemInPerceptionRange())
+            //            {
+            //                nextState = AIState.Flee;
+            //            }
+            //            else
+            //            {
+            //                nextState = AIState.Hunt;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            nextState = AIState.Hunt;
+            //        }
+            //    }
+            //    else if (FoundItemInPerceptionRange())
+            //    {
+            //        nextState = AIState.Loot;
+            //    }
+            //}
+
+            //if (nextState == AIState.None)
+            //{
+            //    nextState = AIState.Explore;
+            //}
 
             return nextState;
         }
@@ -550,7 +560,7 @@ namespace ProjetSynthese
                         return true;
                     }
                 }
-                else if(aiInPerceptionRange != null)
+                else if (aiInPerceptionRange != null)
                 {
                     if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
                     {

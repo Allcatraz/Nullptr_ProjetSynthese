@@ -550,7 +550,7 @@ namespace ProjetSynthese
                         return true;
                     }
                 }
-                else
+                else if(aiInPerceptionRange != null)
                 {
                     if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
                     {

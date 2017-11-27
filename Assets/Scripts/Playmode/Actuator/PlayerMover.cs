@@ -17,18 +17,22 @@ namespace ProjetSynthese
         [SerializeField] private float swimSpeed;
 
         private Rigidbody rigidbody;
+        private DeathCircleDistanceEventChannel deathCircleDistanceEvent;
         public float Speed { get; private set; }
 
         public event MoveEventHandler OnMove;
 
-        private void InjectPlayerMover([RootScope] Rigidbody rigidbody)
+        private void InjectPlayerMover([RootScope] Rigidbody rigidbody,
+                                       [EventChannelScope] DeathCircleDistanceEventChannel deathCircleDistanceEvent)
         {
             this.rigidbody = rigidbody;
+            this.deathCircleDistanceEvent = deathCircleDistanceEvent;
         }
 
         private void Awake()
         {
             InjectDependencies("InjectPlayerMover");
+            deathCircleDistanceEvent.OnEventPublished += UpdateMove;
             rigidbody.rotation = Quaternion.identity;
             Speed = moveSpeed;
         }
@@ -56,6 +60,11 @@ namespace ProjetSynthese
         public void Move(Vector3 direction)
         {
             rigidbody.velocity = direction * Speed;
+            UpdateMove(new DeathCircleDistanceEvent(0, 0, Vector3.zero));
+        }
+
+        public void UpdateMove(DeathCircleDistanceEvent deathCircleDistanceEvent)
+        {
             if (OnMove != null) OnMove();
         }
 

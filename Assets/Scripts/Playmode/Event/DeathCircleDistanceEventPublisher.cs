@@ -32,9 +32,9 @@ namespace ProjetSynthese
             deathCircleController.OnDistanceChanged -= OnDistanceChanged;
         }
 
-        private void OnDistanceChanged(float safeCircleRadius, float deathCircleRadius, float playerRadius)
+        private void OnDistanceChanged(float safeCircleRadius, float deathCircleRadius, Vector3 center)
         {
-            deathCircleDistanceEventChannel.Publish(new DeathCircleDistanceEvent(safeCircleRadius, deathCircleRadius, playerRadius));
+            deathCircleDistanceEventChannel.Publish(new DeathCircleDistanceEvent(safeCircleRadius, deathCircleRadius, center));
         }
     }
 }

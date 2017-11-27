@@ -7,7 +7,7 @@ namespace ProjetSynthese
 {
     public delegate void OnPlayerHurtEventHandler(float hurtPoints);
 
-    public delegate void OnDistanceChangeEventHandler(float safeCircleRadius, float deathCircleRadius, float playerRadius);
+    public delegate void OnDistanceChangeEventHandler(float safeCircleRadius, float deathCircleRadius, Vector3 center);
 
     public delegate void OnDeathCircleStatusUpdateEventHandler();
 
@@ -46,6 +46,7 @@ namespace ProjetSynthese
         private LineRendererCircle deathCircle;
         private TiledMap tiledMap;
         private Phases currentPhase = Phases.Phase1;
+        private Vector3 center = Vector3.zero;
 
         public DeathCircle DeathCircleValues { get { return deathCircleValues; } }
         public LineRendererCircle SafeCircle { get { return safeCircle; } }
@@ -81,6 +82,8 @@ namespace ProjetSynthese
 
             CreateCircle(ref safeCircle, mapDiagonalRadius);
             CreateCircle(ref deathCircle, mapDiagonalRadius);
+
+            center = deathCircle.transform.position;
         }
 
         private void Update()
@@ -91,6 +94,7 @@ namespace ProjetSynthese
                 {
                     timeBeforeMove = deathCircleValues.MoveTimeInSecond[(int) currentPhase];
                     CreateCircle(ref safeCircle, safeCircle.Radius * deathCircleValues.Shrink[(int) currentPhase]);
+                    if (OnDistanceChanged != null) OnDistanceChanged(safeCircle.Radius, deathCircle.Radius, center);
                     isSafeCircleSet = true;
                 }
                 
@@ -106,7 +110,7 @@ namespace ProjetSynthese
                             deathCircle.Radius -= 0.2f;
                             deathCircle.Create();
 
-                            if (OnDistanceChanged != null) OnDistanceChanged(safeCircle.Radius, deathCircle.Radius, playerRadius);
+                            if (OnDistanceChanged != null) OnDistanceChanged(safeCircle.Radius, deathCircle.Radius, center);
 
                             if (deathCircle.Radius <= safeCircle.Radius)
                             {

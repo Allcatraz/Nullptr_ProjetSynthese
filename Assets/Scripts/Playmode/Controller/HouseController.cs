@@ -20,6 +20,7 @@ namespace ProjetSynthese
         {
             InjectDependencies("InjectHouseController");
             playerChangeModeEventChannel.OnEventPublished += OnPlayerChangeMode;
+            OnPlayerChangeMode(new PlayerChangeModeEvent(false));
         }
 
         private void OnDestroy()

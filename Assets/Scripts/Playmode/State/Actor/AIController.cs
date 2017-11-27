@@ -65,7 +65,7 @@ namespace ProjetSynthese
 
         private const float RandomRadiusMoveRange = 5.0f;
 
-        private const float ErrorPositionTolerance = 0.001f;
+        private const float ErrorPositionTolerance = 0.1f;
 
         private const float FloorYOffset = 1.0f;
         private const float SwimYOffset = -1.0f;

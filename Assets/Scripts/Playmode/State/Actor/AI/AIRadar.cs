@@ -47,7 +47,7 @@ namespace ProjetSynthese
             }
         }
 
-        public enum LayerType { None, Default, Item, EquippedItem,Player, AI, Building }
+        public enum LayerType { None, Default, Item, EquippedItem, Player, AI, Building }
 
         public static readonly string[] LayerNames = { "None", "Default", "Item", "EquippedItem", "Player", "AI", "Building" };
 
@@ -99,7 +99,7 @@ namespace ProjetSynthese
             LayerType layerType = LayerType.AI;
             LayerMask layerMask = GetLayerMask(layerType);
             inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
-           
+
             int neareastItemIndex = -1;
             float smallestDistance = float.MaxValue;
             if (inRangeObjects != null)
@@ -132,7 +132,7 @@ namespace ProjetSynthese
                 LayerMask layerMask = GetLayerMask(layerType);
                 inRangeObjects = Physics.SphereCastAll(position, currentPerceptionRange, circleCastDirection, circleCastDistance, layerMask);
             }
-            
+
             return inRangeObjects;
         }
 
@@ -172,19 +172,27 @@ namespace ProjetSynthese
 
         public bool IsGameObjectHasLineOfSight(Vector3 position, PlayerController target)
         {
-            Vector3 direction = Vector3.zero;
-            direction = target.transform.position - position;          
-            return Physics.Raycast(position, direction, currentPerceptionRange);
+            if (target != null)
+            {
+                Vector3 direction = Vector3.zero;
+                direction = target.transform.position - position;
+                Physics.Raycast(position, direction, currentPerceptionRange);
+            }
+            return false;
         }
         //Nécessaire pour disinguer AI opponent et AI ally research vs player
         //plus rapide à cause du ou dans le if de décision ailleurs d'avaoir deux fonctions
         //Évite aussi des vérification de type et casting lents
-        
+
         public bool IsGameObjectHasLineOfSight(Vector3 position, ActorAI target)
         {
-            Vector3 direction = Vector3.zero;
-            direction = target.transform.position - position;
-            return Physics.Raycast(position, direction, currentPerceptionRange);
+            if (target != null)
+            {
+                Vector3 direction = Vector3.zero;
+                direction = target.transform.position - position;
+                return Physics.Raycast(position, direction, currentPerceptionRange);
+            }
+            return false;
         }
 
 

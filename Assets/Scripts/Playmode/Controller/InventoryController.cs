@@ -131,11 +131,14 @@ namespace ProjetSynthese
         public void CreateCellsForInventoryPlayer()
         {
             ClearGrid(gridInventoryPlayer);
-            foreach (ObjectContainedInventory item in inventory.ListInventory)
+            if (inventory.ListInventory != null)
             {
-                InstantiateCellObject(cellInventoryPrefab, gridInventoryPlayer, item);
+                foreach (ObjectContainedInventory item in inventory.ListInventory)
+                {
+                    InstantiateCellObject(cellInventoryPrefab, gridInventoryPlayer, item);
+                }
+                InstantiateInventoryFiller(gridInventoryPlayer);
             }
-            InstantiateInventoryFiller(gridInventoryPlayer);
         }
 
         public void CreateCellsForWeaponByPlayer()
@@ -203,15 +206,12 @@ namespace ProjetSynthese
 
         private void CreateInventoryGround()
         {
-            if (inventory != null)
+            inventoryGround.ResetInventory();
+            List<GameObject> listTemp = sensorItem.GetAllItems(inventory.transform);
+            foreach (GameObject item in listTemp)
             {
-                inventoryGround.ResetInventory();
-                List<GameObject> listTemp = sensorItem.GetAllItems(inventory.transform);
-                foreach (GameObject item in listTemp)
-                {
-                    inventoryGround.Add(item);
-                }
-            }        
+                inventoryGround.Add(item);
+            }    
         }
 
         private void ClearGrid(Transform grid)

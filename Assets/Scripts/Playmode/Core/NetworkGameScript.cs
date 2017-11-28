@@ -71,7 +71,8 @@ namespace ProjetSynthese
 
             grenade.transform.position = spawnPointPosition;
 
-            NetworkServer.Spawn(grenade);
+            //NetworkServer.Spawn(grenade);
+            NetworkServer.SpawnWithClientAuthority(grenade, player.gameObject);
 
             player.GetComponent<PlayerController>().TargetFinishGrenadeThrow(player.connectionToClient, grenade.GetComponent<NetworkIdentity>());
             //player.GetComponent<PlayerController>().RpcFinishGrenadeThrow(grenade.GetComponent<NetworkIdentity>());

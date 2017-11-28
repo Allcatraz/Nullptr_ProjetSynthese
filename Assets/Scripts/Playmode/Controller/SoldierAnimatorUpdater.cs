@@ -162,7 +162,6 @@ namespace ProjetSynthese
 
         public void ThrowGrenade(Grenade grenade)
         {
-
             CmdThrowGrenade(grenade.gameObject.GetComponent<NetworkIdentity>());
         }
 

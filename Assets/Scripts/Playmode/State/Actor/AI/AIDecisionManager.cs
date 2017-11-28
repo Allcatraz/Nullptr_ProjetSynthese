@@ -102,7 +102,7 @@ namespace ProjetSynthese
                 {
                     nextState = AIState.Combat;
                 }
-                else if (brain.ExistVisibleOpponent() || brain.AiInPerceptionRange != null || brain.PlayerInPerceptionRange != null)
+                else if (brain.ExistVisibleOpponent())
                 {
                     if (!brain.HasPrimaryWeaponEquipped)
                     {
@@ -135,12 +135,9 @@ namespace ProjetSynthese
                 {
                     nextState = AIState.DeathCircle;
                 }
-                else if (brain.ExistVisibleOpponent())
+                else if (brain.ExistVisibleOpponent() && !brain.HasPrimaryWeaponEquipped)
                 {
-                    if (!brain.HasPrimaryWeaponEquipped)
-                    {
                         nextState = AIState.Flee;
-                    }
                 }
                 else
                 {
@@ -176,7 +173,7 @@ namespace ProjetSynthese
                 {
                     nextState = AIState.Combat;
                 }
-                else if (brain.ExistVisibleOpponent() || brain.AiInPerceptionRange != null || brain.PlayerInPerceptionRange != null)
+                else if (brain.ExistVisibleOpponent())
                 {
                     if (!brain.HasPrimaryWeaponEquipped)
                     {

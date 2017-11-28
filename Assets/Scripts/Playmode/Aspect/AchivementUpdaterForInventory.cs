@@ -7,19 +7,13 @@ namespace ProjetSynthese
     public class AchivementUpdaterForInventory : GameScript
     {
         private Inventory inventory;
-        private ProtectionOfPlayerRepository protectionOfPlayerRepository;
         private AchivementController achivementController;
-        private AchivementRepository achivementRepository;
 
         private void InjectAchivementUpdaterForInventory([EntityScope] Inventory inventory,
-                                                         [ApplicationScope] ProtectionOfPlayerRepository protectionOfPlayerRepository,
-                                                         [ApplicationScope] AchivementController achivementController,
-                                                         [ApplicationScope] AchivementRepository achivementRepository)
+                                                         [ApplicationScope] AchivementController achivementController)
         {
             this.inventory = inventory;
-            this.protectionOfPlayerRepository = protectionOfPlayerRepository;
             this.achivementController = achivementController;
-            this.achivementRepository = achivementRepository;
         }
 
         public void Awake()
@@ -47,9 +41,7 @@ namespace ProjetSynthese
 
         private void OnProtectionEquipped(ProtectionOfPlayer protectionOfPlayer)
         {
-            protectionOfPlayer.PlayerId = achivementController.GetPlayer().Id;
-            protectionOfPlayerRepository.AddProtectionOfPlayer(protectionOfPlayer);
-            achivementController.CheckAchivements();
+            achivementController.AddProtectionOfPlayer(protectionOfPlayer);
         }
     }
 }

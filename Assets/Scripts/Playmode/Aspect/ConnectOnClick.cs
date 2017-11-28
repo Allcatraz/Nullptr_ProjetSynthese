@@ -19,12 +19,9 @@ namespace ProjetSynthese
         private InputField passwordInput;
 
         private AchivementController achivementController;
-        private PlayerRepository playerRepository;
 
-        private void InjectConnectButton([ApplicationScope] PlayerRepository playerRepository,
-                                            [ApplicationScope] AchivementController achivementController)
+        private void InjectConnectButton([ApplicationScope] AchivementController achivementController)
         {
-            this.playerRepository = playerRepository;
             this.achivementController = achivementController;
         }
 
@@ -46,12 +43,12 @@ namespace ProjetSynthese
         private void OnClick()
         {
             Player playerToConnect = ExtractPlayerFromInputField();
-            Player playerWithNameInDatabase = playerRepository.GetPlayerFromName(playerToConnect);
-            if (playerWithNameInDatabase == null)
+            int feedback = achivementController.CheckPlayerExistAndAddToDatabse(playerToConnect);
+            if (feedback == 1)
             {
                 FeedbackNoUserWithTheName();
             }
-            else if (playerToConnect.Password == playerWithNameInDatabase.Password)
+            else if (feedback == 2)
             {
                 FeedbackSuccesfulConnection(playerToConnect);
             }
@@ -60,6 +57,8 @@ namespace ProjetSynthese
                 FeedbackWrongPassword();
             }
         }
+
+        
 
         private void FeedbackSuccesfulConnection(Player player)
         {

@@ -18,12 +18,12 @@ namespace ProjetSynthese
         [Tooltip("InputField contenant les informations du mot de passe du compte a créer.")]
         [SerializeField]
         private InputField passwordInput;
-        
-        private PlayerRepository playerRepository;
 
-        public void InjectCreateAccountButton([ApplicationScope] PlayerRepository playerRepository)
+        private AchivementController achivementController;
+
+        public void InjectCreateAccountButton([ApplicationScope] AchivementController achivementController)
         {
-            this.playerRepository = playerRepository;
+            this.achivementController = achivementController;
         }
 
         public void Awake()
@@ -44,16 +44,16 @@ namespace ProjetSynthese
         private void OnClick()
         {
             Player playerToAdd = ExtractPlayerFromInputField();
-            if (1 <= playerRepository.CountWithName(playerToAdd))
+            bool addSuccesful = achivementController.AddPlayerToDatabase(playerToAdd);
+            if (addSuccesful)
             {
-                FeedbackWrongName();
+                FeedbackSuccesfulCreation();
             }
             else
             {
-                playerRepository.AddPlayer(ExtractPlayerFromInputField());
-                FeedbackSuccesfulCreation();
+                FeedbackWrongName();
             }
-            
+
         }
 
         private void FeedbackSuccesfulCreation()

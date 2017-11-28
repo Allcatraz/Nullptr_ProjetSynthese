@@ -44,6 +44,43 @@ namespace ProjetSynthese
             return player;
         }
 
+        public bool AddPlayerToDatabase(Player playerToAdd)
+        {
+            if (1 <= playerRepository.CountWithName(playerToAdd))
+            {
+                return false;
+            }
+            else
+            {
+                playerRepository.AddPlayer(playerToAdd);
+                return true;
+            }
+        }
+
+        public void AddProtectionOfPlayer(ProtectionOfPlayer protectionOfPlayer)
+        {
+            protectionOfPlayer.PlayerId = player.Id;
+            protectionOfPlayerRepository.AddProtectionOfPlayer(protectionOfPlayer);
+            CheckAchivements();
+        }
+
+        public int CheckPlayerExistAndAddToDatabse(Player playerToConnect)
+        {
+            Player playerWithNameInDatabase = playerRepository.GetPlayerFromName(playerToConnect);
+            if (playerWithNameInDatabase == null)
+            {
+                return 1;
+            }
+            else if (playerToConnect.Password == playerWithNameInDatabase.Password)
+            {
+                return 2;
+            }
+            else
+            {
+                return 3;
+            }
+        }
+
         public void TriggerFirstWeapon()
         {
             if (player != null)

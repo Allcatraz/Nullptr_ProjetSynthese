@@ -231,6 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 0}
   cratePrefab: {fileID: 0}
+  grenadePrefab: {fileID: 0}
   type: 4
   explosionPrefab: {fileID: 131164, guid: 3c5f4e32698bdb04eaed647f60310510, type: 2}
   explosionTime: 5
@@ -246,9 +247,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.2
+  m_SendInterval: 0.033333335
   m_SyncRotationAxis: 7
-  m_RotationSyncCompression: 0
+  m_RotationSyncCompression: 2
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
   m_VelocityThreshold: 0.0001

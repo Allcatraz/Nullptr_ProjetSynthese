@@ -182,32 +182,36 @@ namespace DigitalRuby.PyroParticles
             Collider[] objects = UnityEngine.Physics.OverlapSphere(pos, radius, layerMask);
             foreach (Collider collider in objects)
             {
-                Rigidbody r = collider.GetComponent<Rigidbody>();
-                if (r != null)
+                if (collider.isTrigger == false)
                 {
-                    bool isAI = false;
-
-                    r.AddExplosionForce(force, pos, radius);
-                    if (collider.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Player) || collider.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
+                    Rigidbody r = collider.GetComponent<Rigidbody>();
+                    if (r != null)
                     {
-                        Health health = collider.gameObject.GetComponentInChildren<Health>();
+                        bool isAI = false;
 
-                        IInventory inventoryController = collider.gameObject.GetComponentInChildren<ProjetSynthese.PlayerController>();
-                        if (inventoryController == null)
+                        r.AddExplosionForce(force, pos, radius);
+                        if (collider.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Player) || collider.gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Ai))
                         {
-                            inventoryController = collider.gameObject.GetComponentInChildren<ActorAI>();
-                            isAI = true;
-                        }
-                        if (health != null && collider.gameObject.GetComponent<NetworkBehaviour>().isLocalPlayer)
-                        {
-                            Item[] protectionItems = inventoryController.GetProtections();
-                            float helmetProtection = protectionItems[0] == null ? 0 : ((Helmet)protectionItems[0]).ProtectionValue;
-                            float vestProtection = protectionItems[1] == null ? 0 : ((Vest)protectionItems[1]).ProtectionValue;
-                            float dist = 95 - Vector3.Distance(collider.transform.position, pos);
-                            health.Hit(dist - (dist * ((helmetProtection + vestProtection) / 100)), isAI); 
+                            Health health = collider.gameObject.GetComponentInChildren<Health>();
+
+                            IInventory inventoryController = collider.gameObject.GetComponentInChildren<ProjetSynthese.PlayerController>();
+                            if (inventoryController == null)
+                            {
+                                inventoryController = collider.gameObject.GetComponentInChildren<ActorAI>();
+                                isAI = true;
+                            }
+                            if (health != null && collider.gameObject.GetComponent<NetworkBehaviour>().isLocalPlayer)
+                            {
+                                Item[] protectionItems = inventoryController.GetProtections();
+                                float helmetProtection = protectionItems[0] == null ? 0 : ((Helmet)protectionItems[0]).ProtectionValue;
+                                float vestProtection = protectionItems[1] == null ? 0 : ((Vest)protectionItems[1]).ProtectionValue;
+                                float dist = 95 - Vector3.Distance(collider.transform.position, pos);
+                                health.Hit(dist - (dist * ((helmetProtection + vestProtection) / 100)), isAI);
+                            }
                         }
                     }
                 }
+
             }
         }
 

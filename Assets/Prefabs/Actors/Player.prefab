@@ -109,7 +109,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4927863986204956}
-  - component: {fileID: 65848275932732884}
   m_Layer: 8
   m_Name: Soldier_marine
   m_TagString: Untagged
@@ -432,6 +431,7 @@ GameObject:
   - component: {fileID: 114670875352537290}
   - component: {fileID: 114007633270102854}
   - component: {fileID: 65726999585969710}
+  - component: {fileID: 65440235970690740}
   - component: {fileID: 114199910577703988}
   - component: {fileID: 114211786471674650}
   - component: {fileID: 114530595359914134}
@@ -1272,6 +1272,18 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 54c59f8780aaa2f4ebdae0e8027edf29, type: 3}
+--- !u!65 &65440235970690740
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509576154526796}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 3.47338, z: 1.1255}
+  m_Center: {x: 0, y: 1.7, z: 0.058}
 --- !u!65 &65726999585969710
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1283,18 +1295,6 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 4, z: 1.1255}
-  m_Center: {x: 0, y: 1.7, z: 0.058}
---- !u!65 &65848275932732884
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1152912511823758}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 3.47338, z: 1.1255}
   m_Center: {x: 0, y: 1.7, z: 0.058}
 --- !u!81 &81580336282396766
 AudioListener:
@@ -1680,7 +1680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 95720924934703336}
-  m_ParameterSendBits: 0
+  m_ParameterSendBits: 63
   param0: 
   param1: 
   param2: 

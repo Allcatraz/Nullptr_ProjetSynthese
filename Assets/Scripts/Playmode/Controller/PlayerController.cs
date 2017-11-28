@@ -375,13 +375,24 @@ namespace ProjetSynthese
             }
             else if ((object)currentWeapon != null)
             {
-                soldierAnimatorUpdater.Shoot();
                 if (currentWeapon.Use())
                 {
+                    soldierAnimatorUpdater.Shoot();
                     CmdSpawnBullet(currentWeapon.SpawnPoint.transform.position, currentWeapon.SpawnPoint.transform.rotation,
                                    currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage, networkIdentity);
                 }
             }
+        }
+
+        [ClientRpc]
+        public void RpcFinishGrenadeThrow(NetworkIdentity grenade)
+        {
+            Grenade newGrenade = grenade.GetComponent<Grenade>();
+            newGrenade.Throw(networkIdentity, grenadeThrowingForce + GetComponentInChildren<PlayerMover>().Speed);
+            soldierAnimatorUpdater.ThrowGrenade(newGrenade);
+            inventory.RemoveThrownGrenade();
+            currentGrenade = null;
+            isHoldingGrenade = false;
         }
 
         [TargetRpc]

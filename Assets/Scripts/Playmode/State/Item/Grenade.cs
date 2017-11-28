@@ -106,7 +106,6 @@ namespace ProjetSynthese
             {
                 grenade.transform.SetParent(null);
             }
-
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ProjetSynthese
         #region Parameters
         private const float ErrorCirclesGapTolerance = 0.001f;
         private const float LifeFleeThresholdFactor = 0.20f;
-        private readonly float LifeFleeThreshold;
+        public readonly float LifeFleeThreshold;
         private float lastLifePointLevel;
         private const float ErrorLifeTolerance = 0.001f;
         private const float MaxUsefulStoredHealItem = 5.0f;
@@ -26,6 +26,7 @@ namespace ProjetSynthese
 
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
+        public readonly AIDecisionManager decisionManager;
 
         public enum OpponentType { None, AI, Player };
         #endregion
@@ -136,6 +137,7 @@ namespace ProjetSynthese
         {
             this.Actor = actor;
             this.goalEvaluator = new GoalEvaluator(actor);
+            this.decisionManager = new AIDecisionManager(actor,this);
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
             ResetActualPerception();
@@ -151,318 +153,330 @@ namespace ProjetSynthese
             UpdateWeaponKnowledge();
             UpdateProtectionKnowledge();
             UpdateSupportKnowledge();
-            switch (currentState)
-            {
-                case AIState.Dead:
-                    nextState = ChooseANewStateFromDeadState();
-                    break;
-                case AIState.Explore:
-                    nextState = ChooseANewStateFromExploreState();
-                    break;
-                case AIState.Loot:
-                    nextState = ChooseANewStateFromLootState();
-                    break;
-                case AIState.Hunt:
-                    nextState = ChooseANewStateFromHuntState();
-                    break;
-                case AIState.Combat:
-                    nextState = ChooseANewStateFromCombatState();
-                    break;
-                case AIState.Flee:
-                    nextState = ChooseANewStateFromFleeState();
-                    break;
-                case AIState.DeathCircle:
-                    nextState = ChooseANewStateFromDeathCircleState();
-                    break;
-                default:
-                    break;
-            }
-
-            return nextState;
-        }
-
-        private AIState ChooseANewStateFromDeadState()
-        {
-            AIState nextState = AIState.Dead;
-            return nextState;
-        }
-
-        private AIState ChooseANewStateFromExploreState()
-        {
-
-            AIState nextState = AIState.None;
-            nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            if (nextState == AIState.None)
-            {
-                if (ExistVisibleOpponent())
-                {
-                    if (!hasPrimaryWeaponEquipped)
-                    {
-                        if (!FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
-                    }
-                    else
-                    {
-                        nextState = AIState.Hunt;
-                    }
-                }
-                else if (FoundItemInPerceptionRange())
-                {
-                    nextState = AIState.Loot;
-                }
-            }
-
-            if (nextState == AIState.None)
-            {
-                nextState = AIState.Explore;
-            }
-            return nextState;
-        }
-
-        private AIState ChooseANewStateFromHuntState()
-        {
-            AIState nextState = AIState.None;
-            nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            if (nextState == AIState.None)
-            {
-                if (ExistVisibleOpponent())
-                {
-                    if (!hasPrimaryWeaponEquipped)
-                    {
-                        if (!FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
-                    }
-                    else
-                    {
-                        if (ExistShootableOpponent())
-                        {
-                            nextState = AIState.Combat;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
-
-                    }
-                }
-                else if (FoundItemInPerceptionRange())
-                {
-                    nextState = AIState.Loot;
-                }
-            }
-            if (nextState == AIState.None)
-            {
-                nextState = AIState.Explore;
-            }
-
-            return nextState;
-        }
-
-        private AIState ChooseANewStateFromLootState()
-        {
-            AIState nextState = AIState.None;
-            nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            if (nextState == AIState.None)
-            {
-                if (ExistVisibleOpponent())
-                {
-                    if (!hasPrimaryWeaponEquipped)
-                    {
-                        if (!FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                    }
-                    else
-                    {
-                        nextState = AIState.Hunt;
-                    }
-                }
-                else
-                {
-                    UpdateItemLootKnowledge();
-                    if (itemInPerceptionRange != null)
-                    {
-                        nextState = AIState.Loot;
-                    }
-                    else if (FoundItemInPerceptionRange())
-                    {
-                        nextState = AIState.Loot;
-                    }
-                    else
-                    {
-                        nextState = AIState.Explore;
-                    }
-                }
-            }
-            return nextState;
-        }
-
-        private AIState ChooseANewStateFromCombatState()
-        {
-            AIState nextState = AIState.None;
-
-            nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            if (nextState == AIState.None)
-            {
-                if (ExistShootableOpponent())
-                {
-                    nextState = AIState.Combat;
-                }
-                else if (ExistVisibleOpponent())
-                {
-                    if (!hasPrimaryWeaponEquipped)
-                    {
-                        if (!FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
-                    }
-                    else
-                    {
-                        nextState = AIState.Hunt;
-                    }
-                }
-                else if (FoundItemInPerceptionRange())
-                {
-                    nextState = AIState.Loot;
-                }
-                else
-                {
-                    nextState = AIState.Explore;
-                }
-            }
-
-            return nextState;
-        }
-
-        private AIState ChooseANewStateFromFleeState()
-        {
-            AIState nextState = AIState.None;
-            nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            if (nextState == AIState.None)
-            {
-                if (ExistVisibleOpponent())
-                {
-                    if (!hasPrimaryWeaponEquipped)
-                    {
-                        if (!FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
-                    }
-                    else
-                    {
-                        nextState = AIState.Hunt;
-                    }
-                }
-                else if (FoundItemInPerceptionRange())
-                {
-                    nextState = AIState.Loot;
-                }
-            }
-
-            if (nextState == AIState.None)
-            {
-                nextState = AIState.Explore;
-            }
-
-            return nextState;
-        }
-
-        private AIState ChooseANewStateFromDeathCircleState()
-        {
-            AIState nextState = AIState.None;
-            if (InjuredByDeathCircle || DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            else
-            {
-                nextState = AIState.Explore;
-            }
-            return nextState;
-            //AIState nextState = AIState.None;
-            //nextState = HasBeenInjuredRelatedStateCheck();
-            //if (nextState == AIState.None && DeathCircleIsClosing)
+            return decisionManager.WhatIsMyNextState(currentState);
+            //switch (currentState)
             //{
-            //    nextState = AIState.DeathCircle;
-            //}
-            //if (nextState == AIState.None)
-            //{
-            //    if (ExistVisibleOpponent())
-            //    {
-            //        if (!hasPrimaryWeaponEquipped)
-            //        {
-            //            if (!FoundItemInPerceptionRange())
-            //            {
-            //                nextState = AIState.Flee;
-            //            }
-            //            else
-            //            {
-            //                nextState = AIState.Hunt;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            nextState = AIState.Hunt;
-            //        }
-            //    }
-            //    else if (FoundItemInPerceptionRange())
-            //    {
-            //        nextState = AIState.Loot;
-            //    }
+            //    case AIState.Dead:
+            //        nextState = ChooseANewStateFromDeadState();
+            //        break;
+            //    case AIState.Explore:
+            //        nextState = ChooseANewStateFromExploreState();
+            //        break;
+            //    case AIState.Loot:
+            //        nextState = ChooseANewStateFromLootState();
+            //        break;
+            //    case AIState.Hunt:
+            //        nextState = ChooseANewStateFromHuntState();
+            //        break;
+            //    case AIState.Combat:
+            //        nextState = ChooseANewStateFromCombatState();
+            //        break;
+            //    case AIState.Flee:
+            //        nextState = ChooseANewStateFromFleeState();
+            //        break;
+            //    case AIState.DeathCircle:
+            //        nextState = ChooseANewStateFromDeathCircleState();
+            //        break;
+            //    default:
+            //        break;
             //}
 
-            //if (nextState == AIState.None)
-            //{
-            //    nextState = AIState.Explore;
-            //}
-
-            return nextState;
+            //return nextState;
         }
 
-        private bool HasBeenInjured()
+        //private AIState ChooseANewStateFromDeadState()
+        //{
+        //    AIState nextState = AIState.Dead;
+        //    return nextState;
+        //}
+
+        //private AIState ChooseANewStateFromExploreState()
+        //{
+
+        //    AIState nextState = AIState.None;
+        //    nextState = HasBeenInjuredRelatedStateCheck();
+        //    if (nextState == AIState.None && DeathCircleIsClosing)
+        //    {
+        //        nextState = AIState.DeathCircle;
+        //    }
+        //    if (nextState == AIState.None)
+        //    {
+        //        if (ExistVisibleOpponent())
+        //        {
+        //            if (!hasPrimaryWeaponEquipped)
+        //            {
+        //                if (!FoundItemInPerceptionRange())
+        //                {
+        //                    nextState = AIState.Flee;
+        //                }
+        //                else
+        //                {
+        //                    nextState = AIState.Hunt;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                nextState = AIState.Hunt;
+        //            }
+        //        }
+        //        else if (FoundItemInPerceptionRange())
+        //        {
+        //            nextState = AIState.Loot;
+        //        }
+        //    }
+
+        //    if (nextState == AIState.None)
+        //    {
+        //        nextState = AIState.Explore;
+        //    }
+        //    return nextState;
+        //}
+
+        //private AIState ChooseANewStateFromHuntState()
+        //{
+        //    AIState nextState = AIState.None;
+        //    nextState = HasBeenInjuredRelatedStateCheck();
+        //    if (nextState == AIState.None && DeathCircleIsClosing)
+        //    {
+        //        nextState = AIState.DeathCircle;
+        //    }
+        //    if (nextState == AIState.None)
+        //    {
+        //        if (ExistVisibleOpponent())
+        //        {
+        //            if (!hasPrimaryWeaponEquipped)
+        //            {
+        //                if (!FoundItemInPerceptionRange())
+        //                {
+        //                    nextState = AIState.Flee;
+        //                }
+        //                else
+        //                {
+        //                    nextState = AIState.Hunt;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (ExistShootableOpponent())
+        //                {
+        //                    nextState = AIState.Combat;
+        //                }
+        //                else
+        //                {
+        //                    nextState = AIState.Hunt;
+        //                }
+
+        //            }
+        //        }
+        //        else if (FoundItemInPerceptionRange())
+        //        {
+        //            nextState = AIState.Loot;
+        //        }
+        //    }
+        //    if (nextState == AIState.None)
+        //    {
+        //        nextState = AIState.Explore;
+        //    }
+
+        //    return nextState;
+        //}
+
+        //private AIState ChooseANewStateFromLootState()
+        //{
+        //    AIState nextState = AIState.None;
+        //    nextState = HasBeenInjuredRelatedStateCheck();
+        //    if (nextState == AIState.None && DeathCircleIsClosing)
+        //    {
+        //        nextState = AIState.DeathCircle;
+        //    }
+        //    if (nextState == AIState.None)
+        //    {
+        //        if (ExistVisibleOpponent())
+        //        {
+        //            if (!hasPrimaryWeaponEquipped)
+        //            {
+        //                if (!FoundItemInPerceptionRange())
+        //                {
+        //                    nextState = AIState.Flee;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                nextState = AIState.Hunt;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            UpdateItemLootKnowledge();
+        //            if (itemInPerceptionRange != null)
+        //            {
+        //                nextState = AIState.Loot;
+        //            }
+        //            else if (FoundItemInPerceptionRange())
+        //            {
+        //                nextState = AIState.Loot;
+        //            }
+        //            else
+        //            {
+        //                nextState = AIState.Explore;
+        //            }
+        //        }
+        //    }
+        //    return nextState;
+        //}
+
+        //private AIState ChooseANewStateFromCombatState()
+        //{
+        //    AIState nextState = AIState.None;
+
+        //    nextState = HasBeenInjuredRelatedStateCheck();
+        //    if (nextState == AIState.None && DeathCircleIsClosing)
+        //    {
+        //        nextState = AIState.DeathCircle;
+        //    }
+        //    if (nextState == AIState.None)
+        //    {
+        //        if (ExistShootableOpponent())
+        //        {
+        //            nextState = AIState.Combat;
+        //        }
+        //        else if (ExistVisibleOpponent())
+        //        {
+        //            if (!hasPrimaryWeaponEquipped)
+        //            {
+        //                if (!FoundItemInPerceptionRange())
+        //                {
+        //                    nextState = AIState.Flee;
+        //                }
+        //                else
+        //                {
+        //                    nextState = AIState.Hunt;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                nextState = AIState.Hunt;
+        //            }
+        //        }
+        //        else if (FoundItemInPerceptionRange())
+        //        {
+        //            nextState = AIState.Loot;
+        //        }
+        //        else
+        //        {
+        //            nextState = AIState.Explore;
+        //        }
+        //    }
+
+        //    return nextState;
+        //}
+
+        //private AIState ChooseANewStateFromFleeState()
+        //{
+        //    AIState nextState = AIState.None;
+        //    nextState = HasBeenInjuredRelatedStateCheck();
+        //    if (nextState == AIState.None && DeathCircleIsClosing)
+        //    {
+        //        nextState = AIState.DeathCircle;
+        //    }
+        //    if (nextState == AIState.None)
+        //    {
+        //        if (ExistVisibleOpponent())
+        //        {
+        //            if (!hasPrimaryWeaponEquipped)
+        //            {
+        //                if (!FoundItemInPerceptionRange())
+        //                {
+        //                    nextState = AIState.Flee;
+        //                }
+        //                else
+        //                {
+        //                    nextState = AIState.Hunt;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                nextState = AIState.Hunt;
+        //            }
+        //        }
+        //        else if (FoundItemInPerceptionRange())
+        //        {
+        //            nextState = AIState.Loot;
+        //        }
+        //    }
+
+        //    if (nextState == AIState.None)
+        //    {
+        //        nextState = AIState.Explore;
+        //    }
+
+        //    return nextState;
+        //}
+
+        //private AIState ChooseANewStateFromDeathCircleState()
+        //{
+        //    AIState nextState = AIState.None;
+        //    if (InjuredByDeathCircle)
+        //    {
+        //        nextState = AIState.DeathCircle;
+        //    }
+        //    else if(DeathCircleIsClosing)
+        //    {
+        //        if (CurrentDistanceOutsideSafeCircle > 0.0f)
+        //        {
+        //            nextState = AIState.DeathCircle;
+        //        }
+        //        else
+        //        {
+        //            nextState = AIState.Explore;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        nextState = AIState.Explore;
+        //    }
+        //    return nextState;
+        //    //AIState nextState = AIState.None;
+        //    //nextState = HasBeenInjuredRelatedStateCheck();
+        //    //if (nextState == AIState.None && DeathCircleIsClosing)
+        //    //{
+        //    //    nextState = AIState.DeathCircle;
+        //    //}
+        //    //if (nextState == AIState.None)
+        //    //{
+        //    //    if (ExistVisibleOpponent())
+        //    //    {
+        //    //        if (!hasPrimaryWeaponEquipped)
+        //    //        {
+        //    //            if (!FoundItemInPerceptionRange())
+        //    //            {
+        //    //                nextState = AIState.Flee;
+        //    //            }
+        //    //            else
+        //    //            {
+        //    //                nextState = AIState.Hunt;
+        //    //            }
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            nextState = AIState.Hunt;
+        //    //        }
+        //    //    }
+        //    //    else if (FoundItemInPerceptionRange())
+        //    //    {
+        //    //        nextState = AIState.Loot;
+        //    //    }
+        //    //}
+
+        //    //if (nextState == AIState.None)
+        //    //{
+        //    //    nextState = AIState.Explore;
+        //    //}
+
+        //    return nextState;
+        //}
+
+        public bool HasBeenInjured()
         {
             if ((lastLifePointLevel - Actor.AIHealth.HealthPoints) > ErrorLifeTolerance)
             {
@@ -589,7 +603,7 @@ namespace ProjetSynthese
             aiInPerceptionRange = opponnentAI;
         }
 
-        private void UpdateItemLootKnowledge()
+        public void UpdateItemLootKnowledge()
         {
             if (itemInPerceptionRange != null)
             {
@@ -606,36 +620,7 @@ namespace ProjetSynthese
         }
 
 
-        private AIState HasBeenInjuredRelatedStateCheck()
-        {
-            AIState nextState = AIState.None;
-            if (HasBeenInjured() || InjuredByDeathCircle)
-            {
-                if (Actor.AIHealth.HealthPoints < 0.0f)
-                {
-                    nextState = AIState.Dead;
-                }
-                else if (InjuredByDeathCircle)
-                {
-                    InjuredByDeathCircle = false;
-                    nextState = AIState.DeathCircle;
-                }
-                else if (Actor.AIHealth.HealthPoints < LifeFleeThreshold)
-                {
-                    nextState = AIState.Flee;
-                }
-                else if (ExistShootableOpponent())
-                {
-                    nextState = AIState.Combat;
-                }
-                else
-                {
-                    nextState = AIState.Hunt;
-                }
-            }
-
-            return nextState;
-        }
+        
 
         private void UpdateWeaponKnowledge()
         {

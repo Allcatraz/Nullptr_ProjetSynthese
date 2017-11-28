@@ -33,8 +33,8 @@ namespace ProjetSynthese
 
         private void Awake()
         {
-            animator = GetComponentInParent<Animator>();
-            networkAnimator = GetComponentInParent<NetworkAnimator>();
+            animator = GetComponent<Animator>();
+            networkAnimator = GetComponent<NetworkAnimator>();
 
 
             for (int i = 0; i < numberOfParamsToSync; i++)
@@ -143,6 +143,7 @@ namespace ProjetSynthese
 
         public void Shoot()
         {
+            shootingLayerInterpolationFactors.isInterpolating = false;
             CmdShoot();
         }
 
@@ -155,7 +156,6 @@ namespace ProjetSynthese
         [ClientRpc]
         private void RpcShoot()
         {
-            shootingLayerInterpolationFactors.isInterpolating = false;
             animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 1);
             animator.Play("assault_combat_shoot", -1, 0f);
         }

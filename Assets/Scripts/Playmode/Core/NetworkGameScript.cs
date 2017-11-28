@@ -69,7 +69,7 @@ namespace ProjetSynthese
         {
             GameObject grenade = Instantiate(grenadePrefab);
             grenade.transform.position = spawnPointPosition;
-            NetworkServer.Spawn(grenade);
+            NetworkServer.SpawnWithClientAuthority(grenade, player.gameObject);
             player.GetComponent<PlayerController>().TargetFinishGrenadeThrow(player.connectionToClient, grenade.GetComponent<NetworkIdentity>());
         }
 

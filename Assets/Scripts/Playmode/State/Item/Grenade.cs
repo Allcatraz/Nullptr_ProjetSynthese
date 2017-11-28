@@ -11,6 +11,7 @@ namespace ProjetSynthese
         private const int Weight = 6;
         private const float Drag = 0.5f;
 
+
         [SerializeField]
         [Tooltip("Le prefab de l'explosion lorsque la grenade explose")]
         private GameObject explosionPrefab;
@@ -18,6 +19,8 @@ namespace ProjetSynthese
         [SerializeField]
         [Tooltip("Le temps avant que la grenade explose après avoir été lancée")]
         private float explosionTime;
+
+        private bool grenadeHasBeenThrowned = false;
 
         public override int GetWeight()
         {
@@ -32,6 +35,7 @@ namespace ProjetSynthese
             CmdChangeGrenadeParentAndResetPositioIfParentNotNull(grenadeIdentity, identity);
             CmdSetForce(grenadeIdentity, force);
             CmdDestroygrenade(grenadeIdentity, explosionTime);
+            grenadeHasBeenThrowned = true;
         }
 
         public override void Release()
@@ -45,19 +49,10 @@ namespace ProjetSynthese
 
         private void OnDestroy()
         {
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        }
-
-        [Command]
-        private void CmdRelease(NetworkIdentity grenade, float force, float drag)
-        {
-            RpcRelease(grenade, force, drag);
-        }
-
-        [ClientRpc]
-        private void RpcRelease(NetworkIdentity grenade, float force, float drag)
-        {
-
+            if (grenadeHasBeenThrowned == true)
+            {
+                Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            }
         }
 
         [Command]
@@ -84,9 +79,6 @@ namespace ProjetSynthese
             grenade.GetComponent<Grenade>().force = force;
         }
 
-
-
-
         [Command]
         private void CmdChangeGrenadeParentAndResetPositioIfParentNotNull(NetworkIdentity grenade, NetworkIdentity identity)
         {
@@ -106,7 +98,6 @@ namespace ProjetSynthese
             {
                 grenade.transform.SetParent(null);
             }
-
         }
     }
 }

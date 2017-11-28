@@ -5,6 +5,7 @@ namespace ProjetSynthese
     {
         private readonly AIBrain brain;
         private readonly ActorAI actor;
+
         public AIDecisionManager(ActorAI actor, AIBrain brain)
         {
             this.brain = brain;
@@ -56,7 +57,7 @@ namespace ProjetSynthese
             nextState = HasBeenInjuredRelatedStateCheck();
             if (nextState == AIState.None)
             {
-                if (brain.DeathCircleIsClosing)
+                if (NeedToEscapeClosingDeathCircle())
                 {
                     nextState = AIState.DeathCircle;
                 }
@@ -93,7 +94,7 @@ namespace ProjetSynthese
             nextState = HasBeenInjuredRelatedStateCheck();
             if (nextState == AIState.None)
             {
-                if (brain.DeathCircleIsClosing)
+                if (NeedToEscapeClosingDeathCircle())
                 {
                     nextState = AIState.DeathCircle;
                 }
@@ -130,7 +131,7 @@ namespace ProjetSynthese
             nextState = HasBeenInjuredRelatedStateCheck();
             if (nextState == AIState.None)
             {
-                if (brain.DeathCircleIsClosing)
+                if (NeedToEscapeClosingDeathCircle())
                 {
                     nextState = AIState.DeathCircle;
                 }
@@ -167,7 +168,7 @@ namespace ProjetSynthese
             nextState = HasBeenInjuredRelatedStateCheck();
             if (nextState == AIState.None)
             {
-                if (brain.DeathCircleIsClosing)
+                if (NeedToEscapeClosingDeathCircle())
                 {
                     nextState = AIState.DeathCircle;
                 }
@@ -200,7 +201,7 @@ namespace ProjetSynthese
             nextState = HasBeenInjuredRelatedStateCheck();
             if (nextState == AIState.None)
             {
-                if (brain.DeathCircleIsClosing)
+                if (NeedToEscapeClosingDeathCircle())
                 {
                     nextState = AIState.DeathCircle;
                 }
@@ -234,16 +235,9 @@ namespace ProjetSynthese
                     nextState = AIState.DeathCircle;
                     brain.InjuredByDeathCircle = false;
                 }
-                else if (brain.DeathCircleIsClosing)
+                else if (NeedToEscapeClosingDeathCircle())
                 {
-                    if (brain.CurrentDistanceOutsideSafeCircle > 0.0f)
-                    {
-                        nextState = AIState.DeathCircle;
-                    }
-                    else
-                    {
-                        nextState = AIState.Explore;
-                    }
+                    nextState = AIState.DeathCircle;
                 }
                 else
                 {
@@ -273,6 +267,19 @@ namespace ProjetSynthese
                 }
             }
             return nextState;
+        }
+
+        public bool NeedToEscapeClosingDeathCircle()
+        {
+            bool needToEscape = false;
+            if (brain.DeathCircleIsClosing)
+            {
+                if (brain.CurrentDistanceOutsideSafeCircle > 0.0f)
+                {
+                    needToEscape = true;
+                }
+            }
+            return needToEscape;
         }
     }
 }

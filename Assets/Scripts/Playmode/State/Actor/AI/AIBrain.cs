@@ -846,27 +846,6 @@ namespace ProjetSynthese
             safeCirclePosition.x = DeathCircleCenterPosition.x;
             safeCirclePosition.y = DeathCircleCenterPosition.z;
             CurrentDistanceOutsideSafeCircle = Vector2.Distance(aiPosition, safeCirclePosition) - SafeCircleRadius;
-            //{
-
-            //    deathCircleIsClosing = true;
-            //}
-            //else
-            //{
-            //    deathCircleIsClosing = false;
-            //}
-        }
-
-        //private bool NeedToEscapeClosingDeathCircle()
-        //{
-        //    bool needToEscape = false;
-        //    if (deathCircleIsClosing)
-        //    {
-        //        if (CurrentDistanceOutsideSafeCircle > 0.0f)
-        //        {
-        //            needToEscape = true;
-        //        }
-        //    }
-        //    return needToEscape;
-        //}
+         }
     }
 }

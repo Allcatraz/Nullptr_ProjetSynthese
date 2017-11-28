@@ -384,17 +384,6 @@ namespace ProjetSynthese
             }
         }
 
-        [ClientRpc]
-        public void RpcFinishGrenadeThrow(NetworkIdentity grenade)
-        {
-            Grenade newGrenade = grenade.GetComponent<Grenade>();
-            newGrenade.Throw(networkIdentity, grenadeThrowingForce + GetComponentInChildren<PlayerMover>().Speed);
-            soldierAnimatorUpdater.ThrowGrenade(newGrenade);
-            inventory.RemoveThrownGrenade();
-            currentGrenade = null;
-            isHoldingGrenade = false;
-        }
-
         [TargetRpc]
         public void TargetFinishGrenadeThrow(NetworkConnection connection, NetworkIdentity grenade)
         {

@@ -177,46 +177,34 @@ namespace ProjetSynthese
         private AIState ChooseANewStateFromCombatState()
         {
             AIState nextState = AIState.None;
-
-            //nextState = HasBeenInjuredRelatedStateCheck();
-            //if (nextState == AIState.None && brain.DeathCircleIsClosing)
-            //{
-            //    nextState = AIState.DeathCircle;
-            //}
-            //if (nextState == AIState.None)
-            //{
-            //    if (brain.ExistShootableOpponent())
-            //    {
-            //        nextState = AIState.Combat;
-            //    }
-            //    else if (brain.ExistVisibleOpponent())
-            //    {
-            //        if (!brain.HasPrimaryWeaponEquipped)
-            //        {
-            //            if (!brain.FoundItemInPerceptionRange())
-            //            {
-            //                nextState = AIState.Flee;
-            //            }
-            //            else
-            //            {
-            //                nextState = AIState.Hunt;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            nextState = AIState.Hunt;
-            //        }
-            //    }
-            //    else if (brain.FoundItemInPerceptionRange())
-            //    {
-            //        nextState = AIState.Loot;
-            //    }
-            //    else
-            //    {
-            //        nextState = AIState.Explore;
-            //    }
-            //}
-
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
+            {
+                if (brain.InjuredByDeathCircle)
+                {
+                    nextState = AIState.DeathCircle;
+                    brain.InjuredByDeathCircle = false;
+                }
+                else if (brain.ExistShootableOpponent())
+                {
+                    nextState = AIState.Combat;
+                }
+                else if (brain.ExistVisibleOpponent() || brain.AiInPerceptionRange != null || brain.PlayerInPerceptionRange != null)
+                {
+                    if (!brain.HasPrimaryWeaponEquipped)
+                    {
+                        nextState = AIState.Flee;
+                    }
+                    else
+                    {
+                        nextState = AIState.Hunt;
+                    }
+                }
+                else
+                {
+                    nextState = AIState.Explore;
+                }
+            }
             return nextState;
         }
 

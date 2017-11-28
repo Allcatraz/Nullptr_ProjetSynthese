@@ -5,7 +5,7 @@ namespace ProjetSynthese
     {
         private readonly AIBrain brain;
         private readonly ActorAI actor;
-        public AIDecisionManager(ActorAI actor,AIBrain brain)
+        public AIDecisionManager(ActorAI actor, AIBrain brain)
         {
             this.brain = brain;
             this.actor = actor;
@@ -13,7 +13,7 @@ namespace ProjetSynthese
         public AIState WhatIsMyNextState(AIState currentState)
         {
             AIState nextState = currentState;
-            
+
             switch (currentState)
             {
                 case AIState.Dead:
@@ -52,27 +52,23 @@ namespace ProjetSynthese
 
         private AIState ChooseANewStateFromExploreState()
         {
-
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && brain.DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
             if (nextState == AIState.None)
             {
-                if (brain.ExistVisibleOpponent())
+                if (brain.DeathCircleIsClosing)
+                {
+                    nextState = AIState.DeathCircle;
+                }
+                else if (brain.ExistVisibleOpponent())
                 {
                     if (!brain.HasPrimaryWeaponEquipped)
                     {
-                        if (!brain.FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
+                        nextState = AIState.Flee;
+                    }
+                    else if (brain.ExistShootableOpponent())
+                    {
+                        nextState = AIState.Combat;
                     }
                     else
                     {
@@ -83,11 +79,10 @@ namespace ProjetSynthese
                 {
                     nextState = AIState.Loot;
                 }
-            }
-
-            if (nextState == AIState.None)
-            {
-                nextState = AIState.Explore;
+                else
+                {
+                    nextState = AIState.Explore;
+                }
             }
             return nextState;
         }
@@ -95,48 +90,48 @@ namespace ProjetSynthese
         private AIState ChooseANewStateFromHuntState()
         {
             AIState nextState = AIState.None;
-            nextState =HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && brain.DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            if (nextState == AIState.None)
-            {
-                if (brain.ExistVisibleOpponent())
-                {
-                    if (!brain.HasPrimaryWeaponEquipped)
-                    {
-                        if (!brain.FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
-                    }
-                    else
-                    {
-                        if (brain.ExistShootableOpponent())
-                        {
-                            nextState = AIState.Combat;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
+            //nextState =HasBeenInjuredRelatedStateCheck();
+            //if (nextState == AIState.None && brain.DeathCircleIsClosing)
+            //{
+            //    nextState = AIState.DeathCircle;
+            //}
+            //if (nextState == AIState.None)
+            //{
+            //    if (brain.ExistVisibleOpponent())
+            //    {
+            //        if (!brain.HasPrimaryWeaponEquipped)
+            //        {
+            //            if (!brain.FoundItemInPerceptionRange())
+            //            {
+            //                nextState = AIState.Flee;
+            //            }
+            //            else
+            //            {
+            //                nextState = AIState.Hunt;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            if (brain.ExistShootableOpponent())
+            //            {
+            //                nextState = AIState.Combat;
+            //            }
+            //            else
+            //            {
+            //                nextState = AIState.Hunt;
+            //            }
 
-                    }
-                }
-                else if (brain.FoundItemInPerceptionRange())
-                {
-                    nextState = AIState.Loot;
-                }
-            }
-            if (nextState == AIState.None)
-            {
-                nextState = AIState.Explore;
-            }
+            //        }
+            //    }
+            //    else if (brain.FoundItemInPerceptionRange())
+            //    {
+            //        nextState = AIState.Loot;
+            //    }
+            //}
+            //if (nextState == AIState.None)
+            //{
+            nextState = AIState.Explore;
+            //}
 
             return nextState;
         }
@@ -145,24 +140,18 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
             nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && brain.DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
             if (nextState == AIState.None)
             {
-                if (brain.ExistVisibleOpponent())
+                if (brain.InjuredByDeathCircle)
+                {
+                    nextState = AIState.DeathCircle;
+                    brain.InjuredByDeathCircle = false;
+                }
+                else if (brain.ExistVisibleOpponent())
                 {
                     if (!brain.HasPrimaryWeaponEquipped)
                     {
-                        if (!brain.FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                    }
-                    else
-                    {
-                        nextState = AIState.Hunt;
+                        nextState = AIState.Flee;
                     }
                 }
                 else
@@ -189,126 +178,22 @@ namespace ProjetSynthese
         {
             AIState nextState = AIState.None;
 
-            nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && brain.DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            if (nextState == AIState.None)
-            {
-                if (brain.ExistShootableOpponent())
-                {
-                    nextState = AIState.Combat;
-                }
-                else if (brain.ExistVisibleOpponent())
-                {
-                    if (!brain.HasPrimaryWeaponEquipped)
-                    {
-                        if (!brain.FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
-                    }
-                    else
-                    {
-                        nextState = AIState.Hunt;
-                    }
-                }
-                else if (brain.FoundItemInPerceptionRange())
-                {
-                    nextState = AIState.Loot;
-                }
-                else
-                {
-                    nextState = AIState.Explore;
-                }
-            }
-
-            return nextState;
-        }
-
-        private AIState ChooseANewStateFromFleeState()
-        {
-            AIState nextState = AIState.None;
-            nextState = HasBeenInjuredRelatedStateCheck();
-            if (nextState == AIState.None && brain.DeathCircleIsClosing)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            if (nextState == AIState.None)
-            {
-                if (brain.ExistVisibleOpponent())
-                {
-                    if (!brain.HasPrimaryWeaponEquipped)
-                    {
-                        if (!brain.FoundItemInPerceptionRange())
-                        {
-                            nextState = AIState.Flee;
-                        }
-                        else
-                        {
-                            nextState = AIState.Hunt;
-                        }
-                    }
-                    else
-                    {
-                        nextState = AIState.Hunt;
-                    }
-                }
-                else if (brain.FoundItemInPerceptionRange())
-                {
-                    nextState = AIState.Loot;
-                }
-            }
-
-            if (nextState == AIState.None)
-            {
-                nextState = AIState.Explore;
-            }
-
-            return nextState;
-        }
-
-        private AIState ChooseANewStateFromDeathCircleState()
-        {
-            AIState nextState = AIState.None;
-            if (brain.InjuredByDeathCircle)
-            {
-                nextState = AIState.DeathCircle;
-            }
-            else if (brain.DeathCircleIsClosing)
-            {
-                if (brain.CurrentDistanceOutsideSafeCircle > 0.0f)
-                {
-                    nextState = AIState.DeathCircle;
-                }
-                else
-                {
-                    nextState = AIState.Explore;
-                }
-            }
-            else
-            {
-                nextState = AIState.Explore;
-            }
-            return nextState;
-            //AIState nextState = AIState.None;
             //nextState = HasBeenInjuredRelatedStateCheck();
-            //if (nextState == AIState.None && DeathCircleIsClosing)
+            //if (nextState == AIState.None && brain.DeathCircleIsClosing)
             //{
             //    nextState = AIState.DeathCircle;
             //}
             //if (nextState == AIState.None)
             //{
-            //    if (ExistVisibleOpponent())
+            //    if (brain.ExistShootableOpponent())
             //    {
-            //        if (!hasPrimaryWeaponEquipped)
+            //        nextState = AIState.Combat;
+            //    }
+            //    else if (brain.ExistVisibleOpponent())
+            //    {
+            //        if (!brain.HasPrimaryWeaponEquipped)
             //        {
-            //            if (!FoundItemInPerceptionRange())
+            //            if (!brain.FoundItemInPerceptionRange())
             //            {
             //                nextState = AIState.Flee;
             //            }
@@ -322,18 +207,76 @@ namespace ProjetSynthese
             //            nextState = AIState.Hunt;
             //        }
             //    }
-            //    else if (FoundItemInPerceptionRange())
+            //    else if (brain.FoundItemInPerceptionRange())
             //    {
             //        nextState = AIState.Loot;
             //    }
+            //    else
+            //    {
+            //        nextState = AIState.Explore;
+            //    }
             //}
 
-            //if (nextState == AIState.None)
-            //{
-            //    nextState = AIState.Explore;
-            //}
+            return nextState;
+        }
 
-            //return nextState;
+        private AIState ChooseANewStateFromFleeState()
+        {
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
+            {
+                if (brain.DeathCircleIsClosing)
+                {
+                    nextState = AIState.DeathCircle;
+                }
+                else if (brain.ExistVisibleOpponent())
+                {
+                    if (!brain.HasPrimaryWeaponEquipped)
+                    {
+                        nextState = AIState.Flee;
+                    }
+                    else
+                    {
+                        nextState = AIState.Explore;
+                    }
+                }
+                else
+                {
+                    nextState = AIState.Explore;
+                }
+            }
+            return nextState;
+        }
+
+        private AIState ChooseANewStateFromDeathCircleState()
+        {
+            AIState nextState = AIState.None;
+            nextState = HasBeenInjuredRelatedStateCheck();
+            if (nextState == AIState.None)
+            {
+                if (brain.InjuredByDeathCircle)
+                {
+                    nextState = AIState.DeathCircle;
+                    brain.InjuredByDeathCircle = false;
+                }
+                else if (brain.DeathCircleIsClosing)
+                {
+                    if (brain.CurrentDistanceOutsideSafeCircle > 0.0f)
+                    {
+                        nextState = AIState.DeathCircle;
+                    }
+                    else
+                    {
+                        nextState = AIState.Explore;
+                    }
+                }
+                else
+                {
+                    nextState = AIState.Explore;
+                }
+            }
+            return nextState;
         }
 
         private AIState HasBeenInjuredRelatedStateCheck()
@@ -354,14 +297,14 @@ namespace ProjetSynthese
                 {
                     nextState = AIState.Flee;
                 }
-                else if (brain.ExistShootableOpponent())
-                {
-                    nextState = AIState.Combat;
-                }
-                else
-                {
-                    nextState = AIState.Hunt;
-                }
+                //else if (brain.ExistShootableOpponent())
+                //{
+                //    nextState = AIState.Combat;
+                //}
+                //else
+                //{
+                //    nextState = AIState.Hunt;
+                //}
             }
 
             return nextState;

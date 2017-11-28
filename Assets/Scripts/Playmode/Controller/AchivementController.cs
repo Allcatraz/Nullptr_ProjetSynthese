@@ -59,9 +59,12 @@ namespace ProjetSynthese
 
         public void AddProtectionOfPlayer(ProtectionOfPlayer protectionOfPlayer)
         {
-            protectionOfPlayer.PlayerId = player.Id;
-            protectionOfPlayerRepository.AddProtectionOfPlayer(protectionOfPlayer);
-            CheckAchivements();
+            if (player != null)
+            {
+                protectionOfPlayer.PlayerId = player.Id;
+                protectionOfPlayerRepository.AddProtectionOfPlayer(protectionOfPlayer);
+                CheckAchivements();
+            }
         }
 
         public int CheckPlayerExistAndAddToDatabse(Player playerToConnect)

@@ -40,6 +40,7 @@ namespace ProjetSynthese
         private void Start()
         {
             Parent = gameObject.transform.parent.gameObject;
+            NotifyInventoryChange();
         }
 
         public void ResetInventory()

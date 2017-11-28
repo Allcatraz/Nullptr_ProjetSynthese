@@ -64,6 +64,11 @@ namespace ProjetSynthese
 
                     activityStack.StopCurrentMenu();
                     transform.position = worldPos;
+                    PlayerController player = transform.gameObject.GetComponent<PlayerController>();
+                    if (player != null)
+                    {
+                        player.GetInventory().NotifyInventoryChange();
+                    }
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
                     SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByName(R.S.Scene.GameFragment));
 

@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using System.Collections;
-
+using UnityEngine.Networking.NetworkSystem;
 
 namespace Prototype.NetworkLobby
 {
@@ -116,7 +116,7 @@ namespace Prototype.NetworkLobby
         public void ChangeTo(RectTransform newPanel)
         {
             if (currentPanel != null)
-            {
+            { 
                 currentPanel.gameObject.SetActive(false);
             }
 

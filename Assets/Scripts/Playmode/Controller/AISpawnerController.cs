@@ -46,6 +46,10 @@ namespace ProjetSynthese
                 timeExecute++;
                 Destroy(this);
             }
+            else
+            {
+                Destroy(this);
+            }
         }
 
         [Command]

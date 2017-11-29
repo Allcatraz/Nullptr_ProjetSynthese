@@ -2,8 +2,10 @@
 using System.Linq;
 using Castle.Core.Internal;
 using Harmony;
+using Prototype.NetworkLobby;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Networking.NetworkSystem;
 using UnityEngine.SceneManagement;
 
 namespace ProjetSynthese
@@ -224,6 +226,8 @@ namespace ProjetSynthese
             deathCircleHurtEventChannel.OnEventPublished -= OnPlayerOutDeathCircle;
             boostHealEventChannel.OnEventPublished -= OnBoostHeal;
             spawnItemDropEventChannel.OnEventPublished -= SpawnItemDrop;
+
+            NetworkServer.UnSpawn(gameObject);
         }
 
         private void FixedUpdate()

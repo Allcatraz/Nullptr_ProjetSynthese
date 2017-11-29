@@ -1,37 +1,15 @@
 fileFormatVersion: 2
-guid: 0da5d1e9c7ff49544a68331bb9ac74a9
-timeCreated: 1511961995
+guid: 29eeda6d55c74614e9a6a8fcc833e3d7
+timeCreated: 1511963295
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
     100000: //RootNode
-    100002: equip_1
-    100004: equip_2
-    100006: equip_3
-    100008: equip_4
-    100010: equip_5
     400000: //RootNode
-    400002: equip_1
-    400004: equip_2
-    400006: equip_3
-    400008: equip_4
-    400010: equip_5
-    2300000: equip_1
-    2300002: equip_2
-    2300004: equip_3
-    2300006: equip_4
-    2300008: equip_5
-    3300000: equip_1
-    3300002: equip_2
-    3300004: equip_3
-    3300006: equip_4
-    3300008: equip_5
-    4300000: equip_5
-    4300002: equip_2
-    4300004: equip_4
-    4300006: equip_3
-    4300008: equip_1
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: equip_4
   materials:
     importMaterials: 1
     materialName: 0

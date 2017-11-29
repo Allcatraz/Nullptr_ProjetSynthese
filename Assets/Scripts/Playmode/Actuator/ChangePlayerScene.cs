@@ -67,7 +67,8 @@ namespace ProjetSynthese
                     PlayerController player = transform.gameObject.GetComponent<PlayerController>();
                     if (player != null)
                     {
-                        player.GetInventory().NotifyInventoryChange();
+                        Inventory inv = player.GetInventory();
+                        inv.NotifyInventoryChange();
                     }
                     GetComponent<Rigidbody>().velocity = Vector3.zero;
                     SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByName(R.S.Scene.GameFragment));

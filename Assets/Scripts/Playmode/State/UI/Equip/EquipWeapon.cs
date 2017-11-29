@@ -6,13 +6,18 @@ namespace ProjetSynthese
 {
     public class EquipWeapon : GameScript
     {
-        [Tooltip("Nom de l'object")]
+        [Tooltip("Emplacement de l'image représentant l'arme equipper.")]
         [SerializeField]
-        private Text textName;
+        private Image icon;
 
-        [Tooltip("Text du slot d'interface.")]
         [SerializeField]
-        private Text textSlot;
+        private Sprite iconAwm;
+        [SerializeField]
+        private Sprite iconM16;
+        [SerializeField]
+        private Sprite iconMP5;
+        [SerializeField]
+        private Sprite iconSaiga;
 
         private InventoryChangedEventChannel inventoryChangedEventChannel;
 
@@ -30,32 +35,35 @@ namespace ProjetSynthese
 
         private void InventoryChangedEventChannel_OnEventPublished(InventoryChangeEvent newEvent)
         {
-            UpdateText(newEvent.Inventory);
+            UpdateImage(newEvent.Inventory);
         }
 
-        private void UpdateText(Inventory inventory)
+        private void UpdateImage(Inventory inventory)
         {
             Weapon equipped = inventory.Parent.GetComponent<PlayerController>().GetCurrentWeapon();
-            textSlot.text = "";
-            string name = "";
             if (equipped != null)
             {
-                if (inventory.GetPrimaryWeapon() != null && inventory.GetPrimaryWeapon().GetItem() == equipped)
+                if (equipped.Type == ItemType.AWM)
                 {
-                    textSlot.text = EquipWeaponAt.Primary.ToString();
+                    icon.sprite = iconAwm;
                 }
-                else if (inventory.GetSecondaryWeapon() != null && inventory.GetSecondaryWeapon().GetItem() == equipped)
+                else if (equipped.Type == ItemType.M16A4)
                 {
-                    textSlot.text = EquipWeaponAt.Secondary.ToString();
+                    icon.sprite = iconM16;
                 }
-                name = equipped.Type.ToString();
+                else if (equipped.Type == ItemType.MP5)
+                {
+                    icon.sprite = iconMP5;
+                }
+                else if (equipped.Type == ItemType.Saiga12)
+                {
+                    icon.sprite = iconSaiga;
+                }
+                else
+                {
+                    icon.sprite = null;
+                }
             }
-            textName.text = name;  
-        }
-
-        private void UpdateImage()
-        {
-
         }
     }
 }

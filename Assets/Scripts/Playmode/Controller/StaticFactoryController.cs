@@ -7,24 +7,24 @@ namespace ProjetSynthese
         // Consumable
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les heals")]
-        private GameObject healPrefab;
+        private GameObject[] healPrefab;
 
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les boosts")]
-        private GameObject boostPrefab;
+        private GameObject[] boostPrefab;
 
         // Equipement
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les vests")]
-        private GameObject vestPrefab;
+        private GameObject[] vestPrefab;
 
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les helmets")]
-        private GameObject helmentPrefab;
+        private GameObject[] helmetPrefab;
 
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les bags")]
-        private GameObject bagPrefab;
+        private GameObject[] bagPrefab;
 
         // Weapon
         [SerializeField]
@@ -50,7 +50,7 @@ namespace ProjetSynthese
         // AmmoPack
         [SerializeField]
         [Tooltip("Le prefab utilisé pour instancié les ammo packs")]
-        private GameObject ammoPackPrefab;
+        private GameObject[] ammoPackPrefab;
 
         private void Awake()
         {
@@ -65,7 +65,7 @@ namespace ProjetSynthese
 
             // Equipement
             VestFactory.VestPrefab = vestPrefab;
-            HelmentFactory.HelmetPrefab = helmentPrefab;
+            HelmentFactory.HelmetPrefab = helmetPrefab;
             BagFactory.BagPrefab = bagPrefab;
 
             //Weapon

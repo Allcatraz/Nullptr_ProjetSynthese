@@ -60,12 +60,15 @@ namespace ProjetSynthese
         private const float RunningSpeed = 7.0f;
         private const float SwimmingSpeed = 0.5f;
         private const float NoSpeed = 0.0f;
+        private readonly float RandomSpeedFactor = 1.0f;
+        private const float RandomSpeedMinRange = 0.9f;
+        private const float RandomSpeedMaxRange = 1.1f;
 
         private float currentSpeedLevel;
 
         private const float RandomRadiusMoveRange = 5.0f;
 
-        private const float ErrorPositionTolerance = 0.001f;
+        private const float ErrorPositionTolerance = 0.01f;
 
         private const float FloorYOffset = 1.0f;
         private const float SwimYOffset = -1.0f;
@@ -81,6 +84,7 @@ namespace ProjetSynthese
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
             SetAIControllerMode(ControllerMode.None);
+            RandomSpeedFactor = Random.Range(RandomSpeedMinRange,RandomSpeedMaxRange);
         }
 
         public bool HasReachedMapDestination(ActorAI actor)
@@ -140,7 +144,7 @@ namespace ProjetSynthese
 
         private void MoveDestination(MoveTarget moveTarget, ActorAI actor)
         {
-            float pas = this.currentSpeedLevel * Time.deltaTime;
+            float pas = this.currentSpeedLevel* RandomSpeedFactor * Time.deltaTime;
             Vector3 destination = Vector3.zero;
 
             switch (moveTarget)
@@ -157,9 +161,9 @@ namespace ProjetSynthese
                 default:
                     break;
             }
-            //Note : navmesh bugger
+
             destination.y = FloorYOffset;
-            //
+
             NavMeshPath path = new NavMeshPath();
             NavMesh.CalculatePath(actor.transform.position, destination, NavMesh.AllAreas, path);
             Vector3[] pathpoints;
@@ -172,7 +176,7 @@ namespace ProjetSynthese
                     destination = pathpoints[PathVectorIndex];
                 }
             }
-            //
+
             destination.y = FloorYOffset;
             Vector3 nouvellePosition = Vector3.MoveTowards(actor.transform.position, destination, pas);
             Vector3 mouvement = new Vector3(nouvellePosition.x - actor.transform.position.x, nouvellePosition.y - actor.transform.position.y, nouvellePosition.z - actor.transform.position.z);

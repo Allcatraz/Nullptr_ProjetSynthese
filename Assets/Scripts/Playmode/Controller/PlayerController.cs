@@ -412,10 +412,7 @@ namespace ProjetSynthese
                     TakeItem(obj);
                     CmdTakeItem(obj, networkIdentity);
                 }
-                else if (obj.GetComponent<OpenDoor>())
-                {
-                    obj.GetComponent<OpenDoor>().Use();
-                }
+                
             }
         }
 

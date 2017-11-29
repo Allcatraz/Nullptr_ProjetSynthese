@@ -681,9 +681,9 @@ MonoBehaviour:
   - {fileID: 1717874036262276, guid: 428ee38f0bbc522489a7aa429e974392, type: 2}
   - {fileID: 1061429678301432, guid: a008efa41702bdb40ae2748a5b59ca5c, type: 2}
   vestPrefab:
-  - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
-  - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
-  - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
+  - {fileID: 1387756968545002, guid: 66cca65609916b14ab248006ed77b355, type: 2}
+  - {fileID: 1934457201915968, guid: 791ad0965c71ef24baccad99266da6df, type: 2}
+  - {fileID: 1360298439540436, guid: b10ecf40ffa80854a9ad4cbab5aad519, type: 2}
   helmetPrefab:
   - {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945, type: 2}
   - {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945, type: 2}

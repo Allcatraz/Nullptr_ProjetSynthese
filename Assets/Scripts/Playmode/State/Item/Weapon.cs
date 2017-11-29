@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
@@ -38,6 +37,7 @@ namespace ProjetSynthese
         public event OnMunitionChanged OnMunitionChanged;
 
         private const int Weight = 0;
+        private PlaySound shootSound;
 
         public float BulletSpeed { get { return bulletSpeed; } }
         public float LivingTime { get { return bulletLivingTime; } }
@@ -65,6 +65,7 @@ namespace ProjetSynthese
 
         private void Awake()
         {
+            shootSound = GetComponentInChildren<PlaySound>();
             MagazineAmount = MagazineMax;
         }
 
@@ -72,6 +73,7 @@ namespace ProjetSynthese
         {
             if (MagazineAmount > 0)
             {
+                shootSound.Use();
                 MagazineAmount -= 1;
                 NotidyMunitionChanged();
                 return true;
@@ -82,7 +84,7 @@ namespace ProjetSynthese
         public bool Reload(Inventory inventory)
         {
             if (inventory.UseAmmoPack(ammoType))
-            {
+            {                
                 MagazineAmount = MagazineMax;
                 NotidyMunitionChanged();
                 return true;

@@ -10,10 +10,6 @@ namespace ProjetSynthese
     {
         [Tooltip("Le type de bouton que l'objet représente")]
         [SerializeField] public CellObjectType cellObjectType;
-        [Tooltip("La touche utilisé pour modifier quel slot d'arme est actif.")]
-        [SerializeField] private KeyCode keyWeaponSlot;
-        [Tooltip("La touche utilisé pour déterminer si on doit drop l'item")]
-        [SerializeField] private KeyCode keyDroppingItem;
 
         private Button button;
         private bool willDropItem = false;
@@ -289,14 +285,14 @@ namespace ProjetSynthese
 
         private void ChangeWeaponSlotFromKeyPressed()
         {
-            if (Input.GetKeyDown(keyWeaponSlot))
+            if (Input.GetKeyDown(ActionKey.Instance.ChangeWeaponSlot))
             {
                 if (EquipAt != EquipWeaponAt.Secondary)
                 {
                     EquipAt = EquipWeaponAt.Secondary;
                 }
             }
-            if (Input.GetKeyUp(keyWeaponSlot))
+            if (Input.GetKeyUp(ActionKey.Instance.ChangeWeaponSlot))
             {
                 if (EquipAt != EquipWeaponAt.Primary)
                 {
@@ -307,14 +303,14 @@ namespace ProjetSynthese
 
         private void ChangeDropItemInInventory()
         {
-            if (Input.GetKeyDown(keyDroppingItem))
+            if (Input.GetKeyDown(ActionKey.Instance.DropItemTrigger))
             {
                 if (!willDropItem)
                 {
                     willDropItem = true;
                 }
             }
-            if (Input.GetKeyUp(keyDroppingItem))
+            if (Input.GetKeyUp(ActionKey.Instance.DropItemTrigger))
             {
                 if (willDropItem)
                 {

@@ -167,10 +167,14 @@ namespace ProjetSynthese
 
         public bool FoundAIInPerceptionRange()
         {
-
             ActorAI opponentAI = Actor.Sensor.NeareastNonAllyAI(Actor);
             if (opponentAI != null)
             {
+                if (AIOutsideDeathCircle(opponentAI))
+                {
+                    opponentAI = null;
+                    return false;
+                }
                 aiInPerceptionRange = opponentAI;
                 return true;
             }
@@ -182,10 +186,14 @@ namespace ProjetSynthese
             PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
             if (opponentPlayer != null)
             {
+                if (PlayerOutsideDeathCircle(opponentPlayer))
+                {
+                    opponentPlayer = null;
+                    return false;
+                }
                 playerInPerceptionRange = opponentPlayer;
                 return true;
             }
-
             return false;
         }
 
@@ -194,6 +202,11 @@ namespace ProjetSynthese
             Item item = Actor.Sensor.NeareastNonEquippedItem(Actor.transform.position);
             if (item != null)
             {
+                if (ItemOutsideDeathCircle(item))
+                {
+                    itemInPerceptionRange = null;
+                    return false;
+                }
                 itemInPerceptionRange = item;
                 return true;
             }
@@ -420,6 +433,56 @@ namespace ProjetSynthese
         public void SetAmmoPackStorageRatio(AmmoType ammoType, float ammoPackStorageRatio)
         {
             ammoPackNumberStorageRatio[(int)ammoType] = ammoPackStorageRatio;
+        }
+        private bool ItemOutsideDeathCircle(Item item)
+        {
+            bool isOutsideDeathCircle = false;
+            Vector2 itemPosition = Vector2.zero;
+            Vector2 deathCirclePosition = Vector2.zero;
+            itemPosition.x = item.transform.position.x;
+            itemPosition.y = item.transform.position.z;
+            deathCirclePosition.x = DeathCircleCenterPosition.x;
+            deathCirclePosition.y = DeathCircleCenterPosition.z;
+            float itemDistanceOutsideDeathCircle = Vector2.Distance(itemPosition, deathCirclePosition) - DeathCircleRadius;
+            if (itemDistanceOutsideDeathCircle > 0.0f)
+            {
+                isOutsideDeathCircle = true;
+            }
+            return isOutsideDeathCircle;
+        }
+
+        private bool AIOutsideDeathCircle(ActorAI aiActor)
+        {
+            bool isOutsideDeathCircle = false;
+            Vector2 aiActorPosition = Vector2.zero;
+            Vector2 deathCirclePosition = Vector2.zero;
+            aiActorPosition.x = aiActor.transform.position.x;
+            aiActorPosition.y = aiActor.transform.position.z;
+            deathCirclePosition.x = DeathCircleCenterPosition.x;
+            deathCirclePosition.y = DeathCircleCenterPosition.z;
+            float aiActorDistanceOutsideDeathCircle = Vector2.Distance(aiActorPosition, deathCirclePosition) - DeathCircleRadius;
+            if (aiActorDistanceOutsideDeathCircle > 0.0f)
+            {
+                isOutsideDeathCircle = true;
+            }
+            return isOutsideDeathCircle;
+        }
+
+        private bool PlayerOutsideDeathCircle(PlayerController player)
+        {
+            bool isOutsideDeathCircle = false;
+            Vector2 playerPosition = Vector2.zero;
+            Vector2 deathCirclePosition = Vector2.zero;
+            playerPosition.x = player.transform.position.x;
+            playerPosition.y = player.transform.position.z;
+            deathCirclePosition.x = DeathCircleCenterPosition.x;
+            deathCirclePosition.y = DeathCircleCenterPosition.z;
+            float playerDistanceOutsideDeathCircle = Vector2.Distance(playerPosition, deathCirclePosition) - DeathCircleRadius;
+            if (playerDistanceOutsideDeathCircle > 0.0f)
+            {
+                isOutsideDeathCircle = true;
+            }
+            return isOutsideDeathCircle;
         }
 
         private void UpdateInventoryKnowledge()

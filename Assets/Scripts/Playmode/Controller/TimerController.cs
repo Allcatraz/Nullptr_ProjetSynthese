@@ -32,8 +32,8 @@ namespace ProjetSynthese
         {
             string timeMinutes = deathCircleTimeLeftEvent.Minutes / 10 < 1 ? "0" : "";
             string timeSeconds = deathCircleTimeLeftEvent.Seconds / 10 < 1 ? "0" : "";
-            string time = timeMinutes + deathCircleTimeLeftEvent.Minutes + " : " + timeSeconds + deathCircleTimeLeftEvent.Seconds;
-            Color timeColor = deathCircleTimeLeftEvent.IsWaitFinish ? Color.black : Color.blue;
+            string time = "Time left: " + timeMinutes + deathCircleTimeLeftEvent.Minutes + " : " + timeSeconds + deathCircleTimeLeftEvent.Seconds;
+            Color timeColor = deathCircleTimeLeftEvent.IsWaitFinish ? Color.blue : Color.white;
 
             text.text = time;
             text.color = timeColor;

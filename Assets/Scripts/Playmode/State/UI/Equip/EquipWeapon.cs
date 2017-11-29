@@ -16,7 +16,6 @@ namespace ProjetSynthese
 
         private InventoryChangedEventChannel inventoryChangedEventChannel;
 
-
         private void InjectInventoryChange([EventChannelScope] InventoryChangedEventChannel inventoryChangedEventChannel)
         {
             this.inventoryChangedEventChannel = inventoryChangedEventChannel;

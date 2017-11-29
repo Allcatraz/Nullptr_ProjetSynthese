@@ -556,7 +556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1921219572930376
 GameObject:
   m_ObjectHideFlags: 1
@@ -1314,6 +1314,7 @@ MonoBehaviour:
     type: 2}
   cratePrefab: {fileID: 1206018250619120, guid: 60e3e041c5d1f414ba42b2963b20cb1d,
     type: 2}
+  grenadePrefab: {fileID: 0}
   inventory: {fileID: 114431121773509688}
   health: {fileID: 114425472729367428}
 --- !u!114 &114425472729367428
@@ -1329,6 +1330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 0}
   cratePrefab: {fileID: 0}
+  grenadePrefab: {fileID: 0}
   initialHealthPoints: 100
   maxHealthPoints: 100
 --- !u!114 &114431121773509688
@@ -1367,9 +1369,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f16cb1507d5b6d4ca62c480af9c1a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 95332389489760476}
+  bulletPrefab: {fileID: 0}
+  cratePrefab: {fileID: 0}
+  grenadePrefab: {fileID: 0}
   shootingAnimation: {fileID: 7400000, guid: cbb6bbf945dda7d4d8c062dd76028577, type: 3}
   grenadeAnimation: {fileID: 7400000, guid: ee8fe990b6b8d584a80a8477c96adcb8, type: 3}
+  numberOfParamsToSync: 0
 --- !u!114 &114668875301481778
 MonoBehaviour:
   m_ObjectHideFlags: 1

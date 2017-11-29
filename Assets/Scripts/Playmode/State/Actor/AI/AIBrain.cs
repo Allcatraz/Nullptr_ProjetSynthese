@@ -137,7 +137,7 @@ namespace ProjetSynthese
         {
             this.Actor = actor;
             this.goalEvaluator = new GoalEvaluator(actor);
-            this.decisionManager = new AIDecisionManager(actor,this);
+            this.decisionManager = new AIDecisionManager(actor, this);
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
             ResetActualPerception();
@@ -313,8 +313,6 @@ namespace ProjetSynthese
         }
 
 
-        
-
         private void UpdateWeaponKnowledge()
         {
             ObjectContainedInventory cell = Actor.AIInventory.GetPrimaryWeapon();
@@ -335,11 +333,6 @@ namespace ProjetSynthese
 
             Actor.EquipmentManager.SelectWeapon();
 
-            //reload
-            //ammunition
-            //si pas de munition ou plus de munitions: unequipped weapon
-            //essai de reloader
-            //essai equiper nouvelle weapon
         }
 
         private void UpdateProtectionKnowledge()
@@ -485,6 +478,14 @@ namespace ProjetSynthese
             return isOutsideDeathCircle;
         }
 
+        public bool IsExplorePathBlocked(Vector3 destination, float range)
+        {
+            bool blocked = false;
+            Vector3 direction = Vector3.zero;
+            direction = destination - Actor.transform.position;
+            return Physics.Raycast(Actor.transform.position, direction, range);
+        }
+
         private void UpdateInventoryKnowledge()
         {
             //garder meilleur bag, helmet,vest,boost,heal dans l'inventaire
@@ -589,6 +590,6 @@ namespace ProjetSynthese
             safeCirclePosition.x = DeathCircleCenterPosition.x;
             safeCirclePosition.y = DeathCircleCenterPosition.z;
             CurrentDistanceOutsideSafeCircle = Vector2.Distance(aiPosition, safeCirclePosition) - SafeCircleRadius;
-         }
+        }
     }
 }

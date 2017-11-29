@@ -200,6 +200,8 @@ namespace ProjetSynthese
             newDestination.y = FloorYOffset;
             MapDestination = newDestination;
             MapDestinationIsKnown = true;
+            //ajouter un check
+            //actor.Brain.IsExplorePathBlocked();
         }
 
         public void FindTargetItemMapDestination(ActorAI actor)

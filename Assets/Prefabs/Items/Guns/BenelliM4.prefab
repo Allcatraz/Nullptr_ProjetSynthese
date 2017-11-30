@@ -227,7 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4367379605194542}
   m_Layer: 10
-  m_Name: benelliM4
+  m_Name: benelli
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

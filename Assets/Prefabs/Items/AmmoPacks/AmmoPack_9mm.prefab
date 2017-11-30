@@ -38,7 +38,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4699218013492228}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_AmmoPack_9mm_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4707062289150354}
   - component: {fileID: 137258193435452026}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BoxIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4174476924625978}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_AmmoPack_9mm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4597926946723126}
   - component: {fileID: 137889898846322202}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4196032868684194}
   - component: {fileID: 137144781127935704}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BoxOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4477092543573886}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_AmmoPack_9mm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ Transform:
   m_GameObject: {fileID: 1283015130832716}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 4477092543573886}
   m_Father: {fileID: 0}

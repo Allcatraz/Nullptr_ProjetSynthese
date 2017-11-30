@@ -681,13 +681,13 @@ MonoBehaviour:
   - {fileID: 1717874036262276, guid: 428ee38f0bbc522489a7aa429e974392, type: 2}
   - {fileID: 1061429678301432, guid: a008efa41702bdb40ae2748a5b59ca5c, type: 2}
   vestPrefab:
-  - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
-  - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
-  - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
+  - {fileID: 1387756968545002, guid: 66cca65609916b14ab248006ed77b355, type: 2}
+  - {fileID: 1934457201915968, guid: 791ad0965c71ef24baccad99266da6df, type: 2}
+  - {fileID: 1360298439540436, guid: b10ecf40ffa80854a9ad4cbab5aad519, type: 2}
   helmetPrefab:
-  - {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945, type: 2}
-  - {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945, type: 2}
-  - {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945, type: 2}
+  - {fileID: 1909144370525788, guid: 472c17bacb151a9469ee30c3f3f79812, type: 2}
+  - {fileID: 1046255193083082, guid: d98462f64e67dac42bfba9fb63a8c29c, type: 2}
+  - {fileID: 1184233561759954, guid: 744ca3852dec562499fa38ce5ca817a8, type: 2}
   bagPrefab:
   - {fileID: 1963642160271112, guid: 25a0d2516cbbf2349bc31b971a88303d, type: 2}
   - {fileID: 1293321988381604, guid: 87647785bba406748ad9f8b34ac0f66b, type: 2}
@@ -702,7 +702,7 @@ MonoBehaviour:
   grenadePrefab: {fileID: 1711692997422464, guid: c5de67c0a88184240ba35fcc74fbd30e,
     type: 2}
   ammoPackPrefab:
-  - {fileID: 1322525076054488, guid: 1170b6708aac694408a7c1f92c72ec8a, type: 2}
+  - {fileID: 1854489930619608, guid: 1170b6708aac694408a7c1f92c72ec8a, type: 2}
   - {fileID: 1554130533554610, guid: ef5c414a25260b144844879bf7162552, type: 2}
   - {fileID: 1682084424487974, guid: ea25c52adbc5f8c46b9320ce605b9a20, type: 2}
   - {fileID: 1283015130832716, guid: f18892ee0f7907d49bada396caf4df55, type: 2}

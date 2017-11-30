@@ -9,6 +9,8 @@ namespace ProjetSynthese
         private const int PercentChanceSpawnLevel2 = 20;
         private const int PercentChanceSpawnLevel3 = 10;
 
+        private const float YPositionReduction = 2.45f;
+
         private static Vector2 Range1 = new Vector2(0, PercentChanceSpawnLevel1);
         private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawnLevel2);
         private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawnLevel3);
@@ -33,6 +35,7 @@ namespace ProjetSynthese
                 level = 3;
             }
 
+            spawnPoint.y -= YPositionReduction;
             GameObject gameObject = SpawnObject(spawnPoint, HelmetPrefab[level - 1]);
 
             Helmet helmet = gameObject.GetComponent<Helmet>();

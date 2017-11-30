@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4312061435943378}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Heal_3_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,9 +34,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4798913969053950}
-  - component: {fileID: 33611741577242614}
   - component: {fileID: 65389200407094594}
-  - component: {fileID: 23560887687416338}
   - component: {fileID: 114759765532231550}
   - component: {fileID: 114699828561272976}
   - component: {fileID: 114396267501618540}
@@ -55,7 +53,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4600499611937034}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Heal_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +70,7 @@ GameObject:
   - component: {fileID: 4026897531000866}
   - component: {fileID: 137363158565193996}
   - component: {fileID: 95507434147301582}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Heal_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 1460001432274902}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4026897531000866}
   - {fileID: 4312061435943378}
@@ -128,51 +126,12 @@ Transform:
   m_GameObject: {fileID: 1190235570663454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4600499611937034}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23560887687416338
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1190235570663454}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &33611741577242614
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1190235570663454}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!65 &65389200407094594
 BoxCollider:
   m_ObjectHideFlags: 1

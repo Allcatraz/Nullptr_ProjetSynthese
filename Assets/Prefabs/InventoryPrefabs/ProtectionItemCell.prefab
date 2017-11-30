@@ -325,8 +325,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellObjectType: 1
-  keyWeaponSlot: 0
-  keyDroppingItem: 0
+  numberText: {fileID: 0}
+  textName: {fileID: 114610223260934666}
 --- !u!222 &222630597975432782
 CanvasRenderer:
   m_ObjectHideFlags: 1

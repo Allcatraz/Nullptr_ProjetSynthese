@@ -158,8 +158,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellObjectType: 0
-  keyWeaponSlot: 0
-  keyDroppingItem: 0
+  numberText: {fileID: 0}
+  textName: {fileID: 114876413784018602}
 --- !u!114 &114533530962163354
 MonoBehaviour:
   m_ObjectHideFlags: 1

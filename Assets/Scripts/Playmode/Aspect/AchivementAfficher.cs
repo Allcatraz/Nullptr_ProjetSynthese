@@ -7,7 +7,9 @@ namespace ProjetSynthese
 {
     public class AchivementAfficher : GameScript
     {
+        [Tooltip("L'emplacement ou il faut mettre les objets à créer.")]
         [SerializeField] private RectTransform grid;
+        [Tooltip("Le prefab représentant les achivements du joueur.")]
         [SerializeField] private GameObject achivementViewPrefab;
         private AchivementController achivementController;
         private AchivementRepository achivementRepository;

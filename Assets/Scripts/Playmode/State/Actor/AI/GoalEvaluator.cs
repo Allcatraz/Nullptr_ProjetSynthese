@@ -44,8 +44,8 @@ namespace ProjetSynthese
                     switch (item.Type)
                     {
                         case ItemType.M16A4:
-                        case ItemType.AWM:
-                        case ItemType.Saiga12:
+                        case ItemType.M110:
+                        case ItemType.BenelliM4:
                         case ItemType.MP5:
                             inventoryValues[i] = EvaluateWeaponValue(distanceToItem, item);
                             break;
@@ -93,8 +93,8 @@ namespace ProjetSynthese
                     switch (item.Type)
                     {
                         case ItemType.M16A4:
-                        case ItemType.AWM:
-                        case ItemType.Saiga12:
+                        case ItemType.M110:
+                        case ItemType.BenelliM4:
                         case ItemType.MP5:
                             foundItemsValues[i] = EvaluateWeaponValue(distanceToItem, item);
                             break;
@@ -133,8 +133,8 @@ namespace ProjetSynthese
                 switch (item.Type)
                 {
                     case ItemType.M16A4:
-                    case ItemType.AWM:
-                    case ItemType.Saiga12:
+                    case ItemType.M110:
+                    case ItemType.BenelliM4:
                     case ItemType.MP5:
                         itemValue = EvaluateWeaponValue(distanceToItem, item);
                         break;

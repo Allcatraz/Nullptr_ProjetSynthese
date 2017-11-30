@@ -12,6 +12,7 @@ namespace ProjetSynthese
     {
         private const string SqliteConnectionTemplate = "URI=file:{0}";
 
+        [Tooltip("Le nom du fichier de la base de donnée")]
         [SerializeField]
         private string databaseFileName = "Database.db";
 

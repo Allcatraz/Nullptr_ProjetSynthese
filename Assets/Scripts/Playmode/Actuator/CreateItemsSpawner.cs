@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Castle.Core.Internal;
 using Harmony;
 using Tiled2Unity;
@@ -10,8 +11,6 @@ namespace ProjetSynthese
 {
     public class CreateItemsSpawner : GameScript
     {
-        [Tooltip("Liste contenant toutes les positions des ItemsSpawner.")]
-        [SerializeField] private List<Vector3> itemSpawnerPositions;
         [Tooltip("Le Prefab de l'ItemSpawner.")]
         [SerializeField] private GameObject itemSpawnerPrefab;
 
@@ -19,6 +18,7 @@ namespace ProjetSynthese
         private PlayerController playerController;
 
         private static int nbSpawn = 0;
+        private List<GameObject> itemSpawners;
 
         private void InjectCreateItemsSpawner([ApplicationScope] ActivityStack activityStack,
                                               [GameObjectScope] PlayerController playerController)
@@ -38,17 +38,19 @@ namespace ProjetSynthese
             {
                 if (!activityStack.HasActivityLoading())
                 {
+                    NetworkServer.SpawnObjects();
+                    itemSpawners = GameObject.FindGameObjectsWithTag(R.S.Tag.ItemSpawner).ToList();
                     if (playerController.isServer)
                     {
                         GameObject[] gameObjects = SceneManager.GetSceneByName(R.S.Scene.GameFragment).GetRootGameObjects();
                         TiledMap tileMap = gameObjects.Find(obj => obj.name == "Map").GetComponent<TiledMap>();
 
-                        foreach (Vector3 vec3 in itemSpawnerPositions)
+                        foreach (GameObject obj in itemSpawners)
                         {
                             GameObject itemSpawner = Instantiate(itemSpawnerPrefab, tileMap.transform);
                             NetworkServer.Spawn(itemSpawner);
                             ItemSpawnerController itemSpawnercontroller = itemSpawner.GetComponent<ItemSpawnerController>();
-                            itemSpawnercontroller.CreateItems(vec3);
+                            itemSpawnercontroller.CreateItems(obj.transform.position);
                         }
                         nbSpawn++;
                         Destroy(this);

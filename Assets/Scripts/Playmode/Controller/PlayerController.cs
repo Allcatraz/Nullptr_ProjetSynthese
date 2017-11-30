@@ -276,6 +276,9 @@ namespace ProjetSynthese
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();
             isHoldingGrenade = false;
+
+            if(currentWeapon != null)
+                currentWeapon.ChangeWeaponSound();
         }
 
         private void OnSwitchSecondaryWeapon()
@@ -286,6 +289,9 @@ namespace ProjetSynthese
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();
             isHoldingGrenade = false;
+
+            if (currentWeapon != null)
+                currentWeapon.ChangeWeaponSound();
         }
 
         private void OnSwitchThirdWeapon()
@@ -306,11 +312,10 @@ namespace ProjetSynthese
                 currentWeapon.gameObject.SetActive(isActive);
                 currentWeapon.transform.position = weaponHolderTransform.position;
                 currentWeapon.transform.rotation = weaponHolderTransform.rotation;
-                currentWeapon.transform.Rotate(93, 0, 0);
-                currentWeapon.ChangeWeaponSound();
+                currentWeapon.transform.Rotate(93, 0, 0);                
                 currentWeapon.UpdateBullets();
                 CmdSetTransform(currentWeapon.gameObject, currentWeapon.transform.position, currentWeapon.transform.rotation, currentWeapon.transform.localScale);
-                CmdSetActive(currentWeapon.gameObject, isActive);
+                CmdSetActive(currentWeapon.gameObject, isActive);                
             }
         }
 

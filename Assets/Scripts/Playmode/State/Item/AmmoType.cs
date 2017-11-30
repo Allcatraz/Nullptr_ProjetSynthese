@@ -3,7 +3,7 @@
     public enum AmmoType
     {
         Ammo556,
-        AmmoWinchester,
+        Ammo762,
         AmmoCalibre12,
         Ammo9mm,
         None

@@ -54,6 +54,9 @@ GameObject:
   - component: {fileID: 114228083549967754}
   - component: {fileID: 114447124079303760}
   - component: {fileID: 114977418446879044}
+  - component: {fileID: 114436293093790276}
+  - component: {fileID: 114222619302453448}
+  - component: {fileID: 114958632481430668}
   m_Layer: 10
   m_Name: Sound
   m_TagString: Untagged
@@ -620,6 +623,18 @@ MonoBehaviour:
     i15: 59
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114222619302453448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1177393956666322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f24116b182c3048a12f7bd4ed34f21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound: {fileID: 8300000, guid: b1667d1e51ec03f4d8288813d084fe88, type: 3}
 --- !u!114 &114228083549967754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -667,6 +682,26 @@ MonoBehaviour:
   dommage: 41
   shootTime: 0.075
   reloadTime: 2.2
+  sounds:
+  - {fileID: 114739757559294824}
+  - {fileID: 114228083549967754}
+  - {fileID: 114447124079303760}
+  - {fileID: 114977418446879044}
+  - {fileID: 114436293093790276}
+  - {fileID: 114222619302453448}
+  - {fileID: 114958632481430668}
+--- !u!114 &114436293093790276
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1177393956666322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f24116b182c3048a12f7bd4ed34f21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound: {fileID: 8300000, guid: 14ac06bb8b24975429b8d5cfa51d0807, type: 3}
 --- !u!114 &114447124079303760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -712,6 +747,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 3a3669ba2107d8a41bf52db623b0902c, type: 3}
+--- !u!114 &114958632481430668
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1177393956666322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f24116b182c3048a12f7bd4ed34f21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound: {fileID: 8300000, guid: 39ab80b3591a4274c9959301f67ec063, type: 3}
 --- !u!114 &114977418446879044
 MonoBehaviour:
   m_ObjectHideFlags: 1

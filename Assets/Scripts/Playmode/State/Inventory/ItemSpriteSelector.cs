@@ -221,7 +221,7 @@ namespace ProjetSynthese
             {
                 return ammoCalibre12;
             }
-            else if (ammoType == AmmoType.AmmoWinchester)
+            else if (ammoType == AmmoType.Ammo762)
             {
                 return ammoWinchester;
             }

@@ -13,28 +13,30 @@ namespace ProjetSynthese
         private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawnLevel2);
         private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawnLevel3);
 
-        public static GameObject BoostPrefab { get; set; }
+        public static GameObject[] BoostPrefab { get; set; }
 
         public static void CreateItem(List<GameObject> itemList, Vector3 spawnPoint, System.Random random)
         {
-            GameObject gameObject = SpawnObject(spawnPoint, BoostPrefab);
-
-            Boost boost = gameObject.GetComponent<Boost>();
-
             int item = random.Next(0, 101);
+            int level = 0;
 
             if (item >= Range1.x && item < Range1.y)
             {
-                boost.Level = 1;
+                level = 1;
             }
             else if (item >= Range2.x && item < Range2.y)
             {
-                boost.Level = 2;
+                level = 2;
             }
             else if (item >= Range3.x && item <= Range3.y)
             {
-                boost.Level = 3;
+                level = 3;
             }
+
+            GameObject gameObject = SpawnObject(spawnPoint, BoostPrefab[level - 1]);
+
+            Boost boost = gameObject.GetComponent<Boost>();
+            boost.Level = level;
 
             itemList.Add(gameObject);
         }

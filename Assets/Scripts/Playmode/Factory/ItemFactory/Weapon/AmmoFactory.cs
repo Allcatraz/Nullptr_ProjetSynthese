@@ -13,11 +13,11 @@ namespace ProjetSynthese
         private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawn60Ammo);
         private static Vector2 Range3 = new Vector2(Range2.y, Range2.y + PercentChanceSpawn90Ammo);
 
-        public static GameObject AmmoPackPrefab { get; set; }
+        public static GameObject[] AmmoPackPrefab { get; set; }
 
         public static void CreateItem(List<GameObject> itemList, Vector3 spawnPoint, System.Random random, AmmoType ammoType)
         {
-            GameObject gameObject = SpawnObject(spawnPoint, AmmoPackPrefab);
+            GameObject gameObject = SpawnObject(spawnPoint, AmmoPackPrefab[(int)ammoType]);
 
             AmmoPack ammoPack = gameObject.GetComponent<AmmoPack>();
             ammoPack.AmmoType = ammoType;

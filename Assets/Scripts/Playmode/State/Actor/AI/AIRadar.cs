@@ -7,9 +7,9 @@ namespace ProjetSynthese
     {
         private const float NoRangePerception = 0.0f;
 
-        private const float LowRangePerception = 5.0f;
-        private const float MediumRangePerception = 10.0f;
-        private const float HighRangePerception = 15.0f;
+        private const float LowRangePerception = 3.0f;
+        private const float MediumRangePerception = 8.0f;
+        private const float HighRangePerception = 13.0f;
 
         private float currentPerceptionRange = LowRangePerception;
         private float circleCastDistance = 0.0f;
@@ -170,13 +170,14 @@ namespace ProjetSynthese
 
         }
 
-        public bool IsGameObjectHasLineOfSight(Vector3 position, PlayerController target)
+        public bool IsGameObjectHasLineOfSightToPlayer(Vector3 position, PlayerController target)
         {
+            LayerMask layerMask = GetLayerMask(LayerType.Building);
             if (target != null)
             {
                 Vector3 direction = Vector3.zero;
                 direction = target.transform.position - position;
-                Physics.Raycast(position, direction, currentPerceptionRange);
+                return Physics.Raycast(position, direction, currentPerceptionRange, ~layerMask);
             }
             return false;
         }
@@ -184,15 +185,22 @@ namespace ProjetSynthese
         //plus rapide à cause du ou dans le if de décision ailleurs d'avaoir deux fonctions
         //Évite aussi des vérification de type et casting lents
 
-        public bool IsGameObjectHasLineOfSight(Vector3 position, ActorAI target)
+        public bool IsGameObjectHasLineOfSightToAI(Vector3 position, ActorAI target)
         {
+            LayerMask layerMask = GetLayerMask(LayerType.Building);
             if (target != null)
             {
                 Vector3 direction = Vector3.zero;
                 direction = target.transform.position - position;
-                return Physics.Raycast(position, direction, currentPerceptionRange);
+                return Physics.Raycast(position, direction, currentPerceptionRange, ~layerMask);
             }
             return false;
+        }
+
+        public bool IsGameObjectHasLineOfSightToMapPosition(Vector3 positionOrigine,Vector3 direction, float range)
+        {
+            LayerMask layerMask = GetLayerMask(LayerType.Building);
+            return Physics.Raycast(positionOrigine, direction, range,~layerMask);
         }
     }
 }

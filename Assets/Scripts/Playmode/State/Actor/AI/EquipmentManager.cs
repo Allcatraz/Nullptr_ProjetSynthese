@@ -29,7 +29,7 @@ namespace ProjetSynthese
                         {
                             Weapon weapon = (Weapon)cell.GetItem();
                             AmmoType ammoType = weapon.WeaponAmmoType;
-                            //ammoType utiliser plus tard lors de décision choix weapon
+                            
                             if (weapon.MagazineAmount > 0 || weapon.Reload(Actor.AIInventory))
                             {
                                 Actor.AIInventory.EquipWeaponAt(EquipWeaponAt.Primary, cell);

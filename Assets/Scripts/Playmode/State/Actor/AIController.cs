@@ -301,7 +301,7 @@ namespace ProjetSynthese
                     }
                 }
 
-                if (scalarProduct < 0.0f)
+                if (scalarProduct > 0.0f)
                 {
                     fleeDirection = opponentPositionFactor * opponentEscapingDirection + fleeDirection;
                 }
@@ -359,18 +359,18 @@ namespace ProjetSynthese
             Vector3 fleeDirection = Vector3.zero;
             Vector3 aiCurrentPosition = actor.transform.position;
             Vector3 fleeDestination = aiCurrentPosition;
-            //check le plus proche ou fait composite
-            if (actor.Brain.AiInPerceptionRange != null)
+            
+            if (actor.Brain.PlayerInPerceptionRange != null)
             {
-                fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
+                fleeDirection = -(actor.Brain.PlayerInPerceptionRange.transform.position - aiCurrentPosition);
                 fleeDirection.Normalize();
                 fleeDirection *= FleeRange;
                 fleeDestination.x += fleeDirection.x;
                 fleeDestination.z += fleeDirection.z;
             }
-            else if (actor.Brain.PlayerInPerceptionRange != null)
+            else if (actor.Brain.AiInPerceptionRange != null)
             {
-                fleeDirection = -(actor.Brain.PlayerInPerceptionRange.transform.position - aiCurrentPosition);
+                fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
                 fleeDirection.Normalize();
                 fleeDirection *= FleeRange;
                 fleeDestination.x += fleeDirection.x;
@@ -380,23 +380,57 @@ namespace ProjetSynthese
             {
                 return false;
             }
+
+            fleeDestination.y = FloorYOffset;
+            
             if (ValidateMapDestination(fleeDestination))
             {
                 MapDestination = fleeDestination;
                 return true;
             }
+            else
+            {
+                Vector3 actualInvalideFleeDirection = fleeDestination - aiCurrentPosition;
+                Vector3 up = new Vector3(0, 1, 0);
+                Vector3 down = new Vector3(0, -1, 0);
+                Vector3 upPerpendicularFleeDirection = Vector3.Cross(actualInvalideFleeDirection, up);
+                Vector3 downPerpendicularFleeDirection = Vector3.Cross(actualInvalideFleeDirection, down);
+                upPerpendicularFleeDirection.Normalize();
+                upPerpendicularFleeDirection *= FleeRange;
+                downPerpendicularFleeDirection.Normalize();
+                downPerpendicularFleeDirection *= FleeRange;
+
+                Vector3 fleeDestinationUp = aiCurrentPosition;
+                fleeDestinationUp.x += upPerpendicularFleeDirection.x;
+                fleeDestinationUp.z += upPerpendicularFleeDirection.z;
+                fleeDestinationUp.y = FloorYOffset;
+
+                Vector3 fleeDestinationDown = aiCurrentPosition;
+                fleeDestinationDown.x += downPerpendicularFleeDirection.x;
+                fleeDestinationDown.z += downPerpendicularFleeDirection.z;
+                fleeDestinationDown.y = FloorYOffset;
+                if (ValidateMapDestination(fleeDestinationDown))
+                {
+                    MapDestination = fleeDestinationDown;
+                    return true;
+                }
+                else if(ValidateMapDestination(fleeDestinationUp))
+                {
+                    MapDestination = fleeDestinationUp;
+                    return true;
+                }
+            }
             return false;
-
-            //code si coincé pas de possibilité de fuite return false
-            //exemple mur, circle of death, out of map
-
         }
 
         private bool ValidateMapDestination(Vector3 mapDestination)
         {
-            //code si coincé pas de possibilité de fuite return false
-            //exemple mur, circle of death, out of map
-            return true;
+           
+            if (!Actor.Brain.IsExplorePathBlocked(MapDestination, FleeRange))
+            {
+                return true;
+            }
+            return false;
         }
 
         public ControllerMode GetAIControllerMode()

@@ -9,7 +9,7 @@ namespace ProjetSynthese
         public StateMachine CurrentState { get; private set; }
         public AIController ActorController { get; private set; }
         private bool isSwimming = false;
-        
+
         public AIRadar Sensor { get; private set; }
         public AIBrain Brain { get; private set; }
         public EquipmentManager EquipmentManager { get; private set; }
@@ -40,7 +40,7 @@ namespace ProjetSynthese
 
         private DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel;
         private DeathCircleTimeLeftEventChannel deathCircleTimeLeftEventChannel;
-        private const float  DeathCircleTimeTriggerThreshold = 5.0f;
+        private const float DeathCircleTimeTriggerThreshold = 5.0f;
         private void InjectDeathCircleController([EventChannelScope] DeathCircleStatusUpdateEventChannel deathCircleStatusUpdateEventChannel, [EventChannelScope] DeathCircleTimeLeftEventChannel deathCircleTimeLeftEventChannel, [EntityScope] InteractableSensor interactableSensor)
         {
             this.deathCircleStatusUpdateEventChannel = deathCircleStatusUpdateEventChannel;
@@ -82,14 +82,21 @@ namespace ProjetSynthese
             {
                 CurrentState.Execute(this);
             }
-
-            AIState nextState = Brain.WhatIsMyNextState(CurrentState.currentAIState);
+            AIState nextState = CurrentState.currentAIState;
+            if (Brain != null)
+            {
+               nextState = Brain.WhatIsMyNextState(CurrentState.currentAIState);
+            }
+           
             if (nextState != CurrentState.currentAIState)
             {
                 CurrentState.SwitchState(this, nextState);
             }
+            if (HealthManager != null)
+            {
+                HealthManager.TendHealth();
+            }
 
-            HealthManager.TendHealth();
         }
         private void OnDeath()
         {

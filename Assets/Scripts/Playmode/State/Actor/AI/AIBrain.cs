@@ -8,6 +8,7 @@ namespace ProjetSynthese
     {
         #region Parameters
         private const float ErrorCirclesGapTolerance = 0.001f;
+        private const float SafetyMargin = 5.0f;
         private const float LifeFleeThresholdFactor = 0.20f;
         public readonly float LifeFleeThreshold;
         private float lastLifePointLevel;
@@ -21,6 +22,7 @@ namespace ProjetSynthese
         public readonly float BagCapacityMaximum = 300.0f;
         public readonly float HelmetProtectionMaximum = 50.0f;
         public readonly float VestProtectionMaximum = 50.0f;
+        public readonly float WeaponEffectiveRangeDamping = 0.1f;
 
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
@@ -244,7 +246,7 @@ namespace ProjetSynthese
                 Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (equippedPrimaryWeapon != null)
                 {
-                    float range = equippedPrimaryWeapon.EffectiveWeaponRange;
+                    float range = equippedPrimaryWeapon.EffectiveWeaponRange *WeaponEffectiveRangeDamping;
                     if (sqrtTargetDistance < range * range)
                     {
                         return true;
@@ -260,14 +262,14 @@ namespace ProjetSynthese
             {
                 if (playerInPerceptionRange != null)
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, playerInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSightToPlayer(Actor.transform.position, playerInPerceptionRange))
                     {
                         return true;
                     }
                 }
                 else if (aiInPerceptionRange != null)
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSightToAI(Actor.transform.position, aiInPerceptionRange))
                     {
                         return true;
                     }
@@ -480,7 +482,8 @@ namespace ProjetSynthese
         {
             Vector3 direction = Vector3.zero;
             direction = destination - Actor.transform.position;
-            return Physics.Raycast(Actor.transform.position, direction, range);
+            range += SafetyMargin;
+            return Actor.Sensor.IsGameObjectHasLineOfSightToMapPosition(Actor.transform.position, direction, range);
         }
 
         private void UpdateInventoryKnowledge()

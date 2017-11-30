@@ -676,10 +676,13 @@ MonoBehaviour:
   cratePrefab: {fileID: 0}
   grenadePrefab: {fileID: 0}
   type: 3
+  ammoType: 3
   bulletSpawnPoint: {fileID: 1952353094734770}
   chamber: {fileID: 1983344287765540}
   bulletSpeed: 50
   bulletLivingTime: 2
   magazineMaxAmount: 7
   dommage: 35
-  ammoType: 3
+  shootTime: 1
+  reloadTime: 5
+  sounds: []

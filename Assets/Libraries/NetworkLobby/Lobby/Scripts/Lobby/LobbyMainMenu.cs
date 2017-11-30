@@ -1,16 +1,30 @@
+using Harmony;
+using ProjetSynthese;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Prototype.NetworkLobby
 {
     //Main menu, mainly only a bunch of callback called by the UI (setup throught the Inspector)
-    public class LobbyMainMenu : MonoBehaviour 
+    public class LobbyMainMenu : GameScript
     {
+        private AchivementController achivementController;
+
         public LobbyManager lobbyManager;
 
         public RectTransform lobbyPanel;
 
         public InputField ipInput;
+
+        public void Awake()
+        {
+            InjectDependencies("InjectLobbyMainMenu");
+        }
+
+        private void InjectLobbyMainMenu([ApplicationScope] AchivementController achivementController)
+        {
+            this.achivementController = achivementController;
+        }
 
         public void OnEnable()
         {
@@ -22,20 +36,26 @@ namespace Prototype.NetworkLobby
 
         public void OnClickHost()
         {
-            lobbyManager.StartHost();
+            if (achivementController.GetPlayer() != null)
+            {
+                lobbyManager.StartHost();
+            }           
         }
 
         public void OnClickJoin()
         {
-            lobbyManager.ChangeTo(lobbyPanel);
+            if (achivementController.GetPlayer() != null)
+            {
+                lobbyManager.ChangeTo(lobbyPanel);
 
-            lobbyManager.networkAddress = ipInput.text;
-            lobbyManager.StartClient();
+                lobbyManager.networkAddress = ipInput.text;
+                lobbyManager.StartClient();
 
-            lobbyManager.backDelegate = lobbyManager.StopClientClbk;
-            lobbyManager.DisplayIsConnecting();
+                lobbyManager.backDelegate = lobbyManager.StopClientClbk;
+                lobbyManager.DisplayIsConnecting();
 
-            lobbyManager.SetServerInfo("Connecting...", lobbyManager.networkAddress);
+                lobbyManager.SetServerInfo("Connecting...", lobbyManager.networkAddress);
+            }
         }
 
         public void OnClickDedicated()

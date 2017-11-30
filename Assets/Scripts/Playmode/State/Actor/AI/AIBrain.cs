@@ -22,8 +22,6 @@ namespace ProjetSynthese
         public readonly float HelmetProtectionMaximum = 50.0f;
         public readonly float VestProtectionMaximum = 50.0f;
 
-        private readonly float WeaponEffectiveRangeDamping = 0.1f;
-
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
         public readonly AIDecisionManager decisionManager;
@@ -246,7 +244,7 @@ namespace ProjetSynthese
                 Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (equippedPrimaryWeapon != null)
                 {
-                    float range = equippedPrimaryWeapon.EffectiveWeaponRange * WeaponEffectiveRangeDamping;
+                    float range = equippedPrimaryWeapon.EffectiveWeaponRange;
                     if (sqrtTargetDistance < range * range)
                     {
                         return true;
@@ -480,7 +478,6 @@ namespace ProjetSynthese
 
         public bool IsExplorePathBlocked(Vector3 destination, float range)
         {
-            bool blocked = false;
             Vector3 direction = Vector3.zero;
             direction = destination - Actor.transform.position;
             return Physics.Raycast(Actor.transform.position, direction, range);

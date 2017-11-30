@@ -194,7 +194,5 @@ namespace ProjetSynthese
             }
             return false;
         }
-
-
     }
 }

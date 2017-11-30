@@ -22,10 +22,10 @@ namespace ProjetSynthese
                     foreach (ObjectContainedInventory cell in Actor.AIInventory.ListInventory)
                     {
                         item = cell.GetItem();
-                        if (item.Type == ItemType.AWM
+                        if (item.Type == ItemType.M110
                         || item.Type == ItemType.M16A4
                         || item.Type == ItemType.MP5
-                        || item.Type == ItemType.Saiga12)
+                        || item.Type == ItemType.BenelliM4)
                         {
                             Weapon weapon = (Weapon)cell.GetItem();
                             AmmoType ammoType = weapon.WeaponAmmoType;

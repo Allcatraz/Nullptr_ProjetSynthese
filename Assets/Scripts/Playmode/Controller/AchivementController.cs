@@ -7,7 +7,9 @@ namespace ProjetSynthese
 {
     public class AchivementController : GameScript
     {
+        [Tooltip("Tableau contenant le nom de tous les achivements possibles (5 achivements supporté pour l'instant)")]
         [SerializeField] private string[] achivementName;
+        [Tooltip("Prefab de l'objet")]
         [SerializeField] private GameObject feedBackPrefab;
         private Player player;
         private ProtectionOfPlayerRepository protectionOfPlayerRepository;

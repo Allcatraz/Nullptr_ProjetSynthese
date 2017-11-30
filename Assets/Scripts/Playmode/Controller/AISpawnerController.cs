@@ -9,7 +9,7 @@ namespace ProjetSynthese
         [SerializeField]
         private GameObject aiPrefab;
 
-        private const int AINumber = 5;
+        private const int AINumber = 50;
 
         private const float XMapOriginCornerCoordinate = 0.0f;
         private const float ZMapOriginCornerCoordinate = 0.0f;

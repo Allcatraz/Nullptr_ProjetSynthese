@@ -69,9 +69,9 @@ namespace ProjetSynthese
         private const float RandomRadiusMoveRange = 5.0f;
         private const int MaxValidRandomDestinationTryPerUpdate = 3;
 
-        private const float ErrorPositionTolerance = 1.0f;
+        private const float ErrorPositionTolerance = 1.5f;
 
-        private const float FloorYOffset = 1.0f;
+        public const float FloorYOffset = 1.4f;
         private const float SwimYOffset = -1.0f;
 
         public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt, DeathCircle }
@@ -360,7 +360,7 @@ namespace ProjetSynthese
             Vector3 aiCurrentPosition = actor.transform.position;
             Vector3 fleeDestination = aiCurrentPosition;
             
-            if (actor.Brain.PlayerInPerceptionRange != null)
+            if (actor.Brain.PlayerInPerceptionRange != null && aiCurrentPosition!=null)
             {
                 fleeDirection = -(actor.Brain.PlayerInPerceptionRange.transform.position - aiCurrentPosition);
                 fleeDirection.Normalize();
@@ -368,7 +368,7 @@ namespace ProjetSynthese
                 fleeDestination.x += fleeDirection.x;
                 fleeDestination.z += fleeDirection.z;
             }
-            else if (actor.Brain.AiInPerceptionRange != null)
+            else if (actor.Brain.AiInPerceptionRange != null && aiCurrentPosition != null)
             {
                 fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
                 fleeDirection.Normalize();

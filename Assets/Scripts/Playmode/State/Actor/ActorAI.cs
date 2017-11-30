@@ -163,13 +163,15 @@ namespace ProjetSynthese
         private void OnDeathCircleFixedUpdate(DeathCircleStatusUpdateEvent deathCircleStatusUpdateEvent)
         {
             Brain.UpdateDeathCircleKnowledge(deathCircleStatusUpdateEvent.DeathCircleController);
-            Vector2 aiPosition = Vector2.zero;
-            Vector2 deathCirclePosition = Vector2.zero;
+            Vector3 aiPosition = Vector3.zero;
+            Vector3 deathCirclePosition = Vector3.zero;
             aiPosition.x = this.transform.position.x;
-            aiPosition.y = this.transform.position.z;
+            aiPosition.y = AIController.FloorYOffset;
+            aiPosition.z = this.transform.position.z;
             deathCirclePosition.x = Brain.DeathCircleCenterPosition.x;
-            deathCirclePosition.y = Brain.DeathCircleCenterPosition.z;
-            if (Vector2.Distance(aiPosition, deathCirclePosition) > Brain.DeathCircleRadius)
+            deathCirclePosition.y = AIController.FloorYOffset;
+            deathCirclePosition.z = Brain.DeathCircleCenterPosition.z;
+            if (Vector3.Distance(aiPosition, deathCirclePosition) > Brain.DeathCircleRadius)
             {
                 health.Hit(Brain.CurrentDeathCircleHurtPoints * Time.deltaTime, true);
                 Brain.InjuredByDeathCircle = true;

@@ -21,8 +21,7 @@ namespace ProjetSynthese
 
         private void OnEnd(PlayerDeathEvent playerDeathEvent)
         {
-            LobbyTopPanel topPanel = GameObject.FindGameObjectWithTag(R.S.Tag.TopPanel).GetComponent<LobbyTopPanel>();
-            topPanel.ToggleVisibility(true);
+
         }
 
         private void OnDestroy()

@@ -42,15 +42,12 @@ namespace ProjetSynthese
         [Tooltip("Temps que le rechargement de l'arme va prendre.")]
         [SerializeField]
         private float reloadTime;
-
-        [Tooltip("Tableau de tout les sons de l'arme.")]
-        [SerializeField]
-        private PlaySound[] sounds;
-
+       
         public event OnMunitionChanged OnMunitionChanged;
 
         private const int Weight = 0;
         private float timerForShoot = 0;
+        private PlaySound[] sounds;
 
         public float BulletSpeed { get { return bulletSpeed; } }
         public float LivingTime { get { return bulletLivingTime; } }
@@ -87,10 +84,16 @@ namespace ProjetSynthese
             timerForShoot += Time.deltaTime;
         }
 
+        public void ChangeWeaponSound()
+        {
+            sounds[3].Use();
+        }
+
         public override bool Use()
         {
             if (MagazineAmount > 0 && timerForShoot >= shootTime)
             {
+                sounds[0].Use();
                 MagazineAmount -= 1;
                 NotidyMunitionChanged();
                 timerForShoot = 0;
@@ -103,6 +106,7 @@ namespace ProjetSynthese
         {
             if (inventory.UseAmmoPack(ammoType))
             {
+                sounds[1].Use();
                 StartCoroutine("ComputeReload");
                 return true;
             }
@@ -117,7 +121,7 @@ namespace ProjetSynthese
                 doReload = false;
                 yield return new WaitForSeconds(reloadTime);
             }
-
+            sounds[2].Use();
             MagazineAmount = MagazineMax;
             NotidyMunitionChanged();
             yield return null;

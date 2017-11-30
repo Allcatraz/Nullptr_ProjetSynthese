@@ -307,6 +307,7 @@ namespace ProjetSynthese
                 currentWeapon.transform.position = weaponHolderTransform.position;
                 currentWeapon.transform.rotation = weaponHolderTransform.rotation;
                 currentWeapon.transform.Rotate(93, 0, 0);
+                currentWeapon.ChangeWeaponSound();
                 currentWeapon.UpdateBullets();
                 CmdSetTransform(currentWeapon.gameObject, currentWeapon.transform.position, currentWeapon.transform.rotation, currentWeapon.transform.localScale);
                 CmdSetActive(currentWeapon.gameObject, isActive);

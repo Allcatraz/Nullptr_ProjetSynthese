@@ -147,6 +147,60 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114264640006288538, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: bagLevel1
+      value: 
+      objectReference: {fileID: 21300000, guid: 63531cc3ad57d32418b5802213f9f964,
+        type: 3}
+    - target: {fileID: 114264640006288538, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: bagLevel2
+      value: 
+      objectReference: {fileID: 21300000, guid: 63258a3230cf48643871df526992e961,
+        type: 3}
+    - target: {fileID: 114264640006288538, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: bagLevel3
+      value: 
+      objectReference: {fileID: 21300000, guid: 9216274236a1162409da9f8ec56f88ea,
+        type: 3}
+    - target: {fileID: 114264640006288538, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: helmetLevel1
+      value: 
+      objectReference: {fileID: 21300000, guid: 209639c77a5b34145967ffe896d13af8,
+        type: 3}
+    - target: {fileID: 114264640006288538, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: helmetLevel2
+      value: 
+      objectReference: {fileID: 21300000, guid: ea93395dfdc18ae458662017904dd753,
+        type: 3}
+    - target: {fileID: 114264640006288538, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: helmetLevel3
+      value: 
+      objectReference: {fileID: 21300000, guid: 64838998d4a23a04797fa4fef40ff6d5,
+        type: 3}
+    - target: {fileID: 114264640006288538, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: vestLevel1
+      value: 
+      objectReference: {fileID: 21300000, guid: 15f1ad1bfa9aef94f9a01c9454a8db73,
+        type: 3}
+    - target: {fileID: 114264640006288538, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: vestLevel2
+      value: 
+      objectReference: {fileID: 21300000, guid: ade3dcfcd916435418f1ec07c3741306,
+        type: 3}
+    - target: {fileID: 114264640006288538, guid: 3d96b1a6b15605c48af243df09595a75,
+        type: 2}
+      propertyPath: vestLevel3
+      value: 
+      objectReference: {fileID: 21300000, guid: 379c2c3c02cdeaa4c8c62a80d844dd09,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3d96b1a6b15605c48af243df09595a75, type: 2}
   m_IsPrefabParent: 0

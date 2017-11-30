@@ -9,13 +9,16 @@ namespace ProjetSynthese
         [Tooltip("Emplacement de l'image représentant l'arme equipper.")]
         [SerializeField]
         private Image icon;
-
+        [Tooltip("L'image représentant l'arme de type M110.")]
         [SerializeField]
         private Sprite iconAwm;
+        [Tooltip("L'image représentant l'arme de type M16.")]
         [SerializeField]
         private Sprite iconM16;
+        [Tooltip("L'image représentant l'arme de type MP5.")]
         [SerializeField]
         private Sprite iconMP5;
+        [Tooltip("L'image représentant l'arme de type BenelliM4.")]
         [SerializeField]
         private Sprite iconSaiga;
 
@@ -42,7 +45,7 @@ namespace ProjetSynthese
             Weapon equipped = inventory.Parent.GetComponent<PlayerController>().GetCurrentWeapon();
             if (equipped != null)
             {
-                if (equipped.Type == ItemType.AWM)
+                if (equipped.Type == ItemType.M110)
                 {
                     icon.sprite = iconAwm;
                 }
@@ -54,7 +57,7 @@ namespace ProjetSynthese
                 {
                     icon.sprite = iconMP5;
                 }
-                else if (equipped.Type == ItemType.Saiga12)
+                else if (equipped.Type == ItemType.BenelliM4)
                 {
                     icon.sprite = iconSaiga;
                 }

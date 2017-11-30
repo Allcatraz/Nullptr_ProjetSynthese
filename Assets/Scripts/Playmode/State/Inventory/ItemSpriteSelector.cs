@@ -44,9 +44,9 @@ namespace ProjetSynthese
         [SerializeField] private Sprite boostLevel2;
         [Tooltip("Le sprite représentant le type d'item boost level 3.")]
         [SerializeField] private Sprite boostLevel3;
-        [Tooltip("Le sprite représentant le type d'item Saiga12.")]
+        [Tooltip("Le sprite représentant le type d'item BenelliM4.")]
         [SerializeField] private Sprite saiga12;
-        [Tooltip("Le sprite représentant le type d'item AWM.")]
+        [Tooltip("Le sprite représentant le type d'item M110.")]
         [SerializeField] private Sprite awm;
         [Tooltip("Le sprite représentant le type d'item M1911.")]
         [SerializeField] private Sprite m1911;
@@ -81,7 +81,7 @@ namespace ProjetSynthese
             {
                 return GetSpriteForHeal(level);
             }
-            else if (itemType == ItemType.Saiga12)
+            else if (itemType == ItemType.BenelliM4)
             {
                 return saiga12;
             }
@@ -93,7 +93,7 @@ namespace ProjetSynthese
             {
                 return m16A4;
             }
-            else if (itemType == ItemType.AWM)
+            else if (itemType == ItemType.M110)
             {
                 return awm;
             }

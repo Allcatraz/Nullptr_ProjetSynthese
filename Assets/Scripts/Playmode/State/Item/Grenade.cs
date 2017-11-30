@@ -11,13 +11,12 @@ namespace ProjetSynthese
         private const int Weight = 6;
         private const float Drag = 0.5f;
 
-
-        [SerializeField]
         [Tooltip("Le prefab de l'explosion lorsque la grenade explose")]
+        [SerializeField]
         private GameObject explosionPrefab;
 
-        [SerializeField]
         [Tooltip("Le temps avant que la grenade explose après avoir été lancée")]
+        [SerializeField]
         private float explosionTime;
 
         private bool grenadeHasBeenThrowned = false;

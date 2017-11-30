@@ -32,11 +32,11 @@ namespace ProjetSynthese
         private GameObject m16A4Prefab;
 
         [SerializeField]
-        [Tooltip("Le prefab utilisé pour instancié les AWM")]
+        [Tooltip("Le prefab utilisé pour instancié les M110")]
         private GameObject awmPrefab;
 
         [SerializeField]
-        [Tooltip("Le prefab utilisé pour instancié les Saiga12")]
+        [Tooltip("Le prefab utilisé pour instancié les BenelliM4")]
         private GameObject saiga12Prefab;
 
         [SerializeField]

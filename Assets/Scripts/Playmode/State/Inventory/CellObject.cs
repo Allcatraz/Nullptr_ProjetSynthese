@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,10 @@ namespace ProjetSynthese
     {
         [Tooltip("Le type de bouton que l'objet représente")]
         [SerializeField] public CellObjectType cellObjectType;
+        [Tooltip("La zone de texte allant contenir la quantité de l'objet")]
+        [SerializeField] public Text numberText;
+        [Tooltip("La zone de texte allant contenir le nom de l'objet")]
+        [SerializeField] private Text textName;
 
         private Button button;
         private bool willDropItem = false;
@@ -28,8 +33,6 @@ namespace ProjetSynthese
         public Inventory Inventory { get; set; }
         public ObjectContainedInventory CellContained { get; set; }
         public Image ImageBackground { get; private set; }
-        public Text TextName { get; private set; }
-        public Text TextNumber { get; private set; }
 
         private void Awake()
         {
@@ -47,13 +50,11 @@ namespace ProjetSynthese
             button.onClick.RemoveAllListeners();
         }
 
-        private void InjectCellObject([EntityScope] Text textName,
-                                    [EntityScope] Button button,
+        private void InjectCellObject([EntityScope] Button button,
                                     [EntityScope] Image image,
                                     [ApplicationScope] MouseInputSensor mouseInputSensor)
         {
             this.button = button;
-            TextName = textName;
             ImageBackground = image;
             this.mouseInputSensor = mouseInputSensor;
             EquipAt = EquipWeaponAt.Primary;
@@ -139,11 +140,66 @@ namespace ProjetSynthese
             {
                 name = containedInCell.Type.ToString();
             }
-            if (containedInCell.Level != 0)
+            int level = containedInCell.Level;
+            ItemType typeToCheck = containedInCell.Type;
+            if (level != 0)
             {
-                name += " " + containedInCell.Level;
+                name = GetNameFromItemWithLevel(level, typeToCheck);
             }
 
+            return name;
+        }
+
+        private string GetNameFromItemWithLevel(int level, ItemType typeToCheck)
+        {
+            string name = "";
+            if (typeToCheck == ItemType.Bag)
+            {
+                name = GetNameFromType(typeof(BagType), level);
+            }
+            else if (typeToCheck == ItemType.Helmet)
+            {
+                name = GetNameFromType(typeof(HelmetType), level);
+            }
+            else if (typeToCheck == ItemType.Vest)
+            {
+                name = GetNameFromType(typeof(VestType), level);
+            }
+            else if (typeToCheck == ItemType.Heal)
+            {
+                name = GetNameFromType(typeof(HealType), level);
+            }
+            else if (typeToCheck == ItemType.Boost)
+            {
+                name = GetNameFromType(typeof(BoostType), level);
+            }
+            return name;
+        }
+
+        private string GetNameFromType(Type type, int level)
+        {
+            string name = "";
+            int toUse = level - 1;
+            if (typeof(BagType) == type)
+            {
+                name = ((BagType)toUse).ToString();
+            }
+            if (typeof(HelmetType) == type)
+            {
+                name = ((HelmetType)toUse).ToString();
+            }
+            if (typeof(VestType) == type)
+            {
+                name = ((VestType)toUse).ToString();
+            }
+            if (typeof(HealType) == type)
+            {
+                name = ((HealType)toUse).ToString();
+            }
+            if (typeof(BoostType) == type)
+            {
+                name = ((BoostType)toUse).ToString();
+            }
             return name;
         }
 
@@ -337,12 +393,18 @@ namespace ProjetSynthese
 
         private void SetTextName(string name)
         {
-            TextName.text = name;
+            if (textName != null)
+            {
+                textName.text = name;
+            }
         }
 
         private void SetTextNumber(int compteur)
         {
-            TextName.text += " " + compteur;
+            if (numberText != null)
+            {
+                numberText.text = compteur.ToString();
+            }
         }  
     }
 }

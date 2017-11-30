@@ -95,15 +95,15 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.7
+    agentRadius: 0.5
     agentHeight: 2
-    agentSlope: 8.3
+    agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
-    minRegionArea: 4
+    minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.23333333
+    cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -672,13 +672,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3864739ec3d7b4b418bb8ab2e7709087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healPrefab: {fileID: 1052699911796752, guid: 115ad7cc0094f4b45a3007988d9716a8, type: 2}
-  boostPrefab: {fileID: 1000390021323102, guid: f2a0c21a465cd854d95dbecf09254127,
-    type: 2}
-  vestPrefab: {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
-  helmentPrefab: {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945,
-    type: 2}
-  bagPrefab: {fileID: 1435768373193942, guid: 135ec5e685633b842967446c947a6ca3, type: 2}
+  healPrefab:
+  - {fileID: 1545753572409780, guid: 115ad7cc0094f4b45a3007988d9716a8, type: 2}
+  - {fileID: 1238483393173362, guid: 9bdaf9f65c3440b43a72beacd161db38, type: 2}
+  - {fileID: 1190235570663454, guid: 91def9ca707ef0549874aadbe582cdb3, type: 2}
+  boostPrefab:
+  - {fileID: 1369743445547268, guid: f2a0c21a465cd854d95dbecf09254127, type: 2}
+  - {fileID: 1717874036262276, guid: 428ee38f0bbc522489a7aa429e974392, type: 2}
+  - {fileID: 1061429678301432, guid: a008efa41702bdb40ae2748a5b59ca5c, type: 2}
+  vestPrefab:
+  - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
+  - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
+  - {fileID: 1525634519743284, guid: de228a198d6825646a6dc492533faa12, type: 2}
+  helmetPrefab:
+  - {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945, type: 2}
+  - {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945, type: 2}
+  - {fileID: 1767597731569014, guid: cdace47e7e0c98749b7910f9e49a8945, type: 2}
+  bagPrefab:
+  - {fileID: 1963642160271112, guid: 25a0d2516cbbf2349bc31b971a88303d, type: 2}
+  - {fileID: 1293321988381604, guid: 87647785bba406748ad9f8b34ac0f66b, type: 2}
+  - {fileID: 1477988640989514, guid: 9014d493a0af3b744910ac3a50c2bc05, type: 2}
   m16A4Prefab: {fileID: 1884589669727418, guid: 9b86ae4d4ffffa54ca650ea78b958e3b,
     type: 2}
   awmPrefab: {fileID: 1596026197941954, guid: 3157d5bada050174e92e3f6592029591, type: 2}
@@ -688,8 +701,11 @@ MonoBehaviour:
     type: 2}
   grenadePrefab: {fileID: 1711692997422464, guid: c5de67c0a88184240ba35fcc74fbd30e,
     type: 2}
-  ammoPackPrefab: {fileID: 1738024043829670, guid: 331ca4435a91b27448584b74b228d66a,
-    type: 2}
+  ammoPackPrefab:
+  - {fileID: 1322525076054488, guid: 1170b6708aac694408a7c1f92c72ec8a, type: 2}
+  - {fileID: 1554130533554610, guid: ef5c414a25260b144844879bf7162552, type: 2}
+  - {fileID: 1682084424487974, guid: ea25c52adbc5f8c46b9320ce605b9a20, type: 2}
+  - {fileID: 1283015130832716, guid: f18892ee0f7907d49bada396caf4df55, type: 2}
 --- !u!1 &1724042211
 GameObject:
   m_ObjectHideFlags: 0

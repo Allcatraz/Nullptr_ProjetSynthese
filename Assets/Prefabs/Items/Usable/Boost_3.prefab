@@ -39,7 +39,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4999208130950290}
   - component: {fileID: 137324115745308248}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4936094715956976}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Boost_3_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4927940316159334}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Boost_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4582293513289208}
   - component: {fileID: 137899299710376142}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4657557484699502}
   - component: {fileID: 137359680136589806}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bodys
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4275156556313846}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Boost_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4993072863068438}
   - component: {fileID: 137965381400277252}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ Transform:
   m_GameObject: {fileID: 1061429678301432}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4927940316159334}
   m_Father: {fileID: 0}
@@ -204,7 +204,7 @@ Transform:
   m_GameObject: {fileID: 1518099480602258}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4275156556313846}
   - {fileID: 4936094715956976}

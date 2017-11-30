@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4836659627363270}
   - component: {fileID: 137453330161418022}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Boost_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4502080666015252}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Boost_1_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4573238432100462}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Boost_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ Transform:
   m_GameObject: {fileID: 1369743445547268}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4573238432100462}
   m_Father: {fileID: 0}
@@ -111,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 1874893284567864}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4836659627363270}
   - {fileID: 4502080666015252}

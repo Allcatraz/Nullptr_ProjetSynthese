@@ -5189,19 +5189,32 @@ MonoBehaviour:
   m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1463063252352646, guid: ba227a9f07835d0469f7e0075390e16d, type: 2}
-  - {fileID: 0}
   - {fileID: 1596026197941954, guid: 3157d5bada050174e92e3f6592029591, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 1884589669727418, guid: 9b86ae4d4ffffa54ca650ea78b958e3b, type: 2}
   - {fileID: 1006045350083210, guid: dbddbdf50d0ddeb47bb80e37350152d7, type: 2}
   - {fileID: 1539770592342268, guid: e0224e8a0878e0e42893bf71948dba4c, type: 2}
-  - {fileID: 0}
+  - {fileID: 1711692997422464, guid: c5de67c0a88184240ba35fcc74fbd30e, type: 2}
+  - {fileID: 1884589669727418, guid: 9b86ae4d4ffffa54ca650ea78b958e3b, type: 2}
   - {fileID: 1369578581811908, guid: 656661b308b4abf40b09bcac342f3c85, type: 2}
   - {fileID: 1893845116203462, guid: 799316fe2eaadff4abc0701c3c7f883f, type: 2}
-  - {fileID: 1711692997422464, guid: c5de67c0a88184240ba35fcc74fbd30e, type: 2}
+  - {fileID: 1283015130832716, guid: f18892ee0f7907d49bada396caf4df55, type: 2}
+  - {fileID: 1854489930619608, guid: 1170b6708aac694408a7c1f92c72ec8a, type: 2}
+  - {fileID: 1682084424487974, guid: ea25c52adbc5f8c46b9320ce605b9a20, type: 2}
+  - {fileID: 1554130533554610, guid: ef5c414a25260b144844879bf7162552, type: 2}
+  - {fileID: 1963642160271112, guid: 25a0d2516cbbf2349bc31b971a88303d, type: 2}
+  - {fileID: 1477988640989514, guid: 9014d493a0af3b744910ac3a50c2bc05, type: 2}
+  - {fileID: 1293321988381604, guid: 87647785bba406748ad9f8b34ac0f66b, type: 2}
+  - {fileID: 1184233561759954, guid: 744ca3852dec562499fa38ce5ca817a8, type: 2}
+  - {fileID: 1909144370525788, guid: 472c17bacb151a9469ee30c3f3f79812, type: 2}
+  - {fileID: 1046255193083082, guid: d98462f64e67dac42bfba9fb63a8c29c, type: 2}
+  - {fileID: 1545753572409780, guid: 115ad7cc0094f4b45a3007988d9716a8, type: 2}
+  - {fileID: 1238483393173362, guid: 9bdaf9f65c3440b43a72beacd161db38, type: 2}
+  - {fileID: 1190235570663454, guid: 91def9ca707ef0549874aadbe582cdb3, type: 2}
+  - {fileID: 1061429678301432, guid: a008efa41702bdb40ae2748a5b59ca5c, type: 2}
+  - {fileID: 1717874036262276, guid: 428ee38f0bbc522489a7aa429e974392, type: 2}
+  - {fileID: 1369743445547268, guid: f2a0c21a465cd854d95dbecf09254127, type: 2}
+  - {fileID: 1360298439540436, guid: b10ecf40ffa80854a9ad4cbab5aad519, type: 2}
+  - {fileID: 1387756968545002, guid: 66cca65609916b14ab248006ed77b355, type: 2}
+  - {fileID: 1934457201915968, guid: 791ad0965c71ef24baccad99266da6df, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -5258,7 +5271,7 @@ MonoBehaviour:
   isNetworkActive: 0
   matchMaker: {fileID: 0}
   m_ShowLobbyGUI: 0
-  m_MaxPlayers: 4
+  m_MaxPlayers: 100
   m_MaxPlayersPerConnection: 1
   m_MinPlayers: 1
   m_LobbyPlayerPrefab: {fileID: 11487034, guid: ad727d7e1462ecc4f83c898ecc501997,

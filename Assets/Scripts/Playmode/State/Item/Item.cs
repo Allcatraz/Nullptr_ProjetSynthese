@@ -7,7 +7,7 @@ namespace ProjetSynthese
     {
         [Tooltip("Le type de l'item.")]
         [SerializeField]
-        private ItemType type;
+        protected ItemType type;
 
         [SyncVar]
         private GameObject player;

@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using System.Collections;
+using Harmony;
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -21,9 +22,18 @@ namespace ProjetSynthese
             InjectDependencies("InjectPlaySound");
         }
 
-        public void Use()
+        public void Use(float delay)
         {
+            StartCoroutine("DelayPlay", delay);
+        }
+
+        private IEnumerator DelayPlay(float delay)
+        {
+            bool needDelay = delay != 0;
+            if(needDelay)
+                yield return new WaitForSeconds(delay);
             audioSource.PlayOneShot(sound);
+            yield return null;
         }
     }
 }

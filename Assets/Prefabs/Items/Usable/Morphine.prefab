@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114097359478704788}
   - component: {fileID: 114015534419944886}
   m_Layer: 10
-  m_Name: Boost_3
+  m_Name: Morphine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

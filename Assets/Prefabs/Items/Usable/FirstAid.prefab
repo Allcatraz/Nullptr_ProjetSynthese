@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 114555270659803762}
   - component: {fileID: 114166029234361426}
   m_Layer: 10
-  m_Name: Heal_2
+  m_Name: FirstAid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

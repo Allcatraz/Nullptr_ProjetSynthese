@@ -172,7 +172,7 @@ Transform:
   m_GameObject: {fileID: 1711692997422464}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
   - {fileID: 4375329997245672}
   - {fileID: 4409139792098684}
@@ -231,6 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 0}
   cratePrefab: {fileID: 0}
+  grenadePrefab: {fileID: 0}
   type: 4
   explosionPrefab: {fileID: 131164, guid: 3c5f4e32698bdb04eaed647f60310510, type: 2}
   explosionTime: 5

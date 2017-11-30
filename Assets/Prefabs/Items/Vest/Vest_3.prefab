@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 4237871823644966}
   - component: {fileID: 33613277628651042}
   - component: {fileID: 23782412980624116}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Visual_Vest_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ Transform:
   m_GameObject: {fileID: 1360298439540436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.1, z: 0.4}
+  m_LocalScale: {x: 4, y: 1, z: 4}
   m_Children:
   - {fileID: 4237871823644966}
   m_Father: {fileID: 0}
@@ -87,7 +87,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 958921c22b2eb94439d53054bc63d923, type: 2}
+  - {fileID: 2100000, guid: b04e284c717d33545892cf02e041826f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -9,7 +9,7 @@ namespace ProjetSynthese
         private const int PercentChanceSpawnLevel2 = 20;
         private const int PercentChanceSpawnLevel3 = 10;
 
-        private const float YPositionReduction = 0.25f;
+        private const float YPositionReduction = 2.20f;
 
         private static Vector2 Range1 = new Vector2(0, PercentChanceSpawnLevel1);
         private static Vector2 Range2 = new Vector2(Range1.y, Range1.y + PercentChanceSpawnLevel2);

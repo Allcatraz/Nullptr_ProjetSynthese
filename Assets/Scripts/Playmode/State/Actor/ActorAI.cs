@@ -53,6 +53,8 @@ namespace ProjetSynthese
             deathCircleStatusUpdateEventChannel.OnEventPublished += OnDeathCircleFixedUpdate;
             deathCircleTimeLeftEventChannel.OnEventPublished += OnDeathCircleTimeLeftEvent;
         }
+        static int idcounter = 0;
+        int id;
         private void Start()
         {
             //Ordre d'initialisation important
@@ -64,6 +66,8 @@ namespace ProjetSynthese
             HealthManager = new HealthManager(this);
             health.OnDeath += OnDeath;
 
+            id = idcounter;
+            idcounter++;
         }
 
 

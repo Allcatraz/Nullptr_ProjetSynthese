@@ -180,6 +180,7 @@ namespace ProjetSynthese
             }
 
             destination.y = FloorYOffset;
+
             Vector3 nouvellePosition = Vector3.MoveTowards(actor.transform.position, destination, pas);
             Vector3 mouvement = new Vector3(nouvellePosition.x - actor.transform.position.x, nouvellePosition.y - actor.transform.position.y, nouvellePosition.z - actor.transform.position.z);
 
@@ -204,6 +205,12 @@ namespace ProjetSynthese
                 newDestination.z += signYOffset * zOffset;
                 newDestination.y = FloorYOffset;
                 MapDestination = newDestination;
+                if (IsDestinationOutOfMap(newDestination))
+                {
+                    newDestination.x = -newDestination.x;
+                    newDestination.z = -newDestination.z;
+                    MapDestination = newDestination;
+                }
                 float range = Vector3.Distance(actor.transform.position, MapDestination);
                 if (!actor.Brain.IsExplorePathBlocked(MapDestination, range))
                 {
@@ -214,7 +221,6 @@ namespace ProjetSynthese
                 {
                     MapDestinationIsKnown = false;
                 }
-
             }
         }
 
@@ -359,8 +365,8 @@ namespace ProjetSynthese
             Vector3 fleeDirection = Vector3.zero;
             Vector3 aiCurrentPosition = actor.transform.position;
             Vector3 fleeDestination = aiCurrentPosition;
-            
-            if (actor.Brain.PlayerInPerceptionRange != null && aiCurrentPosition!=null)
+
+            if (actor.Brain.PlayerInPerceptionRange != null && aiCurrentPosition != null)
             {
                 fleeDirection = -(actor.Brain.PlayerInPerceptionRange.transform.position - aiCurrentPosition);
                 fleeDirection.Normalize();
@@ -382,7 +388,7 @@ namespace ProjetSynthese
             }
 
             fleeDestination.y = FloorYOffset;
-            
+
             if (ValidateMapDestination(fleeDestination))
             {
                 MapDestination = fleeDestination;
@@ -414,7 +420,7 @@ namespace ProjetSynthese
                     MapDestination = fleeDestinationDown;
                     return true;
                 }
-                else if(ValidateMapDestination(fleeDestinationUp))
+                else if (ValidateMapDestination(fleeDestinationUp))
                 {
                     MapDestination = fleeDestinationUp;
                     return true;
@@ -425,8 +431,12 @@ namespace ProjetSynthese
 
         private bool ValidateMapDestination(Vector3 mapDestination)
         {
-           
-            if (!Actor.Brain.IsExplorePathBlocked(MapDestination, FleeRange))
+            if (IsDestinationOutOfMap(mapDestination))
+            {
+                mapDestination.x = -mapDestination.x;
+                mapDestination.z = -mapDestination.z;
+            }
+            if (!Actor.Brain.IsExplorePathBlocked(mapDestination, FleeRange))
             {
                 return true;
             }
@@ -485,6 +495,20 @@ namespace ProjetSynthese
                 default:
                     break;
             }
+        }
+
+        private bool IsDestinationOutOfMap(Vector3 destination)
+        {
+            bool outOfMap = false;
+            if (destination.x > AISpawnerController.XMapOriginCornerCoordinate 
+                || destination.x < AISpawnerController.XMapOriginOppositeCornerCoordinate
+                || destination.z > AISpawnerController.ZMapOriginCornerCoordinate
+                || destination.z < AISpawnerController.ZMapOriginOppositeCornerCoordinate)
+            {
+                outOfMap = true;
+            }
+
+            return outOfMap;
         }
     }
 }

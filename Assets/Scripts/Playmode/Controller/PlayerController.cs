@@ -65,6 +65,7 @@ namespace ProjetSynthese
         private AchivementController achivementController;
 
         private Vector2 rotation = Vector2.zero;
+        private float kills = 0;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
@@ -173,6 +174,7 @@ namespace ProjetSynthese
             }
 
             endGamePanel = GameObject.FindGameObjectWithTag(R.S.Tag.EndGamePanel).GetAllChildrens()[0].GetComponent<RectTransform>();
+            endGamePanel.gameObject.SetActive(false);
 
             keyboardInputSensor.Keyboards.OnMove += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
@@ -578,13 +580,21 @@ namespace ProjetSynthese
             {
                 if (isAi)
                 {
-                    achivementController.AddAiKill();
+                    kills += 0.5f;
+                    if(Mathf.Round(kills) - kills == 0)
+                        achivementController.AddAiKill();
                 }
                 else
                 {
+                    kills++;
                     achivementController.AddPlayerKill();
                 }
             }
+        }
+
+        public int GetKill()
+        {
+            return (int)kills;
         }
 
         public Weapon GetWeapon()

@@ -17,18 +17,24 @@ namespace ProjetSynthese
         private AiKillRepository aiKillRepository;
         private PlayerKillrepository playerKillrepository;
         private PlayerRepository playerRepository;
+        private PlayedGameRepository playedGameRepository;
+        private GameVictoryRepository gameVictoryRepository;
 
         public void InjectAchivementController([ApplicationScope] PlayerRepository playerRepository,
                                                [ApplicationScope] ProtectionOfPlayerRepository protectionOfPlayerRepository,
                                                [ApplicationScope] PlayerKillrepository playerKillrepository,
                                                [ApplicationScope] AiKillRepository aiKillRepository,
-                                               [ApplicationScope] AchivementRepository achivementRepository)
+                                               [ApplicationScope] AchivementRepository achivementRepository,
+                                               [ApplicationScope] GameVictoryRepository gameVictoryRepository,
+                                               [ApplicationScope] PlayedGameRepository playedGameRepository)
         {
             this.playerRepository = playerRepository;
             this.playerKillrepository = playerKillrepository;
             this.protectionOfPlayerRepository = protectionOfPlayerRepository;
             this.aiKillRepository = aiKillRepository;
             this.achivementRepository = achivementRepository;
+            this.playedGameRepository = playedGameRepository;
+            this.gameVictoryRepository = gameVictoryRepository;
         }
 
         public void Awake()
@@ -44,6 +50,40 @@ namespace ProjetSynthese
         public Player GetPlayer()
         {
             return player;
+        }
+
+        public void AddPlayedGameToDatabase()
+        {
+            if (player != null)
+            {
+                playedGameRepository.AddPlayedGame(player.Id);
+            }
+        }
+
+        public void AddGameVictoryToDatabase()
+        {
+            if (player != null)
+            {
+                gameVictoryRepository.AddGameVictory(player.Id);
+            }
+        }
+
+        public long GetGamePlayedFromPlayer()
+        {
+            if (player != null)
+            {
+                return playedGameRepository.GetCountFromPlayer(player.Id);
+            }
+            return 0;
+        }
+
+        public long GetGameWonFromPlayer()
+        {
+            if (player != null)
+            {
+                return gameVictoryRepository.GetCountFromPlayer(player.Id);
+            }
+            return 0;
         }
 
         public bool AddPlayerToDatabase(Player playerToAdd)

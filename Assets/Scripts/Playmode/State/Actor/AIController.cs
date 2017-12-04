@@ -67,10 +67,11 @@ namespace ProjetSynthese
         private float currentSpeedLevel;
 
         private const float RandomRadiusMoveRange = 5.0f;
+        private const int MaxValidRandomDestinationTryPerUpdate = 3;
 
-        private const float ErrorPositionTolerance = 0.01f;
+        private const float ErrorPositionTolerance = 1.5f;
 
-        private const float FloorYOffset = 1.0f;
+        public const float FloorYOffset = 1.4f;
         private const float SwimYOffset = -1.0f;
 
         public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt, DeathCircle }
@@ -84,7 +85,7 @@ namespace ProjetSynthese
             OpponentTargetDestinationIsKnown = false;
             ItemTargetDestinationIsKnown = false;
             SetAIControllerMode(ControllerMode.None);
-            RandomSpeedFactor = Random.Range(RandomSpeedMinRange,RandomSpeedMaxRange);
+            RandomSpeedFactor = Random.Range(RandomSpeedMinRange, RandomSpeedMaxRange);
         }
 
         public bool HasReachedMapDestination(ActorAI actor)
@@ -124,6 +125,7 @@ namespace ProjetSynthese
                 case AIBrain.OpponentType.None:
                     break;
                 case AIBrain.OpponentType.AI:
+
                 case AIBrain.OpponentType.Player:
                     if (Actor.EquipmentManager.WeaponReadyToUse())
                     {
@@ -144,7 +146,7 @@ namespace ProjetSynthese
 
         private void MoveDestination(MoveTarget moveTarget, ActorAI actor)
         {
-            float pas = this.currentSpeedLevel* RandomSpeedFactor * Time.deltaTime;
+            float pas = this.currentSpeedLevel * RandomSpeedFactor * Time.deltaTime;
             Vector3 destination = Vector3.zero;
 
             switch (moveTarget)
@@ -178,6 +180,7 @@ namespace ProjetSynthese
             }
 
             destination.y = FloorYOffset;
+
             Vector3 nouvellePosition = Vector3.MoveTowards(actor.transform.position, destination, pas);
             Vector3 mouvement = new Vector3(nouvellePosition.x - actor.transform.position.x, nouvellePosition.y - actor.transform.position.y, nouvellePosition.z - actor.transform.position.z);
 
@@ -189,17 +192,36 @@ namespace ProjetSynthese
 
         public void GenerateRandomDestination(ActorAI actor)
         {
-            Vector3 newDestination = actor.transform.position;
-            float xOffset = Random.Range(0.0f, RandomRadiusMoveRange);
-            float zOffset = RandomRadiusMoveRange - xOffset;
-            float signXOffset = (Random.Range(0, 2) * 2) - 1;
-            float signYOffset = (Random.Range(0, 2) * 2) - 1;
-            //
-            newDestination.x += signXOffset * xOffset;
-            newDestination.z += signYOffset * zOffset;
-            newDestination.y = FloorYOffset;
-            MapDestination = newDestination;
-            MapDestinationIsKnown = true;
+
+            for (int i = 0; i < MaxValidRandomDestinationTryPerUpdate; i++)
+            {
+                Vector3 newDestination = actor.transform.position;
+                float xOffset = Random.Range(0.0f, RandomRadiusMoveRange);
+                float zOffset = RandomRadiusMoveRange - xOffset;
+                float signXOffset = (Random.Range(0, 2) * 2) - 1;
+                float signYOffset = (Random.Range(0, 2) * 2) - 1;
+                //
+                newDestination.x += signXOffset * xOffset;
+                newDestination.z += signYOffset * zOffset;
+                newDestination.y = FloorYOffset;
+                MapDestination = newDestination;
+                if (IsDestinationOutOfMap(newDestination))
+                {
+                    newDestination.x = -newDestination.x;
+                    newDestination.z = -newDestination.z;
+                    MapDestination = newDestination;
+                }
+                float range = Vector3.Distance(actor.transform.position, MapDestination);
+                if (!actor.Brain.IsExplorePathBlocked(MapDestination, range))
+                {
+                    MapDestinationIsKnown = true;
+                    break;
+                }
+                else
+                {
+                    MapDestinationIsKnown = false;
+                }
+            }
         }
 
         public void FindTargetItemMapDestination(ActorAI actor)
@@ -258,8 +280,8 @@ namespace ProjetSynthese
 
         public void SetDeathCircleFleeDestination(ActorAI actor)
         {
-            
-            if ( actor.Brain.ExistVisibleOpponent() && FoundFleeDestination(actor))
+
+            if (actor.Brain.ExistVisibleOpponent() && FoundFleeDestination(actor))
             {
                 //Safe circle flee direction
                 Vector3 fleeDirection = Vector3.zero;
@@ -268,7 +290,7 @@ namespace ProjetSynthese
                 fleeDirection = actor.Brain.SafeCircleCenterPosition - aiCurrentPosition;
                 fleeDirection.y = FloorYOffset;
                 fleeDirection.Normalize();
-                
+
                 Vector3 opponentEscapingDirection = MapDestination;
                 opponentEscapingDirection.y = FloorYOffset;
                 opponentEscapingDirection.Normalize();
@@ -284,8 +306,8 @@ namespace ProjetSynthese
                         opponentPositionFactor = 0.0f;
                     }
                 }
-                
-                if (scalarProduct < 0.0f)
+
+                if (scalarProduct > 0.0f)
                 {
                     fleeDirection = opponentPositionFactor * opponentEscapingDirection + fleeDirection;
                 }
@@ -343,18 +365,18 @@ namespace ProjetSynthese
             Vector3 fleeDirection = Vector3.zero;
             Vector3 aiCurrentPosition = actor.transform.position;
             Vector3 fleeDestination = aiCurrentPosition;
-            //check le plus proche ou fait composite
-            if (actor.Brain.AiInPerceptionRange != null)
+
+            if (actor.Brain.PlayerInPerceptionRange != null && aiCurrentPosition != null)
             {
-                fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
+                fleeDirection = -(actor.Brain.PlayerInPerceptionRange.transform.position - aiCurrentPosition);
                 fleeDirection.Normalize();
                 fleeDirection *= FleeRange;
                 fleeDestination.x += fleeDirection.x;
                 fleeDestination.z += fleeDirection.z;
             }
-            else if (actor.Brain.PlayerInPerceptionRange != null)
+            else if (actor.Brain.AiInPerceptionRange != null && aiCurrentPosition != null)
             {
-                fleeDirection = -(actor.Brain.PlayerInPerceptionRange.transform.position - aiCurrentPosition);
+                fleeDirection = -(actor.Brain.AiInPerceptionRange.transform.position - aiCurrentPosition);
                 fleeDirection.Normalize();
                 fleeDirection *= FleeRange;
                 fleeDestination.x += fleeDirection.x;
@@ -364,23 +386,61 @@ namespace ProjetSynthese
             {
                 return false;
             }
-            if (ValidateMapDestination(fleeDestination))
+
+            fleeDestination.y = FloorYOffset;
+
+            if (ValidateMapDestination(ref fleeDestination))
             {
                 MapDestination = fleeDestination;
                 return true;
             }
+            else
+            {
+                Vector3 actualInvalideFleeDirection = fleeDestination - aiCurrentPosition;
+                Vector3 up = new Vector3(0, 1, 0);
+                Vector3 down = new Vector3(0, -1, 0);
+                Vector3 upPerpendicularFleeDirection = Vector3.Cross(actualInvalideFleeDirection, up);
+                Vector3 downPerpendicularFleeDirection = Vector3.Cross(actualInvalideFleeDirection, down);
+                upPerpendicularFleeDirection.Normalize();
+                upPerpendicularFleeDirection *= FleeRange;
+                downPerpendicularFleeDirection.Normalize();
+                downPerpendicularFleeDirection *= FleeRange;
+
+                Vector3 fleeDestinationUp = aiCurrentPosition;
+                fleeDestinationUp.x += upPerpendicularFleeDirection.x;
+                fleeDestinationUp.z += upPerpendicularFleeDirection.z;
+                fleeDestinationUp.y = FloorYOffset;
+
+                Vector3 fleeDestinationDown = aiCurrentPosition;
+                fleeDestinationDown.x += downPerpendicularFleeDirection.x;
+                fleeDestinationDown.z += downPerpendicularFleeDirection.z;
+                fleeDestinationDown.y = FloorYOffset;
+                if (ValidateMapDestination(ref fleeDestinationDown))
+                {
+                    MapDestination = fleeDestinationDown;
+                    return true;
+                }
+                else if (ValidateMapDestination(ref fleeDestinationUp))
+                {
+                    MapDestination = fleeDestinationUp;
+                    return true;
+                }
+            }
             return false;
-
-            //code si coincé pas de possibilité de fuite return false
-            //exemple mur, circle of death, out of map
-
         }
 
-        private bool ValidateMapDestination(Vector3 mapDestination)
+        private bool ValidateMapDestination(ref Vector3 mapDestination)
         {
-            //code si coincé pas de possibilité de fuite return false
-            //exemple mur, circle of death, out of map
-            return true;
+            if (IsDestinationOutOfMap(mapDestination))
+            {
+                mapDestination = -mapDestination;
+                mapDestination.y = FloorYOffset;
+            }
+            if (!Actor.Brain.IsExplorePathBlocked(mapDestination, FleeRange))
+            {
+                return true;
+            }
+            return false;
         }
 
         public ControllerMode GetAIControllerMode()
@@ -435,6 +495,20 @@ namespace ProjetSynthese
                 default:
                     break;
             }
+        }
+
+        private bool IsDestinationOutOfMap(Vector3 destination)
+        {
+            bool outOfMap = false;
+            if (destination.x < AISpawnerController.XMapOriginCornerCoordinate 
+                || destination.x > AISpawnerController.XMapOriginOppositeCornerCoordinate
+                || destination.z > AISpawnerController.ZMapOriginCornerCoordinate
+                || destination.z < AISpawnerController.ZMapOriginOppositeCornerCoordinate)
+            {
+                outOfMap = true;
+            }
+
+            return outOfMap;
         }
     }
 }

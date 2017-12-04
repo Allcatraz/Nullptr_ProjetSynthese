@@ -227,7 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4367379605194542}
   m_Layer: 10
-  m_Name: benelliM4
+  m_Name: benelli
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -575,7 +575,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -644,6 +644,14 @@ MonoBehaviour:
   dommage: 22
   shootTime: 0.25
   reloadTime: 3
+  sounds:
+  - {fileID: 114980019840729374}
+  - {fileID: 114364796425734742}
+  - {fileID: 114270342195025442}
+  - {fileID: 114443222811737270}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114237370751285876
 MonoBehaviour:
   m_ObjectHideFlags: 1

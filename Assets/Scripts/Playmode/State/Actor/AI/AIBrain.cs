@@ -8,6 +8,7 @@ namespace ProjetSynthese
     {
         #region Parameters
         private const float ErrorCirclesGapTolerance = 0.001f;
+        private const float SafetyMargin = 5.0f;
         private const float LifeFleeThresholdFactor = 0.20f;
         public readonly float LifeFleeThreshold;
         private float lastLifePointLevel;
@@ -21,8 +22,7 @@ namespace ProjetSynthese
         public readonly float BagCapacityMaximum = 300.0f;
         public readonly float HelmetProtectionMaximum = 50.0f;
         public readonly float VestProtectionMaximum = 50.0f;
-
-        private readonly float WeaponEffectiveRangeDamping = 0.1f;
+        public readonly float WeaponEffectiveRangeDamping = 0.1f;
 
         private readonly ActorAI Actor;
         public readonly GoalEvaluator goalEvaluator;
@@ -137,7 +137,7 @@ namespace ProjetSynthese
         {
             this.Actor = actor;
             this.goalEvaluator = new GoalEvaluator(actor);
-            this.decisionManager = new AIDecisionManager(actor,this);
+            this.decisionManager = new AIDecisionManager(actor, this);
             LifeFleeThreshold = actor.AIHealth.MaxHealthPoints * LifeFleeThresholdFactor;
             lastLifePointLevel = actor.AIHealth.MaxHealthPoints;
             ResetActualPerception();
@@ -167,10 +167,14 @@ namespace ProjetSynthese
 
         public bool FoundAIInPerceptionRange()
         {
-
             ActorAI opponentAI = Actor.Sensor.NeareastNonAllyAI(Actor);
             if (opponentAI != null)
             {
+                if (AIOutsideDeathCircle(opponentAI))
+                {
+                    opponentAI = null;
+                    return false;
+                }
                 aiInPerceptionRange = opponentAI;
                 return true;
             }
@@ -182,10 +186,14 @@ namespace ProjetSynthese
             PlayerController opponentPlayer = Actor.Sensor.NeareastGameObject<PlayerController>(Actor.transform.position, AIRadar.LayerType.Player);
             if (opponentPlayer != null)
             {
+                if (PlayerOutsideDeathCircle(opponentPlayer))
+                {
+                    opponentPlayer = null;
+                    return false;
+                }
                 playerInPerceptionRange = opponentPlayer;
                 return true;
             }
-
             return false;
         }
 
@@ -194,6 +202,11 @@ namespace ProjetSynthese
             Item item = Actor.Sensor.NeareastNonEquippedItem(Actor.transform.position);
             if (item != null)
             {
+                if (ItemOutsideDeathCircle(item))
+                {
+                    itemInPerceptionRange = null;
+                    return false;
+                }
                 itemInPerceptionRange = item;
                 return true;
             }
@@ -221,7 +234,7 @@ namespace ProjetSynthese
                 directionVector.y = 0.0f;
                 sqrtTargetDistance = directionVector.sqrMagnitude;
             }
-            else
+            else if(aiInPerceptionRange != null)
             {
                 directionVector = aiInPerceptionRange.transform.position - Actor.transform.position;
                 directionVector.y = 0.0f;
@@ -233,7 +246,7 @@ namespace ProjetSynthese
                 Weapon equippedPrimaryWeapon = (Weapon)Actor.AIInventory.GetPrimaryWeapon().GetItem();
                 if (equippedPrimaryWeapon != null)
                 {
-                    float range = equippedPrimaryWeapon.EffectiveWeaponRange * WeaponEffectiveRangeDamping;
+                    float range = equippedPrimaryWeapon.EffectiveWeaponRange *WeaponEffectiveRangeDamping;
                     if (sqrtTargetDistance < range * range)
                     {
                         return true;
@@ -249,14 +262,14 @@ namespace ProjetSynthese
             {
                 if (playerInPerceptionRange != null)
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, playerInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSightToPlayer(Actor.transform.position, playerInPerceptionRange))
                     {
                         return true;
                     }
                 }
                 else if (aiInPerceptionRange != null)
                 {
-                    if (Actor.Sensor.IsGameObjectHasLineOfSight(Actor.transform.position, aiInPerceptionRange))
+                    if (Actor.Sensor.IsGameObjectHasLineOfSightToAI(Actor.transform.position, aiInPerceptionRange))
                     {
                         return true;
                     }
@@ -300,8 +313,6 @@ namespace ProjetSynthese
         }
 
 
-        
-
         private void UpdateWeaponKnowledge()
         {
             ObjectContainedInventory cell = Actor.AIInventory.GetPrimaryWeapon();
@@ -322,11 +333,6 @@ namespace ProjetSynthese
 
             Actor.EquipmentManager.SelectWeapon();
 
-            //reload
-            //ammunition
-            //si pas de munition ou plus de munitions: unequipped weapon
-            //essai de reloader
-            //essai equiper nouvelle weapon
         }
 
         private void UpdateProtectionKnowledge()
@@ -420,6 +426,64 @@ namespace ProjetSynthese
         public void SetAmmoPackStorageRatio(AmmoType ammoType, float ammoPackStorageRatio)
         {
             ammoPackNumberStorageRatio[(int)ammoType] = ammoPackStorageRatio;
+        }
+        private bool ItemOutsideDeathCircle(Item item)
+        {
+            bool isOutsideDeathCircle = false;
+            Vector2 itemPosition = Vector2.zero;
+            Vector2 deathCirclePosition = Vector2.zero;
+            itemPosition.x = item.transform.position.x;
+            itemPosition.y = item.transform.position.z;
+            deathCirclePosition.x = DeathCircleCenterPosition.x;
+            deathCirclePosition.y = DeathCircleCenterPosition.z;
+            float itemDistanceOutsideDeathCircle = Vector2.Distance(itemPosition, deathCirclePosition) - DeathCircleRadius;
+            if (itemDistanceOutsideDeathCircle > 0.0f)
+            {
+                isOutsideDeathCircle = true;
+            }
+            return isOutsideDeathCircle;
+        }
+
+        private bool AIOutsideDeathCircle(ActorAI aiActor)
+        {
+            bool isOutsideDeathCircle = false;
+            Vector2 aiActorPosition = Vector2.zero;
+            Vector2 deathCirclePosition = Vector2.zero;
+            aiActorPosition.x = aiActor.transform.position.x;
+            aiActorPosition.y = aiActor.transform.position.z;
+            deathCirclePosition.x = DeathCircleCenterPosition.x;
+            deathCirclePosition.y = DeathCircleCenterPosition.z;
+            float aiActorDistanceOutsideDeathCircle = Vector2.Distance(aiActorPosition, deathCirclePosition) - DeathCircleRadius;
+            if (aiActorDistanceOutsideDeathCircle > 0.0f)
+            {
+                isOutsideDeathCircle = true;
+            }
+            return isOutsideDeathCircle;
+        }
+
+        private bool PlayerOutsideDeathCircle(PlayerController player)
+        {
+            bool isOutsideDeathCircle = false;
+            Vector2 playerPosition = Vector2.zero;
+            Vector2 deathCirclePosition = Vector2.zero;
+            playerPosition.x = player.transform.position.x;
+            playerPosition.y = player.transform.position.z;
+            deathCirclePosition.x = DeathCircleCenterPosition.x;
+            deathCirclePosition.y = DeathCircleCenterPosition.z;
+            float playerDistanceOutsideDeathCircle = Vector2.Distance(playerPosition, deathCirclePosition) - DeathCircleRadius;
+            if (playerDistanceOutsideDeathCircle > 0.0f)
+            {
+                isOutsideDeathCircle = true;
+            }
+            return isOutsideDeathCircle;
+        }
+
+        public bool IsExplorePathBlocked(Vector3 destination, float range)
+        {
+            Vector3 direction = Vector3.zero;
+            direction = destination - Actor.transform.position;
+            range += SafetyMargin;
+            return Actor.Sensor.IsGameObjectHasLineOfSightToMapPosition(Actor.transform.position, direction, range);
         }
 
         private void UpdateInventoryKnowledge()
@@ -526,6 +590,6 @@ namespace ProjetSynthese
             safeCirclePosition.x = DeathCircleCenterPosition.x;
             safeCirclePosition.y = DeathCircleCenterPosition.z;
             CurrentDistanceOutsideSafeCircle = Vector2.Distance(aiPosition, safeCirclePosition) - SafeCircleRadius;
-         }
+        }
     }
 }

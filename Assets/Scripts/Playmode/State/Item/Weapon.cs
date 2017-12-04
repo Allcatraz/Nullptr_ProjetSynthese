@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProjetSynthese
@@ -42,12 +43,16 @@ namespace ProjetSynthese
         [Tooltip("Temps que le rechargement de l'arme va prendre.")]
         [SerializeField]
         private float reloadTime;
-       
+
+        [Tooltip("Temps que le rechargement de l'arme va prendre.")]
+        [SerializeField]
+        private PlaySound[] sounds;
+
         public event OnMunitionChanged OnMunitionChanged;
 
         private const int Weight = 0;
         private float timerForShoot = 0;
-        private PlaySound[] sounds;
+        private bool isReloading = false;
 
         public float BulletSpeed { get { return bulletSpeed; } }
         public float LivingTime { get { return bulletLivingTime; } }
@@ -75,7 +80,6 @@ namespace ProjetSynthese
 
         private void Awake()
         {
-            sounds = GetComponentsInChildren<PlaySound>();
             MagazineAmount = MagazineMax;
         }
 
@@ -86,14 +90,20 @@ namespace ProjetSynthese
 
         public void ChangeWeaponSound()
         {
-            sounds[3].Use();
+            sounds[3].Use(0);
+            ComputeBoltUpSound();
         }
 
         public override bool Use()
         {
-            if (MagazineAmount > 0 && timerForShoot >= shootTime)
+            if (MagazineAmount > 0 && timerForShoot >= shootTime && !isReloading)
             {
-                sounds[0].Use();
+                sounds[0].Use(0);
+                if (type == ItemType.M110)
+                {
+                    sounds[5].Use(0.3f);
+                    sounds[6].Use(reloadTime - 0.3f);
+                }
                 MagazineAmount -= 1;
                 NotidyMunitionChanged();
                 timerForShoot = 0;
@@ -104,25 +114,62 @@ namespace ProjetSynthese
 
         public bool Reload(Inventory inventory)
         {
-            if (inventory.UseAmmoPack(ammoType))
+            if (inventory.UseAmmoPack(ammoType)  && !isReloading && MagazineAmount != MagazineMax)
             {
-                sounds[1].Use();
+                ComputeSoundPreReload();
                 StartCoroutine("ComputeReload");
                 return true;
             }
             return false;
         }
 
+        private void ComputeSoundPreReload()
+        {
+            sounds[1].Use(0);
+            if (type == ItemType.BenelliM4)
+            {
+                float delay = reloadTime / MagazineMax;
+                sounds[1].Use(delay);
+                sounds[1].Use(delay * 2);
+                sounds[1].Use(delay * 3);
+                sounds[1].Use(delay * 4);
+            }
+        }
+
+        private void ComputeSoundAfterReload()
+        {
+            sounds[2].Use(0);
+            if (sounds[4] != null)
+                sounds[4].Use(0.1f);
+        }
+
+        private void ComputeBoltUpSound()
+        {
+            if (sounds.Length > 4)
+            {
+                if (sounds[5] != null)
+                {
+                    sounds[5].Use(0.1f);
+                }
+                if (sounds[6] != null)
+                {
+                    sounds[6].Use(0.1f);
+                }
+            }
+        }
+
         private IEnumerator ComputeReload()
         {
-            bool doReload = false;
-            if (!doReload)
+            if (!isReloading)
             {
-                doReload = false;
+                isReloading = true;
                 yield return new WaitForSeconds(reloadTime);
             }
-            sounds[2].Use();
+
+            ComputeSoundAfterReload();
+            ComputeBoltUpSound();
             MagazineAmount = MagazineMax;
+            isReloading = false;
             NotidyMunitionChanged();
             yield return null;
         }

@@ -9,14 +9,14 @@ namespace ProjetSynthese
         [SerializeField]
         private GameObject aiPrefab;
 
-        private const int AINumber = 5;
+        private const int AINumber = 100;
 
-        private const float XMapOriginCornerCoordinate = 0.0f;
-        private const float ZMapOriginCornerCoordinate = 0.0f;
+        public const float XMapOriginCornerCoordinate = 0.0f;
+        public const float ZMapOriginCornerCoordinate = 0.0f;
         private const float DefaultHeighPosition = 2.0f;
-        private const float XMapOriginOppositeCornerCoordinate = 50.0f;//40000.0f;
-        private const float ZMapOriginOppositeCornerCoordinate = -50.0f;//40000.0f;
-
+        public const float XMapOriginOppositeCornerCoordinate = 450.0f;
+        public const float ZMapOriginOppositeCornerCoordinate = -450.0f;
+        
         private static int timeExecute = 0;
 
         private void Start()
@@ -35,7 +35,7 @@ namespace ProjetSynthese
                 {
                     xOffset = Random.Range(XMapOriginCornerCoordinate, XMapOriginOppositeCornerCoordinate);
                     zOffset = Random.Range(ZMapOriginCornerCoordinate, ZMapOriginOppositeCornerCoordinate);
-                    position[i] = new Vector3(XMapOriginCornerCoordinate + xOffset, DefaultHeighPosition, ZMapOriginCornerCoordinate + zOffset);
+                    position[i] = new Vector3(xOffset, DefaultHeighPosition, zOffset);
                 }
 
                 for (int i = 0; i < AINumber; i++)

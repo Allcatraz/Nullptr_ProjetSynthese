@@ -83,7 +83,7 @@ namespace ProjetSynthese
 
 
         private Vector2 rotation = Vector2.zero;
-        private Quaternion pastFrameRotation = Quaternion.identity;
+        private float kills = 0;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
@@ -191,7 +191,10 @@ namespace ProjetSynthese
                 return;
             }
 
+            achivementController.AddPlayedGameToDatabase();
+
             endGamePanel = GameObject.FindGameObjectWithTag(R.S.Tag.EndGamePanel).GetAllChildrens()[0].GetComponent<RectTransform>();
+            endGamePanel.gameObject.SetActive(false);
 
             keyboardInputSensor.Keyboards.OnMove += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
@@ -299,6 +302,9 @@ namespace ProjetSynthese
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();
             isHoldingGrenade = false;
+
+            if(currentWeapon != null)
+                currentWeapon.ChangeWeaponSound();
         }
 
         private void OnSwitchSecondaryWeapon()
@@ -309,6 +315,9 @@ namespace ProjetSynthese
             SetCurrentWeaponActive(true);
             inventory.NotifyInventoryChange();
             isHoldingGrenade = false;
+
+            if (currentWeapon != null)
+                currentWeapon.ChangeWeaponSound();
         }
 
         private void OnSwitchThirdWeapon()
@@ -329,11 +338,10 @@ namespace ProjetSynthese
                 currentWeapon.gameObject.SetActive(isActive);
                 currentWeapon.transform.position = weaponHolderTransform.position;
                 currentWeapon.transform.rotation = weaponHolderTransform.rotation;
-                currentWeapon.transform.Rotate(93, 0, 0);
-                currentWeapon.ChangeWeaponSound();
+                currentWeapon.transform.Rotate(93, 0, 0);                
                 currentWeapon.UpdateBullets();
                 CmdSetTransform(currentWeapon.gameObject, currentWeapon.transform.position, currentWeapon.transform.rotation, currentWeapon.transform.localScale);
-                CmdSetActive(currentWeapon.gameObject, isActive);
+                CmdSetActive(currentWeapon.gameObject, isActive);                
             }
         }
 
@@ -599,13 +607,21 @@ namespace ProjetSynthese
             {
                 if (isAi)
                 {
-                    achivementController.AddAiKill();
+                    kills += 0.5f;
+                    if(Mathf.Round(kills) - kills == 0)
+                        achivementController.AddAiKill();
                 }
                 else
                 {
+                    kills++;
                     achivementController.AddPlayerKill();
                 }
             }
+        }
+
+        public int GetKill()
+        {
+            return (int)kills;
         }
 
         public Weapon GetWeapon()

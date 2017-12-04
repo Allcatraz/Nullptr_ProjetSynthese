@@ -4,7 +4,7 @@ namespace ProjetSynthese
 {
     public class GoalEvaluator
     {
-
+        
         private readonly ActorAI actor;
 
         private const float NoWeaponTrackGoalLevel = 0.0f;

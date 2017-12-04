@@ -14,6 +14,8 @@ namespace ProjetSynthese
     public delegate void ToggleMapEventHandler();
 
     public delegate void MoveTowardEventHandler(List<KeyCode> key);
+    public delegate void BeginMovingEventHandler();
+    public delegate void StopMovingEventHandler();
     public delegate void SwitchSprintOnEventHandler();
     public delegate void SwitchSprintOffEventHandler();
 
@@ -42,6 +44,8 @@ namespace ProjetSynthese
         event ToggleMapEventHandler OnToggleMap;
 
         event MoveTowardEventHandler OnMove;
+        event BeginMovingEventHandler OnBeginMoving;
+        event StopMovingEventHandler OnStopMoving;
         event SwitchSprintOnEventHandler OnSwitchSprintOn;
         event SwitchSprintOffEventHandler OnSwitchSprintOff;
 

@@ -1358,6 +1358,7 @@ MonoBehaviour:
   grenadePrefab: {fileID: 0}
   shootingAnimation: {fileID: 7400000, guid: cbb6bbf945dda7d4d8c062dd76028577, type: 3}
   grenadeAnimation: {fileID: 7400000, guid: ee8fe990b6b8d584a80a8477c96adcb8, type: 3}
+  reloadAnimation: {fileID: 7400000, guid: ed8ba7a254ec06442b993c7db043df25, type: 3}
   numberOfParamsToSync: 6
 --- !u!114 &114093056321587282
 MonoBehaviour:
@@ -1383,6 +1384,7 @@ MonoBehaviour:
   firstPersonCamera: {fileID: 20009433431343892}
   grenadeThrowingForce: 12
   grenadeThrowingHand: {fileID: 1473631201260102}
+  head: {fileID: 1898711270101126}
 --- !u!114 &114095602013616882
 MonoBehaviour:
   m_ObjectHideFlags: 1

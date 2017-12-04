@@ -71,7 +71,7 @@ namespace ProjetSynthese
 
         private const float ErrorPositionTolerance = 1.5f;
 
-        public const float FloorYOffset = 1.4f;
+        public const float FloorYOffset = 1.1f;
         private const float SwimYOffset = -1.0f;
 
         public enum ControllerMode { None, Explore, Loot, Combat, Flee, Hunt, DeathCircle }

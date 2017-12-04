@@ -11880,8 +11880,8 @@ MonoBehaviour:
   numberVictory: {fileID: 1043202707}
   numberDefeat: {fileID: 1790811122}
   totalGame: {fileID: 1213127282}
-  killDeathsAverage: {fileID: 970877264}
-  killDeathsRatio: {fileID: 147781400}
+  killDeathsAverage: {fileID: 147781400}
+  killDeathsRatio: {fileID: 970877264}
   militaryHelmet: {fileID: 1647205753}
   militaryVest: {fileID: 140451643}
   rucksac: {fileID: 369783364}
@@ -13403,11 +13403,11 @@ RectTransform:
   - {fileID: 1180131109}
   - {fileID: 970877263}
   m_Father: {fileID: 1278842144}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -420}
+  m_AnchoredPosition: {x: 400, y: -490}
   m_SizeDelta: {x: 800, y: 70}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1357849478
@@ -15448,11 +15448,11 @@ RectTransform:
   - {fileID: 1377340968}
   - {fileID: 147781399}
   m_Father: {fileID: 1278842144}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -490}
+  m_AnchoredPosition: {x: 400, y: -420}
   m_SizeDelta: {x: 800, y: 70}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1658009287

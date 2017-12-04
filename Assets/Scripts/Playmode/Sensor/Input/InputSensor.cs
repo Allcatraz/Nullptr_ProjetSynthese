@@ -16,6 +16,8 @@ namespace ProjetSynthese
             public event TogglePauseEventHandler OnTogglePause;
 
             public event MoveTowardEventHandler OnMove;
+            public event BeginMovingEventHandler OnBeginMoving;
+            public event StopMovingEventHandler OnStopMoving;
             public event SwitchSprintOnEventHandler OnSwitchSprintOn;
             public event SwitchSprintOffEventHandler OnSwitchSprintOff;
 
@@ -102,7 +104,7 @@ namespace ProjetSynthese
             {
                 if (OnInteract != null) OnInteract();
             }
-            
+
             protected virtual void NotifyReload()
             {
                 if (OnReload != null) OnReload();
@@ -110,7 +112,23 @@ namespace ProjetSynthese
 
             protected virtual void NotifyChangeViewMode()
             {
-                if(OnChangeViewMode != null) OnChangeViewMode();
+                if (OnChangeViewMode != null) OnChangeViewMode();
+            }
+
+            protected virtual void NotifyBeginMoving()
+            {
+                if (OnBeginMoving != null)
+                {
+                    OnBeginMoving();
+                }
+            }
+
+            protected virtual void NotifyStopMoving()
+            {
+                if (OnStopMoving != null)
+                {
+                    OnStopMoving();
+                }
             }
         }
 
@@ -125,6 +143,8 @@ namespace ProjetSynthese
             private bool togglePauseTriggerd;
 
             private bool moveTriggerd;
+            private bool beginMoving;
+            private bool stopMoving;
             private bool switchSprintOnTriggerd;
             private bool switchSrintOffTriggerd;
 
@@ -153,6 +173,7 @@ namespace ProjetSynthese
                 togglePauseTriggerd = false;
 
                 moveTriggerd = false;
+                stopMoving = false;
                 switchSprintOnTriggerd = false;
                 switchSrintOffTriggerd = false;
 
@@ -211,7 +232,7 @@ namespace ProjetSynthese
                 {
                     base.NotifyToggleMap();
                     mapTriggerd = true;
-                }                
+                }
             }
 
             protected override void NotifyTogglePause()
@@ -265,7 +286,7 @@ namespace ProjetSynthese
                 {
                     base.NotifySwitchSecondaryWeapon();
                     switchSecondaryWeaponTriggerd = true;
-                }              
+                }
             }
 
             protected override void NotifySwitchThridWeapon()
@@ -297,7 +318,7 @@ namespace ProjetSynthese
 
             protected override void NotifyReload()
             {
-                if(!reloadTriggerd)
+                if (!reloadTriggerd)
                 {
                     base.NotifyReload();
                     reloadTriggerd = true;
@@ -310,6 +331,24 @@ namespace ProjetSynthese
                 {
                     base.NotifyChangeViewMode();
                     changeViewModeTriggerd = true;
+                }
+            }
+
+            protected override void NotifyBeginMoving()
+            {
+                if (beginMoving == false)
+                {
+                    base.NotifyBeginMoving();
+                    beginMoving = true;
+                }
+            }
+
+            protected override void NotifyStopMoving()
+            {
+                if (stopMoving == false)
+                {
+                    base.NotifyStopMoving();
+                    stopMoving = true;
                 }
             }
         }

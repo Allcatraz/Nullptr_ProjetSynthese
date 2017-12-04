@@ -156,10 +156,12 @@ namespace ProjetSynthese
                 target.y = 0.0f;
                 currentWeapon.transform.position = target;
                 currentWeapon.transform.rotation = Actor.transform.rotation;
+                Actor.ServerSetActive(currentWeapon.gameObject,true);
             }
             else
             {
                 Actor.AIInventory.UnequipWeaponAt(EquipWeaponAt.Primary);
+                Actor.ServerSetActive(currentWeapon.gameObject, false);
                 currentWeapon = null;
                 Actor.Brain.HasPrimaryWeaponEquipped = false;
                 weaponCanBeUsed = false;

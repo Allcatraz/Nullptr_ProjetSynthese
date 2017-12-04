@@ -1,13 +1,48 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using System;
 using UnityEngine.Networking;
 
 namespace ProjetSynthese
 {
     public class SoldierAnimatorUpdater : NetworkGameScript
     {
+        #region Strings and layer index
+
+        private const string ValueNameDirectionFactors = "DirectionFactors";
+        private const string ValueNameAngle = "Angle";
+        private const string ValueNameIsMoving = "IsMoving";
+        private const string ValueNameSpeed = "Speed";
+
+        private const string LayerNameShooting = "Shooting";
+        private const string LayerNameHands = "Hands";
+        private const string LayerNameGrenadeThrow = "GrenadeThrow";
+        private const string LayerNameReload = "Reload";
+
+        private const string FunctionNameEndShootingEvent = "EndShootingEvent";
+        private const string FunctionNameReleaseGrenadeEvent = "ReleaseGrenadeEvent";
+        private const string FunctionNameEndThrowingGrenadeAnimationEvent = "EndThrowingGrenadeAnimationEvent";
+        private const string FunctionNameEndReloadingAnimationEvent = "EndReloadingAnimationEvent";
+
+        private const string AnimationNameReload = "assault_combat_reload_generic";
+        private const string AnimationNameShoot = "assault_combat_shoot";
+        private const string AnimationNameThrowGrenade = "assault_combat_throw_grenade";
+
+        #endregion
+
+
+        [SerializeField]
+        [Tooltip("L'animation de tir du player")]
+        private AnimationClip shootingAnimation;
+        [SerializeField]
+        [Tooltip("L'animation de lancé de grenade du player")]
+        private AnimationClip grenadeAnimation;
+        [SerializeField]
+        [Tooltip("L'animation de reload du player")]
+        private AnimationClip reloadAnimation;
+        [SerializeField]
+        [Tooltip("The number of parameters to sync on the network")]
+        private int numberOfParamsToSync;
+
         private Animator animator;
         private NetworkAnimator networkAnimator;
         public Vector3 MouvementDirection { get; set; }
@@ -15,72 +50,107 @@ namespace ProjetSynthese
 
         private bool isShooting;
 
+        public float NormalPlayerSpeed { get; set; }
+
         private InterpolationFactors directionInterpolationFactors;
         private InterpolationFactors angleInterpolationFactors;
         private InterpolationFactors shootingLayerInterpolationFactors;
-
-        [SerializeField]
-        private AnimationClip shootingAnimation;
-        [SerializeField]
-        private AnimationClip grenadeAnimation;
+        private InterpolationFactors handsLayerInterpolationFactors;
 
         private Grenade grenade;
         private bool isThrowingGrenade;
 
-        [SerializeField]
-        [Tooltip("The number of parameters to sync on the network")]
-        private int numberOfParamsToSync;
+        private bool isMoving = false;
+
+        private int layerIndexHands;
+        private int layerIndexShooting;
+        private int layerIndexGrenadeThrow;
+        private int layerIndexReload;
 
         private void Awake()
         {
             animator = GetComponent<Animator>();
             networkAnimator = GetComponent<NetworkAnimator>();
 
-
             for (int i = 0; i < numberOfParamsToSync; i++)
             {
                 networkAnimator.SetParameterAutoSend(i, true);
             }
 
+            InitializeInterpolationFactors();
 
+            InitializeEvents();
+
+            isMoving = false;
+            SwitchMovingState(isMoving);
+
+            InitialializeLayerIndex();
+        }
+
+        private void InitializeInterpolationFactors()
+        {
             directionInterpolationFactors = new InterpolationFactors();
-            directionInterpolationFactors.animatorValueName = "DirectionFactor";
+            directionInterpolationFactors.animatorValueName = ValueNameDirectionFactors;
             directionInterpolationFactors.diffFactor = 0.5f;
             directionInterpolationFactors.interpolatingPerFrameValue = 0.02f;
 
             angleInterpolationFactors = new InterpolationFactors();
-            angleInterpolationFactors.animatorValueName = "Angle";
+            angleInterpolationFactors.animatorValueName = ValueNameAngle;
             angleInterpolationFactors.diffFactor = 2;
             angleInterpolationFactors.interpolatingPerFrameValue = 0.02f;
 
             shootingLayerInterpolationFactors = new InterpolationFactors();
-            shootingLayerInterpolationFactors.animatorValueName = "Shooting";
+            shootingLayerInterpolationFactors.animatorValueName = LayerNameShooting;
             shootingLayerInterpolationFactors.interpolatingPerFrameValue = 0.02f;
 
+            handsLayerInterpolationFactors = new InterpolationFactors();
+            handsLayerInterpolationFactors.animatorValueName = LayerNameHands;
+            handsLayerInterpolationFactors.interpolatingPerFrameValue = 0.02f;
+        }
 
+        private void InitializeEvents()
+        {
             AnimationEvent shootingEvent = new AnimationEvent();
             shootingEvent.time = shootingAnimation.length;
-            shootingEvent.functionName = "EndShootingEvent";
+            shootingEvent.functionName = FunctionNameEndShootingEvent;
             shootingAnimation.AddEvent(shootingEvent);
-
 
             AnimationEvent grenadeReleaseEvent = new AnimationEvent();
             grenadeReleaseEvent.time = grenadeAnimation.length * 0.42f;
-            grenadeReleaseEvent.functionName = "ReleaseGrenadeEvent";
+            grenadeReleaseEvent.functionName = FunctionNameReleaseGrenadeEvent;
             grenadeAnimation.AddEvent(grenadeReleaseEvent);
 
             AnimationEvent grenadeThrowingEnd = new AnimationEvent();
             grenadeThrowingEnd.time = grenadeAnimation.length;
-            grenadeThrowingEnd.functionName = "EndThrowingGrenadeAnimationEvent";
+            grenadeThrowingEnd.functionName = FunctionNameEndThrowingGrenadeAnimationEvent;
             grenadeAnimation.AddEvent(grenadeThrowingEnd);
+
+            AnimationEvent reloadOverEvent = new AnimationEvent();
+            reloadOverEvent.time = reloadAnimation.length;
+            reloadOverEvent.functionName = FunctionNameEndReloadingAnimationEvent;
+            reloadAnimation.AddEvent(reloadOverEvent);
+        }
+
+        private void InitialializeLayerIndex()
+        {
+            layerIndexHands = animator.GetLayerIndex(LayerNameHands);
+            layerIndexShooting = animator.GetLayerIndex(LayerNameShooting);
+            layerIndexGrenadeThrow = animator.GetLayerIndex(LayerNameGrenadeThrow);
+            layerIndexReload = animator.GetLayerIndex(LayerNameReload);
         }
 
         public void UpdateAnimator()
         {
             float viewMagn = ViewDirection.magnitude;
             float mouvMagn = MouvementDirection.magnitude;
-            if (viewMagn != 0 && mouvMagn != 0)
+            if (viewMagn != 0 && mouvMagn != 0 && isMoving == true)
             {
+                if (animator.GetBool(ValueNameIsMoving) == false)
+                {
+                    SwitchMovingState(isMoving);
+                    BeginInterpolation(1, ref handsLayerInterpolationFactors);
+                }
+
                 double cosTheta = Vector3.Dot(MouvementDirection, ViewDirection) / (mouvMagn * viewMagn);
 
                 cosTheta = cosTheta < -1 ? -1 : cosTheta;
@@ -93,22 +163,24 @@ namespace ProjetSynthese
 
                 InterpolateAnimation(ref angleInterpolationFactors);
                 InterpolateAnimation(ref directionInterpolationFactors);
-                InterpolateLayerWeight(ref shootingLayerInterpolationFactors);
             }
             else
             {
-                // TODO : Gèrer le idle
+                if (animator.GetBool(ValueNameIsMoving) == true)
+                {
+                    SwitchMovingState(isMoving);
+                    BeginInterpolation(0, ref handsLayerInterpolationFactors);
+                }
             }
+            InterpolateLayerWeight(ref shootingLayerInterpolationFactors);
+            InterpolateLayerWeight(ref handsLayerInterpolationFactors);
         }
 
         private void InterpolateAnimation(ref InterpolationFactors factors)
         {
             if (Mathf.Abs(factors.lastFrame - factors.presentFrame) > factors.diffFactor)
             {
-                factors.isInterpolating = true;
-                factors.begin = factors.actual;
-                factors.end = factors.presentFrame;
-                factors.interpolant = 0;
+                BeginInterpolation(factors.presentFrame, ref factors);
             }
 
             if (factors.isInterpolating == true)
@@ -141,10 +213,70 @@ namespace ProjetSynthese
             factors.lastFrame = factors.presentFrame;
         }
 
+        private void BeginInterpolation(float end, ref InterpolationFactors factors)
+        {
+            factors.begin = factors.actual;
+            factors.end = end;
+            factors.interpolant = 0;
+            factors.isInterpolating = true;
+        }
+
         public void Shoot()
         {
             shootingLayerInterpolationFactors.isInterpolating = false;
             CmdShoot();
+        }
+
+        public void OnSpeedChange(float newSpeed)
+        {
+            float animationSpeed = newSpeed / NormalPlayerSpeed;
+            animator.SetFloat(ValueNameSpeed, animationSpeed);
+        }
+
+        public void OnBeginMoving()
+        {
+            isMoving = true;
+            SwitchMovingState(isMoving);
+
+            BeginInterpolation(1, ref handsLayerInterpolationFactors);
+        }
+
+        public void OnStopMoving()
+        {
+            isMoving = false;
+            SwitchMovingState(isMoving);
+
+            BeginInterpolation(0, ref handsLayerInterpolationFactors);
+        }
+
+        private void SwitchMovingState(bool isMoving)
+        {
+            animator.SetBool(ValueNameIsMoving, isMoving);
+            animator.SetLayerWeight(layerIndexHands, Convert.ToSingle(isMoving));
+        }
+
+        public void Reload()
+        {
+            CmdReload();
+        }
+
+        [Command]
+        private void CmdReload()
+        {
+            RpcReload();
+        }
+
+        [ClientRpc]
+        private void RpcReload()
+        {
+            animator.SetLayerWeight(layerIndexReload, 1);
+            animator.Play(AnimationNameReload, -1, 0f);
+        }
+
+
+        private void EndReloadingAnimationEvent()
+        {
+            animator.SetLayerWeight(layerIndexReload, 0);
         }
 
         [Command]
@@ -156,8 +288,8 @@ namespace ProjetSynthese
         [ClientRpc]
         private void RpcShoot()
         {
-            animator.SetLayerWeight(animator.GetLayerIndex("Shooting"), 1);
-            animator.Play("assault_combat_shoot", -1, 0f);
+            animator.SetLayerWeight(layerIndexShooting, 1);
+            animator.Play(AnimationNameShoot, -1, 0f);
         }
 
         public void ThrowGrenade(Grenade grenade)
@@ -176,9 +308,9 @@ namespace ProjetSynthese
         {
             if (grenade != null && isThrowingGrenade == false)
             {
-                animator.SetLayerWeight(animator.GetLayerIndex("GrenadeThrow"), 1);
-                animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 0);
-                animator.Play("assault_combat_throw_grenade", -1, 0f);
+                animator.SetLayerWeight(layerIndexGrenadeThrow, 1);
+                animator.SetLayerWeight(layerIndexHands, 0);
+                animator.Play(AnimationNameThrowGrenade, -1, 0f);
                 isThrowingGrenade = true;
                 this.grenade = grenade.gameObject.GetComponent<Grenade>();
             }
@@ -226,7 +358,6 @@ namespace ProjetSynthese
             {
                 grenade.GetComponent<Grenade>().Release();
             }
-
         }
 
         private void EndThrowingGrenadeAnimationEvent()
@@ -243,8 +374,8 @@ namespace ProjetSynthese
         [ClientRpc]
         private void RpcEndThrowingGrenadeAnimationEvent()
         {
-            animator.SetLayerWeight(animator.GetLayerIndex("GrenadeThrow"), 0);
-            animator.SetLayerWeight(animator.GetLayerIndex("Hands"), 1);
+            animator.SetLayerWeight(layerIndexGrenadeThrow, 0);
+            animator.SetLayerWeight(layerIndexHands, 1);
             isThrowingGrenade = false;
         }
 

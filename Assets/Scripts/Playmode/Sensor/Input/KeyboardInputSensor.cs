@@ -33,6 +33,8 @@ namespace ProjetSynthese
         {
             private readonly Keyboard keyboard;
 
+            private bool isMoving = false;
+
             public KeyboardsInputDevice(Keyboard keyboard)
             {
                 this.keyboard = keyboard;
@@ -115,8 +117,21 @@ namespace ProjetSynthese
                     keys.Add(ActionKey.Instance.MoveRight);
                 }
 
-                if(keys.Count > 0)
+
+                if (keys.Count > 0)
+                {
                     NotifyMove(keys);
+                    if (isMoving == false)
+                    {
+                        isMoving = true;
+                        NotifyBeginMoving();
+                    }
+                }
+                else if (isMoving == true)
+                {
+                    isMoving = false;
+                    NotifyStopMoving();
+                }
             }
         }
     }

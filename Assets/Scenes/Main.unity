@@ -5154,6 +5154,25 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 575693394}
+--- !u!1 &579122999 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1725689837569618, guid: a04fc3441839b5b46ae3ffda5812955d,
+    type: 2}
+  m_PrefabInternal: {fileID: 954274170}
+--- !u!114 &579123002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 579122999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a53a1f7a7f726499c7f48ac29472a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rankPlayer: {fileID: 954274174}
+  numberPlayerLeft: {fileID: 954274172}
+  playerKill: {fileID: 954274173}
 --- !u!1 &581292713
 GameObject:
   m_ObjectHideFlags: 0
@@ -5288,7 +5307,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 584623481}
-  - component: {fileID: 584623482}
   m_Layer: 5
   m_Name: EndGame
   m_TagString: EndGamePanel
@@ -5315,18 +5333,6 @@ RectTransform:
   m_AnchoredPosition: {x: -960.56476, y: 540}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &584623482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 584623480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 763992d85d3f6d4428454c2a968ce084, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isInGame: 0
 --- !u!1 &600414881
 GameObject:
   m_ObjectHideFlags: 0
@@ -8994,7 +9000,7 @@ Prefab:
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 224628979377269936, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
@@ -9099,16 +9105,16 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 749254025}
+      objectReference: {fileID: 603796088}
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: GoBackButton
+      value: ToggleVisibility
       objectReference: {fileID: 0}
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
@@ -9119,11 +9125,11 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 584623482}
+      objectReference: {fileID: 749254025}
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: ToggleVisibility
+      value: GoBackButton
       objectReference: {fileID: 0}
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
@@ -9133,7 +9139,7 @@ Prefab:
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
@@ -9144,20 +9150,30 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 603796088}
+      objectReference: {fileID: 0}
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: ToggleVisibility
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1725689837569618, guid: a04fc3441839b5b46ae3ffda5812955d, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114406662407816204, guid: a04fc3441839b5b46ae3ffda5812955d,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114226198856568484, guid: a04fc3441839b5b46ae3ffda5812955d, type: 2}
@@ -9168,6 +9184,24 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224628979377269936, guid: a04fc3441839b5b46ae3ffda5812955d,
     type: 2}
   m_PrefabInternal: {fileID: 954274170}
+--- !u!114 &954274172 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114843744895699604, guid: a04fc3441839b5b46ae3ffda5812955d,
+    type: 2}
+  m_PrefabInternal: {fileID: 954274170}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &954274173 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114417002296992668, guid: a04fc3441839b5b46ae3ffda5812955d,
+    type: 2}
+  m_PrefabInternal: {fileID: 954274170}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &954274174 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114981841949554746, guid: a04fc3441839b5b46ae3ffda5812955d,
+    type: 2}
+  m_PrefabInternal: {fileID: 954274170}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &956597117
 GameObject:
   m_ObjectHideFlags: 0

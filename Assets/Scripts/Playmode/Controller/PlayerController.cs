@@ -176,6 +176,7 @@ namespace ProjetSynthese
             achivementController.AddPlayedGameToDatabase();
 
             endGamePanel = GameObject.FindGameObjectWithTag(R.S.Tag.EndGamePanel).GetAllChildrens()[0].GetComponent<RectTransform>();
+            endGamePanel.gameObject.SetActive(false);
 
             keyboardInputSensor.Keyboards.OnMove += OnMoveToward;
             keyboardInputSensor.Keyboards.OnToggleInventory += OnToggleInventory;
@@ -588,9 +589,14 @@ namespace ProjetSynthese
                 else
                 {
                     kills++;
-                    achivementController.AddPlayerKill();                    
+                    achivementController.AddPlayerKill();
                 }
             }
+        }
+
+        public int GetKill()
+        {
+            return (int)kills;
         }
 
         public Weapon GetWeapon()

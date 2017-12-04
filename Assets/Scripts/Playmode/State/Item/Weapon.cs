@@ -96,7 +96,7 @@ namespace ProjetSynthese
 
         public override bool Use()
         {
-            if (MagazineAmount > 0 && timerForShoot >= shootTime)
+            if (MagazineAmount > 0 && timerForShoot >= shootTime && !isReloading)
             {
                 sounds[0].Use(0);
                 if (type == ItemType.M110)

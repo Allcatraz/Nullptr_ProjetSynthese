@@ -7,83 +7,83 @@ namespace ProjetSynthese
 {
     public class StatisticController : GameScript
     {
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de player que le joueur à tué.")]
         [SerializeField]
         private Text playerKills;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de AI que le joueur à tué.")]
         [SerializeField]
         private Text aiKills;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre total de kill que le joueur a.")]
         [SerializeField]
         private Text totalKills;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de victoire du joueur.")]
         [SerializeField]
         private Text numberVictory;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de défaite du joueur.")]
         [SerializeField]
         private Text numberDefeat;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de partie que le joueur à faites.")]
         [SerializeField]
         private Text totalGame;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de kill en moyenne par partie.")]
         [SerializeField]
         private Text killDeathsAverage;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de kill selon le nombre de morts.")]
         [SerializeField]
         private Text killDeathsRatio;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de casque militaire que le joueur a pris.")]
         [SerializeField]
         private Text militaryHelmet;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de veste militaire que le joueur a pris.")]
         [SerializeField]
         private Text militaryVest;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de rucksac que le joueur a pris.")]
         [SerializeField]
         private Text rucksac;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de casque de police que le joueur a pris.")]
         [SerializeField]
         private Text poliveHelmet;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de veste de swat que le joueur a pris.")]
         [SerializeField]
         private Text swatVest;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de school bag que le joueur a pris.")]
         [SerializeField]
         private Text schoolBag;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de casque de moto que le joueur a pris.")]
         [SerializeField]
         private Text motoHelmet;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de veste de police que le joueur a pris.")]
         [SerializeField]
         private Text poliveVest;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre de pouch bag que le joueur a pris.")]
         [SerializeField]
         private Text pouchBag;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre total d'équipement de protection de niveau 3 que le joueur a pris.")]
         [SerializeField]
         private Text totalLevel3;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre total d'équipement de protection de niveau 2 que le joueur a pris.")]
         [SerializeField]
         private Text totalLevel2;
 
-        [Tooltip("")]
+        [Tooltip("Texte affichant le nombre total d'équipement de protection de niveau 1 que le joueur a pris.")]
         [SerializeField]
         private Text totalLevel1;
 

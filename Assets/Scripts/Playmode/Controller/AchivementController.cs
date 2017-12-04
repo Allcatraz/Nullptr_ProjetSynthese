@@ -68,7 +68,7 @@ namespace ProjetSynthese
             }
         }
 
-        public long GetGamePlayerFromPlayer()
+        public long GetGamePlayedFromPlayer()
         {
             if (player != null)
             {

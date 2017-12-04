@@ -65,6 +65,7 @@ namespace ProjetSynthese
         private AchivementController achivementController;
 
         private Vector2 rotation = Vector2.zero;
+        private float kills = 0;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
@@ -171,6 +172,8 @@ namespace ProjetSynthese
             {
                 return;
             }
+
+            achivementController.AddPlayedGameToDatabase();
 
             endGamePanel = GameObject.FindGameObjectWithTag(R.S.Tag.EndGamePanel).GetAllChildrens()[0].GetComponent<RectTransform>();
 
@@ -578,11 +581,14 @@ namespace ProjetSynthese
             {
                 if (isAi)
                 {
-                    achivementController.AddAiKill();
+                    kills += 0.5f;
+                    if(Mathf.Round(kills) - kills == 0)
+                        achivementController.AddAiKill();
                 }
                 else
                 {
-                    achivementController.AddPlayerKill();
+                    kills++;
+                    achivementController.AddPlayerKill();                    
                 }
             }
         }

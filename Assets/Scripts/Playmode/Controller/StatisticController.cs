@@ -21,6 +21,26 @@ namespace ProjetSynthese
 
         [Tooltip("")]
         [SerializeField]
+        private Text numberVictory;
+
+        [Tooltip("")]
+        [SerializeField]
+        private Text numberDefeat;
+
+        [Tooltip("")]
+        [SerializeField]
+        private Text totalGame;
+
+        [Tooltip("")]
+        [SerializeField]
+        private Text killDeathsAverage;
+
+        [Tooltip("")]
+        [SerializeField]
+        private Text killDeathsRatio;
+
+        [Tooltip("")]
+        [SerializeField]
         private Text militaryHelmet;
 
         [Tooltip("")]
@@ -70,16 +90,13 @@ namespace ProjetSynthese
         private PlayerKillrepository playerKillrepository;
         private AiKillRepository aiKillRepository;
         private ProtectionOfPlayerRepository protectionOfPlayerRepository;
-        private PlayerRepository playerRepository;
         private AchivementController achivementController;
 
         private void InjectStatisticController([ApplicationScope] PlayerKillrepository playerKillrepository,
                                                [ApplicationScope] AiKillRepository aiKillRepository,
                                                [ApplicationScope] ProtectionOfPlayerRepository protectionOfPlayerRepository,
-                                               [ApplicationScope] PlayerRepository playerRepository,
                                                [ApplicationScope] AchivementController achivementController)
         {
-            this.playerRepository = playerRepository;
             this.playerKillrepository = playerKillrepository;
             this.aiKillRepository = aiKillRepository;
             this.protectionOfPlayerRepository = protectionOfPlayerRepository;
@@ -99,10 +116,25 @@ namespace ProjetSynthese
                 long playerId = Convert.ToInt64(player.Id);
                 int killsPlayer = Convert.ToInt32(playerKillrepository.GetCountFromMurderer(playerId));
                 int killsAi = Convert.ToInt32(aiKillRepository.GetAiKillCountFromMurderer(playerId));
+                int killTotal = killsAi + killsPlayer;
 
                 playerKills.text = killsPlayer.ToString();
                 aiKills.text = killsAi.ToString();
-                totalKills.text = (killsAi + killsPlayer).ToString();
+                totalKills.text = killTotal.ToString();
+
+                int victory = Convert.ToInt32(achivementController.GetGameWonFromPlayer());
+                int defeat = Convert.ToInt32(achivementController.GetGamePlayedFromPlayer()) - victory;
+                int totalGames = Convert.ToInt32(achivementController.GetGamePlayedFromPlayer());
+
+                numberVictory.text = victory.ToString();
+                numberDefeat.text = defeat.ToString();
+                totalGame.text = totalGames.ToString();
+
+                float killDeathRatio = defeat != 0 ? (float)killTotal / defeat : killTotal;
+                float killDeathAverage = totalGames != 0 ? (float)killTotal / totalGames : killTotal;
+
+                killDeathsRatio.text = killDeathRatio.ToString();
+                killDeathsAverage.text = killDeathAverage.ToString();
 
                 int level3Helmet = protectionOfPlayerRepository.GetAllLevel3HelmetOfPlayer(playerId).Count;
                 int level3Vest = protectionOfPlayerRepository.GetAllLevel3VestOfPlayer(playerId).Count;

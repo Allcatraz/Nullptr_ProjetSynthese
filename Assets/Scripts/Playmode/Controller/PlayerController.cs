@@ -173,6 +173,8 @@ namespace ProjetSynthese
                 return;
             }
 
+            achivementController.AddPlayedGameToDatabase();
+
             endGamePanel = GameObject.FindGameObjectWithTag(R.S.Tag.EndGamePanel).GetAllChildrens()[0].GetComponent<RectTransform>();
             endGamePanel.gameObject.SetActive(false);
 

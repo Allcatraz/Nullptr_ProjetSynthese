@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 114193015774120232}
   - component: {fileID: 114087352007081128}
   - component: {fileID: 114552314898038324}
+  - component: {fileID: 114049878047530198}
+  - component: {fileID: 114649340850999758}
   m_Layer: 5
   m_Name: Repository
   m_TagString: Untagged
@@ -65,6 +67,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114049878047530198
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351781448725440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5718bcd7c1c764dba03390f584d90a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114087352007081128
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,6 +164,17 @@ MonoBehaviour:
   - Finnally... you won
   feedBackPrefab: {fileID: 1386172788462924, guid: 7a0de0a26917fe94b82715c5a20031aa,
     type: 2}
+--- !u!114 &114649340850999758
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351781448725440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b99cf8ae35f4e98489dde26d9fd9dd3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114756046870364480
 MonoBehaviour:
   m_ObjectHideFlags: 1

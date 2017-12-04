@@ -169,6 +169,7 @@ namespace ProjetSynthese
             ComputeSoundAfterReload();
             ComputeBoltUpSound();
             MagazineAmount = MagazineMax;
+            isReloading = false;
             NotidyMunitionChanged();
             yield return null;
         }

@@ -31,6 +31,16 @@ namespace ProjetSynthese
             return repository.GetAllLevel3Entry();
         }
 
+        public virtual IList<ProtectionOfPlayer> GetAllLevel2Entry()
+        {
+            return repository.GetAllLevel2Entry();
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel1Entry()
+        {
+            return repository.GetAllLevel1Entry();
+        }
+
         public virtual IList<ProtectionOfPlayer> GetAllEntryOfPlayer(long playerId)
         {
             return repository.GetAllEntryOfPlayer(playerId);
@@ -39,6 +49,61 @@ namespace ProjetSynthese
         public virtual IList<ProtectionOfPlayer> GetAllLevel3EntryOfPlayer(long playerId)
         {
             return repository.GetAllLevel3EntryOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel2EntryOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel2EntryOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel1EntryOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel1EntryOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel1HelmetOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel1HelmetOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel2HelmetOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel2HelmetOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel3HelmetOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel3HelmetOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel1VestOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel1VestOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel2VestOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel2VestOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel3VestOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel3VestOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel1BagOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel1BagOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel2BagOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel2BagOfPlayer(playerId);
+        }
+
+        public virtual IList<ProtectionOfPlayer> GetAllLevel3BagOfPlayer(long playerId)
+        {
+            return repository.GetAllLevel3BagOfPlayer(playerId);
         }
 
         public virtual long Count()
@@ -74,6 +139,16 @@ namespace ProjetSynthese
                 return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE levelProtection = ?;", new object[] { 3 });
             }
 
+            public IList<ProtectionOfPlayer> GetAllLevel2Entry()
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE levelProtection = ?;", new object[] { 2 });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel1Entry()
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE levelProtection = ?;", new object[] { 1 });
+            }
+
             public IList<ProtectionOfPlayer> GetAllEntryOfPlayer(long playerId)
             {
                 return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ?;", new object[] { playerId });
@@ -82,6 +157,61 @@ namespace ProjetSynthese
             public IList<ProtectionOfPlayer> GetAllLevel3EntryOfPlayer(long playerId)
             {
                 return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ?;", new object[] { playerId, 3 });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel2EntryOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ?;", new object[] { playerId, 2 });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel1EntryOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ?;", new object[] { playerId, 1 });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel1HelmetOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ? AND typeProtection = ?;", new object[] {playerId, 1, ItemType.Helmet.ToString()});
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel2HelmetOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ? AND typeProtection = ?;", new object[] { playerId, 2, ItemType.Helmet.ToString() });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel3HelmetOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ? AND typeProtection = ?;", new object[] { playerId, 3, ItemType.Helmet.ToString() });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel1VestOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ? AND typeProtection = ?;", new object[] { playerId, 1, ItemType.Vest.ToString() });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel2VestOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ? AND typeProtection = ?;", new object[] { playerId, 2, ItemType.Vest.ToString() });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel3VestOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ? AND typeProtection = ?;", new object[] { playerId, 3, ItemType.Vest.ToString() });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel1BagOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ? AND typeProtection = ?;", new object[] { playerId, 1, ItemType.Bag.ToString() });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel2BagOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ? AND typeProtection = ?;", new object[] { playerId, 2, ItemType.Bag.ToString() });
+            }
+
+            public IList<ProtectionOfPlayer> GetAllLevel3BagOfPlayer(long playerId)
+            {
+                return ExecuteSelectAll("SELECT * FROM ProtectionOfPlayer WHERE playerid = ? AND levelProtection = ? AND typeProtection = ?;", new object[] { playerId, 3, ItemType.Bag.ToString() });
             }
 
             public long Count()

@@ -1,0 +1,1 @@
+This pack contains models and textures to add northern vegetation to your worlds. There are 11 trees, bushes, grass and prefabs (trees with additional collision geometry). The standard AO nature-shaders are already applied.

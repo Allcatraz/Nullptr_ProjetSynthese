@@ -5,6 +5,7 @@ using Time = UnityEngine.Time;
 namespace ProjetSynthese
 {
     public delegate void MoveEventHandler();
+    public delegate void SpeedChangeEvent(float newSpeed);
 
     [AddComponentMenu("Game/Actuator/PlayerMover")]
     public class PlayerMover : GameScript
@@ -18,9 +19,26 @@ namespace ProjetSynthese
 
         private Rigidbody rigidbody;
         private DeathCircleDistanceEventChannel deathCircleDistanceEvent;
-        public float Speed { get; private set; }
+
+        private float speed = 0;
+        public float Speed
+        {
+            get
+            {
+                return speed;
+            }            
+            private set
+            {
+                speed = value;
+                if (OnSpeedChange != null)
+                {
+                    OnSpeedChange(speed);
+                }
+            }
+        }
 
         public event MoveEventHandler OnMove;
+        public event SpeedChangeEvent OnSpeedChange;
 
         private void InjectPlayerMover([RootScope] Rigidbody rigidbody,
                                        [EventChannelScope] DeathCircleDistanceEventChannel deathCircleDistanceEvent)
@@ -59,7 +77,7 @@ namespace ProjetSynthese
 
         public void Move(Vector3 direction)
         {
-            rigidbody.velocity = direction * Speed;
+            rigidbody.velocity = direction * speed;
             UpdateMove(new DeathCircleDistanceEvent(0, 0, Vector3.zero));
         }
 
@@ -72,9 +90,13 @@ namespace ProjetSynthese
         {
             if (Input.GetKey(KeyCode.LeftControl) != true)
             {
-                rigidbody.transform.eulerAngles = angle;
-                
+                rigidbody.transform.eulerAngles = angle;            
             }
+        }
+
+        public float GetNormalMoveSpeed()
+        {
+            return moveSpeed;
         }
     }
 }

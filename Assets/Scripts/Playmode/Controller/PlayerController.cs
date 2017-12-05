@@ -17,6 +17,9 @@ namespace ProjetSynthese
     [AddComponentMenu("Game/Control/PlayerController")]
     public class PlayerController : NetworkGameScript, ISwim, IInventory
     {
+        private const float YAxisHeadRotation = -90.0f;
+        private const float ZAxisHeadRotation = -90.0f;
+
         [Tooltip("Le menu de l'inventaire du joueur.")]
         [SerializeField]
         private Menu inventoryMenu;
@@ -45,6 +48,20 @@ namespace ProjetSynthese
         [SerializeField]
         private GameObject grenadeThrowingHand;
 
+        [Tooltip("La tête du player")]
+        [SerializeField]
+        private GameObject head;
+
+        [Tooltip("La rotation minimum sur l'axe X pour la camera")]
+        [SerializeField]
+        private float minXAxisRotation;
+
+        [Tooltip("La rotation maximum sur l'axe X pour la camera")]
+        [SerializeField]
+        private float maxXAxisRotation;
+
+
+
         private ActivityStack activityStack;
         private Health health;
         private KeyboardInputSensor keyboardInputSensor;
@@ -63,6 +80,7 @@ namespace ProjetSynthese
         private SoldierAnimatorUpdater soldierAnimatorUpdater;
         private RectTransform endGamePanel;
         private AchivementController achivementController;
+
 
         private Vector2 rotation = Vector2.zero;
         private float kills = 0;
@@ -187,7 +205,6 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon += OnSwitchSecondaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon += OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap += OnToggleMap;
-            keyboardInputSensor.Keyboards.OnTogglePause += OnPause;
             keyboardInputSensor.Keyboards.OnReload += OnReload;
             keyboardInputSensor.Keyboards.OnChangeViewMode += OnChangeViewMode;
 
@@ -202,6 +219,12 @@ namespace ProjetSynthese
             Camera.main.GetComponent<CameraController>().PlayerToFollow = gameObject;
 
             inventory.NotifyInventoryChange();
+
+            soldierAnimatorUpdater.NormalPlayerSpeed = playerMover.GetNormalMoveSpeed();
+            soldierAnimatorUpdater.OnSpeedChange(playerMover.GetNormalMoveSpeed());
+            playerMover.OnSpeedChange += soldierAnimatorUpdater.OnSpeedChange;
+            keyboardInputSensor.Keyboards.OnStopMoving += soldierAnimatorUpdater.OnStopMoving;
+            keyboardInputSensor.Keyboards.OnBeginMoving += soldierAnimatorUpdater.OnBeginMoving;
         }
 
         private void OnDestroy()
@@ -220,7 +243,6 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnSwitchSecondaryWeapon -= OnSwitchSecondaryWeapon;
             keyboardInputSensor.Keyboards.OnSwitchThridWeapon -= OnSwitchThirdWeapon;
             keyboardInputSensor.Keyboards.OnToggleMap -= OnToggleMap;
-            keyboardInputSensor.Keyboards.OnTogglePause -= OnPause;
             keyboardInputSensor.Keyboards.OnReload -= OnReload;
             keyboardInputSensor.Keyboards.OnChangeViewMode -= OnChangeViewMode;
 
@@ -234,7 +256,7 @@ namespace ProjetSynthese
             NetworkServer.UnSpawn(gameObject);
         }
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             if (!isLocalPlayer)
             {
@@ -260,10 +282,10 @@ namespace ProjetSynthese
                 {
                     rotation.x += -Input.GetAxis("Mouse Y") * 100 * Time.deltaTime;
                     rotation.y += Input.GetAxis("Mouse X") * 100 * Time.deltaTime;
-                    rotation.x = Maths.ClampAngle(rotation.x, -60, 60);
+                    rotation.x = Maths.ClampAngle(rotation.x, minXAxisRotation, maxXAxisRotation);
 
-                    Quaternion localRotation = Quaternion.Euler(rotation.x, rotation.y, 0.0f);
-                    firstPersonCamera.transform.rotation = localRotation;
+                    Quaternion localRotation = Quaternion.Euler(0.0f, rotation.y + YAxisHeadRotation, ZAxisHeadRotation- rotation.x);
+                    head.transform.rotation = localRotation;
                     transform.rotation = Quaternion.Euler(0, rotation.y, 0);
 
                     soldierAnimatorUpdater.ViewDirection = transform.localToWorldMatrix.GetColumn(2);
@@ -422,7 +444,7 @@ namespace ProjetSynthese
                     TakeItem(obj);
                     CmdTakeItem(obj, networkIdentity);
                 }
-                
+
             }
         }
 
@@ -520,7 +542,10 @@ namespace ProjetSynthese
         {
             if ((object)currentWeapon != null)
             {
-                currentWeapon.Reload(inventory);
+                if (currentWeapon.Reload(inventory))
+                {
+                    soldierAnimatorUpdater.Reload();
+                }
             }
         }
 
@@ -604,8 +629,9 @@ namespace ProjetSynthese
             return currentWeapon;
         }
 
-        private void OnPause()
+        public Camera GetFirstPersonCamera()
         {
+            return firstPersonCamera;
         }
     }
 }

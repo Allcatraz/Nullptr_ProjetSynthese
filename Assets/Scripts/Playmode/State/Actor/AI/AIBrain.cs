@@ -478,6 +478,23 @@ namespace ProjetSynthese
             return isOutsideDeathCircle;
         }
 
+        public bool DestinationOutsideDeathCircle(Vector3 destination)
+        {
+            bool isOutsideDeathCircle = false;
+            Vector2 destination2D = Vector2.zero;
+            Vector2 deathCirclePosition = Vector2.zero;
+            destination2D.x = destination.x;
+            destination2D.y = destination.z;
+            deathCirclePosition.x = DeathCircleCenterPosition.x;
+            deathCirclePosition.y = DeathCircleCenterPosition.z;
+            float destinationDistanceOutsideDeathCircle = Vector2.Distance(destination2D, deathCirclePosition) - DeathCircleRadius;
+            if (destinationDistanceOutsideDeathCircle > 0.0f)
+            {
+                isOutsideDeathCircle = true;
+            }
+            return isOutsideDeathCircle;
+        }
+
         public bool IsExplorePathBlocked(Vector3 destination, float range)
         {
             Vector3 direction = Vector3.zero;

@@ -211,8 +211,9 @@ namespace ProjetSynthese
                     newDestination.z = -newDestination.z;
                     MapDestination = newDestination;
                 }
-                float range = Vector3.Distance(actor.transform.position, MapDestination);
-                if (!actor.Brain.IsExplorePathBlocked(MapDestination, range))
+               float range = Vector3.Distance(actor.transform.position, MapDestination);
+                if (actor.Brain.DestinationOutsideDeathCircle(MapDestination)
+                    && !actor.Brain.IsExplorePathBlocked(MapDestination, range))
                 {
                     MapDestinationIsKnown = true;
                     break;
@@ -500,7 +501,7 @@ namespace ProjetSynthese
         private bool IsDestinationOutOfMap(Vector3 destination)
         {
             bool outOfMap = false;
-            if (destination.x < AISpawnerController.XMapOriginCornerCoordinate 
+            if (destination.x < AISpawnerController.XMapOriginCornerCoordinate
                 || destination.x > AISpawnerController.XMapOriginOppositeCornerCoordinate
                 || destination.z > AISpawnerController.ZMapOriginCornerCoordinate
                 || destination.z < AISpawnerController.ZMapOriginOppositeCornerCoordinate)

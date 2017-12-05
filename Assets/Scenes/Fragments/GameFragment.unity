@@ -578,6 +578,10 @@ Prefab:
       propertyPath: m_Offset.y
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 1749304684906910, guid: 1de8d1c2a1ce0cc42ab1e20d66fe5462, type: 2}
+      propertyPath: m_TagString
+      value: Map
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1de8d1c2a1ce0cc42ab1e20d66fe5462, type: 2}
   m_IsPrefabParent: 0
@@ -602,6 +606,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e113053c686e4de46bee7266e27260a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &231163758
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 231163756}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &1000294553
 Prefab:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Harmony;
+using UnityEngine;
 
 
 namespace ProjetSynthese
@@ -6,20 +7,23 @@ namespace ProjetSynthese
     public class WaterColliderHandler : GameScript
     {
 
-        private void OnTriggerEnter(Collider col)
+        private void OnTriggerEnter2D(Collider2D col)
         {
-            ISwim actorController = col.gameObject.GetComponent<PlayerController>() as ISwim;
-            if (actorController == null)
+            if (gameObject.layer == LayerMask.NameToLayer(R.S.Layer.Water) && gameObject.tag == R.S.Tag.Map)
             {
-                actorController = col.gameObject.GetComponentInParent<ActorAI>() as ISwim;
-            }
-            if (actorController != null && actorController.IsSwimming == false)
-            {
-                actorController.IsSwimming = true;
+                ISwim actorController = col.gameObject.GetComponent<PlayerController>() as ISwim;
+                if (actorController == null)
+                {
+                    actorController = col.gameObject.GetComponentInParent<ActorAI>() as ISwim;
+                }
+                if (actorController != null && actorController.IsSwimming == false)
+                {
+                    actorController.IsSwimming = true;
+                }
             }
         }
 
-        private void OnTriggerExit(Collider col)
+        private void OnTriggerExit2D(Collider2D col)
         {
             ISwim actorController = col.gameObject.GetComponent<PlayerController>() as ISwim;
             if (actorController == null)

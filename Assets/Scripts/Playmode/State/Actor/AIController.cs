@@ -211,9 +211,12 @@ namespace ProjetSynthese
                     newDestination.z = -newDestination.z;
                     MapDestination = newDestination;
                 }
-               float range = Vector3.Distance(actor.transform.position, MapDestination);
-                if (actor.Brain.DestinationOutsideDeathCircle(MapDestination)
-                    && !actor.Brain.IsExplorePathBlocked(MapDestination, range))
+                //float range = Vector3.Distance(actor.transform.position, MapDestination);
+                //if (actor.Brain.DestinationOutsideDeathCircle(MapDestination)
+                //    && !actor.Brain.IsExplorePathBlocked(MapDestination, range))
+                //if (!actor.Brain.IsExplorePathBlocked(MapDestination, range))
+                //{
+                if (!actor.Brain.DestinationOutsideDeathCircle(MapDestination))
                 {
                     MapDestinationIsKnown = true;
                     break;
@@ -390,7 +393,7 @@ namespace ProjetSynthese
 
             fleeDestination.y = FloorYOffset;
 
-            if (ValidateMapDestination(ref fleeDestination))
+            if (ValidateMapDestination(fleeDestination))
             {
                 MapDestination = fleeDestination;
                 return true;
@@ -416,12 +419,12 @@ namespace ProjetSynthese
                 fleeDestinationDown.x += downPerpendicularFleeDirection.x;
                 fleeDestinationDown.z += downPerpendicularFleeDirection.z;
                 fleeDestinationDown.y = FloorYOffset;
-                if (ValidateMapDestination(ref fleeDestinationDown))
+                if (ValidateMapDestination(fleeDestinationDown))
                 {
                     MapDestination = fleeDestinationDown;
                     return true;
                 }
-                else if (ValidateMapDestination(ref fleeDestinationUp))
+                else if (ValidateMapDestination(fleeDestinationUp))
                 {
                     MapDestination = fleeDestinationUp;
                     return true;
@@ -430,18 +433,20 @@ namespace ProjetSynthese
             return false;
         }
 
-        private bool ValidateMapDestination(ref Vector3 mapDestination)
+        private bool ValidateMapDestination(Vector3 mapDestination)
         {
             if (IsDestinationOutOfMap(mapDestination))
             {
-                mapDestination = -mapDestination;
-                mapDestination.y = FloorYOffset;
+               return false;
             }
-            if (!Actor.Brain.IsExplorePathBlocked(mapDestination, FleeRange))
+            if (Actor.Brain.DestinationOutsideDeathCircle(mapDestination))
+            {
+                return false;
+            }
+            else
             {
                 return true;
             }
-            return false;
         }
 
         public ControllerMode GetAIControllerMode()

@@ -211,9 +211,12 @@ namespace ProjetSynthese
                     newDestination.z = -newDestination.z;
                     MapDestination = newDestination;
                 }
-               float range = Vector3.Distance(actor.transform.position, MapDestination);
-                if (actor.Brain.DestinationOutsideDeathCircle(MapDestination)
-                    && !actor.Brain.IsExplorePathBlocked(MapDestination, range))
+                //float range = Vector3.Distance(actor.transform.position, MapDestination);
+                //if (actor.Brain.DestinationOutsideDeathCircle(MapDestination)
+                //    && !actor.Brain.IsExplorePathBlocked(MapDestination, range))
+                //if (!actor.Brain.IsExplorePathBlocked(MapDestination, range))
+                //{
+                if (!actor.Brain.DestinationOutsideDeathCircle(MapDestination))
                 {
                     MapDestinationIsKnown = true;
                     break;
@@ -430,19 +433,20 @@ namespace ProjetSynthese
             return false;
         }
 
-        private bool ValidateMapDestination(ref Vector3 mapDestination)
-        {
-            if (IsDestinationOutOfMap(mapDestination))
-            {
-                mapDestination = -mapDestination;
-                mapDestination.y = FloorYOffset;
-            }
-            if (!Actor.Brain.IsExplorePathBlocked(mapDestination, FleeRange))
-            {
-                return true;
-            }
-            return false;
-        }
+        //private bool ValidateMapDestination(ref Vector3 mapDestination)
+        //{
+        //    if (IsDestinationOutOfMap(mapDestination))
+        //    {
+        //        mapDestination = -mapDestination;
+        //        mapDestination.y = FloorYOffset;
+        //        return true;
+        //    }
+        //if (!Actor.Brain.IsExplorePathBlocked(mapDestination, FleeRange))
+        //{
+        //    return true;
+        //}
+        //    return true;
+        //}
 
         public ControllerMode GetAIControllerMode()
         {

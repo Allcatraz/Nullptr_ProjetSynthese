@@ -495,13 +495,13 @@ namespace ProjetSynthese
             return isOutsideDeathCircle;
         }
 
-        public bool IsExplorePathBlocked(Vector3 destination, float range)
-        {
-            Vector3 direction = Vector3.zero;
-            direction = destination - Actor.transform.position;
-            range += SafetyMargin;
-            return Actor.Sensor.IsGameObjectHasLineOfSightToMapPosition(Actor.transform.position, direction, range);
-        }
+        //public bool IsExplorePathBlocked(Vector3 destination, float range)
+        //{
+        //    Vector3 direction = Vector3.zero;
+        //    direction = destination - Actor.transform.position;
+        //    range += SafetyMargin;
+        //    return Actor.Sensor.IsGameObjectHasLineOfSightToMapPosition(Actor.transform.position, direction, range);
+        //}
 
         private void UpdateInventoryKnowledge()
         {

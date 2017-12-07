@@ -211,11 +211,7 @@ namespace ProjetSynthese
                     newDestination.z = -newDestination.z;
                     MapDestination = newDestination;
                 }
-                //float range = Vector3.Distance(actor.transform.position, MapDestination);
-                //if (actor.Brain.DestinationOutsideDeathCircle(MapDestination)
-                //    && !actor.Brain.IsExplorePathBlocked(MapDestination, range))
-                //if (!actor.Brain.IsExplorePathBlocked(MapDestination, range))
-                //{
+                
                 if (!actor.Brain.DestinationOutsideDeathCircle(MapDestination))
                 {
                     MapDestinationIsKnown = true;

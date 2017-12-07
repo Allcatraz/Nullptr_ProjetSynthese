@@ -556,7 +556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1921219572930376
 GameObject:
   m_ObjectHideFlags: 1
@@ -1375,7 +1375,7 @@ MonoBehaviour:
   shootingAnimation: {fileID: 7400000, guid: cbb6bbf945dda7d4d8c062dd76028577, type: 3}
   grenadeAnimation: {fileID: 7400000, guid: ee8fe990b6b8d584a80a8477c96adcb8, type: 3}
   reloadAnimation: {fileID: 7400000, guid: ed8ba7a254ec06442b993c7db043df25, type: 3}
-  numberOfParamsToSync: 0
+  numberOfParamsToSync: 6
 --- !u!114 &114668875301481778
 MonoBehaviour:
   m_ObjectHideFlags: 1

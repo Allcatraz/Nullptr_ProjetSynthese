@@ -38,8 +38,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4466517202227700}
-  - component: {fileID: 95332389489760476}
-  - component: {fileID: 114566190629936516}
   m_Layer: 11
   m_Name: Soldier_marine
   m_TagString: Untagged
@@ -550,6 +548,9 @@ GameObject:
   - component: {fileID: 65620109435184090}
   - component: {fileID: 114425472729367428}
   - component: {fileID: 114553208731676496}
+  - component: {fileID: 95135948752417042}
+  - component: {fileID: 114105868883840996}
+  - component: {fileID: 114798527236890812}
   m_Layer: 11
   m_Name: AI
   m_TagString: Untagged
@@ -1237,13 +1238,13 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1026062235946326}
   m_Enabled: 1
---- !u!95 &95332389489760476
+--- !u!95 &95135948752417042
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068721185841044}
+  m_GameObject: {fileID: 1893845116203462}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 54c59f8780aaa2f4ebdae0e8027edf29, type: 3}
   m_Controller: {fileID: 9100000, guid: 0370a0c22bb4782449bc9ed9124fe863, type: 2}
@@ -1265,6 +1266,25 @@ MonoBehaviour:
   m_Script: {fileID: -1050975500, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114105868883840996
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1893845116203462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95135948752417042}
+  m_ParameterSendBits: 63
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
 --- !u!114 &114150401610799458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1358,24 +1378,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 2
---- !u!114 &114566190629936516
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068721185841044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f16cb1507d5b6d4ca62c480af9c1a35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 0}
-  cratePrefab: {fileID: 0}
-  grenadePrefab: {fileID: 0}
-  shootingAnimation: {fileID: 7400000, guid: cbb6bbf945dda7d4d8c062dd76028577, type: 3}
-  grenadeAnimation: {fileID: 7400000, guid: ee8fe990b6b8d584a80a8477c96adcb8, type: 3}
-  reloadAnimation: {fileID: 7400000, guid: ed8ba7a254ec06442b993c7db043df25, type: 3}
-  numberOfParamsToSync: 6
 --- !u!114 &114668875301481778
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1419,6 +1421,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 555202a3b7b84f07908f8a30b7fdcf25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114798527236890812
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1893845116203462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f16cb1507d5b6d4ca62c480af9c1a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 0}
+  cratePrefab: {fileID: 0}
+  grenadePrefab: {fileID: 0}
+  shootingAnimation: {fileID: 7400000, guid: cbb6bbf945dda7d4d8c062dd76028577, type: 3}
+  grenadeAnimation: {fileID: 7400000, guid: ee8fe990b6b8d584a80a8477c96adcb8, type: 3}
+  reloadAnimation: {fileID: 7400000, guid: ed8ba7a254ec06442b993c7db043df25, type: 3}
+  numberOfParamsToSync: 6
 --- !u!124 &124479858963005268
 Behaviour:
   m_ObjectHideFlags: 1

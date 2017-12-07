@@ -10,9 +10,7 @@ GameObject:
   - component: {fileID: 415972}
   - component: {fileID: 3315972}
   - component: {fileID: 2315972}
-  - component: {fileID: 6415972}
-  - component: {fileID: 9515972}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: flower plant2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,9 +27,7 @@ GameObject:
   - component: {fileID: 415974}
   - component: {fileID: 3315974}
   - component: {fileID: 2315974}
-  - component: {fileID: 6415974}
-  - component: {fileID: 9515974}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: flower plant2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,9 +44,7 @@ GameObject:
   - component: {fileID: 415976}
   - component: {fileID: 3315976}
   - component: {fileID: 2315976}
-  - component: {fileID: 6415976}
-  - component: {fileID: 9515976}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: flower plant2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +70,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 115974}
-  m_LocalRotation: {x: 7.929583e-17, y: -0.61225444, z: 7.6519464e-16, w: 0.79066074}
+  m_LocalRotation: {x: 7.9295836e-17, y: -0.6122545, z: 7.651947e-16, w: 0.7906608}
   m_LocalPosition: {x: 0.0010986328, y: -0, z: -0.7037964}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -89,8 +83,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 115976}
-  m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 1114.5532, y: 0.0000000012577592, z: 883.381}
+  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 339.42624, y: 0.048, z: -223.02544}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 415972}
@@ -215,99 +209,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 115976}
   m_Mesh: {fileID: 4300000, guid: 654e20e7a297adc40a6500f52da74a99, type: 3}
---- !u!64 &6415972
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 115972}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 654e20e7a297adc40a6500f52da74a99, type: 3}
---- !u!64 &6415974
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 115974}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 654e20e7a297adc40a6500f52da74a99, type: 3}
---- !u!64 &6415976
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 115976}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 654e20e7a297adc40a6500f52da74a99, type: 3}
---- !u!95 &9515972
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 115972}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 654e20e7a297adc40a6500f52da74a99, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
---- !u!95 &9515974
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 115974}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 654e20e7a297adc40a6500f52da74a99, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
---- !u!95 &9515976
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 115976}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 654e20e7a297adc40a6500f52da74a99, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -10,9 +10,8 @@ GameObject:
   - component: {fileID: 458188}
   - component: {fileID: 3358188}
   - component: {fileID: 2358188}
-  - component: {fileID: 6458188}
-  - component: {fileID: 9558188}
-  m_Layer: 0
+  - component: {fileID: 136715350114159946}
+  m_Layer: 15
   m_Name: other tree1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,8 +24,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158188}
-  m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 1130.2828, y: 0.000000013058856, z: 880.1425}
+  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 237.46927, y: 0, z: -172.21365}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -71,37 +70,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158188}
   m_Mesh: {fileID: 4300000, guid: 8bc391ed5b3dfe04a9bee88b7c598177, type: 3}
---- !u!64 &6458188
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158188}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 8bc391ed5b3dfe04a9bee88b7c598177, type: 3}
---- !u!95 &9558188
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158188}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 8bc391ed5b3dfe04a9bee88b7c598177, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -113,3 +81,16 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 158188}
   m_IsPrefabParent: 1
+--- !u!136 &136715350114159946
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158188}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.50778675
+  m_Height: 14.799269
+  m_Direction: 1
+  m_Center: {x: 0, y: 7.3996344, z: 0}

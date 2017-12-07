@@ -407,19 +407,22 @@ namespace ProjetSynthese
 
         private void OnFire()
         {
-            if (isHoldingGrenade == true)
+            if (!isInventoryOpen)
             {
-                CmdSpawnGrenade(currentGrenade.transform.position, networkIdentity);
-            }
-            else if ((object)currentWeapon != null)
-            {
-                if (currentWeapon.Use())
+                if (isHoldingGrenade == true)
                 {
-                    soldierAnimatorUpdater.Shoot();
-                    CmdSpawnBullet(currentWeapon.SpawnPoint.transform.position, currentWeapon.SpawnPoint.transform.rotation,
-                                   currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage, networkIdentity);
+                    CmdSpawnGrenade(currentGrenade.transform.position, networkIdentity);
                 }
-            }
+                else if ((object)currentWeapon != null)
+                {
+                    if (currentWeapon.Use())
+                    {
+                        soldierAnimatorUpdater.Shoot();
+                        CmdSpawnBullet(currentWeapon.SpawnPoint.transform.position, currentWeapon.SpawnPoint.transform.rotation,
+                                       currentWeapon.Chamber.transform.position, currentWeapon.BulletSpeed, currentWeapon.LivingTime, currentWeapon.Dommage, networkIdentity);
+                    }
+                }
+            }            
         }
 
         [TargetRpc]

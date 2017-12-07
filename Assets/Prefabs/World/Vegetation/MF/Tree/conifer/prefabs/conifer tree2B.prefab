@@ -10,9 +10,8 @@ GameObject:
   - component: {fileID: 452122}
   - component: {fileID: 3352122}
   - component: {fileID: 2352122}
-  - component: {fileID: 6452122}
-  - component: {fileID: 9552122}
-  m_Layer: 0
+  - component: {fileID: 136040040914879706}
+  m_Layer: 15
   m_Name: conifer tree2B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,8 +24,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152122}
-  m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 1138.2711, y: 0.000000014653208, z: 877.95557}
+  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 192.27888, y: 0, z: -187.88011}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -71,37 +70,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152122}
   m_Mesh: {fileID: 4300000, guid: a8e51cf753198744baca21b55136ef4c, type: 3}
---- !u!64 &6452122
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 152122}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: a8e51cf753198744baca21b55136ef4c, type: 3}
---- !u!95 &9552122
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 152122}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: a8e51cf753198744baca21b55136ef4c, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -113,3 +81,16 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 152122}
   m_IsPrefabParent: 1
+--- !u!136 &136040040914879706
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 152122}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.34352255
+  m_Height: 11.050904
+  m_Direction: 1
+  m_Center: {x: 0, y: 5.525452, z: 0}

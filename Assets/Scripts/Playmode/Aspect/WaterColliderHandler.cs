@@ -2,55 +2,42 @@
 using Boo.Lang;
 using Harmony;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace ProjetSynthese
 {
     public class WaterColliderHandler : GameScript
     {
-        private List<Collision> listPlayerCollision;
+        private HashSet<GameObject> listPlayerCollision;
 
         private void OnCollisionEnter(Collision col)
         {
             if (listPlayerCollision == null)
             {
-                listPlayerCollision = new List<Collision>();
+                listPlayerCollision = new HashSet<GameObject>();
             }
-            if (!CheckIfExistInList(col)) listPlayerCollision.Add(col);
-        }
-
-        private bool CheckIfExistInList(Collision col)
-        {
-            bool exist = false;
-            foreach (Collision colli in listPlayerCollision)
-            {
-                if (colli == col)
-                {
-                    exist = true;
-                    break;
-                }
-            }
-            return exist;
+            listPlayerCollision.Add(col.gameObject);
         }
 
         private void FixedUpdate()
         {
             if (listPlayerCollision != null)
             {
-                foreach (Collision playerCollider in listPlayerCollision)
+                foreach (GameObject playerCollider in listPlayerCollision)
                 {
-                    if (playerCollider != null)
+                    if (playerCollider)
                     {
                         RaycastHit info;
-                        Vector3 origin = playerCollider.gameObject.transform.position;
+                        Vector3 origin = playerCollider.transform.position;
                         origin.y += 3;
                         bool isTrigger = Physics.Raycast(origin, Vector3.down, out info, 10, 1 << LayerMask.NameToLayer(R.S.Layer.Water));
                         Debug.DrawRay(origin, Vector3.down, Color.red);
                         if (isTrigger)
                         {
-                            ISwim actorController = playerCollider.gameObject.GetComponent<PlayerController>();
+                            ISwim actorController = playerCollider.GetComponent<PlayerController>();
                             if (actorController == null)
                             {
-                                actorController = playerCollider.gameObject.GetComponentInParent<ActorAI>();
+                                actorController = playerCollider.GetComponentInParent<ActorAI>();
                             }
                             if (actorController != null && actorController.IsSwimming == false)
                             {
@@ -59,10 +46,10 @@ namespace ProjetSynthese
                         }
                         else
                         {
-                            ISwim actorController = playerCollider.gameObject.GetComponent<PlayerController>();
+                            ISwim actorController = playerCollider.GetComponent<PlayerController>();
                             if (actorController == null)
                             {
-                                actorController = playerCollider.gameObject.GetComponentInParent<ActorAI>();
+                                actorController = playerCollider.GetComponentInParent<ActorAI>();
                             }
                             if (actorController != null && actorController.IsSwimming)
                             {

@@ -84,6 +84,7 @@ namespace ProjetSynthese
 
         private Vector2 rotation = Vector2.zero;
         private float kills = 0;
+        private bool isPauseOpen = false;
         private bool isInventoryOpen = false;
         private bool isMapOpen = false;
         private bool isFirstPerson = false;
@@ -207,6 +208,7 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnToggleMap += OnToggleMap;
             keyboardInputSensor.Keyboards.OnReload += OnReload;
             keyboardInputSensor.Keyboards.OnChangeViewMode += OnChangeViewMode;
+            keyboardInputSensor.Keyboards.OnTogglePause += OnPause;
 
             mouseInputSensor.Mouses.OnFire += OnFire;
 
@@ -245,6 +247,7 @@ namespace ProjetSynthese
             keyboardInputSensor.Keyboards.OnToggleMap -= OnToggleMap;
             keyboardInputSensor.Keyboards.OnReload -= OnReload;
             keyboardInputSensor.Keyboards.OnChangeViewMode -= OnChangeViewMode;
+            keyboardInputSensor.Keyboards.OnTogglePause -= OnPause;
 
             mouseInputSensor.Mouses.OnFire -= OnFire;
 
@@ -635,6 +638,21 @@ namespace ProjetSynthese
         public Camera GetFirstPersonCamera()
         {
             return firstPersonCamera;
+        }
+
+        private void OnPause()
+        {
+            isPauseOpen = !isPauseOpen;
+            if (isPauseOpen)
+            {
+                SetCursor(isPauseOpen, !isPauseOpen);
+                canCameraMove = false;
+            }
+            else
+            {
+                SetCursor(!isFirstPerson, isFirstPerson);
+                canCameraMove = true;
+            }
         }
     }
 }

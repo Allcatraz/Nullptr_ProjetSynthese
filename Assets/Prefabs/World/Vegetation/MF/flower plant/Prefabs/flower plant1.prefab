@@ -10,9 +10,7 @@ GameObject:
   - component: {fileID: 476066}
   - component: {fileID: 3376066}
   - component: {fileID: 2376066}
-  - component: {fileID: 6476066}
-  - component: {fileID: 9576066}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: flower plant1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,9 +27,7 @@ GameObject:
   - component: {fileID: 476068}
   - component: {fileID: 3376068}
   - component: {fileID: 2376068}
-  - component: {fileID: 6476068}
-  - component: {fileID: 9576068}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: flower plant1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,9 +44,7 @@ GameObject:
   - component: {fileID: 476070}
   - component: {fileID: 3376070}
   - component: {fileID: 2376070}
-  - component: {fileID: 6476070}
-  - component: {fileID: 9576070}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: flower plant1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,8 +83,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 176070}
-  m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 1110.0592, y: 0.0000000012577592, z: 886.2313}
+  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 288.7981, y: 0, z: -222.89691}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 476066}
@@ -215,99 +209,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 176070}
   m_Mesh: {fileID: 4300000, guid: 90b658be31cc7c7449866f6373a26cdd, type: 3}
---- !u!64 &6476066
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 176066}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 90b658be31cc7c7449866f6373a26cdd, type: 3}
---- !u!64 &6476068
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 176068}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 90b658be31cc7c7449866f6373a26cdd, type: 3}
---- !u!64 &6476070
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 176070}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 90b658be31cc7c7449866f6373a26cdd, type: 3}
---- !u!95 &9576066
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 176066}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 90b658be31cc7c7449866f6373a26cdd, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
---- !u!95 &9576068
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 176068}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 90b658be31cc7c7449866f6373a26cdd, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
---- !u!95 &9576070
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 176070}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 90b658be31cc7c7449866f6373a26cdd, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

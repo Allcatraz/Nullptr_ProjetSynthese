@@ -555,13 +555,18 @@ namespace ProjetSynthese
             }
         }
 
-        private void OnDeath(PlayerDeathEvent playerDeathEvent)
+        public void OnDeath(PlayerDeathEvent playerDeathEvent)
         {
             InventoryOnDeath();
 
             endGamePanel.gameObject.SetActive(true);
             CmdDestroy(gameObject);
             Destroy(gameObject);
+        }
+
+        public void WinGame()
+        {
+            achivementController.AddGameVictoryToDatabase();
         }
 
         private void InventoryOnDeath()
@@ -614,15 +619,33 @@ namespace ProjetSynthese
                 if (isAi)
                 {
                     kills += 0.5f;
-                    if(Mathf.Round(kills) - kills == 0)
+                    if (Mathf.Round(kills) - kills == 0)
+                    {
                         achivementController.AddAiKill();
+                        LobbyManager.s_Singleton.AliveNumber--;
+                        CmdRemoveAlivePlayer(1);
+                    }
                 }
                 else
                 {
                     kills++;
                     achivementController.AddPlayerKill();
+                    LobbyManager.s_Singleton.AliveNumber--;
+                    CmdRemoveAlivePlayer(1);
                 }
             }
+        }
+
+        [Command]
+        private void CmdRemoveAlivePlayer(int number)
+        {
+            RpcRemoveAlivePlayer(number);
+        }
+
+        [ClientRpc]
+        private void RpcRemoveAlivePlayer(int number)
+        {
+            LobbyManager.s_Singleton.AliveNumber -= number;
         }
 
         public int GetKill()

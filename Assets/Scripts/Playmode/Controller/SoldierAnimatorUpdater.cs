@@ -338,7 +338,7 @@ namespace ProjetSynthese
 
         private void ReleaseGrenadeEvent()
         {
-            if (isLocalPlayer)
+            if (isLocalPlayer && grenade != null)
             {
                 grenade.Release();
                 grenade = null;

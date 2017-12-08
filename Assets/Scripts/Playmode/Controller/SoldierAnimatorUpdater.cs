@@ -46,9 +46,7 @@ namespace ProjetSynthese
         private Animator animator;
         private NetworkAnimator networkAnimator;
         public Vector3 MouvementDirection { get; set; }
-        public Vector3 ViewDirection { get; set; }
-
-        private bool isShooting;
+        public Vector3 ViewDirection { get; set; }        
 
         public float NormalPlayerSpeed { get; set; }
 
@@ -61,6 +59,7 @@ namespace ProjetSynthese
         private bool isThrowingGrenade;
 
         private bool isMoving = false;
+        private bool isShooting = false;
 
         private int layerIndexHands;
         private int layerIndexShooting;
@@ -89,45 +88,61 @@ namespace ProjetSynthese
 
         private void InitializeInterpolationFactors()
         {
-            directionInterpolationFactors = new InterpolationFactors();
-            directionInterpolationFactors.animatorValueName = ValueNameDirectionFactors;
-            directionInterpolationFactors.diffFactor = 0.5f;
-            directionInterpolationFactors.interpolatingPerFrameValue = 0.02f;
+            directionInterpolationFactors = new InterpolationFactors
+            {
+                AnimatorValueName = ValueNameDirectionFactors,
+                DiffFactor = 0.5f,
+                InterpolatingPerFrameValue = 0.02f
+            };
 
-            angleInterpolationFactors = new InterpolationFactors();
-            angleInterpolationFactors.animatorValueName = ValueNameAngle;
-            angleInterpolationFactors.diffFactor = 2;
-            angleInterpolationFactors.interpolatingPerFrameValue = 0.02f;
+            angleInterpolationFactors = new InterpolationFactors
+            {
+                AnimatorValueName = ValueNameAngle,
+                DiffFactor = 2,
+                InterpolatingPerFrameValue = 0.02f
+            };
 
-            shootingLayerInterpolationFactors = new InterpolationFactors();
-            shootingLayerInterpolationFactors.animatorValueName = LayerNameShooting;
-            shootingLayerInterpolationFactors.interpolatingPerFrameValue = 0.02f;
+            shootingLayerInterpolationFactors = new InterpolationFactors
+            {
+                AnimatorValueName = LayerNameShooting,
+                InterpolatingPerFrameValue = 0.02f
+            };
 
-            handsLayerInterpolationFactors = new InterpolationFactors();
-            handsLayerInterpolationFactors.animatorValueName = LayerNameHands;
-            handsLayerInterpolationFactors.interpolatingPerFrameValue = 0.02f;
+            handsLayerInterpolationFactors = new InterpolationFactors
+            {
+                AnimatorValueName = LayerNameHands,
+                InterpolatingPerFrameValue = 0.02f
+            };
         }
 
         private void InitializeEvents()
         {
-            AnimationEvent shootingEvent = new AnimationEvent();
-            shootingEvent.time = shootingAnimation.length;
-            shootingEvent.functionName = FunctionNameEndShootingEvent;
+            AnimationEvent shootingEvent = new AnimationEvent
+            {
+                time = shootingAnimation.length,
+                functionName = FunctionNameEndShootingEvent
+            };
             shootingAnimation.AddEvent(shootingEvent);
 
-            AnimationEvent grenadeReleaseEvent = new AnimationEvent();
-            grenadeReleaseEvent.time = grenadeAnimation.length * 0.42f;
-            grenadeReleaseEvent.functionName = FunctionNameReleaseGrenadeEvent;
+            AnimationEvent grenadeReleaseEvent = new AnimationEvent
+            {
+                time = grenadeAnimation.length * 0.42f,
+                functionName = FunctionNameReleaseGrenadeEvent
+            };
             grenadeAnimation.AddEvent(grenadeReleaseEvent);
 
-            AnimationEvent grenadeThrowingEnd = new AnimationEvent();
-            grenadeThrowingEnd.time = grenadeAnimation.length;
-            grenadeThrowingEnd.functionName = FunctionNameEndThrowingGrenadeAnimationEvent;
+            AnimationEvent grenadeThrowingEnd = new AnimationEvent
+            {
+                time = grenadeAnimation.length,
+                functionName = FunctionNameEndThrowingGrenadeAnimationEvent
+            };
             grenadeAnimation.AddEvent(grenadeThrowingEnd);
 
-            AnimationEvent reloadOverEvent = new AnimationEvent();
-            reloadOverEvent.time = reloadAnimation.length;
-            reloadOverEvent.functionName = FunctionNameEndReloadingAnimationEvent;
+            AnimationEvent reloadOverEvent = new AnimationEvent
+            {
+                time = reloadAnimation.length,
+                functionName = FunctionNameEndReloadingAnimationEvent
+            };
             reloadAnimation.AddEvent(reloadOverEvent);
         }
 
@@ -157,9 +172,9 @@ namespace ProjetSynthese
                 cosTheta = cosTheta > 1 ? 1 : cosTheta;
                 double angle = Math.Acos(cosTheta);
 
-                angleInterpolationFactors.presentFrame = Mathf.Rad2Deg * (float)angle;
+                angleInterpolationFactors.PresentFrame = Mathf.Rad2Deg * (float)angle;
 
-                directionInterpolationFactors.presentFrame = Vector3.Dot(new Vector3(MouvementDirection.z * -1, 0, MouvementDirection.x).normalized, ViewDirection.normalized);
+                directionInterpolationFactors.PresentFrame = Vector3.Dot(new Vector3(MouvementDirection.z * -1, 0, MouvementDirection.x).normalized, ViewDirection.normalized);
 
                 InterpolateAnimation(ref angleInterpolationFactors);
                 InterpolateAnimation(ref directionInterpolationFactors);
@@ -178,52 +193,52 @@ namespace ProjetSynthese
 
         private void InterpolateAnimation(ref InterpolationFactors factors)
         {
-            if (Mathf.Abs(factors.lastFrame - factors.presentFrame) > factors.diffFactor)
+            if (Mathf.Abs(factors.LastFrame - factors.PresentFrame) > factors.DiffFactor)
             {
-                BeginInterpolation(factors.presentFrame, ref factors);
+                BeginInterpolation(factors.PresentFrame, ref factors);
             }
 
-            if (factors.isInterpolating == true)
+            if (factors.IsInterpolating == true)
             {
-                factors.actual = Mathf.Lerp(factors.begin, factors.end, factors.interpolant);
-                animator.SetFloat(factors.animatorValueName, factors.actual);
-                factors.interpolant += factors.interpolatingPerFrameValue;
-                if (factors.interpolant > 1 || factors.interpolant < 0)
+                factors.Actual = Mathf.Lerp(factors.Begin, factors.End, factors.Interpolant);
+                animator.SetFloat(factors.AnimatorValueName, factors.Actual);
+                factors.Interpolant += factors.InterpolatingPerFrameValue;
+                if (factors.Interpolant > 1 || factors.Interpolant < 0)
                 {
-                    factors.isInterpolating = false;
+                    factors.IsInterpolating = false;
                 }
             }
 
-            factors.lastFrame = factors.presentFrame;
+            factors.LastFrame = factors.PresentFrame;
         }
 
         private void InterpolateLayerWeight(ref InterpolationFactors factors)
         {
-            if (factors.isInterpolating == true)
+            if (factors.IsInterpolating == true)
             {
-                factors.actual = Mathf.Lerp(factors.begin, factors.end, factors.interpolant);
-                animator.SetLayerWeight(animator.GetLayerIndex(factors.animatorValueName), factors.actual);
-                factors.interpolant += factors.interpolatingPerFrameValue;
-                if (factors.interpolant > 1 || factors.interpolant < 0)
+                factors.Actual = Mathf.Lerp(factors.Begin, factors.End, factors.Interpolant);
+                animator.SetLayerWeight(animator.GetLayerIndex(factors.AnimatorValueName), factors.Actual);
+                factors.Interpolant += factors.InterpolatingPerFrameValue;
+                if (factors.Interpolant > 1 || factors.Interpolant < 0)
                 {
-                    factors.isInterpolating = false;
+                    factors.IsInterpolating = false;
                 }
             }
 
-            factors.lastFrame = factors.presentFrame;
+            factors.LastFrame = factors.PresentFrame;
         }
 
         private void BeginInterpolation(float end, ref InterpolationFactors factors)
         {
-            factors.begin = factors.actual;
-            factors.end = end;
-            factors.interpolant = 0;
-            factors.isInterpolating = true;
+            factors.Begin = factors.Actual;
+            factors.End = end;
+            factors.Interpolant = 0;
+            factors.IsInterpolating = true;
         }
 
         public void Shoot()
         {
-            shootingLayerInterpolationFactors.isInterpolating = false;
+            shootingLayerInterpolationFactors.IsInterpolating = false;
             CmdShoot();
         }
 
@@ -272,7 +287,6 @@ namespace ProjetSynthese
             animator.SetLayerWeight(layerIndexReload, 1);
             animator.Play(AnimationNameReload, -1, 0f);
         }
-
 
         private void EndReloadingAnimationEvent()
         {
@@ -330,10 +344,10 @@ namespace ProjetSynthese
         [ClientRpc]
         private void RpcEndShootingEvent()
         {
-            shootingLayerInterpolationFactors.isInterpolating = true;
-            shootingLayerInterpolationFactors.begin = 1;
-            shootingLayerInterpolationFactors.end = 0;
-            shootingLayerInterpolationFactors.interpolant = 0;
+            shootingLayerInterpolationFactors.IsInterpolating = true;
+            shootingLayerInterpolationFactors.Begin = 1;
+            shootingLayerInterpolationFactors.End = 0;
+            shootingLayerInterpolationFactors.Interpolant = 0;
         }
 
         private void ReleaseGrenadeEvent()
@@ -383,16 +397,16 @@ namespace ProjetSynthese
 
         private struct InterpolationFactors
         {
-            public float begin;
-            public float end;
-            public float actual;
-            public float interpolant;
-            public bool isInterpolating;
-            public float lastFrame;
-            public float presentFrame;
-            public float diffFactor;
-            public string animatorValueName;
-            public float interpolatingPerFrameValue;
+            public float Begin;
+            public float End;
+            public float Actual;
+            public float Interpolant;
+            public bool IsInterpolating;
+            public float LastFrame;
+            public float PresentFrame;
+            public float DiffFactor;
+            public string AnimatorValueName;
+            public float InterpolatingPerFrameValue;
         }
     }
 }

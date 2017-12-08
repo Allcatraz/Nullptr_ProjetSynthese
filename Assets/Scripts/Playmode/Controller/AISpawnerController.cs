@@ -13,7 +13,7 @@ namespace ProjetSynthese
 
         public const float XMapOriginCornerCoordinate = 150.0f;//0.0f;
         public const float ZMapOriginCornerCoordinate = -150.0f;//0.0f;
-        private const float DefaultHeighPosition = 2.0f;
+        private const float DefaultHeighPosition = 0.5f;
         public const float XMapOriginOppositeCornerCoordinate = 550.0f;//450.0f;
         public const float ZMapOriginOppositeCornerCoordinate = -550.0f;//-450.0f;
 

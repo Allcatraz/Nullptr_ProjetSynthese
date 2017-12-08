@@ -40,6 +40,8 @@ namespace Prototype.NetworkLobby
         [HideInInspector]
         public int _playerNumber = 0;
 
+        public int AliveNumber = 1;
+
         //used to disconnect a client properly when exiting the matchmaker
         [HideInInspector]
         public bool _isMatchmaking = false;

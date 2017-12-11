@@ -256,6 +256,10 @@ namespace ProjetSynthese
             boostHealEventChannel.OnEventPublished -= OnBoostHeal;
             spawnItemDropEventChannel.OnEventPublished -= SpawnItemDrop;
 
+            playerMover.OnSpeedChange -= soldierAnimatorUpdater.OnSpeedChange;
+            keyboardInputSensor.Keyboards.OnStopMoving -= soldierAnimatorUpdater.OnStopMoving;
+            keyboardInputSensor.Keyboards.OnBeginMoving -= soldierAnimatorUpdater.OnBeginMoving;
+
             NetworkServer.UnSpawn(gameObject);
         }
 

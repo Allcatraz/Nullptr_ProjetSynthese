@@ -613,7 +613,7 @@ namespace ProjetSynthese
         {
             ObjectContainedInventory helmet = inventory.GetHelmet();
             ObjectContainedInventory vest = inventory.GetVest();
-            return new[] { helmet == null ? null : vest.GetItem(), vest == null ? null : vest.GetItem() };
+            return new[] { helmet == null ? null : helmet.GetItem(), vest == null ? null : vest.GetItem() };
         }
 
         public void AddKillToDatabse(bool isAi)

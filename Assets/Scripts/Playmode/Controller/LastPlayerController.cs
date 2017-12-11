@@ -15,7 +15,7 @@ namespace ProjetSynthese
                 PlayerController lastPlayer = FindObjectOfType<PlayerController>();
                 lastPlayer.WinGame();
                 lastPlayer.OnDeath(new PlayerDeathEvent());
-                nbCheck++;
+                nbCheck++; 
             }       
         }
     }
